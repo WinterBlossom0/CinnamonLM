@@ -6,6 +6,11 @@
 cache/
 raw/
 ckpt/
+# Pilot output. run_pilot.py and its README are tracked; everything a run
+# produces is not -- checkpoints, packed tokens, logs. The reports are small and
+# text, so those ARE kept: a pilot verdict is worth having in history.
+pilot/cache/
+pilot/runs/
 .kaggle_stage/
 *.npy
 *.pt
