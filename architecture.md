@@ -353,16 +353,19 @@ when both are uniform. `f_i` is discrete (argmax counts, no gradient); `P_i` is
 continuous and carries it. Logged with per-hypernet fractions and router entropy
 every eval, because §10 is explicit that collapse is invisible in the loss curve.
 
-### Dispatch is gathered, and that is not DDP-safe
+### Dispatch is gathered — and this is why the model is single-GPU
 
-Each hypernetwork runs only on the tokens it actually owns (`nonzero` / `index_copy`),
-so total work across all `n` calls is O(B·S) once rather than O(n·B·S). The
-`if idx.numel() == 0: continue` is a **data-dependent branch**: two DDP ranks with
-different routing can skip different hypernetworks and desync the allreduce.
+Each hypernetwork runs only on the tokens it actually owns (`nonzero` /
+`index_copy`), so total work across all `n` calls is O(B·S) once rather than
+O(n·B·S). Running every hypernetwork on every token was measured at ~6 min/step.
 
-Known and accepted for single-GPU work; `test_ddp_desync` documents it as an
-`xfail`. The unconditional full-batch form must be restored, or the gather done
-DDP-safely, before any multi-GPU run.
+The `if idx.numel() == 0: continue` is a **data-dependent branch**. Two ranks with
+different routing would skip different hypernetworks and desync a gradient
+all-reduce, so this design and DDP are mutually exclusive. The gather won: it is
+what makes the model affordable to run at all.
+
+**All multi-GPU code has been removed** — no `torch.distributed`, no `torchrun`
+path, no rank guards, no sharding. Restoring it means giving up the gather first.
 
 ---
 
@@ -399,17 +402,22 @@ Packed: **326,456 train blocks (167.1 M tokens)**, 33,326 dev blocks (17.1 M), a
   identical command continues from `last.pt`.
 - **EWC** on the shared scaffold for sequential domain training; routed-block
   parameters are unprotected. Objective `L_LM + (λ/2)·Σ F_j (θ_j − θ_j*)²`.
-- **DDP** — auto-detected from `torchrun` env vars, no flag. Verified against a
-  manual two-batch gradient average to 1e-6. See §7 for the gather caveat.
+- **Single GPU only.** No distributed code path at all — see §7.
+- **TF32 and `cudnn.benchmark`** are enabled on CUDA. TF32 keeps fp32's exponent
+  range and only trims mantissa bits; benchmark mode pays a one-off kernel search
+  for shapes that stop changing after the first step.
 - **Mixed precision** — `resolve_amp` picks per hardware. T4 (sm_75) has **no bf16
   and no TF32**, so it gets fp16 + GradScaler. `torch.cuda.is_bf16_supported()`
   returns True on a T4 via *emulation*, which would have silently wasted an entire
   run; the check uses compute capability ≥ 8.
 - **Wall-clock budget** — `--max-hours` times a short window, then re-fits the step
-  count so the cosine schedule always anneals fully; agreed across ranks by
-  `all_reduce` (disagree by one step and the next collective deadlocks).
-- **Gradient checkpointing is required**, still. Measured without it: 29 GB peak,
-  which spills to shared memory and runs *slower* (36–41 s/step vs 2.4).
+  count so the cosine schedule always anneals fully.
+- **Gradient checkpointing stays on**, and it is a throughput win, not just a
+  memory one. Measured on a 16 GB card at seq 512: off gives 214 tok/s at batch 1
+  (13.57 GB); on gives 141 tok/s at batch 1 but **433 tok/s at batch 4** (8.20 GB).
+  The memory it saves buys a larger batch, which more than repays the recompute.
+- **Batch 4 is the default**, because batch 8 OOMs. What runs out is the logits
+  tensor `[B, 512, 128000]` and its fp32 copy in the loss, not the model.
 - **Kaggle** — `machine_shape="NvidiaTeslaT4"`. The default GPU is a **P100**,
   which PyTorch 2.10 cannot use at all (`sm_60` dropped).
 
@@ -417,7 +425,7 @@ Packed: **326,456 train blocks (167.1 M tokens)**, 33,326 dev blocks (17.1 M), a
 
 ## 10. Test coverage
 
-42 passing, 1 expected `xfail`.
+40 passing, no expected failures.
 
 | suite | what it pins |
 |---|---|
@@ -425,8 +433,6 @@ Packed: **326,456 train blocks (167.1 M tokens)**, 33,326 dev blocks (17.1 M), a
 | `test_routing` (12) | router gets gradient and stays fp32, budget never exceeded, commitments never interrupted, warm-up runs unadapted, every hypernet gets gradient, attention runs once per recurrence, **generation is per-token and content-sensitive**, aux loss floor 1.0, halting fires and depth varies |
 | `test_bf16` (6) | fp16/bf16 finite, close to fp32, adversarial KDA survives autocast, disabled is a true no-op |
 | `test_learning` (3) | overfits a fixed batch, depth is data-dependent, checkpointing matches plain |
-| `test_ddp` (2) | all-reduced gradient == manual average, world_size 1 is a no-op |
-| `test_ddp_desync` (1, **xfail**) | two ranks with divergent routing do not desync — currently expected to fail, see §7 |
 | `test_resume` (1) | kill and rerun continues; best.pt tracks best dev; writes atomic |
 
 ---
@@ -448,8 +454,9 @@ Packed: **326,456 train blocks (167.1 M tokens)**, 33,326 dev blocks (17.1 M), a
 * `std >= 0` on depth is vacuously true, and stayed green while every token ran to
   the cap. Replaced with "the rule must bite for the population", plus non-zero
   spread and commitment-boundary landing.
-* the first DDP test used 4 experts and 32 tokens, so every expert was populated on
-  both ranks and nothing ever diverged. Now 8 hypernets and 4 tokens.
+* a DDP test used 4 experts and 32 tokens, so every expert was populated on both
+  ranks and nothing ever diverged. It was later replaced, and then deleted
+  outright when the model committed to single-GPU.
 
 **A metric that was wrong.** The collapse diagnostic (mean pairwise cosine between
 per-position logit vectors) read **0.995 on a perfectly healthy run**, because
@@ -527,11 +534,11 @@ measurement.
    `train.py` default is `3e-4` with 500-step warmup. The old sweep measured
    post-norm dynamics that no longer exist and should be discarded.
 3. **`halt_tol = 0.08` is provisional** — swept on an untrained model (§6).
-4. **Gathered dispatch is not DDP-safe** (§7). Must be fixed before multi-GPU.
-5. **KDA gate drift** past retention ≈ 0.86 degrades the chunked path silently.
+6. **KDA gate drift** past retention ≈ 0.86 degrades the chunked path silently.
    Monitored (6.87–6.93 at init, margin intact), not solved.
-6. **Memory ceiling is the logits tensor**, `[B, 512, 128000]`, not the model.
-   Chunked cross-entropy is the fix. Less urgent now the model is 3.55 GB.
+5. **Memory ceiling is the logits tensor**, `[B, 512, 128000]`, not the model.
+   It is what caps the batch at 4; chunked cross-entropy is the fix and would
+   raise the ceiling directly.
 7. **Hypernet/body split.** 24.15 M generating adapters for a 6.82 M body. Whether
    that is right is untested.
 8. **Domain list and order** for sequential training (§14.5) — still to be

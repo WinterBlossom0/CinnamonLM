@@ -49,10 +49,10 @@ the output, and a change to token 0 propagates to every later position.
 | | |
 |---|---|
 | Architecture | implemented, 110.17 M params (44.63 M non-embedding) |
-| Tests | 42 passing, 1 expected `xfail` |
+| Tests | 40 passing |
 | Overfit (512 tokens) | ✅ loss 11.81 → **0.0112**, through the 6.236 unigram floor |
 | Real training run | ❌ **not done yet** |
-| Multi-GPU | ❌ gathered dispatch is not DDP-safe — see `architecture.md` §7 |
+| Multi-GPU | not supported, by design — see below |
 
 ## Quick start
 
@@ -72,12 +72,30 @@ python -m pytest tests/ -q
 python train.py --domain babylm --tokenizer tokenizer.json
 ```
 
-Multi-GPU is auto-detected from `torchrun`, no flag — but see the DDP caveat above
-before relying on it.
+## Single GPU, deliberately
 
-```bash
-torchrun --nproc_per_node=4 train.py --domain babylm --tokenizer tokenizer.json
-```
+There is no distributed code path — no `torch.distributed`, no `torchrun`, no rank
+guards, no sharding.
+
+That is a consequence of the design, not an omission. Each hypernetwork runs only
+on the tokens routed to it, skipping any with none — a **data-dependent branch**.
+Two ranks would skip different hypernetworks and desync a gradient all-reduce. The
+DDP-safe alternative is to run every hypernetwork on every token, which measured
+**~6 min/step**. The gather won.
+
+Measured on one 16 GB card at `seq_len` 512, gradient checkpointing on:
+
+| batch | tok/s | peak VRAM |
+|---|---|---|
+| 1 | 141 | 3.55 GB |
+| 2 | 246 | 5.08 GB |
+| **4** *(default)* | **433** | **8.20 GB** |
+| 8 | OOM | — |
+
+Checkpointing stays on because it is a *throughput* win here, not just a memory
+one: off is 214 tok/s at batch 1, on is 433 tok/s at batch 4. The memory it frees
+buys a bigger batch than the recompute costs. Batch 8 runs out on the logits
+tensor `[B, 512, 128000]`, not the model.
 
 ## Layout
 
@@ -94,9 +112,9 @@ cinnamon/
   halting.py    the convergence measure
   data.py       corpora, packing
   ewc.py        elastic weight consolidation for sequential domains
-train.py        training loop (CPU / CUDA / XLA, DDP auto-detected)
+train.py        training loop (CPU / CUDA / XLA, single-GPU)
 kg/             Kaggle push + launch helpers
-tests/          42 tests, 1 expected xfail
+tests/          40 tests
 architecture.md what is actually built and measured, and what is still open
 ```
 

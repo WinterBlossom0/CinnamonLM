@@ -54,9 +54,10 @@ def test_attention_runs_once_per_recurrence_not_once_per_hypernet():
 
 
 def test_every_hypernet_gets_gradient():
-    """DDP: a hypernet that never runs contributes no gradient, and two ranks that
-    skip different ones desynchronise the allreduce.  The masked 'or (1,)' call
-    keeps every one in the graph regardless of routing."""
+    """A hypernet that never receives a token gets no gradient and never trains,
+    so the bank silently shrinks to whichever few the router happened to favour
+    early.  Invisible in the loss -- the model still works, just with less
+    capacity than it is paying for."""
     from cinnamon.routed import RoutedBlock
 
     torch.manual_seed(0)

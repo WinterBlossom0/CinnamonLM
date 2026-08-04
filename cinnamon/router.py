@@ -65,8 +65,7 @@ class AuxLoss:
 
         A masked-out position contributes zero rather than being indexed away:
         boolean indexing needs the mask's popcount on the host, which is a GPU
-        sync, and skipping on an empty mask is a data-dependent branch that two
-        DDP ranks can disagree about.
+        sync on the hot path.
         """
         flat = probs.reshape(-1, self.n)
         w = (mask.reshape(-1).float() if mask is not None

@@ -13,8 +13,8 @@ of the code to keep in sync.
     python -m kg.push status <slug>       # poll a kernel
     python -m kg.push pull <slug> <dir>   # download a kernel's output
 
-TPU is gone: the queue never cleared, and 2x T4 gives 32 GB with DDP, which
-train.py already supports.
+TPU is gone: the queue never cleared.  Training is single-GPU (see train.py),
+so the second T4 of Kaggle's pair sits idle.
 """
 import json
 import os
@@ -105,7 +105,7 @@ def push_kernel(slug, title, run_py, *, gpu=False, internet=True, extra_data=())
         # enable_gpu alone gets whatever Kaggle defaults to, which was a P100 --
         # and PyTorch 2.10 dropped sm_60, so a P100 cannot run this at all
         # ("supports sm_70 ... sm_120").  T4 is not a preference here, it is the
-        # only usable option, and Kaggle's T4 shape is a pair, which DDP uses.
+        # only usable option.  The shape is a pair, but only one is used.
         # The key must be machine_shape; an "accelerator" key is silently ignored.
         meta["machine_shape"] = "NvidiaTeslaT4"
     json.dump(meta, open(os.path.join(d, "kernel-metadata.json"), "w"), indent=1)

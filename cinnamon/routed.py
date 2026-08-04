@@ -42,7 +42,6 @@ commitment needs a second pass to yield one usable KL.  At turns=1 no clean KL
 ever exists and halting cannot work.
 """
 import torch
-import torch.distributed as dist
 import torch.nn as nn
 from torch.utils.checkpoint import checkpoint
 
@@ -126,20 +125,16 @@ class RoutedBlock(nn.Module):
             else:
                 out = h_attn
                 base_norms = e.base_norms()
-                # GATHERED, not the unconditional full-batch-per-hypernet form
-                # used elsewhere in this file (aux/router).  Running every
-                # hypernet on every token would do n times the generation work
-                # even though each token needs ONE hypernet -- measured at ~6
-                # min/step back when it also materialised the weight matrices.
-                # Gathering keeps total work across all n calls at O(B*S) once,
-                # not O(n*B*S).
+                # GATHERED: each hypernet runs only on the tokens it actually
+                # owns, so total work across all n calls is O(B*S) once, not
+                # O(n*B*S).  Running every hypernet on every token was measured
+                # at ~6 min/step back when it also materialised the weight
+                # matrices.
                 #
-                # Data-dependent (`if idx.numel()`) -- fine for the single-GPU
-                # runs this is built for.  Under DDP two ranks could skip
-                # different hypernets and desync the allreduce, same reasoning
-                # as the unconditional form elsewhere; that version would need
-                # to be restored (or gathering done DDP-safely) before any
-                # multi-GPU run.
+                # The `if idx.numel()` skip is a data-dependent branch.  That is
+                # fine here and always will be: this model is single-GPU by
+                # design.  (It is the one thing that would have to change first
+                # if that ever stopped being true.)
                 flat_ctx = ctx.reshape(B * S, D)
                 flat_attn = h_attn.reshape(B * S, D)
                 flat_out = out.reshape(B * S, D)
@@ -204,13 +199,11 @@ class RoutedBlock(nn.Module):
                         cur = None
 
             # Stopping once every token has halted is where the real speedup comes
-            # from, but a per-rank active.any() is a batch-dependent trip count, and
-            # two DDP ranks running a different number of recurrences deadlock on
-            # the next collective.  all_reduce makes the decision unanimous.
-            stop = (~active.any()).to(torch.int32)
-            if dist.is_available() and dist.is_initialized():
-                dist.all_reduce(stop, op=dist.ReduceOp.MIN)
-            if r == c.c_max2 or bool(stop):
+            # from.  Only tested at a boundary: `active` is written in exactly one
+            # place (just above, under `if boundary`), so between boundaries there
+            # is provably nothing to see -- and reading it costs a GPU->CPU sync,
+            # which was being paid every single recurrence for an unchanged value.
+            if r == c.c_max2 or (boundary and not active.any()):
                 break
 
             if boundary:

@@ -1,14 +1,15 @@
-"""Kernel body for training on Kaggle's 2x T4 GPUs.
+"""Kernel body for training on a single Kaggle T4.
 
 Not imported locally -- push.py reads this as text, prepends the source-locating
 prelude, and substitutes __ARGS__.
 
+Single GPU only.  Kaggle offers a 2x T4 shape and this used to drive it with
+torchrun, but the model is single-GPU by design (see train.py) -- the routed
+block's per-hypernet gather is a data-dependent branch that ranks disagree
+about.  Only the first GPU is used.
+
 This is deliberately a thin wrapper rather than a second copy of the training
-loop.  An earlier version reimplemented the loop here and had a real bug for it:
-torch.multiprocessing.spawn re-imports __main__ in every child, so each worker
-would have re-run this whole file -- repacking the corpus, and re-spawning.
-torchrun exists to do this correctly, and train.py already reads the env vars it
-sets, so the only job left here is to pack once up front and then shell out.
+loop: an earlier version reimplemented the loop here and had a real bug for it.
 
 T4 is Turing (sm_75): no bf16, no TF32, and fp16 cannot hold this model's
 gradients (1e3-1e5 against a 65504 ceiling).  So amp is passed as "off" and the
@@ -27,11 +28,12 @@ print("args:", ARGS, flush=True)
 
 import torch
 N = torch.cuda.device_count()
-print("torch", torch.__version__, "| GPUs:", N,
-      "|", [torch.cuda.get_device_name(i) for i in range(N)], flush=True)
+print("torch", torch.__version__, "| GPUs visible:", N,
+      "|", [torch.cuda.get_device_name(i) for i in range(N)],
+      "| using cuda:0 only", flush=True)
 
-# Pack once, here, before any worker starts: N processes tokenising the same
-# 543 MB corpus would only race each other for the same cache file.
+# Pack once, here, before train.py starts, so the training process finds a warm
+# cache instead of tokenising 543 MB itself.
 # If the pre-packed dataset is attached, seed the cache from it instead -- the
 # pack is deterministic given (corpus, tokenizer, seq_len), and re-deriving it
 # costs 12 minutes of a session that is already wall-clock limited.
@@ -53,8 +55,7 @@ print(f"packed in {(time.time()-t0)/60:.1f} min | vocab {tok.get_vocab_size()} |
       f"train {len(data['train'])} blocks, dev {len(data['dev'])}", flush=True)
 del data, tok
 
-cmd = ([sys.executable, "-m", "torch.distributed.run", f"--nproc_per_node={N}",
-        "--master_port=29500"] if N > 1 else [sys.executable]) + [
+cmd = [sys.executable] + [
     os.path.join(SRC, "train.py"),                                    # noqa: F821
     "--domain", ARGS["domain"],
     "--amp", ARGS["amp"],

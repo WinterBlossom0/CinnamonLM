@@ -83,7 +83,8 @@ class ExpertBlock(nn.Module):
         # Single, NOT per step: this is no longer applied to the residual stream
         # every recurrence, only to the router's input at commitment boundaries.
         # Per-step copies would leave the non-boundary steps' parameters with no
-        # gradient at all -- dead weights, and a DDP hazard.
+        # gradient at all -- dead weights that the optimiser still carries state
+        # for.
         self.out_norm = nn.RMSNorm(c.d_model, eps=c.eps)
 
     def base_norms(self):
