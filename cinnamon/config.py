@@ -1,15 +1,14 @@
-"""Model configuration.  Values from recurrent-moe-architecture.md section 1."""
+"""Model configuration.  Single source of truth; every field is reachable from
+the CLI via `train.py --set KEY=VALUE` (see CONTRIBUTING.md)."""
 from dataclasses import dataclass
 
 
 @dataclass
 class Config:
-    # Widths are scaled down from the spec's 512/2048 to a ~50 M budget.
-    # The budget counts NO vocab-sized matrix: the embedding and the (untied) LM
-    # head are set by the 128 k tokenizer, not by any layer width, so neither is
-    # tunable here and neither is charged against the target.  40.11 M of 50 M.
-    # Ratios are preserved: d_ff = 4*d, q_lora = d/2, kv_lora = d/4, alpha = 2*rank.
-    # 256 = 8 x 32: power-of-two width and head count, unlike 224 = 7 x 32.
+    # Scaled down from the spec's 512/2048 to a ~50 M non-embedding budget
+    # (44.63 M actual).  Nothing vocab-sized is charged: embedding and untied LM
+    # head are set by the tokenizer, not by any layer width.
+    # Ratios preserved: d_ff = 4*d, q_lora = d/2, kv_lora = d/4, alpha = 2*rank.
     d_model: int = 256
     d_ff: int = 1024
     vocab: int = 128_000
@@ -17,79 +16,67 @@ class Config:
     head_dim: int = 32
     kv_lora_rank: int = 64
     q_lora_rank: int = 128
-    # KDA gets its own head width, separate from MLA's.  Its recurrent state is a
-    # [kda_head_dim, kda_head_dim] matrix PER HEAD -- the entire memory of the
-    # prefix -- so capacity grows quadratically here while parameters only grow
-    # linearly.  At 32 that is 1024 slots per head to hold 128 tokens of context;
-    # 48 more than doubles it.  MLA is left at head_dim: it is NoPE and carries no
-    # positional information, so widening it would not help what KDA is for.
+    # KDA head width, separate from MLA's.  Recurrent state is
+    # [kda_head_dim, kda_head_dim] PER HEAD -- the entire prefix memory -- so
+    # capacity grows quadratically while parameters grow linearly.  MLA stays at
+    # head_dim: it is NoPE and carries no positional info, so widening it does not
+    # help what KDA is for.
     kda_head_dim: int = 48
     rank: int = 16              # DoRA low-rank dimension
-    lora_alpha: int = 32
-    phi_dim: int = 64           # sinusoidal recurrence encoding width
+    lora_alpha: int = 32        # must be 2*rank, asserted below
+    phi_dim: int = 64           # step-embedding width
     eps: float = 1e-6
 
-    r_ceiling: int = 32         # 5.2 hypernet bottleneck == max reachable r
+    r_ceiling: int = 32         # 5.2 hypernet bottleneck; must be >= c_max2
 
-    # ONE expert body per block position (KDA / FixedFFN / MLA / dynamic-FFN
-    # base), a bank of hypernetworks, and a router that picks between them.
-    #
-    # Content-blindness (5.5) is deliberately overridden: each hypernetwork
-    # generates a genuinely distinct code PER TOKEN, every recurrence, from a
-    # real content signal (RoutedBlock.ctx_kda -> Hypernet.forward_token) -- not
-    # one shared table row looked up by every token.  There is no discretisation
-    # step between that signal and the weights actually applied, so gradient
-    # reaches the content path for real.
+    # One expert body per block position + a bank of hypernetworks + a router.
+    # Spec 5.5 content-blindness deliberately overridden: each hypernetwork
+    # generates a distinct code PER TOKEN every recurrence, with no discretisation
+    # between the content signal and the applied weights, so gradient reaches the
+    # content path.
     n_hypernets: int = 8
-    r_free: int = 2             # recurrences run on the plain base weights, no DoRA
-    turns: int = 2              # recurrences one routing decision commits for
+    r_free: int = 2             # unadapted recurrences before any routing
+    turns: int = 2              # recurrences per routing commitment; >=2 required
     c_max2: int = 32            # recurrence cap per block position
-    lambda_aux: float = 0.01    # 10 load-balancing weight
-    # How the router earns gradient, since argmax has none.
-    #   "scale"    h <- g*h.  Simple, but g is ~1/n_hypernets, so it shrinks the
-    #              whole residual stream ~5x at every commitment boundary.
-    #   "straight" h <- h * g/g.detach().  Identity in the forward pass, same
-    #              gradient w.r.t. g, no effect on the state.
-    #   "off"      no multiply; the router learns from the aux loss alone.
+    lambda_aux: float = 0.01    # spec 10 load-balancing weight
+
+    # Router gradient path (argmax has none):
+    #   "scale"    h <- g*h.  g ~ 1/n_hypernets, shrinks the stream every boundary.
+    #   "straight" h <- h * g/g.detach().  Identity forward, same d/dg.
+    #   "off"      aux loss only.
     router_gate: str = "straight"
-    # 12 which two KL values the block-end check compares.  "turn" reads the
-    # spec's D_r vs D_{r-1} literally; "block" compares each block's final D to
-    # the previous block's.  A handoff perturbs the state between blocks, so the
-    # first turn after one always has high KL and the second lower -- making the
-    # within-block comparison read "still converging" every single time.
+
+    # spec 12: which readings the block-end check compares.  "turn" = D_r vs
+    # D_{r-1} literally; "block" = each block's final D vs the previous block's.
     halt_compare: str = "block"
-    # 12 Absolute convergence threshold, checked ALONGSIDE "is the error still
-    # falling".  The relative rule alone cannot stop a well-behaved iteration: with
-    # input injection the recurrence converges to a fixed point, so the error falls
-    # monotonically forever and "still improving" reads true at every boundary --
-    # measured, mean depth 104 against a 64 cap.  The old rule only ever fired
-    # because convergence was noisy enough to stall.  A token whose state has
-    # stopped moving by more than this is done, however smooth the approach.
-# Swept on the real model rather than guessed (cap 32, B2 mean / B3 mean):
-    #   0.02 -> 26.9 / 8.1     0.05 -> 20.6 / 6.1     0.12 -> 11.6 / 5.6
-    #   0.03 -> 25.3 / 6.8     0.08 -> 14.9 / 5.9
-    # 0.08 keeps both blocks well under the cap with real per-token spread
-    # (B2 10-24) instead of pinning at either end.  PROVISIONAL: swept on an
-    # UNTRAINED model, because that is all that exists to sweep on -- it is a
-    # compute/quality knob and wants revisiting once training actually works.
+
+    # Absolute convergence threshold, checked ALONGSIDE "error still falling".
+    # The relative rule alone cannot stop a smooth contraction: with input
+    # injection the recurrence converges to a fixed point, error falls
+    # monotonically forever, "still improving" is always true (measured: mean
+    # depth 104 vs a 64 cap).  The old rule only fired because convergence was
+    # noisy enough to stall.
+    #
+    # Swept on the real model (cap 32, B2 mean / B3 mean):
+    #   0.02 -> 26.9/8.1   0.03 -> 25.3/6.8   0.05 -> 20.6/6.1
+    #   0.08 -> 14.9/5.9   0.12 -> 11.6/5.6
+    # PROVISIONAL: swept on an UNTRAINED model.  Compute/quality knob; revisit.
     halt_tol: float = 0.08
-    # Diagnostic: disable halting entirely and run every token to c_max2.  Depth
-    # becomes a constant, so the discrete decision that rounding noise was
-    # flipping (measured: editing token 40 changed token 12's depth 28 -> 16)
-    # disappears and the network becomes a continuous function of its input.
-    # If the loss then drops below the unigram floor, that chaos was the blocker.
+
+    # Diagnostic: disable halting, run every token to c_max2.  Makes depth
+    # constant, removing the discrete decision that rounding noise flips
+    # (measured: editing token 40 changed token 12's depth 28 -> 16).
     no_halt: bool = False
 
-    # implementation knobs, not part of the spec
-    kda_chunk: int = 64              # blocked inverse makes 64 safe; 128 saturates _G_CLAMP
-    tie_embeddings: bool = False     # 14.6 revisited: untied, separate LM head
-    grad_checkpoint: bool = True     # required: up to c_max2 recurrences of activations
+    # Implementation knobs, not spec.
+    kda_chunk: int = 64              # blocked inverse makes 64 safe
+    tie_embeddings: bool = False     # 14.6 revisited: untied head
+    grad_checkpoint: bool = True     # also a throughput win: enables larger batch
     detach_norm_input: bool = False  # 5.5 implementation note
 
     def __post_init__(self):
-        # dora_scale is fixed at 2.  It is easy to break by overriding rank alone
-        # and inheriting the default alpha -- TINY did exactly that and ran at 8.0,
-        # a 4x stronger adapter than anything else in the suite.
+        # dora_scale fixed at 2.  Overriding `rank` alone and inheriting the
+        # default alpha silently 4x's adapter strength -- TINY did exactly that.
         assert self.lora_alpha == 2 * self.rank, (
             f"lora_alpha must be 2*rank (got {self.lora_alpha} vs rank {self.rank}); "
             f"dora_scale is fixed at 2")

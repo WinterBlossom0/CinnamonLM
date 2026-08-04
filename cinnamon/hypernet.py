@@ -1,29 +1,21 @@
-"""5 Expert hypernetwork - generates the DoRA modification for the dynamic FFN.
+"""spec 5: hypernetwork generating the DoRA modification for the dynamic FFN.
 
-    [ phi(r) 64 ; ctx(h) 64 ; proj(||W_dyn||_c) 64 ]  ->  256 -> 32 -> 84480
+    [ phi(r) ; ctx ; norm_proj(||W_dyn||_c) ]  ->  256 -> r_ceiling -> n_out
 
-Content-blind (5.5) is DELIBERATELY overridden here, per direct instruction:
-generation is now genuinely per-token.  `forward_token` takes a per-token content
-vector (from RoutedBlock's ctx_kda, run over the actual sequence) alongside
-phi(r) and the base norms, and returns a DISTINCT code per token -- there is no
-longer one shared table row per (r, bucket); every token gets its own.
+Spec 5.5 content-blindness is DELIBERATELY overridden: `forward_token` takes a
+per-token content vector and returns a distinct code per token, not one shared
+row per r.  `forward` (zero content, whole r-table) is retained for tests that
+inspect W^(r) directly.
 
-`forward` (no per-token content) still exists for Phase 1, which has no content
-pathway; it feeds a zero content vector so the same trunk (l1/l2/l3) serves both.
+No chaining (5.5) holds: each recurrence regenerates from the unchanged base, so
+generated-weight error cannot accumulate across passes.
 
-No chaining (5.5) still holds: every recurrence regenerates from the unchanged
-base, so generated-weight error cannot accumulate across recursive passes.
+r_ceiling-wide bottleneck is forced, not tuned: a function of r over r_ceiling
+values has rank <= r_ceiling at any width.  Content enters on a separate width
+(phi_dim) and is not subject to that bound.
 
-The 32-wide r-bottleneck is not a tuning choice: a function of r over 32 possible
-values has rank <= 32 whatever the network width, so wider is provably unusable.
-Content is a separate input width (phi_dim) and is not subject to that bound.
-
-Cost, stated plainly: a genuinely distinct weight per token means the composed
-[d_ff, d_model] matrices are materialised per token, not shared.  At B*S=512,
-d_ff=1024, d_model=256, one matrix (up or down) is ~2 MB/token -> ~1 GB for the
-batch, per hypernetwork that is actually invoked.  compose_dora is written to be
-batch-dimension agnostic (dim=-1 throughout) so the SAME code composes either a
-single [n_out] table row (Phase 1) or a [B,S,n_out] per-token batch (Phase 2).
+dora_linear applies the generated factors WITHOUT materialising W^(r); see its
+docstring.  compose_dora builds it explicitly and is the test oracle only.
 """
 import math
 
@@ -116,9 +108,8 @@ class Hypernet(nn.Module):
         return self.l3(F.silu(self.l2(F.silu(self.l1(z)))))
 
     def unpack(self, vec):
-        """Leading-dimension agnostic: works for a single [n_out] table row
-        (Phase 1) and a [B, S, n_out] per-token batch (Phase 2) identically --
-        vec.shape[:-1] is () for the former, (B, S) for the latter."""
+        """Leading-dimension agnostic: [n_out] table row or [B,S,n_out] per-token
+        batch, identically.  vec.shape[:-1] is () or (B,S)."""
         out, o = [], 0
         lead = vec.shape[:-1]
         for s, n in zip(self.sizes, self.splits):
@@ -128,45 +119,29 @@ class Hypernet(nn.Module):
 
 
 def unit_row_col_norm(M, iters: int = 4, eps: float = 1e-6):
-    """Normalise a matrix so every row and column has sum-of-squares 1.
+    """Rows sum-of-squares 1, columns m/n (equal total mass m).  L2 analogue of
+    Sinkhorn-Knopp; ends on rows so that constraint is exact.
 
-    Applied to the dynamic FFN's BASE weights, not to the generated update -- see
-    compose_dora for why putting it on the update killed the depth adaptation.
+    Applied to the BASE weights, not the generated update -- see compose_dora.
 
-    This is the constraint the adapter needs, and it does two jobs the L1 versions
-    could not do together:
+    Why constrained at all: l3 starts at zero but nothing keeps it there.
+    Measured, a selected hypernetwork's table grew norm 0.9 -> 704 in 30 steps;
+    once ||B@A|| >> ||W|| the update dominates V = W + s*B@A and the base is gone.
+    DoRA's own normalisation hides this -- it pins ||W^(r)|| to ||W||, so
+    magnitude looked correct (ratio 0.987) while direction rotated to cosine 0.027,
+    i.e. orthogonal to the weight being adapted.
 
-      * negatives survive.  An adapter must be able to subtract, so the ordinary
-        (non-negative) doubly stochastic form is wrong here.
-      * it cannot blow up.  With ||row||_2 = 1 every entry is bounded by 1 -- an
-        element can never exceed the norm of the row containing it.  The
-        *generalized* doubly stochastic form allowed negatives but bounded only
-        the sums, so a row could still read (+1000, -999); measured, it left the
-        generated weight at cosine -0.005 to its base, i.e. unrelated.
+    Why L2 and not doubly-stochastic: negatives must survive (an adapter must
+    subtract), and entries must be bounded.  ||row||_2 = 1 gives both.  The
+    generalized doubly-stochastic form bounds only sums, so a row could read
+    (+1000, -999) -- measured cosine -0.005 to base, i.e. unrelated.
 
-    Rectangular reconciliation, as before: rows target 1, columns target m/n, so
-    both give a total squared mass of m.  Alternating normalisation (the L2
-    analogue of Sinkhorn-Knopp) converges quickly; the loop ends on rows so that
-    constraint holds exactly and columns hold to within the iteration tolerance.
-
-    Zero maps to zero, because of the eps guard rather than by construction -- and
-    that is what keeps the adapter an exact identity at init, since reset_out
-    zeroes l3.  A true projection would be undefined there (every unit-norm matrix
-    is equidistant from 0); mapping it to 0 is both well-defined and what the
-    initialisation wants.
-
-    Why it is here: without a constraint the generated update is unbounded.  l3
-    starts at zero but nothing keeps it there -- measured, a selected
-    hypernetwork's table grew from norm 0.9 to 704 in 30 steps, and once
-    ||B@A|| >> ||W|| the term dominates V = W + scale*B@A and the base weight is
-    gone.  DoRA's own normalisation hides that completely: it pins ||W^(r)|| to
-    ||W||, so the magnitude looked perfect (ratio 0.987) while the direction had
-    rotated to cosine 0.027 -- orthogonal to the weight it was meant to adapt.
+    Zero maps to zero via the eps guard, which keeps the adapter an exact identity
+    at init (reset_out zeroes l3).  A true projection is undefined there.
     """
-    # sqrt(sum x^2 + eps^2), never norm(x) + eps: the latter is exactly zero at the
-    # origin, where d||x||/dx = x/||x|| is 0/0, so backward returns nan.  l3 is
-    # zero-initialised, so the very first step lands on precisely that point --
-    # the forward looked fine and every gradient was nan.
+    # sqrt(sum x^2 + eps^2), never norm(x) + eps: the latter is exactly 0 at the
+    # origin where d||x||/dx = 0/0 -> nan backward.  l3 is zero-init, so step 1
+    # lands exactly there.  Forward looked fine; every gradient was nan.
     def nrm(P, dim):
         return (P.pow(2).sum(dim, keepdim=True) + eps * eps).sqrt()
 
@@ -179,31 +154,22 @@ def unit_row_col_norm(M, iters: int = 4, eps: float = 1e-6):
 
 
 def dora_linear(x, W, A, B, m, c: Config):
-    """y = W^(r) x, computed WITHOUT ever materialising W^(r).
+    """y = W^(r) x without materialising W^(r).
 
-    compose_dora below is the reference: it builds V = Wn + s*B@A explicitly, an
-    [out, in] matrix PER TOKEN.  At d_ff=1024, d_model=256 that is ~1 MB a token,
-    ~536 MB for a 512-token batch across both projections -- which is what put
-    peak VRAM at 14.95 GB and made gradient checkpointing non-optional.
+    Materialising costs ~1 MB/token/projection (d_ff=1024, d_model=256) = ~536 MB
+    per 512-token batch; that is what put peak VRAM at 14.95 GB.
 
-    The value is trivially factorable:
+    Value factorises directly:   V x = Wn x + s*B(A x),  widest intermediate [..,r]
 
-        V x = Wn x + s * B (A x)          largest intermediate [.., r]
+    DoRA's row norm ||V_j|| appears to need the assembled matrix.  It does not:
 
-    The obstacle is DoRA's row normalisation, which needs ||V_j|| -- seemingly a
-    property of the assembled matrix.  It is not.  Expanding the square:
+        ||V_j||^2 = ||Wn_j||^2 + 2s<Wn_j,(BA)_j> + s^2||(BA)_j||^2
+        ||(BA)_j||^2   = B_j^T (A A^T) B_j            via G = A A^T   [r, r]
+        <Wn_j,(BA)_j>  = sum_k B[j,k] (A Wn^T)[k,j]   via Q = A Wn^T  [r, out]
 
-        ||V_j||^2 = ||Wn_j||^2 + 2s <Wn_j, (BA)_j> + s^2 ||(BA)_j||^2
-
-    and every term is reachable from the factors alone, with (BA)_j = A^T B_j:
-
-        ||(BA)_j||^2 = B_j^T (A A^T) B_j          via G = A A^T, [r, r]
-        <Wn_j, (BA)_j> = sum_k B[j,k] (A Wn^T)[k,j]   via Q = A Wn^T, [r, out]
-
-    So the widest tensor drops from [.., out, in] to [.., out, r] -- rank replaces
-    d_model, ~24x less memory at r=16.  Mathematically identical to compose_dora
-    followed by a matmul; test_dora_factorised_matches_reference asserts exactly
-    that, and is the reason compose_dora is kept rather than deleted.
+    Widest tensor [.., out, in] -> [.., out, r]: rank replaces d_model, ~24x less
+    memory at r=16.  Identical to compose_dora + matmul; asserted to 1e-10 (fp64)
+    by test_dora_factorised_matches_reference, which is why compose_dora is kept.
     """
     s = c.dora_scale
     Wn = unit_row_col_norm(W)                            # [out, in], shared
@@ -240,37 +206,26 @@ def compose_dora(hyper: Hypernet, vec, W_up, W_down, c: Config):
     exactly.  ||W||_c tracks the base as the optimiser moves it, which is the same
     reason the column norms are fed in as an input (5.1).
 
-    Batch-dimension agnostic throughout (dim=-1, never a hardcoded axis index), so
-    the same function composes a single [out,in] matrix from a [n_out] vec (Phase
-    1's table lookup) or a per-token BATCH of [B,S,out,in] matrices from a
-    [B,S,n_out] vec (Phase 2's per-token generation) -- W stays [out,in] either
-    way (the shared base), and broadcasting does the rest: `@` batches over any
-    leading dims A/B carry, and `W` broadcasts against a batched V unmodified.
+    Batch-dimension agnostic (dim=-1 throughout): composes a single [out,in] from
+    a [n_out] vec, or [B,S,out,in] from [B,S,n_out].  W stays [out,in] (shared
+    base); broadcasting handles the rest.
     """
     A_u, B_u, m_u, A_d, B_d, m_d = hyper.unpack(vec)
     out = []
     for W, A, B, m in ((W_up, A_u, B_u, m_u), (W_down, A_d, B_d, m_d)):
-        # The constraint sits on the BASE, not on the update.
-        #
-        # Constraining B@A instead was measured to destroy the depth adaptation
-        # outright: unit_row_col_norm is scale invariant, l3 drifts freely along
-        # the scale axis it ignores (nothing penalises a direction the output does
-        # not see), and once l3 is effectively rank-1 every r's code maps to the
-        # same output direction.  The normalisation then discards the only thing
-        # still separating them -- magnitude -- and W^(r) comes out IDENTICAL for
-        # every r.  Measured: cos(W^(1), W^(32)) went 0.58-0.74 at init to exactly
-        # 1.0000 after 60 steps, i.e. the "dynamic" FFN had become static.
-        #
-        # Left raw, B@A keeps both its direction and its magnitude varying with r,
-        # which is what makes the adapter depth-indexed at all (5).  The base is
-        # normalised instead: that is what keeps the two terms on a comparable
-        # scale and stops V being dominated by whichever drifted larger.
+        # Constraint on the BASE, not the update.  Constraining B@A instead
+        # destroyed depth adaptation: unit_row_col_norm is scale-invariant, so l3
+        # drifts freely along the scale axis nothing penalises; once l3 is
+        # effectively rank-1 every r maps to the same direction, and normalising
+        # discards magnitude, the only remaining separator.  Measured:
+        # cos(W^(1), W^(32)) 0.58-0.74 at init -> exactly 1.0000 after 60 steps,
+        # i.e. the dynamic FFN became static.  Raw B@A keeps direction AND
+        # magnitude varying with r, which is what makes the adapter depth-indexed.
         Wn = unit_row_col_norm(W)
         BA = B.to(W.dtype) @ A.to(W.dtype)
         V = Wn + c.dora_scale * BA
-        # Magnitude still comes from the RAW base, not the normalised one: this is
-        # what lets the FFN learn its own scale, and it keeps base_norms() (5.1)
-        # a live signal instead of a constant vector of ones.
+        # Magnitude from the RAW base, not the normalised one: lets the FFN learn
+        # its own scale and keeps base_norms() (5.1) a live signal, not ones.
         mag = W.norm(dim=-1, keepdim=True) * (1.0 + m.to(W.dtype).unsqueeze(-1))
         out.append(mag * V / (V.norm(dim=-1, keepdim=True) + c.eps))
     return out

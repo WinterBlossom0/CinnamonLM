@@ -1,0 +1,45 @@
+{
+  "name": "20260804-172619",
+  "hours": 1.1821028703451157,
+  "uniform": 11.759785542901755,
+  "unigram": 6.301591851452988,
+  "best_dev": 6.502645170688629,
+  "verdict": "NO-GO",
+  "checks": [
+    {
+      "check": "beats uniform",
+      "pass": true,
+      "evidence": "dev 6.5026 vs log(vocab) 11.7598"
+    },
+    {
+      "check": "BEATS UNIGRAM (uses context)",
+      "pass": false,
+      "evidence": "dev 6.5026 vs unigram entropy 6.3016"
+    },
+    {
+      "check": "depth stays off the cap",
+      "pass": true,
+      "evidence": "mean depth 4.7/4.0 of cap 32"
+    },
+    {
+      "check": "KDA still acting as memory",
+      "pass": true,
+      "evidence": "max |gcum| 9.4 -> retention/token 0.864"
+    },
+    {
+      "check": "router did not collapse",
+      "pass": true,
+      "evidence": "per-hypernet share [0.246, 0.194, 0.088, 0.025, 0.091, 0.186, 0.057, 0.114]"
+    },
+    {
+      "check": "load balance near floor",
+      "pass": true,
+      "evidence": "aux 1.058, floor is 1.0"
+    },
+    {
+      "check": "no non-finite loss",
+      "pass": true,
+      "evidence": "16 logged steps"
+    }
+  ]
+}

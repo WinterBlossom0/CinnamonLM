@@ -27,6 +27,42 @@ from cinnamon.ewc import EWC
 from cinnamon.model import CinnamonModel
 
 
+def parse_overrides(pairs):
+    """["d_model=512", "no_halt=true"] -> {"d_model": 512, "no_halt": True}.
+
+    Types come from the Config dataclass rather than being guessed, so
+    `--set no_halt=false` is the boolean False and not the non-empty string
+    "false" (which is True, and would have silently disabled halting).  An unknown
+    key raises: a typo in a sweep should stop the run, not train something else
+    for two hours and report it under the name you meant.
+    """
+    import dataclasses
+    types = {f.name: f.type for f in dataclasses.fields(Config)}
+    out = {}
+    for pair in pairs:
+        key, sep, raw = pair.partition("=")
+        key = key.strip()
+        if not sep:
+            raise SystemExit(f"--set expects KEY=VALUE, got {pair!r}")
+        if key not in types:
+            near = [k for k in types if k.startswith(key[:3])]
+            raise SystemExit(f"--set: Config has no field {key!r}"
+                             + (f" (did you mean {near}?)" if near else ""))
+        t = types[key]
+        t = {"int": int, "float": float, "bool": bool, "str": str}.get(t, t) \
+            if isinstance(t, str) else t
+        if t is bool:
+            if raw.lower() not in ("true", "false", "1", "0"):
+                raise SystemExit(f"--set {key}: expected a boolean, got {raw!r}")
+            out[key] = raw.lower() in ("true", "1")
+        else:
+            try:
+                out[key] = t(raw)
+            except ValueError:
+                raise SystemExit(f"--set {key}: {raw!r} is not a valid {t.__name__}")
+    return out
+
+
 def get_device():
     """(kind, device).  XLA is detected by import, not by a flag, so the same
     script runs unchanged on a Kaggle TPU."""
@@ -194,6 +230,13 @@ def main():
                         "timing probe so the cosine schedule always anneals fully")
     p.add_argument("--amp", default="auto", choices=["auto", "off", "bf16", "fp16"],
                    help="mixed precision; 'auto' picks bf16 on Ampere+, fp16 on T4")
+    # Generic escape hatch onto Config, so changing the architecture for one run
+    # does not mean editing config.py and remembering to put it back.  Every field
+    # is reachable and the type comes from the dataclass, so a typo fails loudly
+    # here instead of silently training something else.
+    p.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
+                   help="override any Config field, repeatable: "
+                        "--set d_model=512 --set n_hypernets=4 --set no_halt=true")
     a = p.parse_args()
 
     kind, device = get_device()
@@ -213,7 +256,11 @@ def main():
 
     data, tok = build_blocks(a.domain, a.tokenizer, a.seq_len, a.cache, limit_mb=a.limit_mb)
 
-    cfg = Config(vocab=tok.get_vocab_size(), c_max2=a.c_max2)
+    # --set wins over the dedicated flags it overlaps with (--c-max2), rather than
+    # raising "got multiple values".  An explicit override should be explicit.
+    cfg_kw = {"vocab": tok.get_vocab_size(), "c_max2": a.c_max2}
+    cfg_kw.update(parse_overrides(a.set))
+    cfg = Config(**cfg_kw)
     model = CinnamonModel(cfg).to(device)
 
     rows, total, _ = model.param_report()
@@ -338,8 +385,14 @@ def main():
             json.dump(hist, open(os.path.join(a.out, f"{a.domain}.hist.json"), "w"))
 
     vl, (vd2, vd3) = evaluate(model, data["dev"], a.batch, device, kind=kind, amp=amp)
+    gh = gate_health(model)
     print(f"FINAL dev loss {vl:.4f}  ppl {math.exp(min(20, vl)):.2f}  "
-          f"depth {vd2:.1f}/{vd3:.1f}  gcum {gate_health(model):.1f}", flush=True)
+          f"depth {vd2:.1f}/{vd3:.1f}  gcum {gh:.1f}", flush=True)
+    # Record it like any other eval.  Omitting this made the run's BEST dev
+    # invisible to anything reading hist.json: a pilot reported 6.5026 from an
+    # intermediate eval while the final was 6.2969.
+    hist.append({"step": step + 1, "dev_loss": vl, "dev_depth": [vd2, vd3],
+                 "gcum": gh, "final": True})
     payload = {"model": model.state_dict(), "opt": opt.state_dict(),
                "step": step + 1, "cfg": cfg.__dict__, "dev_loss": vl,
                "best_dev": min(vl, best_dev)}

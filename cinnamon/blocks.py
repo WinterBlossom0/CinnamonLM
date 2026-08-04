@@ -37,76 +37,63 @@ class SharedBlock(nn.Module):
 
 
 class ExpertBlock(nn.Module):
-    """The body at one block position.  B2's and B3's bodies are distinct
-    parameter sets (4.1), which is why the recurrence counter resets between them.
+    """Body at one block position.  B2 and B3 are distinct parameter sets (4.1),
+    hence the recurrence counter resets between them.
 
-    14.2 decided: plain pre-norm residuals inside the recurrence, not AttnRes.
-    AttnRes across recurrences would have to retain every prior recurrence's
-    output, and with a cap up to c_max2 that is a memory blow-up for a
-    speculative gain.
+    14.2: plain pre-norm residuals inside the recurrence, not AttnRes -- AttnRes
+    across recurrences would retain every prior output, a memory blow-up at c_max2
+    for a speculative gain.
     """
 
     def __init__(self, c: Config):
         super().__init__()
         self.c = c
-        # 2:1 KDA:MLA in the body.  A third KDA existed here; it now lives on
-        # RoutedBlock instead (as ctx_kda), giving the hypernetwork's bucket
-        # selection a real content signal rather than removing it.  MLA is NoPE
-        # and carries no positional information, so KDA is still what supplies
-        # position -- 2:1 keeps that while freeing one KDA's worth of parameters
-        # for the content-extraction role.
+        # 2:1 KDA:MLA.  MLA is NoPE and carries no positional info, so KDA is the
+        # only positional carrier.
         self.kda = nn.ModuleList([KDA(c) for _ in range(2)])
         self.fixed = nn.ModuleList([FFN(c) for _ in range(2)])
         self.mla = MLA(c)
-        # Dynamic FFN is SwiGLU like the fixed one; 5.3 lists DoRA for exactly one
-        # 512->2048 and one 2048->512 matrix, so the gate projection stays static.
+        # Dynamic FFN is SwiGLU; 5.3 specifies DoRA for exactly the up and down
+        # matrices, so the gate projection stays static.
         self.dyn_gate = nn.Linear(c.d_model, c.d_ff, bias=False)
         self.dyn_up = nn.Linear(c.d_model, c.d_ff, bias=False)
         self.dyn_down = nn.Linear(c.d_ff, c.d_model, bias=False)
-        # A bank of hypernetworks over ONE body.  Specialisation lives in which
-        # adapter generator the router picks, not in a whole copy of the block:
-        # the body is quadratic in d_model, a hypernetwork only linear, so this
-        # buys n specialisations for a fraction of n copies' parameters -- and it
-        # is what lets stage_attn run once per recurrence instead of n times.
+        # Bank of hypernetworks over ONE body: specialisation is in which adapter
+        # generator the router picks, not in a block copy.  Body quadratic in
+        # d_model, hypernetwork linear => n specialisations for a fraction of n
+        # copies, and stage_attn runs once per recurrence instead of n times.
         self.hypers = nn.ModuleList([Hypernet(c) for _ in range(c.n_hypernets)])
-        # PER RECURRENCE STEP, not just per sublayer.  6 = 2x(KDA, FFN) + MLA +
-        # the dynamic FFN's own norm at index 5, and there is now one such set for
-        # every step r.  Sharing one set across every recurrence forced the body to
-        # normalise identically at depth 1 and depth 32, which is the one place the
-        # step index could act on the residual stream directly rather than only
-        # through the generated FFN weights.  All start at weight=1, so step 0
-        # behaviour is unchanged and the sets only diverge if training separates
-        # them.  Cost is r_ceiling*7*d_model per block position -- ~57 k, negligible.
+        # Per RECURRENCE STEP, not just per sublayer: 6 = 2x(KDA, FFN) + MLA +
+        # dynFFN's own norm at index 5, one set per r.  A shared set forces
+        # identical normalisation at depth 1 and depth 32 -- this is the only place
+        # the step index acts on the residual stream directly rather than through
+        # generated FFN weights.  All init weight=1, so behaviour is unchanged
+        # until training separates them.  Cost ~57 k per block position.
         self.pre = nn.ModuleList([
             nn.ModuleList([nn.RMSNorm(c.d_model, eps=c.eps) for _ in range(6)])
             for _ in range(c.r_ceiling)])
-        # Single, NOT per step: this is no longer applied to the residual stream
-        # every recurrence, only to the router's input at commitment boundaries.
-        # Per-step copies would leave the non-boundary steps' parameters with no
-        # gradient at all -- dead weights that the optimiser still carries state
-        # for.
+        # Single, not per-step: applied only to the router's input at commitment
+        # boundaries (see routed.py), so per-step copies would leave non-boundary
+        # steps with no gradient.
         self.out_norm = nn.RMSNorm(c.d_model, eps=c.eps)
 
     def base_norms(self):
-        """5.1  Column norms of the dynamic base.  Constant within a forward pass,
-        so they carry no information about r; their job is across training steps,
-        letting the generated DoRA track the base as the optimiser moves it."""
+        """5.1 Column norms of the dynamic base.  Constant within a forward pass
+        (carry no r information); their job is across training steps, letting the
+        generated DoRA track the base as the optimiser moves it."""
         n = torch.cat([self.dyn_up.weight.norm(dim=1), self.dyn_down.weight.norm(dim=1)])
         return n.detach() if self.c.detach_norm_input else n
 
     def step_norms(self, r):
-        """The RMSNorm set for recurrence r.  Clamped to r_ceiling the same way
-        the hypernetwork clamps phi(r), so a c_max2 above r_ceiling reuses the last
-        set instead of indexing off the end."""
+        """RMSNorm set for recurrence r.  Clamped to r_ceiling like phi(r), so
+        c_max2 > r_ceiling reuses the last set rather than indexing off the end."""
         return self.pre[min(r, self.c.r_ceiling) - 1]
 
     def stage_attn(self, h, r):
-        """4.2 up to the dynamic FFN -- the sublayer weights do NOT depend on r,
-        but the norms now do, so r is passed in.
-
-        Run once per recurrence over the whole sequence; only the dynamic FFN's
-        DoRA is grouped per token, which is what keeps per-token depth affordable.
-        """
+        """4.2 up to the dynamic FFN.  Sublayer weights do not depend on r, the
+        norms do.  Runs once per recurrence over the whole sequence; only the
+        dynamic FFN is grouped per token, which is what makes per-token depth
+        affordable."""
         pre = self.step_norms(r)
         for i in range(2):
             h = h + self.kda[i](pre[2 * i](h))
@@ -114,13 +101,12 @@ class ExpertBlock(nn.Module):
         return h + self.mla(pre[4](h))
 
     def stage_dyn(self, h, r, factors=None):
-        """The r-dependent tail: dynamic FFN + routing-boundary norm.  Pointwise,
-        so it accepts any leading shape and can be applied to a gathered subset.
+        """r-dependent tail: dynamic FFN.  Pointwise, so it takes any leading shape
+        and can be applied to a gathered subset.
 
-        factors is None for r <= r_free, where the dynamic FFN runs on its plain
-        base weights (DoRA's identity case).  Otherwise it carries the generated
-        DoRA factors per token, and dora_linear applies them without ever building
-        the [.., d_ff, d_model] matrix they describe.
+        factors=None for r <= r_free (plain base weights = DoRA's identity case);
+        otherwise per-token generated factors, applied by dora_linear without
+        building the [.., d_ff, d_model] matrix.
         """
         x = self.step_norms(r)[5](h)
         gate = F.silu(self.dyn_gate(x))
@@ -131,14 +117,10 @@ class ExpertBlock(nn.Module):
             (A_u, B_u, m_u), (A_d, B_d, m_d) = factors
             up = dora_linear(x, self.dyn_up.weight, A_u, B_u, m_u, self.c)
             down = dora_linear(gate * up, self.dyn_down.weight, A_d, B_d, m_d, self.c)
-        # PRE-NORM: the residual stream is returned raw.  Normalising h + down here
-        # was the block's one post-norm, applied once per recurrence, up to 32
-        # times -- and post-norm pins ||h|| constant, so the identity path can
-        # never grow to dominate and every recurrence keeps injecting a
-        # full-magnitude update forever.  Letting ||h|| grow makes each successive
-        # update relatively smaller, which is the damping a deep recurrence needs.
-        # out_norm still exists; routed.py applies it to the ROUTER'S INPUT at
-        # commitment boundaries, which is the job it was actually there for (the
-        # router is a bare linear with no norm of its own, so it would otherwise
-        # see the growing stream and saturate).
+        # PRE-NORM: stream returned raw.  Normalising h+down here was the block's
+        # one post-norm, applied up to 32x per forward.  Post-norm pins ||h||
+        # constant so the identity path can never dominate and every recurrence
+        # injects a full-magnitude update forever -- measured gnorm 1.5e5 vs
+        # clip 1.0, model could not learn.  Letting ||h|| grow damps later updates.
+        # out_norm is applied by routed.py to the ROUTER'S INPUT instead.
         return h + down

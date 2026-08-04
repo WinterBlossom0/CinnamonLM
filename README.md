@@ -1,18 +1,13 @@
 # CinnamonLM
 
-> **⚠️ Work in progress — research code.** The architecture works and the
-> optimisation tests pass, but **no full training run has been done yet**. Numbers
-> below are from local single-GPU measurement, not from a trained model. Expect
-> things to change.
+> **WIP research code.** Architecture works, optimisation tests pass, **no full
+> training run completed.** Numbers are local single-GPU measurements.
 
-A decoder-only language model with **adaptive per-token depth** and a
-**hypernetwork-generated MoE**.
+Decoder-only LM: **adaptive per-token depth** + **hypernetwork-generated MoE**.
 
-Instead of stacking `N` distinct transformer blocks, CinnamonLM recurses on a
-single block per position and decides **per token** how many times to go round.
-Instead of holding `n` copies of an expert, it holds **one body plus a bank of
-hypernetworks**, and routes by choosing which hypernetwork *generates* the
-adapter weights for that token.
+One block per position, recursed; per-token depth set by a halting rule. One
+expert body plus a bank of hypernetworks; the router selects which hypernetwork
+*generates* that token's adapter weights.
 
 ```
 tokens → Embedding → B1 → B2 → B_mid → B3 → B4 → Norm → LM head
@@ -21,138 +16,119 @@ tokens → Embedding → B1 → B2 → B_mid → B3 → B4 → Norm → LM head
                    once   ·32   once   ·32   once
 ```
 
-## What is unusual about it
+## Properties
 
-**Adaptive depth, per token.** Each token recurses until its hidden state stops
-changing, up to a cap. Easy tokens leave early. Measured on a memorised batch:
-depth falls from 13.4 to 6.2 as the model learns the sequence — fewer recurrences
-once the answer is easy.
+**Adaptive depth.** Token recurses until `rel_error < halt_tol`, capped at
+`c_max2`. Measured on a memorised batch: depth 13.4 → 6.2 as the model learns.
 
-**One body, a bank of hypernetworks.** The body is quadratic in `d_model`, a
-hypernetwork only linear, so `n` specialisations cost far less than `n` copies of
-the block. Decisively, attention runs **once per recurrence instead of once per
-expert** — the cost of specialisation stops scaling with how many you have.
+**One body + hypernetwork bank.** Body quadratic in `d_model`, hypernetwork
+linear ⇒ `n` specialisations ≪ `n` block copies. `stage_attn` runs once per
+recurrence, not once per expert ⇒ attention cost independent of bank size.
 
-**Weights generated per token, never materialised.** Each token gets its own
-effective FFN weight matrix, generated from its own hidden state. Building those
-matrices would cost ~536 MB per batch; the DoRA row-norm is instead computed in
-closed form from the low-rank factors, so the widest live tensor is
-`[tokens, d_ff, rank]` rather than `[tokens, d_ff, d_model]`. **Peak VRAM 14.95 GB
-→ 3.55 GB**, verified identical to the naive version to 1e-10 in float64.
+**Per-token weights, never materialised.** Materialising costs ~536 MB/batch.
+Instead the DoRA row-norm is expanded in closed form from the factors:
+`‖V_j‖² = ‖Wn_j‖² + 2s⟨Wn_j,(BA)_j⟩ + s²‖(BA)_j‖²`, via `G = AAᵀ` and `Q = A Wnᵀ`.
+Widest live tensor `[tokens, d_ff, rank]` not `[tokens, d_ff, d_model]`.
+**14.95 → 3.55 GB**, equal to the naive form at 1e-10 (fp64).
 
-**No positional encoding.** Position enters only through KDA's ordered recurrent
-state (Kimi Linear's NoPE arrangement). Verified live: permuting the input changes
-the output, and a change to token 0 propagates to every later position.
+**NoPE.** Position enters only via KDA's ordered recurrent state. Verified: not
+permutation-equivariant; token-0 edit propagates to all later positions.
 
 ## Status
 
 | | |
 |---|---|
-| Architecture | implemented, 110.17 M params (44.63 M non-embedding) |
-| Context length | 1024 (no architectural limit -- see below) |
-| Tests | 40 passing |
-| Overfit (512 tokens) | ✅ loss 11.81 → **0.0112**, through the 6.236 unigram floor |
-| Real training run | ❌ **not done yet** |
-| Multi-GPU | not supported, by design — see below |
+| params | 110.17 M (44.63 M non-embedding) |
+| context | 1024 (not architectural — see below) |
+| tests | 41 passing |
+| overfit, 512 tok | loss 11.81 → **0.0112**, past the 6.236 unigram floor |
+| full training run | **not done** |
+| multi-GPU | unsupported by design |
 
-## Quick start
+## Run
 
 ```bash
 pip install torch tokenizers numpy datasets
 
-# sanity: the architecture can actually optimise
-python overfit_check.py --lr 1e-3 --warmup 20 --steps 150
-
-# is the positional pathway alive?
-python perm_check.py
-
-# tests
+python overfit_check.py --lr 1e-3 --warmup 20 --steps 150   # architecture sanity
+python perm_check.py                                        # positional pathway
 python -m pytest tests/ -q
-
-# train -- defaults to WikiText-2 (small, ~1 h/epoch, good for iterating)
-python train.py
-
-# the full BabyLM corpus instead
+python pilot/run_pilot.py                                   # go/no-go, 1 epoch
+python train.py                                             # WikiText-2
 python train.py --domain babylm --max-hours 8
 ```
 
-**Context length is 1024**, and it is a data-packing choice, not an architectural
-one: NoPE means there is no positional table to resize, and KDA's recurrent state
-is the same size at any length. Raising it later costs a repack and nothing else.
+`--set KEY=VALUE` overrides any `Config` field. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Single GPU, deliberately
+## Single GPU by design
 
-There is no distributed code path — no `torch.distributed`, no `torchrun`, no rank
-guards, no sharding.
+No `torch.distributed`, `torchrun`, rank guards, or sharding.
 
-That is a consequence of the design, not an omission. Each hypernetwork runs only
-on the tokens routed to it, skipping any with none — a **data-dependent branch**.
-Two ranks would skip different hypernetworks and desync a gradient all-reduce. The
-DDP-safe alternative is to run every hypernetwork on every token, which measured
-**~6 min/step**. The gather won.
+Each hypernetwork runs only on tokens routed to it, skipping empty ones — a
+data-dependent branch. Two ranks would skip different hypernetworks and desync
+the all-reduce. DDP-safe alternative (every hypernetwork on every token):
+**~6 min/step**.
 
-Measured on one 16 GB card at `seq_len` 1024, gradient checkpointing on:
+16 GB card, seq 1024, checkpointing on:
 
-| batch | tok/s | peak VRAM |
+| batch | tok/s | peak |
 |---|---|---|
 | 1 | 217 | 4.82 GB |
-| **2** *(default)* | **395** | **7.91 GB** |
+| **2** (default) | **395** | **7.91 GB** |
 | 3 | 553 | 11.11 GB |
 | 4 | OOM | — |
 
-Default is 2 with `--accum 2` rather than 3: depth is data-dependent, so a batch
-whose tokens halt later costs more than the table says, and 3 has no room for it.
+Default 2 × accum 2, not 3: depth is data-dependent, a batch halting later exceeds
+the table. Checkpointing on is a *throughput* win, not only memory — off: 214 tok/s
+@ batch 1; on: 433 @ batch 4. Batch 4 exhausts the logits tensor `[B,seq,128000]`,
+not the model.
 
-Checkpointing stays on because it is a *throughput* win here, not just a memory
-one: off is 214 tok/s at batch 1, on is 433 tok/s at batch 4. The memory it frees
-buys a bigger batch than the recompute costs. Batch 8 runs out on the logits
-tensor `[B, 512, 128000]`, not the model.
+**Context 1024 is a packing choice.** `seq_len` appears nowhere in `Config`; NoPE
+⇒ no positional table, KDA state size-invariant. Raising it costs a repack.
+Measured @ batch 1: 512 = 131 tok/s, 1024 = 217, 2048 = 342, 4096 = OOM — longer
+is more efficient per token (fixed per-recurrence overhead amortises).
 
 ## Layout
 
 ```
 cinnamon/
   model.py      top-level forward
-  routed.py     the recurrence: routing, halting, per-token dispatch
-  blocks.py     shared scaffold and the expert body
-  hypernet.py   weight generation + factorised DoRA application
+  routed.py     recurrence: routing, halting, per-token dispatch
+  blocks.py     shared scaffold + expert body
+  hypernet.py   weight generation + factorised DoRA
   kda.py        Kimi Delta Attention (chunked gated delta rule)
-  attention.py  MLA and the fixed FFN
-  attnres.py    attention over depth, in place of plain residual accumulation
-  router.py     hypernetwork router + load-balancing aux loss
-  halting.py    the convergence measure
+  attention.py  MLA, fixed FFN
+  attnres.py    attention over depth, replaces residual accumulation
+  router.py     router + load-balancing aux loss
+  halting.py    convergence measure
   data.py       corpora, packing
-  ewc.py        elastic weight consolidation for sequential domains
-train.py        training loop (CPU / CUDA / XLA, single-GPU)
+  ewc.py        elastic weight consolidation
+train.py        training loop (CPU/CUDA/XLA, single-GPU)
+pilot/          contained go/no-go experiment
 kg/             Kaggle push + launch helpers
-tests/          40 tests
-architecture.md what is actually built and measured, and what is still open
+tests/          41 tests
+architecture.md what is built and measured; open problems
 ```
 
-## Honest notes
+## Prior failure (kept as context)
 
-A long stretch of this project was spent on a model that **could not learn** — loss
-pinned at the unigram marginal with every position predicting the same token. The
-cause turned out to be a single **post-norm** inside the recurrence: applied up to
-32 times, it produced gradient norms of ~1.5e5 against `clip=1.0`, so the real
-learning signal was divided into nothing. Pre-norm cut that to ~70.
+Model could not learn for an extended period: loss pinned at the unigram
+marginal, all positions emitting the same token. Cause: a single **post-norm
+inside the recurrence**, applied up to 32×, gradient norms ~1.5e5 against
+`clip=1.0`. Pre-norm → ~70.
 
-Two plausible hypotheses were tested and **refuted** first (missing positional
-signal; structural oversmoothing from repeated attention). `architecture.md` §11
-records both, and the diagnostic that was itself wrong — a collapse metric that
-read 0.995 on a healthy model because it was measuring the shared unigram bias
-rather than degeneracy.
+Two hypotheses tested and refuted first (missing positional signal; structural
+oversmoothing). `architecture.md` §11 records both, plus a diagnostic that was
+itself wrong — a collapse metric reading 0.995 on a healthy model because it
+measured shared unigram bias, not degeneracy.
 
-Kept because the wrong turns are the useful part.
+## References
 
-## Reading
-
-- Kimi Linear / KDA — gated delta rule, NoPE, 3:1 linear:full attention
+- Kimi Linear / KDA — gated delta rule, NoPE, linear:full attention ratio
 - DoRA — weight-decomposed low-rank adaptation
-- Xiong et al. 2020, *On Layer Normalization in the Transformer Architecture* —
-  why post-norm explodes with depth
-- Geiping et al. 2025, recurrent-depth LMs — input injection at every step
+- Xiong et al. 2020 — post-norm gradient explosion with depth
+- Geiping et al. 2025 — recurrent-depth LMs, input injection
 
 ## License
 
-Not yet chosen.
+Unset.

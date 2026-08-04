@@ -1,77 +1,69 @@
-# Pilot — is this architecture worth scaling?
+# Pilot — go/no-go on scaling
 
-One contained experiment answering one question: **does CinnamonLM actually learn
-language, or does it only look like it?**
+One contained experiment: **does CinnamonLM learn language, or only look like it?**
 
 ```bash
-python pilot/run_pilot.py              # ~2 h budget (default)
-python pilot/run_pilot.py --hours 0.5  # shorter
-python pilot/run_pilot.py --smoke      # minutes, wiring check only
+python pilot/run_pilot.py                      # 1 epoch (default)
+python pilot/run_pilot.py --epochs 3
+python pilot/run_pilot.py --smoke              # ~minutes, wiring only
+python pilot/run_pilot.py --domain babylm --set n_hypernets=4
 ```
 
-Everything lands under `pilot/`:
+Budget is **epochs, not wall clock**: steps derived from the packed block count,
+so runs are comparable regardless of GPU contention (the same 2 h window gave
+1.04 epochs idle and 0.60 with a game running). `--max-hours` = optional safety
+valve, off by default.
 
 ```
 pilot/
-  run_pilot.py          the driver
-  cache/                packed WikiText-2 token blocks
+  run_pilot.py          driver
+  cache/                packed token blocks
   runs/<name>/          checkpoints, train.log, hist.json
-  results/<name>.md     the report
-  results/<name>.json   the same, machine-readable
+  results/<name>.{md,json}
 ```
 
-Nothing is written outside this directory. `rm -rf pilot/cache pilot/runs
-pilot/results` returns the repo to exactly where it started.
+Nothing written outside `pilot/`. `rm -rf pilot/{cache,runs,results}` restores the
+repo. Shells out to the real `train.py` — measures what would be scaled, not a
+drifted copy.
 
-It shells out to the real `train.py` rather than reimplementing the loop — the
-pilot has to measure the thing that would actually be scaled, not a copy that has
-drifted from it.
+## Criterion
 
-## The one number that matters
+Two baselines computed from the run's own dev split:
 
-Loss is meaningless without something to compare it against, so the report
-computes two baselines **from the run's own dev split**:
-
-| baseline | what it means |
+| baseline | meaning |
 |---|---|
-| `log(vocab)` | a model that has learned nothing |
-| **unigram entropy** | a model that has learned which tokens are common, and *nothing about context* |
+| `log(vocab)` | learned nothing |
+| **unigram entropy** | learned token frequencies, **nothing about context** |
 
-**Beating uniform is trivial. Beating unigram entropy is the whole test.**
+**Beating uniform is trivial; beating unigram entropy is the test.** The verdict
+gates on this and non-finite loss only. This architecture previously sat at
+exactly the unigram marginal — all positions emitting one token — with a
+normal-looking loss curve (`architecture.md` §11).
 
-This is not a theoretical concern. This architecture spent a long stretch pinned
-at exactly the unigram marginal — all 512 positions emitting the same token —
-while the loss curve looked like a perfectly normal descent. The cause was a
-post-norm inside the recurrence producing gradient norms of ~1.5e5 against
-`clip=1.0`. See `architecture.md` §11.
+## Checks
 
-So the verdict gates on that check, not on "loss went down".
-
-## Checks in the report
-
-| check | why it is there |
+| check | purpose |
 |---|---|
-| beats uniform | sanity; failing means something is broken, not subtle |
-| **BEATS UNIGRAM** | **the go/no-go.** Below it the model uses context; on it it is a frequency table |
-| still improving at the end | distinguishes "budget ran out" from "converged" |
-| depth stays off the cap | adaptive depth is the architecture's premise; pinned at the cap means the halting rule is inert |
-| KDA numerics safe | `gcum > 10` silently degrades the chunked path — no NaN, no loss spike |
-| router did not collapse | MoE collapse is invisible in the loss curve (§10 of the spec is explicit) |
-| load balance near floor | `aux` floor is exactly 1.0 when balanced |
+| beats uniform | sanity |
+| **BEATS UNIGRAM** | **the gate** — uses context vs frequency table |
+| still improving at end | separates "budget exhausted" from "converged" |
+| depth off the cap | pinned at `c_max2` ⇒ halting rule inert |
+| KDA acting as memory | `retention = exp(-gcum/kda_chunk)`; low ⇒ KDA not carrying context |
+| router not collapsed | MoE collapse is invisible in loss; floor `0.25/n_hypernets` |
+| load balance | `aux` floor is exactly 1.0 |
 | no non-finite loss | — |
 
-## What a GO does and does not mean
+Thresholds derive from the run's own `Config` (read from its checkpoint), so they
+track architecture changes. Missing metric ⇒ check skipped, not failed.
 
-WikiText-2 is ~2.4 M tokens against 44.63 M non-embedding parameters — roughly
-**0.05 tokens per parameter**, where Chinchilla-optimal is ~20. A good number here
-is therefore partly memorisation, and the 128 k vocabulary (trained on eight
-corpora) leaves most embedding rows with no gradient at all.
+## Interpreting a GO
 
-That is deliberate. The corpus was chosen so an epoch takes **~1 hour instead of
-BabyLM's ~4.5 days**, which is what a go/no-go needs. Treat a GO as *a floor on
-capability and a licence to spend real compute* — not as a forecast of quality at
-scale.
+WikiText-2 ≈ 2.7 M tokens vs 44.63 M non-embedding params ≈ **0.06 tokens/param**
+(Chinchilla-optimal ~20), and the 128 k vocab leaves most embedding rows with no
+gradient. A good number is partly memorisation.
 
-A NO-GO is more informative than it looks: the failing checks say *which* part
-broke, and this repo has already had two plausible-sounding hypotheses refuted by
-measurement. Measure the next one before acting on it.
+Deliberate: ~1 h/epoch vs BabyLM's ~4.5 days. GO = floor on capability + licence
+to spend real compute, **not** a forecast of quality at scale.
+
+NO-GO: read which check failed. Two plausible hypotheses have already been refuted
+by measurement in this repo — measure the next one before acting.
