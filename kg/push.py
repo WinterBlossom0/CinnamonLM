@@ -173,7 +173,7 @@ if __name__ == "__main__":
         # What runs out is not the model -- it is the logits, [B,512,128000] fp32,
         # 1.6 GB at batch 6 before the .float() copy and its gradient.  Chunked
         # cross-entropy is what unlocks a bigger batch, not a smaller model.
-        run = gpu_train_run(domain="babylm", tokenizer=None, seq_len=512, batch=4, accum=2,
+        run = gpu_train_run(domain="wikitext2", tokenizer=None, seq_len=1024, batch=2, accum=2,
                             amp="off",
                             c_max2=int(sys.argv[2]) if len(sys.argv) > 2 else 32,
                             steps=40000, lr=3e-4, warmup=500, max_hours=8.0,

@@ -390,7 +390,19 @@ never randomly split — a random split would put sentences from the same docume
 both sides and leak.
 
 Packed: **326,456 train blocks (167.1 M tokens)**, 33,326 dev blocks (17.1 M), at
-`seq_len=512`.
+`seq_len=512`. That cache predates the move to 1024 and needs rebuilding.
+
+**The default domain is now `wikitext2`** (`Salesforce/wikitext`,
+`wikitext-2-raw-v1`): 36,718 / 3,760 / 4,358 rows, 10.89 M characters of train
+text, with organiser-defined splits that `dev_iter` uses directly rather than
+slicing train. The `raw` config is required -- the non-raw ones are word-level
+with `<unk>` substitution and destroyed casing.
+
+It is chosen for **iteration speed, not for building a model on**: ~2.4 M tokens
+is ~0.05 tokens per non-embedding parameter against a Chinchilla-optimal ~20, so
+it will memorise rather than generalise, and a 128 k vocabulary trained on eight
+corpora leaves most embedding rows with no gradient at all. What it buys is a
+~1 h epoch instead of BabyLM's ~4.5 days, which is what a first real run needs.
 
 ---
 

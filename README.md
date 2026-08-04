@@ -49,6 +49,7 @@ the output, and a change to token 0 propagates to every later position.
 | | |
 |---|---|
 | Architecture | implemented, 110.17 M params (44.63 M non-embedding) |
+| Context length | 1024 (no architectural limit -- see below) |
 | Tests | 40 passing |
 | Overfit (512 tokens) | ✅ loss 11.81 → **0.0112**, through the 6.236 unigram floor |
 | Real training run | ❌ **not done yet** |
@@ -68,9 +69,16 @@ python perm_check.py
 # tests
 python -m pytest tests/ -q
 
-# train
-python train.py --domain babylm --tokenizer tokenizer.json
+# train -- defaults to WikiText-2 (small, ~1 h/epoch, good for iterating)
+python train.py
+
+# the full BabyLM corpus instead
+python train.py --domain babylm --max-hours 8
 ```
+
+**Context length is 1024**, and it is a data-packing choice, not an architectural
+one: NoPE means there is no positional table to resize, and KDA's recurrent state
+is the same size at any length. Raising it later costs a repack and nothing else.
 
 ## Single GPU, deliberately
 
@@ -83,14 +91,17 @@ Two ranks would skip different hypernetworks and desync a gradient all-reduce. T
 DDP-safe alternative is to run every hypernetwork on every token, which measured
 **~6 min/step**. The gather won.
 
-Measured on one 16 GB card at `seq_len` 512, gradient checkpointing on:
+Measured on one 16 GB card at `seq_len` 1024, gradient checkpointing on:
 
 | batch | tok/s | peak VRAM |
 |---|---|---|
-| 1 | 141 | 3.55 GB |
-| 2 | 246 | 5.08 GB |
-| **4** *(default)* | **433** | **8.20 GB** |
-| 8 | OOM | — |
+| 1 | 217 | 4.82 GB |
+| **2** *(default)* | **395** | **7.91 GB** |
+| 3 | 553 | 11.11 GB |
+| 4 | OOM | — |
+
+Default is 2 with `--accum 2` rather than 3: depth is data-dependent, so a batch
+whose tokens halt later costs more than the table says, and 3 has no room for it.
 
 Checkpointing stays on because it is a *throughput* win here, not just a memory
 one: off is 214 tok/s at batch 1, on is 433 tok/s at batch 4. The memory it frees

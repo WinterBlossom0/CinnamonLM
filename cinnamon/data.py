@@ -11,6 +11,16 @@ import sys
 DATASETS = {
     "babylm":      ("BabyLM-community/BabyLM-2026-Strict", None, lambda r: r["text"]),
     "wikitext":    ("Salesforce/wikitext", "wikitext-103-raw-v1", lambda r: r["text"]),
+    # WikiText-2, the small sibling: ~4.7 MB, 36,718 / 3,760 / 4,358 rows with
+    # organiser-defined splits.  "raw" matters -- the non-raw configs are
+    # word-level with <unk> substitution and mangled casing, which would train the
+    # model on a vocabulary the tokenizer does not share.
+    #
+    # It is ~2 M tokens, so it is a FAST ITERATION corpus, not a corpus to build a
+    # model on: at 44.63 M non-embedding parameters that is ~0.05 tokens/param
+    # against a Chinchilla-optimal ~20.  Expect it to memorise rather than
+    # generalise.  Useful precisely because an epoch is ~1 h instead of ~4.5 days.
+    "wikitext2":   ("Salesforce/wikitext", "wikitext-2-raw-v1", lambda r: r["text"]),
     "amps_khan":   ("XinyaoHu/AMPS_khan", None,
                     lambda r: f'{r["problem"]}\n{r["hints/solutions"]}'),
     "xlam":        ("Salesforce/xlam-function-calling-60k", None,

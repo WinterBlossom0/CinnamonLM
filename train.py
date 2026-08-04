@@ -157,15 +157,21 @@ def evaluate(model, blocks, bs, device, max_batches=40, kind="cuda", amp="off"):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--domain", default="babylm")
+    p.add_argument("--domain", default="wikitext2")
     p.add_argument("--tokenizer", default="tokenizer.json")
-    p.add_argument("--seq-len", type=int, default=512)
-    # 4, not 8.  Measured on a 16 GB card at seq_len 512 with checkpointing on:
-    # batch 4 peaks at 8.20 GB and does 433 tok/s; batch 8 OOMs.  What runs out is
-    # the logits tensor [B, seq, 128000] and its fp32 copy in the loss, not the
-    # model -- chunked cross-entropy is the fix that would raise this again.
-    p.add_argument("--batch", type=int, default=4)
-    p.add_argument("--accum", type=int, default=1)
+    p.add_argument("--seq-len", type=int, default=1024)
+    # Measured on a 16 GB card at seq 1024, checkpointing on, 13 GB working cap:
+    #   batch 1  217 tok/s   4.82 GB
+    #   batch 2  395 tok/s   7.91 GB   <- default
+    #   batch 3  553 tok/s  11.11 GB   (fits, but ~2 GB of headroom)
+    #   batch 4  OOM
+    # 2 rather than 3 because depth is data-dependent: a batch whose tokens halt
+    # later uses more than these numbers, and 3 has no room for that.  accum 2
+    # keeps the effective batch at 4 for free.  What runs out is the logits tensor
+    # [B, seq, 128000] and its fp32 copy in the loss, not the model -- chunked
+    # cross-entropy is the fix that would raise this.
+    p.add_argument("--batch", type=int, default=2)
+    p.add_argument("--accum", type=int, default=2)
     p.add_argument("--steps", type=int, default=20_000)
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--warmup", type=int, default=500)
