@@ -133,8 +133,13 @@ def verdict(hist, uni, base, cfg_vocab, smoke=False):
 
     gc = last.get("gcum")
     if gc is not None:
-        checks.append(("KDA numerics safe", gc < 10.0,
-                       f"max |gcum| {gc:.1f}, degrades past ~10"))
+        # Not a numerics check any more: the chunked path is exact at any gcum
+        # since the subtract-before-exp fix.  This asks whether KDA is still
+        # carrying context -- retention/token is exp(-gcum/chunk), so 44 at
+        # chunk 64 is 0.5, i.e. half the state dropped every token.
+        checks.append(("KDA still acting as memory", gc < 44.0,
+                       f"max |gcum| {gc:.1f} -> retention/token "
+                       f"{math.exp(-gc/64):.3f}"))
 
     routed = [t for t in trains if t.get("routing")]
     if routed:

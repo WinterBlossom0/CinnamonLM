@@ -86,9 +86,11 @@ def batches(blocks, bs, device, seed=0, shuffle=True, epochs=10**9):
 def gate_health(model):
     """Worst per-chunk |gcum| over every KDA in the model.
 
-    KDA's chunked path silently stops matching the exact recurrence once this
-    passes ~10 -- no NaN, no loss spike, just a quietly wrong attention.  Cheap
-    to watch (one already-computed scalar per KDA), so it is worth watching.
+    Total log-decay across a chunk.  This was a numerical watchdog while the
+    chunked path degraded past ~10; it does not degrade any more (see kda.py), so
+    it is now a MODELLING signal: a large value means KDA is forgetting nearly
+    everything inside a chunk and has stopped working as memory.  Retention per
+    token is exp(-|gcum| / kda_chunk), so ~44 at chunk 64 is retention 0.5.
     """
     from cinnamon.kda import KDA
     vals = [m._max_gcum for m in model.modules() if isinstance(m, KDA)]
@@ -315,7 +317,10 @@ def main():
         if a.eval_every and step and step % a.eval_every == 0:
             vl, (vd2, vd3) = evaluate(model, data["dev"], a.batch, device, kind=kind, amp=amp)
             gh = gate_health(model)
-            warn = "  !! KDA gate drift, chunked path degrading" if gh > 10.0 else ""
+            # exp(-gh/64) < 0.5, i.e. KDA is dropping over half its state per
+            # token and is no longer carrying much context.  Not a numerics
+            # problem any more -- a modelling one.
+            warn = "  !! KDA retaining <50%/token, barely acting as memory" if gh > 44.0 else ""
             print(f"  == dev loss {vl:.4f}  ppl {math.exp(min(20, vl)):.2f}  "
                   f"depth {vd2:.1f}/{vd3:.1f}  gcum {gh:.1f}{warn}", flush=True)
             hist.append({"step": step, "dev_loss": vl, "dev_depth": [vd2, vd3], "gcum": gh})

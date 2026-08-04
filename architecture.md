@@ -180,10 +180,36 @@ cancels in the product) and halves the range.
 | init | 64 | 3.33e-07 | 3.34e-07 |
 | init | 128 | **6.25e-02** | **3.25e-07** |
 
-**Residual limit, monitored not solved:** degradation still starts at
-retention/token ≈ 0.86; init sits at 0.965. Training logs `gcum` every eval and
-warns past 10, because this failure mode produces no NaN and no loss spike.
-Measured across the whole model at init: **6.87–6.93**, inside the margin.
+**(c) The gate bound.** The split above is accurate while the per-chunk total
+`|gcum|` stays inside ~10. That was enforced by a per-step clamp of 10 — which is
+`chunk` times too loose, since `gcum` is a *sum over the chunk*. A real training
+run walked straight through it: **`gcum` 23.3 by step 250**, where the chunked
+path had silently stopped matching the exact recurrence (measured 1e-1 relative
+error at 9.5, 4e-1 at 18) with no NaN and no loss spike to notice it by.
+
+Kimi Linear's own kernel has no such limit — it **subtracts before
+exponentiating**, `exp2(b_gn - b_gk)`, one exponential with the difference inside,
+so the exponent is never positive. Implemented that way here it is exact at any
+drift (**1.5e-15 relative error at `|gcum|` 640, 64× the old range**) and
+unaffordable: without a kernel it needs a `[C, C, D]` intermediate and a reduce
+instead of a tensor-core matmul, measured at **2.4× the time and 1.5× the memory**
+(395 → 165 tok/s, 7.9 → 12.1 GB), OOMing outright at chunk 64.
+
+So the fast split is kept and the bound is enforced properly instead — a floor on
+log-decay of `_G_RANGE / chunk` rather than `_G_RANGE`, which is fla's own
+`safe_gate` idea tightened to what the PyTorch split needs. `|gcum|` is now
+bounded by construction. The cost: retention per token cannot fall below
+`exp(-10/64) = 0.855`, so the model cannot learn to forget faster than ~15% per
+token — though it can still forget essentially everything across a full chunk
+(`exp(-10)` = 4.5e-5).
+
+**This is not what Kimi did; it is what Kimi did that is reachable without writing
+a Triton kernel.** A kernel port removes the bound entirely, and is the right fix
+if the constraint ever proves to cost accuracy.
+
+`gcum` is still logged every eval, but it is no longer a numerical watchdog — it
+cannot degrade any more. It is now a *modelling* signal: retention/token is
+`exp(-gcum/chunk)`, so a large value means KDA has stopped acting as memory.
 
 ---
 

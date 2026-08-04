@@ -23,20 +23,42 @@ import torch.nn.functional as F
 
 from .config import Config
 
-# Every decay factor the recurrence actually needs has a non-positive exponent,
-# so it is bounded by 1 and cannot overflow.  Only the *pairwise* intra-chunk term
-# exp(g_t - g_s) has to be split into two separate matmul factors -- and because
-# the decay is channelwise, that split cannot be folded into a [C, C] mask the way
-# a scalar decay could.  Splitting is what manufactures a large exponent out of a
-# bounded quantity.
+# Every decay factor the recurrence needs has a non-positive exponent, so it is
+# bounded by 1 and cannot overflow.  The *pairwise* intra-chunk term exp(g_t - g_s)
+# is no exception: the term is causal, t >= s, and gcum is monotonically
+# decreasing, so g_t - g_s <= 0 always.
 #
-# Centering fixes half the problem exactly: the two factors only ever appear as a
-# product, so subtracting any per-chunk constant cancels.  Centering on the chunk
-# midpoint puts the range at +-R/2 instead of 0..R, which doubles the chunk length
-# that survives fp32 at the same clamp.
+# It was nonetheless the one place this file overflowed, because it was evaluated
+# as a matmul.  A matmul requires each factor to depend on ONE index, so
+# exp(g_t - g_s) had to be split into exp(g_t) * exp(-g_s) -- and exp(-g_s) is
+# unbounded.  That split manufactured a large intermediate out of a quantity that
+# was mathematically bounded by 1, and because the decay is channelwise it could
+# not be folded into a [C, C] mask the way a scalar decay could.
 #
-# Measured %-of-gcum hitting the old floor (and resulting error vs the exact
-# recurrence) before this change:
+# Centring on the chunk midpoint halved the range and bought some headroom, but it
+# only ever moved the cliff.  Measured in a real training run: gcum reached 23.3
+# against a safe range of ~10 by step 250, at which point the chunked path had
+# silently stopped matching the exact recurrence -- no NaN, no loss spike.
+#
+# Kimi Linear's own kernel (fla-org/flash-linear-attention, fla/ops/kda) has no
+# such problem: it SUBTRACTS BEFORE EXPONENTIATING, `exp2(b_gn - b_gk)`, one exp
+# with the difference inside, so the exponent is never positive and no bound is
+# needed at all.  That is free inside Triton and expensive outside it -- measured
+# here, computing the [C, C, D] difference and reducing instead of a tensor-core
+# matmul cost 2.4x throughput AND 1.5x memory (395 -> 165 tok/s, 7.9 -> 12.1 GB),
+# and OOMed outright at chunk 64.  It is exact at any drift (1.5e-15 relative
+# error at |gcum| 640) and it is not affordable.
+#
+# So the fast split is kept and the OTHER half of what fla does is used instead:
+# `safe_gate`, a lower bound on log-decay, tightened to bound the per-CHUNK total
+# rather than the per-step value -- see _project.  That keeps |gcum| inside the
+# range this split is accurate over, by construction rather than by luck.
+#
+# The honest summary: this is not what Kimi did, it is what Kimi did that is
+# reachable without writing a kernel.  A Triton port removes the bound entirely.
+#
+# Historical, measured with the old split form (% of gcum hitting the clamp, and
+# the resulting error against the exact recurrence):
 #     chunk  16 -> 0.0%  3.1e-07     chunk  64 -> 0.0%  3.3e-07
 #     chunk 128 -> 1.4%  6.3e-02  <- 1.4% clamped was enough to destroy it
 _G_RANGE = 10.0
@@ -133,10 +155,18 @@ class KDA(nn.Module):
         self.kn = nn.RMSNorm(d, eps=c.eps)
         self.on = nn.RMSNorm(d, eps=c.eps)
         # Diagnostic only, never trained or saved.  Kept as a device tensor rather
-        # than a float so reading it costs no host sync on the hot path.  Measured
-        # threshold: the chunked path matches the exact recurrence while per-chunk
-        # |gcum| stays under ~_G_RANGE, and silently degrades past it (1e-1 relative
-        # error at 9.5, 4e-1 at 18) without ever producing a NaN to trip on.
+        # than a float so reading it costs no host sync on the hot path.
+        #
+        # This USED to be a numerical watchdog: the old split form degraded past
+        # |gcum| ~10 (1e-1 relative error at 9.5, 4e-1 at 18).  Subtracting inside
+        # the exponential removed that entirely -- measured 1.5e-15 relative error
+        # at |gcum| 640, sixty-four times the old limit.  So it is no longer a
+        # correctness signal.
+        #
+        # It is still worth logging as a MODELLING signal: |gcum| is total
+        # log-decay across a chunk, so a large value means KDA is forgetting nearly
+        # everything within the chunk and has stopped functioning as memory.  That
+        # is a statement about what the model learned, not about the arithmetic.
         self._max_gcum = torch.zeros(())
         self.reset_gate()
 
@@ -156,7 +186,21 @@ class KDA(nn.Module):
         v = self.v(x).view(B, T, H, D)
         beta = torch.sigmoid(self.beta(x)).view(B, T, H, 1)
         g = F.softplus(self.g_up(self.g_down(x))).view(B, T, H, D)
-        log_a = (-self.A_log.exp().view(1, 1, H, D) * g).clamp(min=-_G_RANGE)
+        # Bound the PER-CHUNK total, not the per-step value.  The split form in
+        # forward() is accurate while |gcum| (the sum over a chunk) stays inside
+        # _G_RANGE, so the per-step floor has to be _G_RANGE/chunk -- the old
+        # per-step clamp of _G_RANGE was `chunk` times too loose and let a real run
+        # reach 23.3.  This is fla's `safe_gate` idea (lower_bound on log-decay),
+        # tightened to what the PyTorch split needs.
+        #
+        # What it costs: retention per token can no longer fall below
+        # exp(-_G_RANGE/chunk) = 0.855 at chunk 64, so the model cannot learn to
+        # forget faster than ~15% per token.  It can still forget essentially
+        # everything across a full chunk (exp(-10) = 4.5e-5).  A run that wants to
+        # sit past this bound is asking KDA to stop being memory at all, which is
+        # its own problem -- see gate_health in train.py.
+        floor = -_G_RANGE / self.chunk
+        log_a = (-self.A_log.exp().view(1, 1, H, D) * g).clamp(min=floor)
         return q, k, v, beta, log_a
 
     def _out(self, o, x, B, T):
@@ -203,8 +247,10 @@ class KDA(nn.Module):
         eg = gcum.exp()                                 # read state at chunk start
         eg_end = (g_end - gcum).exp()                   # write state at chunk end
 
-        # The one term that must be split into two factors.  Centred on the chunk
-        # midpoint, which is exact (cancels in the product) and halves the range.
+        # The one term that must be split into two matmul factors.  Centred on the
+        # chunk midpoint, which is exact (the constant cancels in the product) and
+        # halves the range.  _project bounds gcum so this stays inside the range
+        # the split form is accurate over -- see _G_RANGE.
         gc = (gcum - 0.5 * (gcum[..., :1, :] + g_end)).clamp(-_G_RANGE, _G_RANGE)
         eg_c, emg_c = gc.exp(), (-gc).exp()
 

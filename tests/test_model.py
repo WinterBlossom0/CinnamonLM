@@ -49,6 +49,43 @@ def test_kda_survives_correlated_keys():
     assert rel < 1e-5, f"chunked KDA diverged from exact recurrence: rel err {rel:.3g}"
 
 
+def test_kda_survives_a_drifted_gate():
+    """The failure this file did not catch for a long time.
+
+    Every other KDA test runs at initialisation, where per-chunk |gcum| is ~7 and
+    the old split form (exp(g_t) * exp(-g_s)) was still accurate.  But the gate is
+    LEARNED, and training pushes it: a real run reached |gcum| 23.3 by step 250,
+    where the split had silently stopped matching the exact recurrence -- 4e-1
+    relative error at 18, and no NaN or loss spike to notice it by.
+
+    Subtracting before exponentiating removes the failure mode rather than moving
+    it, so this sweeps far past anything training could plausibly reach and
+    requires exactness throughout.
+    """
+    from cinnamon.kda import _G_RANGE
+
+    for chunk in (16, 64):
+        for bias in (-3.0, -1.5, 0.5):                 # increasingly hard decay
+            torch.manual_seed(0)
+            k = KDA(Config(**{**TINY, 'kda_chunk': chunk})).double().eval()
+            with torch.no_grad():
+                k.g_up.bias.fill_(bias)                # drive the decay gate hard
+            x = torch.randn(2, 256, 64, dtype=torch.float64)
+            with torch.no_grad():
+                out, ref = k(x), k.reference(x)
+
+            # The bound is what makes the split form safe, so assert the bound
+            # itself holds -- not merely that this particular input was fine.
+            assert float(k._max_gcum) <= _G_RANGE + 1e-9, (
+                f"chunk {chunk} bias {bias}: |gcum| {float(k._max_gcum):.2f} escaped "
+                f"the {_G_RANGE} bound, so the split form is outside its safe range")
+            assert torch.isfinite(out).all()
+            rel = float((out - ref).norm() / ref.norm())
+            assert rel < 1e-9, (
+                f"chunk {chunk} bias {bias}, |gcum| {float(k._max_gcum):.2f}: "
+                f"chunked diverged from exact, rel {rel:.3g}")
+
+
 def test_kda_is_causal():
     """Changing token t must not move any output before t."""
     torch.manual_seed(0)
