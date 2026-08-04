@@ -1,0 +1,30 @@
+# NOTE: git does not support trailing comments on a pattern line -- "raw/  # big"
+# is read as a literal pattern and silently matches nothing. Keep comments on
+# their own line. (This exact mistake staged a 153 MB corpus.)
+
+# Data and build artefacts: large, regenerable, never committed.
+cache/
+raw/
+ckpt/
+.kaggle_stage/
+*.npy
+*.pt
+
+# Run output
+*.log
+*.hist.json
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Credentials. kaggle.json lives in ~/.kaggle, but never let a stray copy in.
+kaggle.json
+.env
+*.pem
+*.key
+
+.vscode/
+.idea/
+.DS_Store
