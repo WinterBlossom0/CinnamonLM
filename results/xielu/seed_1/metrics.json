@@ -1,0 +1,21 @@
+{
+  "activation": "xielu",
+  "seed": 1,
+  "n_params": 23208,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 3.2886594757437706
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 3.226388607174158
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 3.214109644293785
+    }
+  ],
+  "final_eval_loss": 3.214109644293785,
+  "wall_time_s": 3491.917362689972
+}

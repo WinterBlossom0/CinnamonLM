@@ -1,0 +1,21 @@
+{
+  "activation": "swiglu",
+  "seed": 1,
+  "n_params": 23152,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 3.2975970320403576
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 3.246552463620901
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 3.236509997397661
+    }
+  ],
+  "final_eval_loss": 3.236509997397661,
+  "wall_time_s": 2904.740991592407
+}

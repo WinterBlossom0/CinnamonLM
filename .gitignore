@@ -1,0 +1,12 @@
+# Self-contained: this file holds everything needed to gitignore this repo's
+# activation_comparision/ tree on its own, independent of the root .gitignore.
+
+# TinyStories, downloaded via datasets.load_dataset -- regenerate with
+# `torch-python -c "from datasets import load_dataset; load_dataset('roneneldan/TinyStories').save_to_disk('tinystories')"`
+tinystories/
+
+# Packed token cache, rebuilt by train.py on first run (train.pt ~3.1GB).
+packed_cache/
+
+__pycache__/
+*.py[cod]

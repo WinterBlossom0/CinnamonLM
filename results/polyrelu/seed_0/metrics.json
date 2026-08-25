@@ -1,0 +1,21 @@
+{
+  "activation": "polyrelu",
+  "seed": 0,
+  "n_params": 23216,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 3.2711633555591106
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 3.2081740610301495
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 3.1946093812584877
+    }
+  ],
+  "final_eval_loss": 3.1946093812584877,
+  "wall_time_s": 3023.1985313892365
+}

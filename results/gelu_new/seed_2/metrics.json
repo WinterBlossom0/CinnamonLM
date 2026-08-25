@@ -1,0 +1,21 @@
+{
+  "activation": "gelu_new",
+  "seed": 2,
+  "n_params": 23200,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 3.333297446370125
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 3.264229826629162
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 3.25088132545352
+    }
+  ],
+  "final_eval_loss": 3.25088132545352,
+  "wall_time_s": 3150.057070016861
+}

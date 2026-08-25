@@ -1,0 +1,21 @@
+{
+  "activation": "powlu",
+  "seed": 1,
+  "n_params": 23152,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 3.3169571459293365
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 3.262548293918371
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 3.251219756901264
+    }
+  ],
+  "final_eval_loss": 3.251219756901264,
+  "wall_time_s": 3439.771975040436
+}
