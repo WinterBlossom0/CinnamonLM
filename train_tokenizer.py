@@ -1,8 +1,4 @@
-"""Train a GPT-2-style byte-level BPE tokenizer on TinyStories itself, vocab
-10K -- matching the TinyStories paper's own setup ("GPT-Neo tokenizer but
-only keep the top 10K most common tokens", arXiv:2305.07759 footnote 2),
-except trained fresh on this corpus rather than filtering GPT-Neo's existing
-50257-token vocab down to its 10K most-frequent entries."""
+"""Train a byte-level BPE tokenizer on TinyStories itself."""
 from __future__ import annotations
 
 from pathlib import Path

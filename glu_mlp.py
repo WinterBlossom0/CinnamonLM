@@ -1,20 +1,5 @@
-"""Shared scaffolding for gated linear unit MLPs (SwiGLU, PowLU, ...): two
-independent linear projections of the same input, x1 * gate_fn(x2), then
-projected back down. ACT2FN only ever sees one projection's output, so a GLU
-variant can't be a plain activation-function swap -- it replaces GPTNeoMLP
-wholesale instead. c_fc/c_proj/dropout naming mirrors
-transformers.models.gpt_neo.modeling_gpt_neo.GPTNeoMLP (verified against the
-installed transformers==5.14.1 source) so this drops into a GPTNeoBlock in
-its place.
-
-x1 (the value path, no nonlinearity) and x2 (the gate path, through gate_fn)
-each get their own c_fc-sized projection, so a GLU MLP has roughly double
-the up-projection parameters of a plain single-projection MLP at the same
-intermediate_size -- this is not param-matched against gelu_new/xielu/
-polyrelu as-is. (Shazeer 2020 compensates by shrinking intermediate_size to
-8/3*hidden_size instead of 4*hidden_size; not applied here -- left as-is so
-the choice is explicit rather than silently baked in.)
-"""
+"""Gated MLP scaffold (SwiGLU, PowLU, ...): x1 * gate_fn(x2), replaces
+GPTNeoMLP wholesale since ACT2FN only ever sees one projection."""
 from __future__ import annotations
 
 from typing import Callable
@@ -42,13 +27,8 @@ class GatedMLP(nn.Module):
 
 
 def param_matched_intermediate_size(config) -> int:
-    """d_ff for a 3-matrix GatedMLP (2 up-projections + 1 down-projection)
-    whose per-layer param count is closest to a plain 2-matrix MLP's at
-    intermediate_size=4*hidden_size (Shazeer 2020's ~(8/3)*hidden_size
-    convention, also used by Llama/PaLM -- but searched exactly here rather
-    than taking the naive round(8/3*hidden_size), which is off by one
-    integer step: round(42.667)=43 lands further from the target than 42
-    does once the +bias terms are accounted for)."""
+    # exact search, not round(8/3*hidden) -- naive rounding can land further
+    # from the plain-MLP param target than the true closest integer does
     hidden = config.hidden_size
     plain_d_ff = 4 * hidden
     plain_params = 2 * hidden * plain_d_ff + plain_d_ff + hidden
@@ -66,11 +46,6 @@ def apply_gated_mlp(
     gate_fn: Callable[[torch.Tensor], torch.Tensor],
     intermediate_size: int | None = None,
 ) -> None:
-    """Replace every GPTNeoBlock's MLP with a GatedMLP(gate_fn), in place.
-    Defaults to the param-matched size, not the plain MLP's 4*hidden_size --
-    a GLU's extra projection matrix would otherwise inflate total params
-    ~19% versus gelu_new/xielu/polyrelu for no reason tied to the gate
-    function itself."""
     if intermediate_size is None:
         intermediate_size = param_matched_intermediate_size(model.config)
     for block in model.transformer.h:

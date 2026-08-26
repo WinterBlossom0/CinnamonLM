@@ -1,14 +1,5 @@
-"""Train the TinyStories-1M architecture (GPT-Neo, hidden=64, 8 layers, 16
-heads, window_size=256, alternating global/local attention -- exact config
-of roneneldan/TinyStories-1M) from scratch on TinyStories, with a BPE
-tokenizer trained on the corpus itself (train_tokenizer.py, vocab 10K,
-matching the paper's "top 10K most common tokens").
-
---activation names one entry in a growing activation-function comparison:
-results land in results/<activation>/seed_<seed>/metrics.json so later runs
-(new activation functions swapped in, everything else held fixed) are
-directly comparable.
-"""
+"""Train GPT-Neo on TinyStories, comparing activation functions across seeds.
+Results land in results/<activation>/seed_<seed>/metrics.json."""
 from __future__ import annotations
 
 import argparse
@@ -21,14 +12,11 @@ from datasets import load_from_disk
 from torch.utils.data import DataLoader, Dataset
 from transformers import GPTNeoConfig, GPTNeoForCausalLM, PreTrainedTokenizerFast, get_cosine_schedule_with_warmup
 
-import xielu  # noqa: F401 -- registers "xielu" into transformers' ACT2FN on import
-import polyrelu  # noqa: F401 -- registers "polyrelu" into transformers' ACT2FN on import
+import xielu  # noqa: F401
+import polyrelu  # noqa: F401
 import swiglu
 import powlu
 
-# swiglu/powlu are gated (two projections, x1*gate_fn(x2)) -- ACT2FN only
-# ever sees one projection, so these replace GPTNeoMLP wholesale after
-# construction (see glu_mlp.py) instead of being an activation_function name.
 GATED_ACTIVATIONS = {"swiglu": swiglu.apply_swiglu, "powlu": powlu.apply_powlu}
 
 ROOT = Path(__file__).parent
@@ -67,9 +55,6 @@ def load_tokenizer() -> PreTrainedTokenizerFast:
 
 
 def build_config(vocab_size: int, activation: str, eos_token_id: int = 0) -> GPTNeoConfig:
-    # Gated activations replace the MLP after construction (see run_seed),
-    # so activation_function here is just a placeholder ACT2FN entry the
-    # base model builds with before its MLPs get swapped out.
     act_fn = "gelu_new" if activation in GATED_ACTIVATIONS else activation
     return GPTNeoConfig(
         vocab_size=vocab_size,
@@ -87,11 +72,6 @@ def build_config(vocab_size: int, activation: str, eos_token_id: int = 0) -> GPT
 
 
 class PackedBlocks(Dataset):
-    """Concatenate all tokenized stories (each capped by an eos separator)
-    then chunk into fixed CONTEXT_LENGTH blocks -- standard LM packing, so
-    short stories (~150-200 tokens vs. a 512 context) don't waste most of
-    every batch on padding."""
-
     def __init__(self, ids: torch.Tensor):
         n = (ids.shape[0] // CONTEXT_LENGTH) * CONTEXT_LENGTH
         self.blocks = ids[:n].view(-1, CONTEXT_LENGTH)
