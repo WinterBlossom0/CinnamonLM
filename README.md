@@ -19,14 +19,6 @@ GPT-Neo (TinyStories-1M architecture, shrunk for fast iteration):
 | num_heads | 16 | 16 |
 | context_length | 512 | 128 |
 
-```bash
-torch-python -c "from datasets import load_dataset; load_dataset('roneneldan/TinyStories').save_to_disk('tinystories')"
-torch-python train_tokenizer.py
-torch-python train.py --activation gelu_new --seeds 0 1 2 --epochs 3
-```
-
-Results land in `results/<name>/seed_<seed>/metrics.json`.
-
 ## Results
 
 Eval loss (nats), 3 seeds, mean ± sample-stdev:
