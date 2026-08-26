@@ -9,7 +9,8 @@ directory (own `.gitignore`, no imports outside `activation_comparision/`).
 
 ## Setup
 
-GPT-Neo (TinyStories-1M architecture, shrunk for fast iteration):
+GPT-Neo with alternating global/local attention -- same design as
+TinyStories-1M, but a smaller configuration:
 
 | | TinyStories-1M | here |
 |---|---|---|
@@ -17,7 +18,7 @@ GPT-Neo (TinyStories-1M architecture, shrunk for fast iteration):
 | hidden_size | 64 | 16 |
 | num_layers | 8 | 4 |
 | num_heads | 16 | 16 |
-| context_length | 512 | 128 |
+| context_length | 2048 | 128 |
 
 ## Results
 
