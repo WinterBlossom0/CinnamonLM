@@ -26,6 +26,7 @@ import json
 import os
 import shutil
 import sys
+import time
 
 USER = "electroknight"
 DATASET = f"{USER}/attn-comparison-src"
@@ -72,6 +73,17 @@ def push_src():
         print(a.dataset_create_version(src, "update", dir_mode="zip", quiet=True))
     else:
         print(a.dataset_create_new(src, public=False, dir_mode="zip", quiet=True))
+
+    # A kernel launched immediately after a fresh dataset_create_new can start
+    # with an empty /kaggle/input/ -- measured directly: the first KDA launch
+    # failed exactly this way, "source not found; /kaggle/input = ['/kaggle/input/']",
+    # even though dataset_status read "ready" moments later. Poll rather than
+    # trust the create call's return.
+    for _ in range(30):
+        if _exists(a, DATASET):
+            return
+        time.sleep(5)
+    raise RuntimeError(f"{DATASET} did not report ready after 150s")
 
 
 def push_kernel(slug, title, run_py, *, gpu=True, internet=True, extra_data=()):
