@@ -117,14 +117,24 @@ def push_kernel(slug, title, run_py, *, gpu=True, internet=True, extra_data=()):
 # in cinnamon too; kda/attention.py does not) -- train.py then runs unmodified,
 # not a second copy of the loop to keep in sync (see ../kg/gpu_train.py's own
 # note on why that already went wrong once for cinnamon).
+#
+# Always copied to a writable location, even when not a zip: train.py resolves
+# its own output paths (results/, and now tinystories/) relative to itself, and
+# /kaggle/input is read-only.  First Parallax launch failed exactly this way --
+# "OSError: [Errno 30] Read-only file system" writing tinystories/ next to a
+# train.py that was still sitting under /kaggle/input.
 PRELUDE = f'''\
-import sys, os, glob, zipfile, subprocess
+import sys, os, glob, zipfile, shutil, subprocess
 for z in glob.glob("/kaggle/input/**/*.zip", recursive=True):
     zipfile.ZipFile(z).extractall("/kaggle/working/_" + os.path.basename(z)[:-4])
 hits = glob.glob("/kaggle/input/**/kda/attention.py", recursive=True) + \\
        glob.glob("/kaggle/working/**/kda/attention.py", recursive=True)
 assert hits, f"source not found; /kaggle/input = {{glob.glob('/kaggle/input/**', recursive=True)[:40]}}"
-SRC = os.path.dirname(os.path.dirname(hits[0]))
+FOUND = os.path.dirname(os.path.dirname(hits[0]))
+SRC = "/kaggle/working/src"
+if FOUND != SRC:
+    shutil.rmtree(SRC, ignore_errors=True)
+    shutil.copytree(FOUND, SRC)
 sys.path.insert(0, SRC)
 print("source:", SRC, os.listdir(SRC), flush=True)
 
