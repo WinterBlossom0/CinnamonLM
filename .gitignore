@@ -1,0 +1,11 @@
+# TinyStories, downloaded via datasets.load_dataset -- regenerate with
+# `torch-python -c "from datasets import load_dataset; load_dataset('roneneldan/TinyStories', revision='f54c09fd23315a6f9c86f9dc80f725de7d8f9c64').save_to_disk('tinystories')"`
+# revision pinned so a future HF-side dataset update can't silently change
+# training data out from under this repo
+tinystories/
+
+# Packed token cache, rebuilt by train.py on first run.
+packed_cache/
+
+__pycache__/
+*.py[cod]

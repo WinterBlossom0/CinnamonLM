@@ -1,0 +1,21 @@
+{
+  "attention": "osdn",
+  "seed": 2,
+  "n_params": 23268,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 3.2530369125306606
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 3.1031040251255035
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 3.07915897667408
+    }
+  ],
+  "final_eval_loss": 3.07915897667408,
+  "wall_time_s": 3797.660059452057
+}

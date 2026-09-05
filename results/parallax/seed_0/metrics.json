@@ -1,0 +1,21 @@
+{
+  "attention": "parallax",
+  "seed": 0,
+  "n_params": 23228,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 3.4172738157212734
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 3.3018515929579735
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 3.2872835136950016
+    }
+  ],
+  "final_eval_loss": 3.2872835136950016,
+  "wall_time_s": 1617.5291872024536
+}
