@@ -1,11 +1,11 @@
-# activation_comparision
+# activation_comparison
 
 Does a newer activation function actually help, or is that just what the
 paper says? One architecture, one dataset, one activation swapped at a
 time — results land side by side so they're comparable.
 
 Self-contained: everything needed to reproduce this lives under this
-directory (own `.gitignore`, no imports outside `activation_comparision/`).
+directory (own `.gitignore`, no imports outside `activation_comparison/`).
 
 ## Setup
 
