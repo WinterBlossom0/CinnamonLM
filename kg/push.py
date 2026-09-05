@@ -177,7 +177,7 @@ if __name__ == "__main__":
                             amp="off",
                             c_max2=int(sys.argv[2]) if len(sys.argv) > 2 else 32,
                             steps=40000, lr=3e-4, warmup=500, max_hours=8.0,
-                            ewc_lambda=5000.0, log_every=25, eval_every=500)
+                            log_every=25, eval_every=500)
         push_kernel("cinnamonlm-gpu", "cinnamonlm gpu", run, gpu=True,
                     extra_data=[f"{USER}/cinnamonlm-packed"])
     elif cmd == "status":

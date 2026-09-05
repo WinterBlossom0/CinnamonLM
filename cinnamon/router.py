@@ -58,7 +58,11 @@ class AuxLoss:
         # host would be a GPU sync on the hot path.
         self.w_sum = torch.zeros((), device=device)
         self.calls = 0
-        self.ent = 0.0
+        # Device tensor for the same reason w_sum is one, and fp64 so accumulating
+        # here is bit-for-bit what the old `self.ent += float(...)` did on the host.
+        # That float() was 32 GPU syncs per training step (one per recurrence) for a
+        # number nothing reads until value().
+        self.ent = torch.zeros((), dtype=torch.float64, device=device)
 
     def add(self, probs, chosen, mask=None):
         """probs: [..., n] router output.  chosen: [...] argmax selection.
@@ -71,15 +75,20 @@ class AuxLoss:
         w = (mask.reshape(-1).float() if mask is not None
              else torch.ones(flat.shape[0], device=flat.device))
         self.p_sum = self.p_sum + (flat * w.unsqueeze(-1)).sum(0)
-        self.f_sum = self.f_sum + torch.bincount(
-            chosen.reshape(-1), weights=w, minlength=self.n).float()
+        # index_add_, not bincount: bincount sizes its output from max(input) and so
+        # reads the tensor back to the host -- 64 GPU syncs per training step.  Every
+        # `chosen` is an argmax over n, so the length is exactly n either way and the
+        # two produce the same sums.
+        self.f_sum = self.f_sum + torch.zeros_like(self.f_sum).index_add_(
+            0, chosen.reshape(-1), w)
         # w.sum(), NOT flat.shape[0].  p_sum only accumulates masked-in positions,
         # so dividing by the unmasked count scaled P down by the active fraction --
         # the balancing pressure quietly faded exactly as tokens halted, which is
         # when it is needed most.
         self.w_sum = self.w_sum + w.sum()
         self.calls += 1
-        self.ent += float(-(flat * (flat + 1e-9).log()).sum(-1).mean().detach())
+        self.ent = self.ent + (
+            -(flat * (flat + 1e-9).log()).sum(-1).mean().detach().double())
 
     def value(self):
         if not self.calls:
@@ -87,6 +96,9 @@ class AuxLoss:
         f = self.f_sum / self.f_sum.sum().clamp(min=1)
         P = self.p_sum / self.w_sum.clamp(min=1)
         loss = self.n * (f * P).sum()
-        stats = {"aux": float(loss.detach()), "entropy": self.ent / max(1, self.calls),
-                 "frac": [round(float(x), 3) for x in f]}
+        # One .tolist() rather than n scalar float()s, and value() runs once a step,
+        # so every host read in this class now lives on this line.
+        stats = {"aux": float(loss.detach()),
+                 "entropy": float(self.ent) / max(1, self.calls),
+                 "frac": [round(v, 3) for v in f.tolist()]}
         return loss, stats

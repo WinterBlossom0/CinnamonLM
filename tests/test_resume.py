@@ -5,7 +5,9 @@ so this tests it the way it will actually be used: run train.py, kill it, run th
 identical command again, and check it picked up where it stopped.
 
 Uses a tiny synthetic corpus written straight into the pack cache, so no
-tokenizer or download is needed and the whole thing runs on CPU in seconds.
+tokenizer or download is needed. Used to run on CPU in seconds; canonical KDA
+has no CPU path, so this now needs CUDA and takes longer (Triton JIT warmup
+per subprocess, not just the training itself).
 
 Run: python -m tests.test_resume
 """
@@ -40,8 +42,8 @@ def run_train(root, steps, extra=()):
            "--seq-len", "16", "--batch", "2", "--c-max2", "4",
            "--steps", str(steps), "--warmup", "2", "--eval-every", "2",
            "--log-every", "50", "--cache", os.path.join(root, "cache"),
-           "--out", root, "--no-ewc-consolidate", "--amp", "off", *extra]
-    env = dict(os.environ, CUDA_VISIBLE_DEVICES="", PYTHONUTF8="1")
+           "--out", root, "--amp", "off", *extra]
+    env = dict(os.environ, PYTHONUTF8="1")
     r = subprocess.run(cmd, capture_output=True, text=True, env=env, timeout=600)
     assert r.returncode == 0, r.stdout[-3000:] + r.stderr[-3000:]
     return r.stdout

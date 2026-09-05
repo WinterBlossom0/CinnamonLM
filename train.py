@@ -19,12 +19,32 @@ import math
 import os
 import time
 
+# Before the first CUDA allocation, so the caching allocator picks it up.  The
+# dispatch loop hands the allocator a differently-sized tensor per hypernetwork
+# per recurrence (group sizes are whatever the router decided), which strands
+# blocks in size classes nothing else fits.
+#
+# This is a MEMORY setting, not a speed one.  Batch 24, seq 1024, interleaved
+# A/B with a fixed seed (so the router's assignment is bit-identical) over 7
+# trials per arm:
+#
+#   default      8.68 GB allocated   14.63 GB reserved
+#   expandable   8.58 GB allocated    9.72 GB reserved
+#
+# Both exact and reproducible every trial; num_alloc_retries and num_ooms were 0
+# in both arms, and throughput was indistinguishable (the arms' ranges overlap,
+# and the within-arm spread from thermal clock drift on this laptop card is far
+# larger than the difference between them).  What it buys is headroom: 14.63 GB
+# reserved is 92% of a 16 GB card, and reserved is what a GPU meter shows.
+# Respects an explicit setting.
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
+
 import numpy as np
 import torch
 
 from cinnamon.config import Config
-from cinnamon.ewc import EWC
 from cinnamon.model import CinnamonModel
+from cinnamon.muon import Muon, split_params
 
 
 def parse_overrides(pairs):
@@ -119,20 +139,6 @@ def batches(blocks, bs, device, seed=0, shuffle=True, epochs=10**9):
             yield b[:, :-1].to(device), b[:, 1:].to(device)
 
 
-def gate_health(model):
-    """Worst per-chunk |gcum| over every KDA in the model.
-
-    Total log-decay across a chunk.  This was a numerical watchdog while the
-    chunked path degraded past ~10; it does not degrade any more (see kda.py), so
-    it is now a MODELLING signal: a large value means KDA is forgetting nearly
-    everything inside a chunk and has stopped working as memory.  Retention per
-    token is exp(-|gcum| / kda_chunk), so ~44 at chunk 64 is retention 0.5.
-    """
-    from cinnamon.kda import KDA
-    vals = [m._max_gcum for m in model.modules() if isinstance(m, KDA)]
-    return float(max(float(v) for v in vals)) if vals else 0.0
-
-
 def save_ckpt(path, payload):
     """Write atomically, so a crash mid-write cannot destroy the last good file.
 
@@ -179,18 +185,17 @@ def autocast_ctx(kind, amp):
 
 def evaluate(model, blocks, bs, device, max_batches=40, kind="cuda", amp="off"):
     model.eval()
-    tot, n, d2s, d3s = 0.0, 0, 0.0, 0.0
+    tot, n, ds = 0.0, 0, 0.0
     with torch.no_grad(), autocast_ctx(kind, amp):
         for i, (x, y) in enumerate(batches(blocks, bs, device, shuffle=False, epochs=1)):
             if i >= max_batches:
                 break
-            _, loss, (d2, d3) = model(x, labels=y)
+            _, loss, depth = model(x, labels=y)
             tot += float(loss)
-            d2s += float(d2.float().mean())
-            d3s += float(d3.float().mean())
+            ds += float(depth.float().mean())
             n += 1
     model.train()
-    return (tot / n, (d2s / n, d3s / n)) if n else (float("nan"), (0.0, 0.0))
+    return (tot / n, ds / n) if n else (float("nan"), 0.0)
 
 
 def main():
@@ -214,6 +219,9 @@ def main():
     p.add_argument("--lr", type=float, default=3e-4)
     p.add_argument("--warmup", type=int, default=500)
     p.add_argument("--wd", type=float, default=0.1)
+    # Muon lr is not comparable to AdamW's: the update is orthogonalised, so its
+    # scale is set by the matrix shape rather than by the gradient magnitude.
+    p.add_argument("--muon-lr", type=float, default=0.02)
     p.add_argument("--clip", type=float, default=1.0)
     p.add_argument("--c-max2", type=int, default=32, help="recurrence cap per block position")
     p.add_argument("--eval-every", type=int, default=500)
@@ -222,9 +230,6 @@ def main():
     p.add_argument("--out", default="ckpt")
     p.add_argument("--limit-mb", type=int, default=None)
     p.add_argument("--resume", default=None)
-    p.add_argument("--ewc-lambda", type=float, default=5000.0)
-    p.add_argument("--prev-ewc", default=None, help="EWC state from the previous domain")
-    p.add_argument("--no-ewc-consolidate", action="store_true")
     p.add_argument("--max-hours", type=float, default=None,
                    help="wall-clock budget; the step count is re-fit to it after a "
                         "timing probe so the cosine schedule always anneals fully")
@@ -268,20 +273,24 @@ def main():
         print(f"  {k:32s} {v/1e6:8.2f} M", flush=True)
     print(f"  {'total':32s} {total/1e6:8.2f} M", flush=True)
 
-    ewc = EWC(lam=a.ewc_lambda)
-    if a.prev_ewc:
-        ewc.load_state_dict(torch.load(a.prev_ewc, map_location=device))
-        print(f"EWC anchored to {len(ewc.anchor)} shared tensors", flush=True)
-
+    # Muon on the matmul weights, AdamW on everything else (see muon.py for why
+    # the split is by role rather than by shape).  Two optimisers, not one with
+    # two groups: their update rules and sane lrs differ by an order of magnitude.
+    muon_p, adam_p = split_params(model)
     # phi is the learned step embedding: 2-D, so it would land in the decay group
     # by shape, but decaying it toward zero pulls every recurrence's code back onto
     # the same point and erases the depth signal it exists to carry.
     nodec = lambda n, q: q.dim() < 2 or n.endswith("phi")
-    decay = [q for n, q in model.named_parameters() if not nodec(n, q)]
-    nodecay = [q for n, q in model.named_parameters() if nodec(n, q)]
+    decay = [q for n, q in adam_p if not nodec(n, q)]
+    nodecay = [q for n, q in adam_p if nodec(n, q)]
     opt = torch.optim.AdamW([{"params": decay, "weight_decay": a.wd},
                              {"params": nodecay, "weight_decay": 0.0}],
                             lr=a.lr, betas=(0.9, 0.95), eps=1e-8)
+    muon = Muon([q for _, q in muon_p], lr=a.muon_lr, weight_decay=a.wd)
+    print(f"  muon {sum(q.numel() for _, q in muon_p)/1e6:.2f} M in "
+          f"{len(muon_p)} tensors | adamw "
+          f"{sum(q.numel() for _, q in adam_p)/1e6:.2f} M in {len(adam_p)}",
+          flush=True)
     # Auto-resume: default to this domain's own last.pt so an interrupted run is
     # continued by re-running the identical command, with no flag to remember.
     start, best_dev = 0, float("inf")
@@ -290,6 +299,8 @@ def main():
         ck = torch.load(resume, map_location=device, weights_only=False)
         model.load_state_dict(ck["model"])
         opt.load_state_dict(ck["opt"])
+        if "muon" in ck:
+            muon.load_state_dict(ck["muon"])
         start = ck["step"]
         best_dev = ck.get("best_dev", ck.get("dev_loss", float("inf")))
         print(f"resumed from {resume} at step {start} (best dev {best_dev:.4f})", flush=True)
@@ -307,31 +318,58 @@ def main():
                                                           max(1, (n or a.steps) - a.warmup)))))
 
     step = start - 1
+    diverged = False
     while True:
         step += 1
         if step >= budget:
             break
+        frac = sched(step, budget)
         for g in opt.param_groups:
-            g["lr"] = a.lr * sched(step, budget)
+            g["lr"] = a.lr * frac
+        for g in muon.param_groups:
+            g["lr"] = a.muon_lr * frac
         opt.zero_grad(set_to_none=True)
+        muon.zero_grad(set_to_none=True)
         lm = 0.0
+        router_warmup = step < a.warmup
         for i in range(a.accum):
             x, y = next(it)
             with autocast_ctx(kind, amp):
-                _, loss, (d2, d3) = model(x, labels=y)
+                _, loss, depth = model(x, labels=y, router_warmup=router_warmup)
             lm += float(loss.detach())
-            scaler.scale((loss + ewc.penalty(model)) / a.accum).backward()
+            scaler.scale(loss / a.accum).backward()
         # unscale before clipping, or the clip threshold is applied to scaled grads
         if amp == "fp16":
             scaler.unscale_(opt)
         gn = torch.nn.utils.clip_grad_norm_(model.parameters(), a.clip)
 
+        # Stop before the optimiser step, not after: once a NaN/inf gradient is
+        # applied the weights are permanently corrupted (clipping cannot fix a
+        # value that is already non-finite, only bound a large-but-finite one),
+        # and every step after that just burns GPU time producing more NaN.
+        # Caught here the current weights are still last step's good state, so
+        # the most recent eval checkpoint (last.pt) stays the true resume point.
+        # loss only, not gnorm: lm is already a synced Python float (from
+        # loss.detach() above) so this check is free; float(gn) would force an
+        # extra GPU sync every step for a signal loss already carries -- every
+        # divergence seen so far took both non-finite in the same step.
+        if not math.isfinite(lm):
+            print(f"step {step:6d}  NON-FINITE loss={lm}  gnorm={float(gn)} -- "
+                  f"stopping before the optimiser step corrupts the weights. "
+                  f"Resume point is the last checkpoint in {a.out}.", flush=True)
+            diverged = True
+            break
+
         if kind == "xla":
             import torch_xla.core.xla_model as xm
             xm.optimizer_step(opt, barrier=True)
+            muon.step()
         else:
             scaler.step(opt)
             scaler.update()
+            # Muon has no GradScaler path: unscale_ above already applied to the
+            # shared grads under fp16, and Muon normalises the update anyway.
+            muon.step()
 
         if a.max_hours and step == start + 2:
             t_probe = time.time()
@@ -352,27 +390,24 @@ def main():
             # pinned at the cap -- which is exactly how a halting rule that never
             # fired went unnoticed until the std turned out to be 0.00.
             print(f"step {step:6d}  loss {lm:.4f}  ppl {math.exp(min(20, lm)):9.2f}  "
-                  f"gnorm {float(gn):.2f}  depth {float(d2.float().mean()):.1f}"
-                  f"[{int(d2.min())}-{int(d2.max())}]/{float(d3.float().mean()):.1f}"
-                  f"[{int(d3.min())}-{int(d3.max())}]  {tok_s:.0f} tok/s", flush=True)
+                  f"gnorm {float(gn):.2f}  depth {float(depth.float().mean()):.1f}"
+                  f"[{int(depth.min())}-{int(depth.max())}]  {tok_s:.0f} tok/s",
+                  flush=True)
             st = getattr(model, "aux_stats", None)
             if st:
+                div_str = f"  div {st['div']:.4f}" if "div" in st else ""
                 print(f"     aux {st['aux']:.3f}  entropy {st['entropy']:.3f}  "
-                      f"frac {st['frac']}", flush=True)
+                      f"frac {st['frac']}{div_str}", flush=True)
             hist.append({"step": step, "loss": lm, "gnorm": float(gn), "routing": st})
 
         if a.eval_every and step and step % a.eval_every == 0:
-            vl, (vd2, vd3) = evaluate(model, data["dev"], a.batch, device, kind=kind, amp=amp)
-            gh = gate_health(model)
-            # exp(-gh/64) < 0.5, i.e. KDA is dropping over half its state per
-            # token and is no longer carrying much context.  Not a numerics
-            # problem any more -- a modelling one.
-            warn = "  !! KDA retaining <50%/token, barely acting as memory" if gh > 44.0 else ""
+            vl, vd = evaluate(model, data["dev"], a.batch, device, kind=kind, amp=amp)
             print(f"  == dev loss {vl:.4f}  ppl {math.exp(min(20, vl)):.2f}  "
-                  f"depth {vd2:.1f}/{vd3:.1f}  gcum {gh:.1f}{warn}", flush=True)
-            hist.append({"step": step, "dev_loss": vl, "dev_depth": [vd2, vd3], "gcum": gh})
+                  f"depth {vd:.1f}", flush=True)
+            hist.append({"step": step, "dev_loss": vl, "dev_depth": vd})
 
             payload = {"model": model.state_dict(), "opt": opt.state_dict(),
+                       "muon": muon.state_dict(),
                        "step": step + 1, "cfg": cfg.__dict__, "dev_loss": vl,
                        "best_dev": min(vl, best_dev)}
             # last.pt always: the resume point.  best.pt only on improvement, and
@@ -384,30 +419,26 @@ def main():
                 print(f"     new best dev {vl:.4f} -> {a.domain}.best.pt", flush=True)
             json.dump(hist, open(os.path.join(a.out, f"{a.domain}.hist.json"), "w"))
 
-    vl, (vd2, vd3) = evaluate(model, data["dev"], a.batch, device, kind=kind, amp=amp)
-    gh = gate_health(model)
-    print(f"FINAL dev loss {vl:.4f}  ppl {math.exp(min(20, vl)):.2f}  "
-          f"depth {vd2:.1f}/{vd3:.1f}  gcum {gh:.1f}", flush=True)
-    # Record it like any other eval.  Omitting this made the run's BEST dev
-    # invisible to anything reading hist.json: a pilot reported 6.5026 from an
-    # intermediate eval while the final was 6.2969.
-    hist.append({"step": step + 1, "dev_loss": vl, "dev_depth": [vd2, vd3],
-                 "gcum": gh, "final": True})
-    payload = {"model": model.state_dict(), "opt": opt.state_dict(),
-               "step": step + 1, "cfg": cfg.__dict__, "dev_loss": vl,
-               "best_dev": min(vl, best_dev)}
-    save_ckpt(os.path.join(a.out, f"{a.domain}.last.pt"), payload)
-    if vl < best_dev:
-        best_dev = vl
-        save_ckpt(os.path.join(a.out, f"{a.domain}.best.pt"), payload)
-    print(f"best dev {best_dev:.4f} -> {a.domain}.best.pt", flush=True)
+    if not diverged:
+        vl, vd = evaluate(model, data["dev"], a.batch, device, kind=kind, amp=amp)
+        print(f"FINAL dev loss {vl:.4f}  ppl {math.exp(min(20, vl)):.2f}  "
+              f"depth {vd:.1f}", flush=True)
+        # Record it like any other eval.  Omitting this made the run's BEST dev
+        # invisible to anything reading hist.json: a pilot reported 6.5026 from an
+        # intermediate eval while the final was 6.2969.
+        hist.append({"step": step + 1, "dev_loss": vl, "dev_depth": vd, "final": True})
+        payload = {"model": model.state_dict(), "opt": opt.state_dict(),
+                   "muon": muon.state_dict(),
+                   "step": step + 1, "cfg": cfg.__dict__, "dev_loss": vl,
+                   "best_dev": min(vl, best_dev)}
+        save_ckpt(os.path.join(a.out, f"{a.domain}.last.pt"), payload)
+        if vl < best_dev:
+            best_dev = vl
+            save_ckpt(os.path.join(a.out, f"{a.domain}.best.pt"), payload)
+        print(f"best dev {best_dev:.4f} -> {a.domain}.best.pt", flush=True)
 
-    # 9 steps 5-6: hand the next domain a Fisher-weighted anchor on the scaffold.
-    if not a.no_ewc_consolidate:
-        ewc.consolidate(model, batches(data["train"], a.batch, device, seed=1))
-        torch.save(ewc.state_dict(), os.path.join(a.out, f"{a.domain}.ewc.pt"))
     json.dump(hist, open(os.path.join(a.out, f"{a.domain}.hist.json"), "w"))
-    print("done", flush=True)
+    print("diverged" if diverged else "done", flush=True)
 
 
 if __name__ == "__main__":

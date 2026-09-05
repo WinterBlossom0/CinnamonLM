@@ -20,20 +20,26 @@ from cinnamon.model import CinnamonModel
 # calls per recurrence for the same token count -- this is a speed knob for the
 # test, not a claim about what the shipped model should use.
 SMALL = dict(d_model=128, d_ff=512, vocab=512, n_heads=4, head_dim=32,
-             kda_head_dim=32,         # pinned: SMALL is the known-good reference
-             kv_lora_rank=32, q_lora_rank=64, rank=8, lora_alpha=16, phi_dim=16,
-             r_ceiling=8, r_free=2, turns=2, c_max2=8, n_hypernets=2, kda_chunk=32)
+             rank=8, lora_alpha=16, phi_dim=16,
+             r_ceiling=8, r_free=2, turns=2, c_max2=8, n_hypernets=2)
 
 
-def _run(cfg, steps, bs=4, seq=64, lr=3e-4, seed=0, log_every=0):
+def _run(cfg, steps, bs=4, seq=64, lr=3e-4, seed=0, log_every=0, warmup=None):
     torch.manual_seed(seed)
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     m = CinnamonModel(cfg).to(dev)
     opt = torch.optim.AdamW(m.parameters(), lr=lr, betas=(0.9, 0.95), weight_decay=0.1)
     ids = torch.randint(0, cfg.vocab, (bs, seq + 1), device=dev)
     x, y = ids[:, :-1], ids[:, 1:]
+    warmup = max(1, steps // 20) if warmup is None else warmup
     losses = []
     for s in range(steps):
+        # Warmup + cosine anneal to 0.1x, matching train.py.  A constant LR keeps
+        # taking full-size steps around a minimum instead of settling into it.
+        for g in opt.param_groups:
+            g["lr"] = lr * (min(1.0, (s + 1) / warmup) if s < warmup else
+                            0.1 + 0.45 * (1 + math.cos(math.pi * min(
+                                1.0, (s - warmup) / max(1, steps - warmup)))))
         opt.zero_grad(set_to_none=True)
         _, loss, d = m(x, labels=y)
         loss.backward()
@@ -42,7 +48,7 @@ def _run(cfg, steps, bs=4, seq=64, lr=3e-4, seed=0, log_every=0):
         losses.append(float(loss))
         if log_every and s % log_every == 0:
             print(f"    step {s:4d}  loss {losses[-1]:7.4f}  "
-                  f"depth {float(d[0].float().mean()):.1f}/{float(d[1].float().mean()):.1f}",
+                  f"depth {float(d.float().mean()):.1f}",
                   flush=True)
     return m, losses, d
 
@@ -60,8 +66,13 @@ def test_overfits_a_fixed_batch():
 
 
 def test_depth_is_data_dependent():
-    """Adaptive depth is the whole point; if every token always runs to c_max the
-    halting rule is inert and the model is just a fixed deep stack."""
+    """Adaptive depth is the whole point; if every batch always runs to c_max the
+    halting rule is inert and the model is just a fixed deep stack.
+
+    Halting compares batch means, so depth is uniform WITHIN a batch by design --
+    the six batches here are what makes this a real test.  `seen` therefore holds
+    one depth per batch per block, not one per token.
+    """
     torch.manual_seed(0)
     cfg = Config(**SMALL, grad_checkpoint=False)
     dev = "cuda" if torch.cuda.is_available() else "cpu"
@@ -70,8 +81,8 @@ def test_depth_is_data_dependent():
     with torch.no_grad():
         for s in range(6):
             ids = torch.randint(0, cfg.vocab, (4, 64), device=dev)
-            _, _, (d2, d3) = m(ids)
-            seen |= set(d2.flatten().tolist()) | set(d3.flatten().tolist())
+            _, _, depth = m(ids)
+            seen |= set(depth.flatten().tolist())
     print(f"  observed depths: {sorted(seen)}")
     assert min(seen) >= cfg.r_free, f"halted before r_free: {min(seen)}"
     assert max(seen) <= cfg.c_max2, f"exceeded c_max2: {max(seen)}"
@@ -81,21 +92,22 @@ def test_depth_is_data_dependent():
 def test_grad_checkpointing_matches_plain():
     """Checkpointing must be invisible to the result, only to memory."""
     torch.manual_seed(0)
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
     a = Config(**SMALL, grad_checkpoint=True)
     b = Config(**SMALL, grad_checkpoint=False)
     torch.manual_seed(0)
-    ma = CinnamonModel(a)
+    ma = CinnamonModel(a).to(dev)
     torch.manual_seed(0)
-    mb = CinnamonModel(b)
+    mb = CinnamonModel(b).to(dev)
     mb.load_state_dict(ma.state_dict())
-    ids = torch.randint(0, a.vocab, (2, 32))
+    ids = torch.randint(0, a.vocab, (2, 32), device=dev)
     _, la, _ = ma(ids, labels=ids)
     _, lb, _ = mb(ids, labels=ids)
     la.backward()
     lb.backward()
     assert torch.allclose(la, lb, atol=1e-5), (float(la), float(lb))
-    ga = ma.e2.expert.dyn_up.weight.grad
-    gb = mb.e2.expert.dyn_up.weight.grad
+    ga = ma.expert.expert.dyn_up.weight.grad
+    gb = mb.expert.expert.dyn_up.weight.grad
     assert torch.allclose(ga, gb, atol=1e-5, rtol=1e-3)
 
 

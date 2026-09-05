@@ -9,7 +9,7 @@ import sys
 
 # name -> (hf repo, config, how to turn a row into text)
 DATASETS = {
-    "babylm":      ("BabyLM-community/BabyLM-2026-Strict", None, lambda r: r["text"]),
+    "babylm":      ("BabyLM-community/BabyLM-2026-Strict-Small", None, lambda r: r["text"]),
     "wikitext":    ("Salesforce/wikitext", "wikitext-103-raw-v1", lambda r: r["text"]),
     # WikiText-2, the small sibling: ~4.7 MB, 36,718 / 3,760 / 4,358 rows with
     # organiser-defined splits.  "raw" matters -- the non-raw configs are
@@ -17,7 +17,7 @@ DATASETS = {
     # model on a vocabulary the tokenizer does not share.
     #
     # It is ~2 M tokens, so it is a FAST ITERATION corpus, not a corpus to build a
-    # model on: at 44.63 M non-embedding parameters that is ~0.05 tokens/param
+    # model on: at 40.39 M non-embedding parameters that is ~0.07 tokens/param
     # against a Chinchilla-optimal ~20.  Expect it to memorise rather than
     # generalise.  Useful precisely because an epoch is ~1 h instead of ~4.5 days.
     "wikitext2":   ("Salesforce/wikitext", "wikitext-2-raw-v1", lambda r: r["text"]),
@@ -76,7 +76,7 @@ def _file_iter(path, max_bytes, skip_bytes, chunk_lines=2000):
         if buf:
             yield "".join(buf)
 
-BABYLM_TRAIN = "BabyLM-community/BabyLM-2026-Strict"
+BABYLM_TRAIN = "BabyLM-community/BabyLM-2026-Strict-Small"
 BABYLM_DEV = "BabyLM-community/BabyLM-dev"
 BABYLM_DOMAINS = ["bnc_spoken", "childes", "gutenberg",
                   "open_subtitles", "simple_wiki", "switchboard"]

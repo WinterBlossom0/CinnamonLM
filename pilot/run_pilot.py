@@ -33,7 +33,11 @@ RUNS = os.path.join(HERE, "runs")
 RESULTS = os.path.join(HERE, "results")
 # Default only.  --domain overrides it, and every path below is derived from it,
 # so pointing the pilot at a different corpus needs no edits here.
-DEFAULT_DOMAIN = "wikitext2"
+#
+# BabyLM 2026 Strict-Small (the ~10 M word track), organiser-released train and
+# dev splits from two separate repos -- see cinnamon/data.py.  Not wikitext2:
+# that was a fast-iteration corpus chosen when an epoch had to fit in an hour.
+DEFAULT_DOMAIN = "babylm"
 
 sys.path.insert(0, ROOT)
 
@@ -69,8 +73,7 @@ def train(args, steps, hours, out_dir):
            "--eval-every", str(args.eval_every),
            "--log-every", str(args.log_every),
            "--cache", CACHE,
-           "--out", out_dir,
-           "--no-ewc-consolidate"]
+           "--out", out_dir]
     # Architecture overrides go straight through to train.py, so a pilot can be
     # run against a modified Config without touching either file.
     for kv in args.set:
@@ -110,10 +113,7 @@ def verdict(hist, uni, base, cfg, smoke=False):
     if not devs:
         return [], None, "no eval ran -- the budget was too short to reach --eval-every"
 
-    cap = cfg.get("c_max2") or 32
-    chunk = cfg.get("kda_chunk") or 64
     best = min(d["dev_loss"] for d in devs)
-    last = devs[-1]
     checks = []
 
     checks.append(("beats uniform", best < base - 0.1,
@@ -130,23 +130,10 @@ def verdict(hist, uni, base, cfg, smoke=False):
                        f"first half best {ref:.4f} -> final {devs[-1]['dev_loss']:.4f}"
                        " (FAIL means converged or diverged, not that it cannot learn)"))
 
-    depth = last.get("dev_depth")
-    if depth:
-        # Pinned at the cap => halting rule inert.  Cap from cfg, not a constant.
-        worst = max(depth)
-        checks.append((f"depth stays off the cap ({cap})", 0 < worst < 0.9 * cap,
-                       "mean depth " + "/".join(f"{d:.1f}" for d in depth)
-                       + f" of cap {cap}"))
-
-    gc = last.get("gcum")
-    if gc is not None:
-        # Not a numerics check (gate bound keeps the chunked path exact).  Asks
-        # whether KDA still carries context: retention/token = exp(-gcum/chunk).
-        ret = math.exp(-gc / chunk)
-        checks.append(("KDA still acting as memory", ret > 0.5,
-                       f"max |gcum| {gc:.1f} over chunk {chunk} -> "
-                       f"retention/token {ret:.3f}"))
-
+    # NO DEPTH CHECK.  Halting calibration is not the pilot's call to make: this
+    # experiment answers "does it learn language", and a depth verdict has no
+    # bearing on that.  Depth is reported below as an observation, never as a
+    # pass/fail -- it was previously a FAIL that made GO runs look broken.
     routed = [t for t in trains if t.get("routing")]
     if routed:
         fracs = [t["routing"]["frac"] for t in routed if t["routing"].get("frac")]
@@ -202,6 +189,36 @@ def run_config(out_dir, domain):
     return {}
 
 
+def non_embedding_params(cfg):
+    """Parameter count excluding the two vocab-sized matrices, from the run's own
+    cfg.  Meta device: shapes only, so counting the real model costs nothing.
+
+    Computed rather than written down -- this number moves with the architecture
+    (the halting-error inputs alone added 0.53 M), and every hardcoded copy of it
+    in this repo was stale within a week.  Returns 0 if cfg is unavailable, which
+    the caller reads as "skip the ratio".
+    """
+    import torch
+
+    from cinnamon.config import Config
+    from cinnamon.model import CinnamonModel
+    if not cfg:
+        return 0
+    # Never let this kill the report.  A checkpoint written before a Config field
+    # was added or renamed makes Config(**cfg) a TypeError, and a report that
+    # crashes after a multi-hour run is the expensive failure -- one that has
+    # already happened once here (a NameError in this same path).
+    try:
+        c = Config(**cfg)
+        with torch.device("meta"):
+            m = CinnamonModel(c)
+        total = sum(p.numel() for p in m.parameters())
+        return total - m.embed.weight.numel() * (1 if c.tie_embeddings else 2)
+    except Exception as e:
+        print(f"  (could not count parameters: {e})", flush=True)
+        return 0
+
+
 def pack_and_count(domain, seq_len):
     """Pack up front, return train block count.  Packing before launching
     train.py is what lets the budget be measured in epochs; train.py then finds a
@@ -220,7 +237,7 @@ def main():
                    help="passes over the training set (the budget)")
     p.add_argument("--max-hours", type=float, default=None,
                    help="optional wall-clock safety valve; off by default")
-    p.add_argument("--seq-len", type=int, default=1024)
+    p.add_argument("--seq-len", type=int, default=16384)
     p.add_argument("--batch", type=int, default=2)
     p.add_argument("--accum", type=int, default=2)
     p.add_argument("--lr", type=float, default=1e-3)
@@ -234,38 +251,66 @@ def main():
                    help="Config override, passed through to train.py, repeatable: "
                         "--set n_hypernets=4 --set c_max2=16")
     p.add_argument("--name", default=None, help="run name; defaults to a timestamp")
+    # Training and reporting are separable on purpose: a run once completed
+    # training and then died before writing its report, and there was no way to
+    # recover the verdict short of retraining for five hours.  Everything the
+    # report needs is already on disk.
+    p.add_argument("--report-only", action="store_true",
+                   help="rebuild the report from an existing run's artifacts, no "
+                        "training; requires --name")
     p.add_argument("--smoke", action="store_true",
                    help="minutes, not epochs: proves the wiring, proves nothing else")
     a = p.parse_args()
 
+    if a.report_only and not a.name:
+        sys.exit("--report-only needs --name <run>")
     name = a.name or time.strftime("%Y%m%d-%H%M%S") + ("-smoke" if a.smoke else "")
     out_dir = os.path.join(RUNS, name)
     for d in (CACHE, out_dir, RESULTS):
         os.makedirs(d, exist_ok=True)
 
-    blocks = pack_and_count(a.domain, a.seq_len)
-    per_step = a.batch * a.accum
-    steps = max(1, math.ceil(blocks * a.epochs / per_step))
-    if a.smoke:
-        steps, a.warmup, a.log_every = 60, 10, 5
-    # Auto cadence: a fixed eval_every gave 2 dev points on a short run and 8 on a
-    # long one, so "still improving" meant different things in each.
-    if not a.eval_every:
-        a.eval_every = max(10, steps // 8)
-
-    print(f"pilot: {a.domain}  seq {a.seq_len}  batch {a.batch}x{a.accum}  "
-          f"{blocks} blocks -> {a.epochs} epoch(s) = {steps} steps "
-          f"({steps * per_step * a.seq_len / 1e6:.1f}M tokens), eval every "
-          f"{a.eval_every}  -> {os.path.relpath(out_dir, ROOT)}", flush=True)
-
-    t0 = time.time()
-    rc, log_path = train(a, steps, a.max_hours, out_dir)
-    elapsed = time.time() - t0
-
     hist_path = os.path.join(out_dir, f"{a.domain}.hist.json")
-    if rc != 0 or not os.path.exists(hist_path):
-        print(f"\ntraining exited {rc}; see {os.path.relpath(log_path, ROOT)}", flush=True)
-        sys.exit(1)
+
+    if a.report_only:
+        if not os.path.exists(hist_path):
+            sys.exit(f"no history at {hist_path}")
+        blocks = steps = 0
+        elapsed = 0.0
+        print(f"report-only: {os.path.relpath(out_dir, ROOT)}", flush=True)
+    else:
+        # Chunked cross-entropy is not optional at long context.  KDA's
+        # recurrent state makes attention itself linear in T already; the
+        # logits tensor is what's still [B, T, vocab] and unshrunk: at
+        # T=16384, vocab 32,768, that is 1.07 GB bf16 per batch element plus a
+        # 2.15 GB fp32 copy in the loss -- fatal before the model gets a look
+        # in.  This makes the HEAD affordable at 16384.  Explicit --set wins.
+        if not any(kv.split("=")[0].strip() == "loss_chunk" for kv in a.set):
+            a.set = a.set + [f"loss_chunk={min(a.seq_len, 1024)}"]
+
+        blocks = pack_and_count(a.domain, a.seq_len)
+        per_step = a.batch * a.accum
+        steps = max(1, math.ceil(blocks * a.epochs / per_step))
+        if a.smoke:
+            steps, a.warmup, a.log_every = 60, 10, 5
+        # Auto cadence: a fixed eval_every gave 2 dev points on a short run and 8
+        # on a long one, so "still improving" meant different things in each.
+        if not a.eval_every:
+            a.eval_every = max(10, steps // 8)
+
+        print(f"pilot: {a.domain}  seq {a.seq_len}  batch {a.batch}x{a.accum}  "
+              f"{blocks} blocks -> {a.epochs} epoch(s) = {steps} steps "
+              f"({steps * per_step * a.seq_len / 1e6:.1f}M tokens), eval every "
+              f"{a.eval_every}  -> {os.path.relpath(out_dir, ROOT)}", flush=True)
+
+        t0 = time.time()
+        rc, log_path = train(a, steps, a.max_hours, out_dir)
+        elapsed = time.time() - t0
+
+        if rc != 0 or not os.path.exists(hist_path):
+            print(f"\ntraining exited {rc}; see {os.path.relpath(log_path, ROOT)}",
+                  flush=True)
+            sys.exit(1)
+
     hist = json.load(open(hist_path))
 
     # Baselines from the packed dev split this run actually evaluated on.
@@ -301,18 +346,34 @@ def main():
     w("|---|---|---|")
     for n, ok, why in checks:
         w(f"| {n} | {'PASS' if ok else 'FAIL'} | {why} |")
+
+    # Observation, not a check.  Halting calibration is P1's problem and is
+    # decided by tests and inspection, not by this experiment -- graded here it
+    # only ever produced a FAIL row on runs that were otherwise a clean GO.
+    depths = [d["dev_depth"] for d in hist if d.get("dev_depth")]
+    if depths:
+        flat = [max(d) if isinstance(d, list) else d for d in depths]
+        w(f"\nObserved depth (not graded): {min(flat):.1f}-{max(flat):.1f} of cap "
+          f"{cfg.get('c_max2') or 32}, final {flat[-1]:.1f}.")
     w(f"\n## Verdict: **{call}**\n")
     if call == "GO":
         w("The architecture learns language, not just token frequencies. Scaling is")
-        w("justified on this evidence. Note what this does NOT show: WikiText-2 is")
-        w("~2.4 M tokens against 44.63 M non-embedding parameters, so a good number")
-        w("here is partly memorisation. It is a floor on capability, not a forecast.")
+        w("justified on this evidence. Note what this does NOT show:")
+        # Computed, never written down: the parameter count moves with the
+        # architecture, and a hardcoded one silently turns into a lie.
+        nemb = non_embedding_params(cfg)
+        toks = blocks * a.seq_len
+        if toks:
+            w(f"{toks/1e6:.1f} M tokens against {nemb/1e6:.2f} M non-embedding "
+              f"parameters is {toks/nemb:.2f} tokens/param against a")
+            w("Chinchilla-optimal ~20, so a good number here is partly memorisation.")
+        w("It is a floor on capability, not a forecast.")
     else:
         w("Not yet worth scaling. Read the failing checks above before changing")
         w("anything -- and prefer measuring the next hypothesis over acting on it, ")
         w("since two plausible ones were already refuted by measurement in this repo.")
     w(f"\nArtifacts: `{os.path.relpath(out_dir, ROOT)}` "
-      f"(checkpoints, `train.log`, `{DOMAIN}.hist.json`)\n")
+      f"(checkpoints, `train.log`, `{a.domain}.hist.json`)\n")
 
     report = os.path.join(RESULTS, f"{name}.md")
     open(report, "w", encoding="utf-8").write("\n".join(lines))

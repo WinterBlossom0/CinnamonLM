@@ -1,108 +1,12 @@
-"""Self-checks for the low-level components: KDA, DoRA, the hypernetwork,
-AttnRes.  Run: python -m tests.test_model"""
+"""Self-checks for the low-level components: KDA, DoRA and the hypernetwork."""
 import torch
 
-from cinnamon.attnres import AttnRes
 from cinnamon.blocks import ExpertBlock
 from cinnamon.config import TINY, Config
-from cinnamon.halting import rel_error
+from cinnamon.halting import fixed_point_residual
 from cinnamon.hypernet import compose_dora, dora_linear
-from cinnamon.kda import KDA, inv_unit_lower
 from cinnamon.model import CinnamonModel
 from cinnamon.routed import RoutedBlock
-
-
-def test_inv_unit_lower():
-    torch.manual_seed(0)
-    M = torch.randn(3, 16, 16, dtype=torch.float64).tril(-1)
-    I = torch.eye(16, dtype=torch.float64)
-    assert torch.allclose(inv_unit_lower(M) @ (I + M), I.expand_as(M), atol=1e-9)
-
-
-def test_kda_chunked_matches_recurrence():
-    """The whole point of the chunked form: it must equal the naive delta rule."""
-    torch.manual_seed(0)
-    for chunk in (4, 8, 16):
-        k = KDA(Config(**{**TINY, 'kda_chunk': chunk})).double()
-        x = torch.randn(2, 24, 64, dtype=torch.float64)      # 24 % 16 != 0 -> pads
-        assert torch.allclose(k(x), k.reference(x), atol=1e-8), f"chunk={chunk}"
-
-
-def test_kda_survives_correlated_keys():
-    """Regression: the UT-transform inverse (I+M)^-1 grows like 2^chunk when keys
-    inside a chunk align and beta approaches 1.  At chunk 64 this overflowed fp32
-    ~180 steps into a real run; at 32 it was silently 33% wrong.  Drive the model
-    into that regime deliberately and require it to still match the exact
-    recurrence.
-    """
-    torch.manual_seed(0)
-    k = KDA(Config(**TINY)).double().eval()
-    with torch.no_grad():
-        k.beta.bias.fill_(6.0)          # beta -> ~1, the hard-overwrite regime
-        k.g_up.bias.fill_(-12.0)        # almost no decay, so nothing damps M
-    # near-identical inputs => near-identical keys => worst-case conditioning
-    base = torch.randn(1, 1, 64, dtype=torch.float64)
-    x = base.expand(2, 96, 64) + 0.01 * torch.randn(2, 96, 64, dtype=torch.float64)
-    out = k(x)
-    assert torch.isfinite(out).all(), "chunked KDA overflowed on correlated keys"
-    rel = (out - k.reference(x)).norm() / k.reference(x).norm()
-    assert rel < 1e-5, f"chunked KDA diverged from exact recurrence: rel err {rel:.3g}"
-
-
-def test_kda_survives_a_drifted_gate():
-    """The failure this file did not catch for a long time.
-
-    Every other KDA test runs at initialisation, where per-chunk |gcum| is ~7 and
-    the old split form (exp(g_t) * exp(-g_s)) was still accurate.  But the gate is
-    LEARNED, and training pushes it: a real run reached |gcum| 23.3 by step 250,
-    where the split had silently stopped matching the exact recurrence -- 4e-1
-    relative error at 18, and no NaN or loss spike to notice it by.
-
-    Subtracting before exponentiating removes the failure mode rather than moving
-    it, so this sweeps far past anything training could plausibly reach and
-    requires exactness throughout.
-    """
-    from cinnamon.kda import _G_RANGE
-
-    for chunk in (16, 64):
-        for bias in (-3.0, -1.5, 0.5):                 # increasingly hard decay
-            torch.manual_seed(0)
-            k = KDA(Config(**{**TINY, 'kda_chunk': chunk})).double().eval()
-            with torch.no_grad():
-                k.g_up.bias.fill_(bias)                # drive the decay gate hard
-            x = torch.randn(2, 256, 64, dtype=torch.float64)
-            with torch.no_grad():
-                out, ref = k(x), k.reference(x)
-
-            # The bound is what makes the split form safe, so assert the bound
-            # itself holds -- not merely that this particular input was fine.
-            assert float(k._max_gcum) <= _G_RANGE + 1e-9, (
-                f"chunk {chunk} bias {bias}: |gcum| {float(k._max_gcum):.2f} escaped "
-                f"the {_G_RANGE} bound, so the split form is outside its safe range")
-            assert torch.isfinite(out).all()
-            rel = float((out - ref).norm() / ref.norm())
-            assert rel < 1e-9, (
-                f"chunk {chunk} bias {bias}, |gcum| {float(k._max_gcum):.2f}: "
-                f"chunked diverged from exact, rel {rel:.3g}")
-
-
-def test_kda_is_causal():
-    """Changing token t must not move any output before t."""
-    torch.manual_seed(0)
-    k = KDA(Config(**TINY)).double().eval()
-    x = torch.randn(1, 20, 64, dtype=torch.float64)
-    y = k(x)
-    x2 = x.clone()
-    x2[:, 12] += 3.0
-    y2 = k(x2)
-    assert torch.allclose(y[:, :12], y2[:, :12], atol=1e-9)
-    assert not torch.allclose(y[:, 12:], y2[:, 12:], atol=1e-6)
-
-
-def test_attnres_zero_query_is_uniform_average():
-    a = AttnRes(Config(**TINY))
-    src = [torch.randn(2, 5, 64) for _ in range(4)]
-    assert torch.allclose(a(src), torch.stack(src).mean(0), atol=1e-6)
 
 
 def test_unit_row_col_norm():
@@ -146,15 +50,15 @@ def test_dora_factorised_matches_reference():
     e = ExpertBlock(c).double()
     hyp = e.hypers[0]
     with torch.no_grad():                       # a non-trivial (trained-like) code
-        hyp.l3.weight.normal_(0, 0.05)
+        e.basis.w.weight.normal_(0, 0.05)
 
     x = torch.randn(2, 5, c.d_model, dtype=torch.float64)
-    vec = hyp.forward_token(3, x, e.base_norms())          # [2, 5, n_out]
-    A_u, B_u, m_u, A_d, B_d, m_d = hyp.unpack(vec)
+    vec = e.basis(hyp.forward_token(3, x, e.base_norms()))  # [2, 5, n_out]
+    A_u, B_u, m_u, A_d, B_d, m_d = e.basis.unpack(vec)
 
     got = dora_linear(x, e.dyn_up.weight, A_u, B_u, m_u, c)
     # reference: build the matrix, then apply it per token
-    W_up, _ = compose_dora(hyp, vec, e.dyn_up.weight, e.dyn_down.weight, c)
+    W_up, _ = compose_dora(e.basis, vec, e.dyn_up.weight, e.dyn_down.weight, c)
     want = torch.einsum('bsi,bsoi->bso', x, W_up)
     assert torch.allclose(got, want, atol=1e-10), \
         f"factorised DoRA diverges from reference: max {(got - want).abs().max():.2e}"
@@ -162,24 +66,66 @@ def test_dora_factorised_matches_reference():
     # and the down projection, whose input width is d_ff not d_model
     y = torch.randn(2, 5, c.d_ff, dtype=torch.float64)
     got_d = dora_linear(y, e.dyn_down.weight, A_d, B_d, m_d, c)
-    _, W_dn = compose_dora(hyp, vec, e.dyn_up.weight, e.dyn_down.weight, c)
+    _, W_dn = compose_dora(e.basis, vec, e.dyn_up.weight, e.dyn_down.weight, c)
     want_d = torch.einsum('bsi,bsoi->bso', y, W_dn)
     assert torch.allclose(got_d, want_d, atol=1e-10), \
         f"down projection diverges: max {(got_d - want_d).abs().max():.2e}"
+
+
+def test_dora_triton_epilogue_matches_reference_and_grads():
+    """Same bar as above, on CUDA -- where dora_linear runs the fused Triton
+    epilogue instead of the aten expression the test above exercises.
+
+    Gradients as well as values: the kernel carries a hand-derived VJP, and
+    nothing else in the suite would notice if it were wrong.
+    """
+    if not torch.cuda.is_available():
+        return
+    from cinnamon.dora_kernel import _ref, dora_epilogue
+
+    torch.manual_seed(0)
+    c = Config(**TINY)
+    e = ExpertBlock(c).double().cuda()
+    with torch.no_grad():
+        e.basis.w.weight.normal_(0, 0.05)
+    x = torch.randn(2, 5, c.d_model, dtype=torch.float64, device="cuda")
+    vec = e.basis(e.hypers[0].forward_token(3, x, e.base_norms()))
+    A_u, B_u, m_u, A_d, B_d, m_d = e.basis.unpack(vec)
+
+    W_up, W_dn = compose_dora(e.basis, vec, e.dyn_up.weight, e.dyn_down.weight, c)
+    got = dora_linear(x, e.dyn_up.weight, A_u, B_u, m_u, c)
+    assert torch.allclose(got, torch.einsum('bsi,bsoi->bso', x, W_up), atol=1e-10)
+    y = torch.randn(2, 5, c.d_ff, dtype=torch.float64, device="cuda")
+    got_d = dora_linear(y, e.dyn_down.weight, A_d, B_d, m_d, c)
+    assert torch.allclose(got_d, torch.einsum('bsi,bsoi->bso', y, W_dn), atol=1e-10)
+
+    # backward: against the aten expression the kernel replaced
+    n, out, r = 9, 64, c.rank
+    g = lambda *s: torch.randn(*s, dtype=torch.float64, device="cuda",
+                               requires_grad=True) * 0.05
+    args = [t.detach().requires_grad_() for t in
+            (g(n, out), g(n, r), g(n, out), g(n, out, r), g(n, r, r), g(n, r, out))]
+    args += [t.detach().requires_grad_() for t in (g(out).abs() + 1, g(out).abs() + 1)]
+    gy = torch.randn(n, out, dtype=torch.float64, device="cuda")
+    grads = [torch.autograd.grad(f(*args, 2.0, c.eps), args, gy)
+             for f in (dora_epilogue, _ref)]
+    for name, a, b in zip("lin ax m B G Q wrow2 wnorm".split(), *grads):
+        assert torch.allclose(a, b, atol=1e-10), \
+            f"d{name} diverges: max {(a - b).abs().max():.2e}"
 
 
 def test_dora_varies_with_r_and_never_chains():
     torch.manual_seed(0)
     c = Config(**TINY)
     e = ExpertBlock(c).double()
-    dora = e.hypers[0](e.base_norms())
+    dora = e.basis(e.hypers[0](e.base_norms()))
     assert dora.shape[0] == c.r_ceiling
-    W = lambda v: compose_dora(e.hypers[0], v, e.dyn_up.weight, e.dyn_down.weight, c)
+    W = lambda v: compose_dora(e.basis, v, e.dyn_up.weight, e.dyn_down.weight, c)
     up0, _ = W(dora[0])
 
     with torch.no_grad():                       # simulate a trained hypernet
-        e.hypers[0].l3.weight.normal_(0, 0.05)
-    dora = e.hypers[0](e.base_norms())
+        e.basis.w.weight.normal_(0, 0.05)
+    dora = e.basis(e.hypers[0](e.base_norms()))
     assert not torch.allclose(W(dora[0])[0], W(dora[3])[0], atol=1e-6)
     # no chaining: every r regenerates from an untouched base
     assert torch.allclose(e.dyn_up.weight, up0 * 0 + e.dyn_up.weight, atol=1e-12)
@@ -192,10 +138,12 @@ def test_dora_stays_depth_dependent_under_training():
     or every recurrence applies identical weights and depth buys nothing.  With
     unit_row_col_norm on B@A this died -- cos(W^(1), W^(32)) measured 0.58-0.74 at
     init and exactly 1.0000 after 60 steps, because the normalisation discards
-    magnitude and l3 had drifted rank-1 along the scale axis it ignores.  Nothing
+    magnitude and the basis had drifted rank-1 along the scale axis it ignores.
+    Nothing
     in the loss curve showed it.
 
-    Drive l3 to where training actually takes it and require r to still matter.
+    Drive the basis to where training actually takes it and require r to still
+    matter.
     """
     torch.manual_seed(0)
     c = Config(**TINY)
@@ -204,9 +152,9 @@ def test_dora_stays_depth_dependent_under_training():
 
     def cos_across_r(std):
         with torch.no_grad():
-            h.l3.weight.normal_(0, std)
-        tab = h(e.base_norms())
-        w0, w1 = (compose_dora(h, tab[r], e.dyn_up.weight, e.dyn_down.weight, c)[0]
+            e.basis.w.weight.normal_(0, std)
+        tab = e.basis(h(e.base_norms()))
+        w0, w1 = (compose_dora(e.basis, tab[r], e.dyn_up.weight, e.dyn_down.weight, c)[0]
                   for r in (0, c.r_ceiling - 1))
         return float(torch.nn.functional.cosine_similarity(
             w0.flatten(), w1.flatten(), dim=0))
@@ -246,14 +194,56 @@ def test_dynamic_ffn_base_is_normalised():
         assert float(Wn.abs().max()) <= 1.0 + 1e-9
 
 
+def test_xielu_matches_the_unfused_reference():
+    """XIELU is fused and torch.compile'd; this pins it to the expression it
+    replaced.  Also the extremes: the whole reason for the masked per-branch form
+    is that an unmasked expm1 overflows to a nan gradient."""
+    import torch.nn.functional as F
+    from cinnamon.attention import XIELU
+
+    torch.manual_seed(0)
+    a = XIELU().cuda().double()
+    ap = F.softplus(a.raw_alpha_p)
+    an = a.BETA_N + F.softplus(a.raw_alpha_n)
+
+    def ref(x):                       # the pre-fusion expression, verbatim
+        xp = torch.where(x > 0, x, torch.zeros_like(x))
+        xn = torch.where(x > 0, torch.zeros_like(x), x)
+        return torch.where(x > 0, ap * xp.square() + 0.5 * xp,
+                           an * torch.expm1(xn) - an * xn + 0.5 * xn)
+
+    x = torch.randn(4, 257, 96, dtype=torch.float64, device="cuda", requires_grad=True)
+    x2 = x.detach().clone().requires_grad_()
+    y, yr = a(x), ref(x2)
+    assert torch.allclose(y, yr, atol=1e-12), f"fwd {(y - yr).abs().max():.2e}"
+    gy = torch.randn_like(y)
+    y.backward(gy)
+    yr.backward(gy)
+    assert torch.allclose(x.grad, x2.grad, atol=1e-12), f"dx {(x.grad - x2.grad).abs().max():.2e}"
+
+    xe = torch.tensor([[-1e4, -80.0, -1.0, 0.0, 1.0, 80.0, 1e4]],
+                      dtype=torch.float64, device="cuda", requires_grad=True)
+    a.zero_grad()
+    a(xe).sum().backward()
+    assert torch.isfinite(xe.grad).all(), f"nan/inf grad at the extremes: {xe.grad}"
+    assert all(torch.isfinite(p.grad).all() for p in a.parameters())
+
+    # Inductor's donated buffers are incompatible with gradcheck's retain_graph.
+    with torch.compiler.set_stance("force_eager"):
+        assert torch.autograd.gradcheck(
+            a, (torch.randn(3, 11, dtype=torch.float64, device="cuda",
+                            requires_grad=True),), atol=1e-9)
+
+
 def test_halting_bounds_are_respected():
     """Depth stays within [r_free, cap] and always lands on a commitment
     boundary -- the direct, per-token replacement for the old ExpertBlock.run()
     version of this check, now against RoutedBlock."""
     torch.manual_seed(0)
-    c = Config(**TINY, r_free=2, turns=2, c_max2=16, grad_checkpoint=False)
-    rb = RoutedBlock(c).eval()
-    h = torch.randn(2, 6, c.d_model)
+    c = Config(**{**TINY, "r_free": 2, "turns": 2, "c_max2": 16, "r_ceiling": 16,
+                  "grad_checkpoint": False})
+    rb = RoutedBlock(c).cuda().eval()
+    h = torch.randn(2, 6, c.d_model, device="cuda")
     with torch.no_grad():
         out, depth = rb(h)
     assert out.shape == h.shape
@@ -263,11 +253,15 @@ def test_halting_bounds_are_respected():
 
 
 def test_halted_tokens_stay_frozen():
-    """A token whose depth < cap must be bit-identical to its state at that depth."""
+    """A token whose depth < cap must match its state at that depth to fp32
+    precision.  Was fp64 for a bit-identical bar, but fla's chunk_kda Triton
+    kernel only compiles for fp16/bf16/fp32 -- KDA has no fp64 path at all, so
+    this can only check fp32-close now, not bit-identical."""
     torch.manual_seed(0)
-    c = Config(**TINY, r_free=2, turns=2, c_max2=16, grad_checkpoint=False)
-    rb = RoutedBlock(c).double().eval()
-    h = torch.randn(1, 8, c.d_model, dtype=torch.float64)
+    c = Config(**{**TINY, "r_free": 2, "turns": 2, "c_max2": 16, "r_ceiling": 16,
+                  "grad_checkpoint": False})
+    rb = RoutedBlock(c).cuda().eval()
+    h = torch.randn(1, 8, c.d_model, device="cuda")
     with torch.no_grad():
         out, depth = rb(h)
         assert depth.min() < c.c_max2, "need at least one early halt to test freezing"
@@ -276,12 +270,12 @@ def test_halted_tokens_stay_frozen():
         # cannot change what a token that stopped early already decided.
         half = int(depth.min())
         c_half = Config(**{**c.__dict__, "c_max2": half})
-        rb_half = RoutedBlock(c_half).double().eval()
+        rb_half = RoutedBlock(c_half).cuda().eval()
         rb_half.load_state_dict(rb.state_dict())
         out_half, depth_half = rb_half(h)
     frozen = depth <= half
     assert frozen.any(), "need at least one token that halted within the smaller cap"
-    assert torch.allclose(out[frozen], out_half[frozen], atol=1e-10)
+    assert torch.allclose(out[frozen], out_half[frozen], atol=1e-5)
 
 
 def test_hypernet_trunk_is_live_from_the_first_step():
@@ -289,9 +283,9 @@ def test_hypernet_trunk_is_live_from_the_first_step():
     zero has none), so the hypernet trunk must get real gradient immediately --
     no dead first step the way a zero-initialised B would cause."""
     torch.manual_seed(0)
-    c = Config(**TINY, r_free=1, turns=1, c_max2=4, grad_checkpoint=False)
-    rb = RoutedBlock(c)
-    out, _ = rb(torch.randn(2, 8, c.d_model))
+    c = Config(**{**TINY, "r_free": 1, "turns": 1, "c_max2": 4, "grad_checkpoint": False})
+    rb = RoutedBlock(c).cuda()
+    out, _ = rb(torch.randn(2, 8, c.d_model, device="cuda"))
     out.square().mean().backward()
     for name in ("l1.weight", "l2.weight", "norm_proj.weight"):
         g = dict(rb.expert.hypers[0].named_parameters())[name].grad
@@ -305,42 +299,9 @@ def test_tied_embeddings():
     assert m2.head.weight is not m2.embed.weight
 
 
-def test_shared_parameters_excludes_routed_blocks():
-    m = CinnamonModel(Config(**TINY))
-    shared = {n for n, _ in m.shared_parameters()}
-    assert not any(n.startswith(('e2.', 'e3.')) for n in shared)
-    assert 'b1.subs.0.q.weight' in shared and 'embed.weight' in shared
-
-
-def test_blocked_inverse_keeps_chunk_64_exact():
-    """chunk=64 is only safe because inv_unit_lower does blocked forward
-    substitution; the old repeated-squaring form overflowed fp32 here (-> inf).
-    Pins the property that buys the 4x cut in the hot sequential loop.
-    """
-    from cinnamon.kda import KDA, _inv_squaring, inv_unit_lower
-
-    torch.manual_seed(0)
-    cfg = Config(**{**TINY, "kda_chunk": 64})
-    k = KDA(cfg)
-    with torch.no_grad():                      # beta -> 1, decay -> 0: the blow-up regime
-        k.beta.bias.fill_(6.0)
-        k.g_up.bias.fill_(-12.0)
-    base = torch.randn(1, 1, TINY["d_model"])
-    x = base.expand(2, 128, TINY["d_model"]) + 0.01 * torch.randn(2, 128, TINY["d_model"])
-    out, ref = k(x), k.reference(x)
-    assert torch.isfinite(out).all()
-    assert (out - ref).norm() / ref.norm() < 1e-4
-
-    # and the blocked form must be no worse than squaring on a well-conditioned case
-    M = (torch.randn(4, 64, 64).tril(-1) * 0.5).double()
-    I = torch.eye(64, dtype=M.dtype)
-    err = lambda X: ((I + M) @ X - I).abs().max()
-    assert err(inv_unit_lower(M)) <= err(_inv_squaring(M))
-
 def test_default_config_hits_the_50m_budget():
-    """The size target is 50 M EXCLUDING the tied embedding: the embedding is set
-    by the tokenizer's 128 k vocab, not by a layer width, and at this scale it
-    would otherwise eat 40% of the budget.
+    """The size target is 50 M EXCLUDING the embedding: the embedding is set by
+    the tokenizer's vocab (32,768, untied -- so head too), not by a layer width.
 
     Meta device: shapes only, so counting the real 8-expert model costs nothing.
     """
@@ -361,9 +322,8 @@ def test_default_config_hits_the_50m_budget():
     # grows quadratically, so shrinking the model silently inverts their ratio.
     # Guard it: one generator must stay smaller than the body it adapts.
     n = lambda mods: sum(p.numel() for mod in mods for p in mod.parameters())
-    e0 = m.e2.expert
-    work = n([e0.kda, e0.mla, e0.fixed, e0.dyn_gate, e0.dyn_up, e0.dyn_down])
-    assert len(e0.kda) == 2 and len(e0.fixed) == 2, "expert body must be 2:1 KDA:MLA"
+    e0 = m.expert.expert
+    work = n([e0.mla2, e0.mla3, e0.fixed, e0.dyn_up, e0.dyn_down])
     assert n([e0.hypers[0]]) < work, "hypernet outweighs the body it modulates"
 
 
@@ -375,25 +335,17 @@ def test_default_widths_actually_run():
     """
     from cinnamon.model import CinnamonModel
 
-    c = Config(n_hypernets=2, c_max2=4, kda_chunk=16)
+    c = Config(n_hypernets=2, c_max2=4, loss_chunk=0)   # this test wants logits
     torch.manual_seed(0)
-    m = CinnamonModel(c)
-    ids = torch.randint(0, c.vocab, (1, 32))
-    logits, loss, (d2, d3) = m(ids, labels=ids)
+    m = CinnamonModel(c).cuda()
+    ids = torch.randint(0, c.vocab, (1, 32), device="cuda")
+    logits, loss, depth = m(ids, labels=ids)
     assert logits.shape == (1, 32, c.vocab)
     assert torch.isfinite(loss) and loss > 0
-    assert d2.shape == d3.shape == (1, 32)
+    assert depth.shape == (1, 32)
     loss.backward()
     assert all(p.grad is not None and torch.isfinite(p.grad).all()
-               for p in m.b1.parameters())
-
-
-if __name__ == "__main__":
-    for name, fn in sorted(globals().items()):
-        if name.startswith("test_"):
-            fn()
-            print("ok  ", name)
-    print("\nall passed")
+               for p in m.l1.parameters())
 
 
 

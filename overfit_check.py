@@ -2,10 +2,10 @@
 
 test_learning.py proves this at SMALL scale (d_model=128) for CI speed. This
 runs the same fixed-batch overfit at the real default Config -- the per-token
-content-aware hypernetwork generation (ctx_kda -> forward_token -> compose_dora,
-gathered per hypernet, checkpointed per recurrence) has never been exercised at
-this scale. If loss collapses towards 0 same as SMALL does, the mechanism
-generalises. If it plateaus, scale exposed something SMALL couldn't.
+content-aware hypernetwork generation (forward_token -> shared AdapterBasis ->
+dora_linear, gathered per hypernet, checkpointed per recurrence) has never been
+exercised at this scale. If loss collapses towards 0 same as SMALL does, the
+mechanism generalises. If it plateaus, scale exposed something SMALL couldn't.
 
 Run: python overfit_check.py
 """
@@ -52,7 +52,7 @@ import sys  # noqa: E402
 # earliest legal value with gnorm at 0.06, so the suspicion is that halting --
 # not the generated weights -- is what kills the gradient.
 no_halt = "--no-halt" in sys.argv
-cfg = Config(no_halt=no_halt)  # else shipped defaults: d_model=256, n_hypernets=8, c_max2=32
+cfg = Config(no_halt=no_halt)  # else shipped defaults: d_model=256, n_hypernets=4, c_max2=32
 m = CinnamonModel(cfg).to(dev)
 rows, total, _ = m.param_report()
 for k, v in rows:
@@ -108,11 +108,9 @@ def stagewise_collapse(m, x):
     with torch.no_grad():
         h = m.embed(x)
         out["embed"] = collapse_of(h)
-        h = m.b1(h); out["b1"] = collapse_of(h)
-        h, _ = m.e2(h); out["e2"] = collapse_of(h)
-        h = m.bmid(h); out["bmid"] = collapse_of(h)
-        h, _ = m.e3(h); out["e3"] = collapse_of(h)
-        h = m.b4(h); out["b4"] = collapse_of(h)
+        h = m.l1(h); out["l1"] = collapse_of(h)
+        h, _ = m.expert(h); out["l2+l3"] = collapse_of(h)
+        h = m.l4(h); out["l4"] = collapse_of(h)
     return out
 
 
@@ -149,10 +147,15 @@ def collapse(logits):
 t0 = time.time()
 for s in range(steps):
     for g in opt.param_groups:
-        g["lr"] = lr * min(1.0, (s + 1) / max(1, warmup))
+        # Linear warmup then cosine anneal to 0.1x, same shape as train.py.
+        # A constant LR cannot settle into a minimum: it keeps taking full-size
+        # steps around one.
+        g["lr"] = lr * (min(1.0, (s + 1) / max(1, warmup)) if s < warmup else
+                        0.1 + 0.45 * (1 + math.cos(math.pi * min(
+                            1.0, (s - warmup) / max(1, steps - warmup)))))
     opt.zero_grad(set_to_none=True)
     with amp:
-        logits, loss, (d2, d3) = m(x, labels=y)
+        logits, loss, depth = m(x, labels=y)
     loss.backward()
     gn = torch.nn.utils.clip_grad_norm_(m.parameters(), 1.0)
     opt.step()
@@ -166,7 +169,7 @@ for s in range(steps):
         el = time.time() - t0
         print(f"step {s:4d}  loss {float(loss):7.4f}  gnorm {float(gn):7.2f}  "
               f"collapse {collapse(logits):+.4f}  same-token {argmax_agreement(logits):.3f}  "
-              f"depth {float(d2.float().mean()):.1f}[{int(d2.min())}-{int(d2.max())}]/"
+              f"depth {float(depth.float().mean()):.1f}[{int(depth.min())}-{int(depth.max())}]"
               f"{float(d3.float().mean()):.1f}[{int(d3.min())}-{int(d3.max())}]  "
               f"gpu {mem:.2f}GB  {(s+1)*bs*seq/el:6.1f} tok/s  "
               f"{el/(s+1):5.2f}s/step  {el:.0f}s", flush=True)

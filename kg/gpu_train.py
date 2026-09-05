@@ -70,7 +70,6 @@ cmd = [sys.executable] + [
     "--max-hours", str(ARGS["max_hours"]),
     "--eval-every", str(ARGS["eval_every"]),
     "--log-every", str(ARGS["log_every"]),
-    "--ewc-lambda", str(ARGS["ewc_lambda"]),
     "--cache", CACHE,
     "--out", OUT,
 ]
