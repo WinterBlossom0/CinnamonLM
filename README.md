@@ -40,9 +40,10 @@ directory (own `.gitignore`, no imports outside `attention_comparison/`).
   comparison, not an efficiency one. The paper reports Parallax's gains are
   optimizer-dependent: consistent under Muon, but "shrink markedly or even
   disappear" under AdamW, with their own ablation showing the model learns
-  to suppress the correction term under AdamW. This project trains with
-  AdamW -- see parallax/attention.py's docstring before interpreting any
-  Parallax result here as evidence about the mechanism itself.
+  to suppress the correction term under AdamW. KDA and OSDN train under
+  AdamW; Parallax specifically trains under Muon (`train.py`'s
+  `_make_optimizers`) so this comparison actually tests the mechanism the
+  paper proposes, not a regime its own ablation says defeats it.
 
 KDA's and OSDN's chunked forward, and Parallax's efficient streaming form,
 are each verified against their own reference computation at the head/dim

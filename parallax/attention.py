@@ -23,11 +23,10 @@ AdamW they state gains "shrink markedly or even disappear," and their
 gating ablation (Fig. 6b) shows the model learns to suppress the covariance
 correction under AdamW (gate converges to ~0.26, vs. fully open under
 Muon) -- their own spectral analysis (Table 4) shows W_R's stable rank
-collapses from 134 (Muon) to ~9 (AdamW). This project's train.py uses
-AdamW, not Muon. Parallax underperforming here is consistent with the
-paper's own findings about AdamW, not necessarily evidence the mechanism
-itself doesn't help -- this comparison does not test Parallax under the
-optimizer regime its positive results depend on.
+collapses from 134 (Muon) to ~9 (AdamW). train.py trains this arm under Muon
+specifically (_make_optimizers), not the AdamW used for KDA/OSDN, so a weak
+result here would not be attributable to the wrong-optimizer confound the
+paper itself documents.
 """
 from __future__ import annotations
 

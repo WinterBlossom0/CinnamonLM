@@ -1,9 +1,14 @@
-"""Train a linear-attention LM (KDA or OSDN) on TinyStories with gelu_new
-MLPs, param-matched to activation_comparison's GPT-Neo replica -- same
-vocab (tokenizer/tokenizer.json, copied from there), same context length,
-same data, so the only thing actually being compared is the attention
+"""Train a linear-attention LM (KDA, OSDN, or Parallax) on TinyStories with
+gelu_new MLPs, param-matched to activation_comparison's GPT-Neo replica --
+same vocab (tokenizer/tokenizer.json, copied from there), same context
+length, same data, so the only thing actually being compared is the attention
 mechanism. Results land in results/<attention>/seed_<seed>/metrics.json,
 same schema as activation_comparison.
+
+Optimizer is AdamW for KDA/OSDN; Parallax specifically trains under Muon
+(see _make_optimizers) -- its paper reports the covariance-correction gate
+collapses under AdamW, so AdamW would not be testing the mechanism as
+proposed.
 """
 from __future__ import annotations
 
@@ -18,6 +23,7 @@ from torch.utils.data import DataLoader, Dataset
 from transformers import PreTrainedTokenizerFast, get_cosine_schedule_with_warmup
 
 from model import LM
+from muon import Muon, split_params
 
 ROOT = Path(__file__).parent
 TOKENIZER_DIR = ROOT / "tokenizer"
@@ -91,6 +97,30 @@ def _pack(split_rows, tokenizer: PreTrainedTokenizerFast, cache_path: Path) -> t
     return ids
 
 
+def _make_optimizers(attention, model, total_steps):
+    """Parallax specifically needs Muon: its paper reports the covariance-
+    correction gate collapses under AdamW (W_R stable rank 134 -> ~9), so
+    training it under AdamW is not a fair test of the mechanism (see
+    parallax/attention.py). KDA/OSDN have no such documented dependency and
+    stay on plain AdamW, unchanged.
+
+    Two separate optimizer instances (not param groups on one), since Muon and
+    AdamW are different classes -- each needs its own scheduler, both stepped
+    together every batch.
+    """
+    if attention != "parallax":
+        opt = torch.optim.AdamW(model.parameters(), lr=LR)
+        sched = get_cosine_schedule_with_warmup(opt, WARMUP_STEPS, total_steps)
+        return [opt], [sched]
+
+    muon_params, adamw_params = split_params(model)
+    muon_opt = Muon(muon_params, lr=0.02)          # Muon's own reference default; untuned here
+    adamw_opt = torch.optim.AdamW(adamw_params, lr=LR)
+    opts = [muon_opt, adamw_opt]
+    scheds = [get_cosine_schedule_with_warmup(o, WARMUP_STEPS, total_steps) for o in opts]
+    return opts, scheds
+
+
 def run_seed(attention: str, seed: int, epochs: int, device: torch.device, vocab_size: int,
             train_ids: torch.Tensor, eval_ids: torch.Tensor, out_dir: Path) -> dict:
     torch.manual_seed(seed)
@@ -103,9 +133,8 @@ def run_seed(attention: str, seed: int, epochs: int, device: torch.device, vocab
     train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
     eval_loader = DataLoader(eval_ds, batch_size=BATCH_SIZE, shuffle=False)
 
-    optimizer = torch.optim.AdamW(model.parameters(), lr=LR)
     total_steps = len(train_loader) * epochs
-    scheduler = get_cosine_schedule_with_warmup(optimizer, WARMUP_STEPS, total_steps)
+    optimizers, schedulers = _make_optimizers(attention, model, total_steps)
 
     def run_eval() -> float:
         # token-weighted mean, not mean-of-batch-means: the last eval batch
@@ -132,9 +161,10 @@ def run_seed(attention: str, seed: int, epochs: int, device: torch.device, vocab
             _, loss = model(batch, labels=batch)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-            optimizer.step()
-            scheduler.step()
-            optimizer.zero_grad(set_to_none=True)
+            for opt, sched in zip(optimizers, schedulers):
+                opt.step()
+                sched.step()
+                opt.zero_grad(set_to_none=True)
             step += 1
             if step % 500 == 0:
                 print(f"  seed {seed} step {step}/{total_steps} loss {loss.item():.4f} "
