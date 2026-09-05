@@ -38,7 +38,9 @@ def apply_vram_cap(device: torch.device, gb: float = VRAM_CAP_GB) -> None:
         return
     idx = device.index if device.index is not None else torch.cuda.current_device()
     total = torch.cuda.get_device_properties(idx).total_memory
-    torch.cuda.set_per_process_memory_fraction(gb * (1 << 30) / total, idx)
+    # A ceiling, so a card smaller than the cap just gets all of it: a T4 has
+    # 14.56 GiB, and an unclamped 15/14.56 is rejected ("Allowed range: 0~1").
+    torch.cuda.set_per_process_memory_fraction(min(1.0, gb * (1 << 30) / total), idx)
 
 
 CONTEXT_LENGTH = 128

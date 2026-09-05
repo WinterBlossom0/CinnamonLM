@@ -32,8 +32,11 @@ USER = "electroknight"
 DATASET = f"{USER}/attn-comparison-src"
 ROOT = os.path.dirname(os.path.abspath(__file__))
 STAGE = os.path.join(ROOT, ".kaggle_stage")
-SRC_FILES = ["model.py", "train.py", "kda", "osdn", "parallax", "tokenizer",
-             "requirements.txt"]
+# Every top-level module, globbed rather than listed: an explicit list silently
+# drops a newly added one (muon.py was, and the kernel died on `import train`).
+SRC_FILES = ["kda", "osdn", "parallax", "tokenizer", "requirements.txt"] + \
+    sorted(f for f in os.listdir(ROOT)
+           if f.endswith(".py") and f != os.path.basename(__file__))
 TINYSTORIES_REVISION = "f54c09fd23315a6f9c86f9dc80f725de7d8f9c64"  # pinned in .gitignore
 
 
@@ -140,6 +143,15 @@ print("source:", SRC, os.listdir(SRC), flush=True)
 
 subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "-r",
                        os.path.join(SRC, "requirements.txt")])
+# Kaggle's image ships torchvision/torchaudio built against its own torch; the
+# pin above replaces torch under them, so their C extensions no longer register
+# ("RuntimeError: operator torchvision::nms does not exist").  transformers
+# reaches them through get_cosine_schedule_with_warmup -> trainer_utils -> peft
+# -> BloomPreTrainedModel -> image_utils, so a stale torchvision takes down the
+# import train.py needs.  Nothing here uses either package; removing them makes
+# transformers' is_torchvision_available() (a find_spec, no import) say no.
+subprocess.check_call([sys.executable, "-m", "pip", "uninstall", "-q", "-y",
+                       "torchvision", "torchaudio"])
 
 # Same revision-pinned load .gitignore documents for local reproduction --
 # not shipped as a dataset, since this is exactly as reproducible and 1.8 GB

@@ -267,6 +267,47 @@ class _KDAScan(torch.autograd.Function):
                 d_beta, unflat(dvt), d_Tm, d_eg_last)
 
 
+def _scan_torch(ka, ke, qa, qc, kt, bt, vt, Tn, egl):
+    """The same recurrence in plain PyTorch, autograd for backward -- the loop
+    _kda_bwd_kernel replaced, restored as a fallback.  _kda_bwd_kernel needs
+    65 KB of shared memory at C=64 ("Required: 66560, Hardware limit: 65536");
+    sm_75 and older cap a block at 64 KB, so a T4 can run the forward kernel but
+    not the backward.  N is seq/chunk (2 at the trained 128/64), so the Python
+    loop costs almost nothing here."""
+    ka, ke, qa, qc, kt, bt, vt, Tn, egl = (
+        t.float() for t in (ka, ke, qa, qc, kt, bt, vt, Tn, egl))
+    B, H, N, C, D = ka.shape
+    S = ka.new_zeros(B, H, D, D)
+    A = (qc @ kt.transpose(-1, -2)).tril(0)
+    outs = []
+    for n in range(N):
+        u = Tn[:, :, n] @ (bt[:, :, n] * (vt[:, :, n] - ka[:, :, n] @ S))
+        outs.append(qa[:, :, n] @ S + A[:, :, n] @ u)
+        S = egl[:, :, n].unsqueeze(-1) * S + ke[:, :, n].transpose(-1, -2) @ u
+    return torch.stack(outs, 2)
+
+
 def kda_scan(k_abs, k_end, q_abs, q_c, k_til_c, beta, v, Tm, eg_last):
     """Drop-in replacement for attention.py's per-chunk Python loop in _chunk_scan."""
-    return _KDAScan.apply(k_abs, k_end, q_abs, q_c, k_til_c, beta, v, Tm, eg_last)
+    args = (k_abs, k_end, q_abs, q_c, k_til_c, beta, v, Tm, eg_last)
+    if not k_abs.is_cuda or torch.cuda.get_device_capability(k_abs.device)[0] < 8:
+        return _scan_torch(*args).to(k_abs.dtype)
+    return _KDAScan.apply(*args)
+
+
+if __name__ == "__main__":  # kernel vs PyTorch loop, fwd and bwd, at both trained head_dims
+    torch.manual_seed(0)
+    for D in (2, 3):
+        B, H, N, C = 2, 5, 2, 64
+        mk = lambda *s: torch.randn(*s, device="cuda", dtype=torch.float32, requires_grad=True)
+        args = [mk(B, H, N, C, D) for _ in range(5)] + [
+            mk(B, H, N, C, 1), mk(B, H, N, C, D),
+            torch.eye(C, device="cuda").expand(B, H, N, C, C).contiguous().requires_grad_(),
+            mk(B, H, N, D).sigmoid().detach().requires_grad_()]
+        clone = [a.detach().clone().requires_grad_() for a in args]
+        o1 = _KDAScan.apply(*args); o1.sum().backward()
+        o2 = _scan_torch(*clone); o2.sum().backward()
+        rel = lambda a, b: float((a - b).abs().max() / b.abs().max().clamp_min(1e-30))
+        errs = [rel(o1, o2)] + [rel(a.grad, c.grad) for a, c in zip(args, clone)]
+        assert max(errs) < 1e-5, (D, errs)  # two fp32 orderings of one recurrence, not bitwise
+        print(f"D={D} ok: max relative fwd/bwd error {max(errs):.2e}")
