@@ -151,7 +151,10 @@ if __name__ == "__main__":
         epochs = int(rest[rest.index("--epochs") + 1]) if "--epochs" in rest else 3
         push_src()
         run = train_run(attention, seeds, epochs)
-        push_kernel(f"attn-comparison-{attention}", f"attention_comparison {attention}", run)
+        # title must slugify to the same id, or Kaggle silently renames the
+        # kernel to the title's own slug instead (measured: "attn-comparison-kda"
+        # requested, "attention-comparison-kda" is what actually got created).
+        push_kernel(f"attn-comparison-{attention}", f"attn-comparison-{attention}", run)
     elif cmd == "status":
         print(api().kernels_status(f"{USER}/{sys.argv[2]}"))
     elif cmd == "pull":
