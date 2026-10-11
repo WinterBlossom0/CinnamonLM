@@ -1,0 +1,309 @@
+{
+ "dataset": "common-pile/oercommons (raw), compared against common-pile/oercommons_filtered",
+ "files_examined": [
+  "/home/vihaa/CinnamonLM/raw/common_pile/oercommons/00000_oercommons.json.gz (only raw shard, 31,034,107 bytes; size matches the lfs_size in .cache tree json; no *.incomplete file)",
+  "/home/vihaa/CinnamonLM/raw/common_pile/oercommons/README.md",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/oercommons/filtered/oercommons-0000.json.gz (only filtered shard, downloaded with hf_hub_download)",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/oercommons/filtered/README.md",
+  "/home/vihaa/CinnamonLM/raw/common_pile/libretexts/00000_libretext.json.gz (read only, for the cross-source overlap check)",
+  "/home/vihaa/CinnamonLM/raw/common_pile/pressbooks/00000_pressbooks.json.gz and 00001_pressbooks.json.gz (read only, for the cross-source overlap check)",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/oercommons/report.json (full machine-readable output of analyze.py)"
+ ],
+ "docs_sampled": 9339,
+ "total_docs_estimate": "9,339 rows. This is an exact line count of the single raw shard and matches the README figure of 9,339. The rows hold only 6,251 distinct ids and 6,207 distinct normalized texts. The filtered version has 5,249 rows and 5,245 distinct ids (exact count).",
+ "length_stats": "All 9,339 raw rows. Chars: p1=111, p5=223, p25=940, p50=2,861, p75=10,027, p95=34,157, p99=131,167, max=1,339,539 (id lesson/94952, 'Introduction to Philosophy'), min=0, mean=10,104. Whitespace words: p1=14, p5=31, p25=144, p50=454, p75=1,547, p95=5,392, p99=20,290, max=229,880. Total: 94,359,491 chars and 14,870,880 words. After exact dedup (6,207 docs): chars p1=112, p5=220, p25=882, p50=2,662, p75=9,012, p95=31,287, p99=109,067, max=1,339,539; words p1=15, p5=31, p25=135, p50=420, p75=1,398, p95=4,935, p99=17,576. Total: 57,767,160 chars and 9,106,837 words. Filtered (5,249 rows): chars p1=323, p5=415, p50=3,082, p99=113,605, max=1,326,634; words p1=46, p5=63, p50=490, p99=18,551. Total: 51,675,057 chars.",
+ "language_mix": "Measured on the 6,204 deduplicated docs with at least 50 letters. A doc counts as non-English if under 80% of its letters are ASCII, or if a Spanish/Portuguese/French/Italian/Indonesian/Turkish/German function-word list matches more of its tokens than an English function-word list does, at a rate of at least 0.05. No language-ID library is installed (no fasttext, langdetect or datasketch), so this is a heuristic. Result: 84 docs (1.35% of docs, 1.81% of chars). Of these, 40 are mostly non-Latin script (Arabic, Ukrainian/Cyrillic) and 44 are Latin-script, mostly Spanish, Turkish and Portuguese. I read 25 flagged docs: all were non-English or mixed-language (e.g. lesson/105477 is half English, half Spanish). Known misses: Filipino and some short Turkish docs (lesson/99817 'ARALING PANLIPUNAN', lesson/82490). English function-word share per doc: p5=0.149, p50=0.329. The filtered version has 1 flagged doc left (lesson/94324, an English lesson on Koine Greek pronouns, so a false positive). The Common Pile filter removed 83 of the 84.",
+ "issues": [
+  {
+   "name": "Exact duplicate rows (same id repeated)",
+   "description": "The raw shard repeats many records. 2,418 ids appear 2-6 times, and in 2,409 of them every copy has the same text. 9 ids have copies whose texts differ slightly (e.g. lesson/82621: 375 vs 27,286 chars). The filtered version collapses these copies.",
+   "prevalence": "3,132 of 9,339 rows (33.5%) are extra copies of a normalized text. They carry 36,592,331 of 94,359,491 chars (38.8%). Copies per id: 1x3833, 2x1892, 3x412, 4x86, 5x26, 6x2.",
+   "measurement_method": "sha1(' '.join(text.lower().split())). Count rows minus distinct hashes. Also Counter over the id field.",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/90102/overview] 'cinema scenes version two' appears at raw lines 1445 and 3036, 509,571 chars each, identical",
+    "[https://oercommons.org/courseware/lesson/76251/overview] 3 identical copies of 348 chars: 'How to Add Content to OER Commons ... Describe the big picture of your content here'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Cross-source duplication with LibreTexts / Pressbooks (mostly OpenStax textbooks)",
+   "description": "About 18% of deduplicated docs are OpenStax textbook sections (Biology, U.S. History, Principles of Macroeconomics 2e, American Government, Sociology 2e, Psychology, Anatomy and Physiology). The same sections exist verbatim in other Common Pile sources.",
+   "prevalence": "880 of 6,207 deduplicated docs (14.2%) have at least 50% of their distinct lines of 100+ chars verbatim in libretexts or pressbooks. They carry 16,720,191 of 57,767,160 chars (28.9%), and 86.6% of them have OpenStax titles. The filtered version still holds 656 such docs, with 13,056,724 of 51,675,057 chars (25.3%). OpenStax-titled docs: 1,113 deduplicated docs (17.9%) with 35.9% of chars; in the filtered version, 912 docs with 34.4% of chars.",
+   "measurement_method": "For each oercommons doc, take the set of stripped lines with len >= 100. Hash with sha1. Stream every line of libretexts/00000 and pressbooks/00000-00001 and mark matches. Count docs whose matched share is >= 0.5. OpenStax test: title startswith one of (Biology, U.S. History, Principles of Macroeconomics, American Government, Introduction to Sociology, Psychology, Anatomy and Physiology, Texas Government, Principles of Economics, Concepts of Biology) or 'OpenStax' in text.",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/11785/overview] 'Introduction to Sociology 2e, Media and Technology', at least 50% of long lines found in libretexts",
+    "[https://oercommons.org/courseware/lesson/28813/overview] 'Principles of Macroeconomics 2e, Inflation', found in pressbooks/00001",
+    "[https://oercommons.org/courseware/lesson/58770/overview] 'Anatomy and Physiology, ... The Respiratory System', found in pressbooks/00000"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Near-duplicate documents (remixes, versions, templates)",
+   "description": "Users remix and re-upload resources on OER Commons, so many docs are almost the same: course versions, district copies of one module, template clones.",
+   "prevalence": "Among the 6,207 deduplicated docs: 111 clusters at Jaccard >= 0.8, containing 304 docs. Keeping the longest per cluster removes 193 docs (3.1%) and 2,240,938 chars (3.9%). The filtered version still has 21 clusters, where 22 docs and 359,487 chars are removable.",
+   "measurement_method": "Pure numpy MinHash: 128 hash functions (xor-salt times odd multiplier, mod 2^64) over blake2b-64 hashes of lowercased whitespace word 5-shingles. LSH with 32 bands x 4 rows. Every candidate pair is checked by exact Jaccard on the full shingle sets, threshold 0.8, then grouped by union-find.",
+   "evidence_examples": [
+    "J=0.998 [https://oercommons.org/courseware/lesson/85264/overview] <-> [https://oercommons.org/courseware/lesson/76439/overview] 'Career Planning and Personal Exploration\\nOverview\\nThis course introduces students to the career-decision making process'",
+    "J=0.801 [lesson/16377] 'Oregon Science Project Canby Module #2 - Talk & Equity' <-> [lesson/20675] 'Oregon Science Project Hybrid Module #2 - Talk & Equity'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Stub / near-empty pages",
+   "description": "Many records hold only the resource title, the word 'Overview', a one-line description and attachment names. The real content was in a PDF/PPT/Drive attachment that was never extracted.",
+   "prevalence": "Raw: 929 docs (9.95%) have 1-49 words, 0.21% of chars. Deduplicated: 621 docs (10.0%). Empty: 6 raw rows (1 distinct text). The filtered version keeps 83 docs (1.58%) under 50 words and 624 under 100 words.",
+   "measurement_method": "0 < len(text.split()) < 50; len(text) == 0",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/64083/overview] 'SBA Overview See video and write a summary English A SBA Coronavirus IMG-20200316-WA0003 Download View'",
+    "[https://oercommons.org/courseware/lesson/28202/overview] 'Pizza Maths\\nOverview\\nPizza Mathematics\\nSection 1\\nPizza Mathematics'",
+    "[https://oercommons.org/courseware/lesson/15189/overview] '' (empty text, title 'Biology, The Periodic Table of Elements')"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "OER Commons login/navigation chrome captured as the doc",
+   "description": "For some resources the scraper saved the site's logged-out navigation instead of the resource body. All such docs are 227-299 chars of pure boilerplate.",
+   "prevalence": "Raw: 92 docs (0.99%). Deduplicated: 44 docs (0.71%), 0.019% of chars. Filtered: 0. The Common Pile filter removed all of them.",
+   "measurement_method": "regex r'Sign in to see your Hubs' anywhere in text. All 92 hits are <= 299 chars, so the whole doc counts.",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/18504/overview] 'Sign in to see your Hubs\\nSign in to see your Groups\\nCreate a standalone learning module, lesson, assignment, assessment or activity\\nSubmit OER from the web for review by our librarians\\nPlease log in to save materials. Log in\\nor'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Page scaffold: attachment-title preamble and 'Overview' line",
+   "description": "OER Commons pages begin with the names of attached resources, then the title, then a standalone 'Overview' line, then a summary. The same summary often repeats as the first section. The preamble is often file names or Google Drive/Canva URLs.",
+   "prevalence": "Raw: 8,571 docs contain a standalone 'Overview' line. 1,563 deduplicated docs (25.2%) have a preamble before the title line, 0.375% of chars. Filtered: 1,426 docs (27.2%), 0.39% of chars. The filter did not touch this.",
+   "measurement_method": "In the first 30 lines, find the first line == 'Overview'. Preamble = all lines before the line that precedes 'Overview' (that line is taken as the title).",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/78645/overview] 'Padlet\\nTypes of Trees & Leaves ppt - Lesson One\\nVideo Making Tool\\nGamification - Lesson One and Two\\nOverview'",
+    "[https://oercommons.org/courseware/lesson/102592/overview] 'https://drive.google.com/file/d/18QpcYG87Pp8pyK_9p6b7hPk6_V19XlbU/view?usp=drivesdk\\nhttps://drive.google.com/file/d/1E_pMEJsaT0Su0uAfVR7vOIYTYhxwz6jW/view?usp=drivesdk'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Repeated lines inside a document",
+   "description": "Section titles, the overview summary and whole blocks are printed twice: the page shows the summary, then the section body repeats it. Some docs are over 80% repeats.",
+   "prevalence": "Deduplicated: 2,631 docs (42.4%) have at least one repeated line of 20+ chars. Repeated copies are 4.31% of chars. 156 of 3,941 docs over 1,500 chars are more than 30% repeats. Filtered: 42.9% of docs, 3.90% of chars.",
+   "measurement_method": "Per doc, walk the lines. Any stripped line of len >= 20 already seen in the same doc counts as repeated, with chars = len(line) + 1.",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/93219/overview] repeated 79%: 'Learning Domain: Writing\\nStandard: Write narratives to develop real or imagined experiences or events...' (the block repeats)",
+    "[https://oercommons.org/courseware/lesson/97256/overview] 'Our new ESL Lesson Plan teaches about the use of two important pronouns \u2013 Anybody Nobody...' (appears twice)"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Licence laundering: NC/ND or all-rights-reserved text inside CC BY / CC BY-SA / PD records",
+   "description": "The metadata gives only CC BY 4.0, CC BY-SA 4.0 or Public Domain. Yet some docs state in their own text that the text or the whole resource is NonCommercial/NoDerivatives. Examples: Lumen 'CC LICENSED CONTENT' blocks, Educurious units, Georgia Tech biology pages, League of Women Voters book. Others embed copyrighted song lyrics.",
+   "prevalence": "Broad match (any NC/ND mention, including image credits): 293 deduplicated docs (4.72%). Work-level declaration regex: 139 deduplicated docs (2.24%), 0.13% of chars. Filtered keeps 133 such docs (2.53%), so the Common Pile filter did not act on this. 'All rights reserved': 93 docs (1.5%). Precision: I read a 30-hit sample of an earlier version of the work-level regex. 5 hits were BBC/TED video credits, which the final regex now excludes with a youtu/ted.com lookahead. By my reading, the other 25 state NC/ND for a text, article or whole resource. Lyrics example: lesson/91717 ('Fill In The Blanks', CC BY) holds commercial song lyrics. The filter blanked its text to '' but kept the row.",
+   "measurement_method": "Broad: r'(?i)\\bCC[ -]?BY[ -]?(?:NC|ND)\\b|\\bNon-?Commercial\\b|\\bNoDeriv(?:atives|s)\\b|creativecommons\\.org/licenses/by-n[cd]'. Work-level: line-anchored regex that requires (except where otherwise noted|text source|this (work|book|text|resource|oer|chapter|course|module|unit|lesson)|is licensed under|is shared under|License:) followed within 250 chars by (NonCommercial|NoDeriv*|BY-NC|BY-ND). The line must not contain image|photo|picture|video|figure|flickr|poster|graphic|icon|logo|cover|map|music|song|clip|youtu|youtube|ted.com|vimeo. Exact pattern: ISSUE_PATTERNS['nc_nd_work_level_declaration'] in analyze.py.",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/105188/overview] 'This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.' (metadata: CC BY 4.0)",
+    "[https://oercommons.org/courseware/lesson/25864/overview] '- Critical and Creative Thinking Authored by: Laura Lucas, Tobin Quereau, and Heather Syrett. Provided by: Austin Community College. License: CC BY-NC-SA-4.0'",
+    "[https://oercommons.org/courseware/lesson/120735/overview] 'Except where otherwise noted, Freedom Dreaming, by Educurious is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.'",
+    "[https://oercommons.org/courseware/lesson/91717/overview] 'But you didn\u2019t have to cut me off\\nMake out like it never happened\\nAnd that we were nothing' (song lyrics, metadata CC BY 4.0)"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Licence/attribution boilerplate lines",
+   "description": "Lumen-style 'CC LICENSED CONTENT, SHARED PREVIOUSLY / Provided by: / License: / Located at:' blocks and 'X is licensed under a Creative Commons...' lines. The per-doc licence is already in the metadata.",
+   "prevalence": "Deduplicated: 673 docs (10.8%), 0.195% of chars. Filtered: 631 docs (12.0%), 0.197% of chars.",
+   "measurement_method": "ISSUE_PATTERNS['attribution_boilerplate_line']: (?im)^(CC LICENSED CONTENT...|Provided by:...|License:...|Located at:...|Authored by:...|Licenses? and Attributions?|Attributions?|Attribution and License|Licensing and Attribution|...is licensed under a Creative Commons...|Images? courtesy of...)$",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/91152/overview] '- IKEA, Bejing. Authored by: Peter Morgan. Located at: https://www.flickr.com/photos/pmorgan/5517848/. License: CC BY-NC-ND: Attribution-NonCommercial-NoDerivatives'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Table residue (Markdown pipes)",
+   "description": "The HTML-to-text step turned layout tables into '|' rows. Many rows are empty ('| |||||||||||||||', '|', '|---|---|').",
+   "prevalence": "Deduplicated: 691 docs (11.1%) have '|...|' rows, 1.80% of chars. 584 docs (9.4%) have pipe-only or separator lines, 0.023% of chars. Filtered: 630 docs (12.0%), 1.85% of chars.",
+   "measurement_method": "rows: (?m)^[ \\t]*\\|.*\\|[ \\t]*$ ; residue-only: (?m)^[ \\t]*\\|[ \\t|\\-:]*$",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/73704/overview] 'Grade: Grades 9-12 Time frame: 30 Minutes Lesson Objectives:\\n| |||||||||||||||\\nPrior to this lesson: What understanding...'",
+    "[https://oercommons.org/courseware/lesson/82548/overview] '| If you would prefer to watch a video regarding the concept of Funds of Knowledge, click here. |\\n| ||||||||||\\n|\\n|\\n|'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Fragmentary list-like docs (mostly short lines)",
+   "description": "Docs of 50+ words where most non-empty lines have fewer than 5 words: headings, attachment names, quiz options, menus. Training value is low.",
+   "prevalence": "Deduplicated: 649 docs (10.5%), 4.41% of chars. Filtered: 603 docs (11.5%), 3.76% of chars.",
+   "measurement_method": "share of non-empty lines with len(line.split()) < 5 > 0.5 AND doc word count >= 50",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/80036/overview] 'BB Crafts\\nOverview\\nArt and Crafts\\nBB Crafts\\nBB Craft is an online store that Provides Decorative items for every type of event at Wholesale prices.' (also spam)"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "URLs and URL-only lines",
+   "description": "Links to Google Drive, Canva, YouTube and other resources, often on their own line, sometimes with long tracking queries.",
+   "prevalence": "Deduplicated: 1,716 docs (27.7%) contain a URL, 1.10% of chars. URL-only lines: 549 docs (8.8%), 0.19% of chars. Filtered: 1,601 docs (30.5%), 1.14% of chars.",
+   "measurement_method": "https?://\\S+|www\\.\\S+ ; URL-only line: (?m)^[ \\t]*(?:https?://|www\\.)\\S+[ \\t]*$",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/113699/overview] 'https://www.canva.com/design/DAF-gqUz3DU/QRHY9GQ8h0rhPTSQ5Vp-GQ/edit?utm_content=DAF-gqUz3DU&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton'",
+    "[https://oercommons.org/courseware/lesson/94952/overview] the 1.34M-char doc starts with 43 URL-only lines"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Lost math and figure references from HTML conversion",
+   "description": "MathML/MathJax formulas were dropped, leaving sentences with holes. In some places KaTeX rendered text and LaTeX source both appear. OpenStax figure numbers were stripped, leaving '(Figure)'.",
+   "prevalence": "'(Figure)'/'(Table)': 461 deduplicated docs (7.4%), 2,539 occurrences in raw. Filtered: 354 docs (6.7%). Dropped-math indicators are lower bounds: orphan-punctuation line start in 34 docs, 'equation/formula:' followed by a line with no math in 8, ', where is the' in 3. LaTeX/KaTeX source in 15 docs.",
+   "measurement_method": "\\((?:Figure|Table)\\) ; (?m)^[,.;:][ \\t] ; ,\\s*where\\s+(?:is|are)\\s+(?:the|a|an)\\b ; (?im)(?:following|the|this)\\s+(?:equations?|formulas?)\\s*:\\s*\\n(?![^\\n]*[=0-9+\u00d7\u00f7\u2212]) ; \\\\(?:frac|text|times|mathrm|left|right|sqrt|cdot|displaystyle|begin)\\b",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/69009/overview] 'find the surface area of the globe by using the formula:\\n, where is the radius and is the surface area of the globe.'",
+    "[https://oercommons.org/courseware/lesson/28792/overview] 'This is called the Midpoint Method for Elasticity, and is represented in the following equations:\\nThe advantage of the Midpoint Method is...'",
+    "[https://oercommons.org/courseware/lesson/123391/overview] 'F1-score=2\u00d7Precision\u00d7RecallPrecision+RecallF1\\\\text{-score} = 2 \\\\times \\\\frac{\\\\text{Precision} \\\\times \\\\text{Recall}}'",
+    "[https://oercommons.org/courseware/lesson/15028/overview] 'comprised several species with a unique beak shape (Figure).'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Commercial promos and site footers",
+   "description": "Off2Class ESL lesson stubs are adverts for the vendor's account. Their full lessons are in attachments. There is also the OpenStax-style footer 'Did you have an idea for improving this content? We\u2019d love your input.'",
+   "prevalence": "Off2Class: 80 deduplicated docs (1.29%), 0.16% of chars as whole docs. Filtered keeps 79. Feedback footer: 68 deduplicated docs; filtered keeps 68.",
+   "measurement_method": "r'Off2Class' (whole doc counted) ; (?m)^Did you have an idea for improving this content\\? We\u2019d love your input\\.$",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/90358/overview] 'If you enjoyed this ESL lesson plan download, there are 150+ more free lessons available with a free Off2Class account!\\nOff2Class'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "PII (emails, phone numbers)",
+   "description": "Author contact emails and phone numbers appear in the text. The filtered version replaces most of them with placeholders, but the redaction is incomplete.",
+   "prevalence": "Raw deduplicated: emails in 211 docs (3.40%), US-style phones in 37 docs. Filtered: 315 <EMAIL_ADDRESS>, 254 <PHONE_NUMBER> and 38 <IP_ADDRESS> placeholders in 225 docs. 25 filtered docs still contain a plain email and 12 a phone pattern.",
+   "measurement_method": "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,} ; (?<!\\d)(?:\\(\\d{3}\\)\\s?|\\d{3}[-.\\s])\\d{3}[-.]\\d{4}(?!\\d) ; placeholders <[A-Z_]{4,}>",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/85038/overview] (still in filtered) 'you can contact our Project leader Prof. Tatjana Zorcec at tzorcec@gmail.com'",
+    "[https://oercommons.org/courseware/lesson/72611/overview] (still in filtered) 'Sandra L. Reynolds\\n732-667-0295'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Non-English documents",
+   "description": "Arabic (many Yemeni university student websites), Ukrainian, Spanish, Turkish and Portuguese resources, despite the English-only search query.",
+   "prevalence": "84 of 6,204 deduplicated docs (1.35%), 1.81% of chars. Filtered: 1 (a false positive).",
+   "measurement_method": "See language_mix: ASCII-letter share < 0.80 OR (other-Latin function-word share > English function-word share AND >= 0.05)",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/94526/overview] '\u062a\u0642\u0648\u064a\u0645 \u0627\u0644\u0623\u0633\u0646\u0627\u0646\\nOverview\\n\u064a\u0647\u062f\u0641 \u0627\u0644\u0645\u0648\u0642\u0639 \u0627\u0644\u0649 \u062a\u062f\u0631\u064a\u0628 \u0627\u0644\u0637\u0627\u0644\u0628 \u0648\u062a\u0639\u0644\u064a\u0645\u0629'",
+    "[https://oercommons.org/courseware/lesson/85551/overview] 'Sociolog\u00eda de Guatemala\\nOverview\\n\u00a1 Bienvenido a la lecci\u00f3n !'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Encoding damage and markup/code residue",
+   "description": "U+FFFD replacement characters (mostly in Common Core standard text), cp1252 mojibake, and raw HTML/JS in a few docs.",
+   "prevalence": "U+FFFD: 24 deduplicated docs (0.39%). Mojibake: 2. HTML/JS residue: 13 docs. Filtered: 24, 1 and 11.",
+   "measurement_method": "'\ufffd' ; \u00e2\u20ac|\u00c3[\\x80-\\xbf\u00a9\u00a8\u00a1] ; </?(?:div|span|p|br|img|a|table|tr|td|iframe|script|style|html)\\b[^>\\n]*>|function\\s+\\w+\\s*\\([^)]*\\)\\s*\\{",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/91785/overview] 'with diverse partners on grades 9\ufffd\ufffd\ufffd10 topics, texts, and issues, building on others\ufffd\u06ea ideas'",
+    "[https://oercommons.org/courseware/lesson/108522/overview] '</html> <script> function Twenty_seven(r255, g255, b255) { var iaw = Math.floor(r255 / 86)'",
+    "[https://oercommons.org/courseware/lesson/93365/overview] 'published in the communiqu\u00c3\u00a9 of the conference.'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Corrupted 'created' metadata field",
+   "description": "In more than half the rows, the 'created' field holds an author name, resource type or subject instead of a date.",
+   "prevalence": "Only 4,191 of 9,339 rows (44.9%) match MM/DD/YYYY. 1,533 are the string 'None'. The rest are values like 'Lesson Plan' (150), 'Activity/Lab' (195), 'Neil Greenwood' (182), 'Constanze Weise' (95).",
+   "measurement_method": "Counter(re.sub(r'\\d','9', str(created)))",
+   "evidence_examples": [
+    "[https://oercommons.org/courseware/lesson/96466/overview] created='Lesson Plan'",
+    "[https://oercommons.org/courseware/lesson/92189/overview] created='Jessica Del Monaco'"
+   ],
+   "severity": "low"
+  }
+ ],
+ "duplication": "Exact duplicates: sha1 of the lowercased, whitespace-collapsed text over all 9,339 rows gives 6,207 distinct texts. 3,132 rows (33.5%) are extra copies, carrying 36,592,331 chars (38.8% of raw chars). Most are repeated ids: 2,418 ids have 2-6 rows. Near-duplicates: pure-numpy MinHash (128 hash functions, word 5-shingles, LSH 32x4) with exact Jaccard check at >= 0.8 over the 6,207 distinct texts. This finds 111 clusters holding 304 docs. Keeping the longest per cluster removes 193 docs (3.1%) and 2,240,938 chars (3.9%). Filtered version: 21 clusters with 22 removable docs and 359,487 chars. Cross-source: 880 distinct docs (14.2%, 28.9% of chars) have at least half their 100+ char lines verbatim in LibreTexts or Pressbooks. 656 of these docs (25.3% of filtered chars) survive in the filtered version.",
+ "filtered_comparison": "I matched records by id; the metadata.provenance line numbers point at a different intermediate file. Of 6,251 raw ids, 1,006 are dropped (16.1%) and 5,245 kept. The filtered version has 5,249 rows: 3 ids have 2-3 rows each. Profile of the dropped ids: median 44 words; 562 under 50 words; 4 empty; 58 login-chrome pages; 83 of the 84 heuristic non-English docs; 5,905,807 chars. 305 dropped docs have 300+ words. These include OpenStax sections (e.g. lesson/15028 'Biology, Evolutionary Processes', lesson/15416 'U.S. History...') and copies such as the Declaration of Independence and Oregon/Lane Science Project versions, which points to deduplication against other sources (cause not verified). Every exact-copy row was collapsed. Of the 5,249 kept rows, 4,214 are byte-identical to a raw copy and 1,035 (19.7%) were changed. Change 1, PII replacement: 315 <EMAIL_ADDRESS>, 254 <PHONE_NUMBER> and 38 <IP_ADDRESS> in 225 docs (raw has none of these tokens). Change 2, sentence/line deletion: 3,438 segments and 289,548 chars removed (about 1.0% of the 29.5M chars in changed docs). Of the deleted segments, 2,842 are unique in the raw corpus, 368 occur in 2-5 docs, 91 in more than 5 docs and 137 repeat only inside their own doc. The cause of these deletions is not identified. They leave broken text, e.g. lesson/123040 'Define what a CMM is\\nA coordinate Measuring Machine...is a piece of apparatus...' becomes ' CMMs use a very sensitive probing system...'. Afterwards 477 filtered docs have lines with a leading or trailing space, against 0 in the matching raw docs. The filter also left 5 empty rows (lesson/76251 x3, lesson/91717 x2) whose raw text was 348 and 2,125 chars. What it still misses: work-level NC/ND licences (133 docs), OpenStax/LibreTexts/Pressbooks overlap (656 docs, 25.3% of chars), Off2Class adverts (79), the page scaffold and repeated lines (42.9% of docs, 3.9% of chars), table residue, '(Figure)' stubs, 25 docs with plain emails, 83 docs under 50 words, and 21 near-duplicate clusters.",
+ "license_notes": "metadata.license values. Raw rows: 'Creative Commons - Attribution - https://creativecommons.org/licenses/by/4.0/' 8,118; 'Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/4.0/' 873; 'Public Domain' 348. After exact dedup: 5,428 / 524 / 255. Filtered: 4,617 / 424 / 208. Metadata keys in every raw row: license, url, title, author (metadata is a JSON object, not a string). url == id in all rows. The text contradicts the metadata in places: 139 deduplicated docs state an NC/ND licence for the text or work, 93 contain 'All rights reserved', and at least one doc holds commercial song lyrics (lesson/91717).",
+ "recommended_steps": [
+  {
+   "step": "Deduplicate exactly by normalized-text hash, keeping one row per id; when copies of an id differ, keep the longest.",
+   "rationale": "One third of the rows are copies, and they would multiply the weight of those docs.",
+   "evidence": "3,132 of 9,339 rows (33.5%) and 38.8% of chars are extra copies; 9 ids have differing copies."
+  },
+  {
+   "step": "Run near-duplicate removal (MinHash, word 5-shingles, Jaccard >= 0.8) inside this source and across all Common Pile sources you train on, at minimum libretexts and pressbooks. For OpenStax sections keep one copy, from the source with the cleanest extraction.",
+   "rationale": "OpenStax textbooks appear in three sources; remixes and versions repeat within OER Commons.",
+   "evidence": "111 internal clusters (193 removable docs, 3.9% of chars); 880 docs (28.9% of distinct chars) overlap libretexts/pressbooks, and 656 of them remain in the filtered version."
+  },
+  {
+   "step": "Drop empty docs, login-chrome pages, Off2Class advert stubs, and docs under about 50 words after the scaffold is stripped.",
+   "rationale": "Here the attachments held the content; the page text is only a title and a description.",
+   "evidence": "621 deduplicated docs under 50 words, 44 chrome pages, 80 Off2Class docs, 5 empty rows left in the filtered version."
+  },
+  {
+   "step": "Strip the OER Commons page scaffold: the attachment-title/URL preamble before '<title>\\nOverview', the standalone 'Overview' line, 'Education Standards', the OpenStax feedback footer and the Off2Class promo sentences. Then remove repeated lines of 20+ chars within each doc, keeping the first.",
+   "rationale": "This boilerplate repeats across thousands of docs, and the duplicated summary/section blocks repeat inside docs.",
+   "evidence": "8,571 raw docs have an 'Overview' line; preamble in 25.2% of docs; intra-doc repeats in 42.4% of docs (4.3% of chars); the footer is in 68 docs."
+  },
+  {
+   "step": "Clean the tables: delete pipe-only and '|---|' lines, and render the remaining '| a | b |' rows as tab- or ' | '-separated text, or drop docs where table rows dominate.",
+   "rationale": "Empty layout-table rows are pure noise tokens.",
+   "evidence": "584 docs with pipe-only/separator lines; table rows in 11.1% of docs (1.8% of chars)."
+  },
+  {
+   "step": "Remove URL-only lines and tracking query strings (utm_*, usp=, etc.); optionally replace inline URLs with the domain only.",
+   "rationale": "Drive/Canva/YouTube links carry no learnable content and are high-entropy tokens.",
+   "evidence": "URLs in 27.7% of docs (1.1% of chars); URL-only lines in 549 docs."
+  },
+  {
+   "step": "Apply a licence-text screen: drop or quarantine docs whose text declares an NC/ND licence for the text or the whole work, plus 'All rights reserved' docs, after a manual review of the hits. Strip attribution boilerplate lines from the training text and keep the licence in the metadata.",
+   "rationale": "The metadata licence is the OER Commons field, and the text contradicts it; the Common Pile filter did not act on this.",
+   "evidence": "139 deduplicated docs with work-level NC/ND declarations (133 still in filtered); 93 'All rights reserved'; song lyrics in lesson/91717 under CC BY; attribution lines in 10.8% of docs."
+  },
+  {
+   "step": "Re-run PII redaction with broader patterns (emails at line end or in parentheses, US/international phones). Pick one placeholder policy and apply it to every source.",
+   "rationale": "The filtered version's redaction missed some instances.",
+   "evidence": "25 filtered docs still hold plain emails and 12 hold phone patterns; 211 raw deduplicated docs contain emails."
+  },
+  {
+   "step": "Decide whether to start from the raw text instead of the filtered text for the kept ids, then apply your own redaction and cleaning.",
+   "rationale": "The unexplained sentence deletions in the filtered version break coherence and leave whitespace artifacts.",
+   "evidence": "1,035 kept docs modified; 3,438 segments (289,548 chars) deleted, mostly unique sentences and headings; 477 filtered docs with leading/trailing-space lines vs 0 in raw."
+  },
+  {
+   "step": "Apply language filtering (fastText lid.176 if it can be installed in a project venv; otherwise the heuristic in analyze.py).",
+   "rationale": "The source is advertised as English but contains Arabic, Ukrainian, Spanish and Turkish resources.",
+   "evidence": "84 deduplicated docs (1.35% of docs, 1.81% of chars) flagged; the Common Pile filter removed 83 of them."
+  },
+  {
+   "step": "Repair or drop the encoding damage (U+FFFD sequences, cp1252 mojibake) and the HTML/JS residue. Remove '(Figure)'/'(Table)' stubs, and flag docs with dropped-formula signatures for re-extraction from HTML with MathML-to-LaTeX, or downweight them.",
+   "rationale": "These are extraction defects that teach broken text.",
+   "evidence": "U+FFFD in 24 docs, HTML/JS in 13, '(Figure)' in 461 docs (7.4%), dropped-math indicators in at least 40 docs (lower bound), KaTeX duplicates in 15."
+  },
+  {
+   "step": "Downweight or classifier-filter fragmentary, list-like docs, where most lines have under 5 words.",
+   "rationale": "Quiz options, headings and menus carry little prose.",
+   "evidence": "649 deduplicated docs (10.5% of docs, 4.4% of chars) where over half the lines have under 5 words."
+  },
+  {
+   "step": "Ignore the 'created' metadata field, or re-derive it from the OER Commons page.",
+   "rationale": "The field is misaligned.",
+   "evidence": "Only 44.9% of rows hold a date; 1,533 are 'None'; others hold authors or resource types."
+  }
+ ],
+ "script_path": "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/oercommons/analyze.py (run: python3 -I analyze.py <raw shard> <filtered shard> report.json <libretexts shard> <pressbooks shards...>; output in report.json next to it)",
+ "schema_fields": [
+  "id (str, the OER Commons URL; not unique: 6,251 distinct over 9,339 rows)",
+  "text (str)",
+  "source (str, always 'oercommons')",
+  "added (str, ISO timestamp)",
+  "created (str, MM/DD/YYYY in only 44.9% of rows; otherwise author/type/subject or 'None')",
+  "metadata.license (str)",
+  "metadata.url (str, equal to id)",
+  "metadata.title (str)",
+  "metadata.author (str)",
+  "filtered version only: metadata.provenance ('oercommons-0000.json.gz:<line>')"
+ ],
+ "open_questions": [
+  "What causes the sentence/line deletions in the 1,035 modified filtered docs? Most deleted segments are unique in OER Commons. They may come from cross-source paragraph dedup or from a classifier; this is not verified from Common Pile code.",
+  "The cross-source overlap was measured only against the local libretexts (1 shard) and pressbooks (2 shards) downloads. Overlap with doab, project_gutenberg, wikimedia and other Common Pile sources is not measured.",
+  "The share of LLM-generated lesson text in recent uploads (2023+) is not measured.",
+  "Precision of the NC/ND work-level regex rests on one manual read of 30 hits (25 were text or work-level declarations; 5 video credits, now excluded). Recall is unknown.",
+  "The language heuristic is not a trained language-ID model. It misses at least Filipino and some Turkish docs."
+ ]
+}

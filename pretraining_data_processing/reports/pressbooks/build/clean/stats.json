@@ -1,0 +1,182 @@
+{
+  "pipeline": "pressbooks",
+  "seed": 0,
+  "input": {
+    "docs": 103850,
+    "chars": 1409539031,
+    "shards": 2
+  },
+  "output": {
+    "docs": 56510,
+    "chars": 582199806
+  },
+  "steps": [
+    {
+      "name": "normalize",
+      "docs_in": 103850,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 540,
+      "chars_before_modified": 18582388,
+      "chars_after_modified": 18581235
+    },
+    {
+      "name": "noncommercial_source",
+      "docs_in": 103850,
+      "docs_removed": 20,
+      "chars_removed": 271033,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "navigation",
+      "docs_in": 103830,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 2330,
+      "chars_before_modified": 11248292,
+      "chars_after_modified": 419818
+    },
+    {
+      "name": "shortcodes",
+      "docs_in": 103830,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 9616,
+      "chars_before_modified": 169857917,
+      "chars_after_modified": 162125008
+    },
+    {
+      "name": "tables",
+      "docs_in": 103830,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 3776,
+      "chars_before_modified": 94640033,
+      "chars_after_modified": 94640156
+    },
+    {
+      "name": "boilerplate_lines",
+      "docs_in": 103830,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 36546,
+      "chars_before_modified": 675147709,
+      "chars_after_modified": 666489360
+    },
+    {
+      "name": "repeated_blocks",
+      "docs_in": 103830,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 2354,
+      "chars_before_modified": 47222294,
+      "chars_after_modified": 45676548
+    },
+    {
+      "name": "chapter_ordinal",
+      "docs_in": 103830,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 41458,
+      "chars_before_modified": 612251324,
+      "chars_after_modified": 612130901
+    },
+    {
+      "name": "renormalize",
+      "docs_in": 103830,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 385,
+      "chars_before_modified": 7395330,
+      "chars_after_modified": 7394290
+    },
+    {
+      "name": "gopher_quality",
+      "docs_in": 103830,
+      "docs_removed": 5619,
+      "chars_removed": 3935329,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "placeholder",
+      "docs_in": 98211,
+      "docs_removed": 30,
+      "chars_removed": 265630,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "english",
+      "docs_in": 98181,
+      "docs_removed": 493,
+      "chars_removed": 5782076,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "exact_dedup",
+      "docs_in": 97688,
+      "docs_removed": 26676,
+      "chars_removed": 616632284,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 26676
+      }
+    },
+    {
+      "name": "near_dedup",
+      "docs_in": 71012,
+      "docs_removed": 12344,
+      "chars_removed": 154515408,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 12344,
+        "candidate_pairs": 118508,
+        "verified_pairs": 111827
+      }
+    },
+    {
+      "name": "containment_dedup",
+      "docs_in": 58668,
+      "docs_removed": 2158,
+      "chars_removed": 17040072,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 2158,
+        "long_lines": 833316
+      }
+    },
+    {
+      "name": "pii",
+      "docs_in": 56510,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 1282,
+      "chars_before_modified": 19219895,
+      "chars_after_modified": 19210703
+    },
+    {
+      "name": "licence_credits",
+      "docs_in": 56510,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 1,
+      "chars_before_modified": 27209,
+      "chars_after_modified": 26979
+    }
+  ],
+  "data_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/pressbooks",
+  "meta_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/pressbooks/build/clean"
+}

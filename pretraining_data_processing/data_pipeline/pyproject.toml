@@ -1,0 +1,25 @@
+[project]
+name = "data-pipeline"
+version = "0.1.0"
+description = "Preprocessing of Common Pile v0.1 sources for LLM pretraining"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "datasets>=4",
+    "fasttext-numpy2-wheel",
+    "ftfy",
+    "numpy",
+    "orjson",
+    "regex",
+    "scipy",
+    "xxhash",
+]
+
+[dependency-groups]
+dev = ["pytest"]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = [".."]
+testpaths = ["tests"]

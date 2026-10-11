@@ -1,0 +1,196 @@
+{
+  "pipeline": "libretexts",
+  "seed": 0,
+  "input": {
+    "docs": 61238,
+    "chars": 511197639,
+    "shards": 1
+  },
+  "output": {
+    "docs": 39624,
+    "chars": 332416878
+  },
+  "steps": [
+    {
+      "name": "normalize",
+      "docs_in": 61238,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 571,
+      "chars_before_modified": 3774387,
+      "chars_after_modified": 3773754
+    },
+    {
+      "name": "strip_site_chrome",
+      "docs_in": 61238,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 2363,
+      "chars_before_modified": 10884375,
+      "chars_after_modified": 3082072
+    },
+    {
+      "name": "strip_page_header",
+      "docs_in": 61238,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 32551,
+      "chars_before_modified": 290254363,
+      "chars_after_modified": 287670610
+    },
+    {
+      "name": "join_fragments",
+      "docs_in": 61238,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 3748,
+      "chars_before_modified": 54409936,
+      "chars_after_modified": 54379023
+    },
+    {
+      "name": "licence_recheck",
+      "docs_in": 61238,
+      "docs_removed": 51,
+      "chars_removed": 892480,
+      "docs_modified": 36,
+      "chars_before_modified": 492121,
+      "chars_after_modified": 485748
+    },
+    {
+      "name": "strip_attribution",
+      "docs_in": 61187,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 11315,
+      "chars_before_modified": 109556049,
+      "chars_after_modified": 100662350
+    },
+    {
+      "name": "strip_html_residue",
+      "docs_in": 61187,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 177,
+      "chars_before_modified": 2844528,
+      "chars_after_modified": 2697166
+    },
+    {
+      "name": "strip_toc",
+      "docs_in": 61187,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 2155,
+      "chars_before_modified": 5767341,
+      "chars_after_modified": 1494214
+    },
+    {
+      "name": "clean_latex",
+      "docs_in": 61187,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 15566,
+      "chars_before_modified": 196829938,
+      "chars_after_modified": 193813105
+    },
+    {
+      "name": "join_subscripts",
+      "docs_in": 61187,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 5060,
+      "chars_before_modified": 74217920,
+      "chars_after_modified": 74026045
+    },
+    {
+      "name": "repair_inline",
+      "docs_in": 61187,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 34422,
+      "chars_before_modified": 397468592,
+      "chars_after_modified": 396048249
+    },
+    {
+      "name": "licence_final",
+      "docs_in": 61187,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 9,
+      "chars_before_modified": 298421,
+      "chars_after_modified": 296046
+    },
+    {
+      "name": "min_words",
+      "docs_in": 61187,
+      "docs_removed": 6967,
+      "chars_removed": 518728,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "short_lines",
+      "docs_in": 54220,
+      "docs_removed": 59,
+      "chars_removed": 232519,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "term_lists",
+      "docs_in": 54161,
+      "docs_removed": 22,
+      "chars_removed": 21674,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "english",
+      "docs_in": 54139,
+      "docs_removed": 1583,
+      "chars_removed": 10374309,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "exact_dedup",
+      "docs_in": 52556,
+      "docs_removed": 2451,
+      "chars_removed": 22149703,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 2451
+      }
+    },
+    {
+      "name": "near_dedup",
+      "docs_in": 50105,
+      "docs_removed": 10481,
+      "chars_removed": 116220646,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 10481,
+        "candidate_pairs": 121271,
+        "verified_pairs": 119257
+      }
+    },
+    {
+      "name": "mask_pii",
+      "docs_in": 39624,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 223,
+      "chars_before_modified": 3393982,
+      "chars_after_modified": 3392869
+    }
+  ],
+  "data_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/libretexts",
+  "meta_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/libretexts/build/clean"
+}

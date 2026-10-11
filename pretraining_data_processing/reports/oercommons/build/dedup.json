@@ -1,0 +1,51 @@
+{
+ "stage": "dedup",
+ "started_at_ist": "2026-10-11T22:16:13+05:30",
+ "finished_at_ist": "2026-10-11T22:16:14+05:30",
+ "method": {
+  "ngram": 13,
+  "threshold": 0.8,
+  "hash_count": 7,
+  "bloom_bits": 52000000000,
+  "priority": [
+   "public_domain_review",
+   "project_gutenberg",
+   "libretexts",
+   "pressbooks",
+   "oercommons",
+   "doab",
+   "wikimedia"
+  ]
+ },
+ "code_sha256": {
+  "workflow/cross_dedup.py": "5919ffb679f72af82e65d6d1c042ea66aca4ad085edf284809126878ba8a9e10",
+  "workflow/corpus.py": "e96e3b37565d2923500416e59ea55f7365e497ab5e4d9530cd8ffcdd77fc09d1",
+  "data_pipeline/common/dedup.py": "70b218abf0831861c3919b1b3bccf3e75411899381437321e1a1d2474b696660"
+ },
+ "decisions_sha256": "0601a9fa0a4e72001a5d0dd3a77bf935bb07d7859b269fe66e580733aeb0d3e2",
+ "totals": {
+  "docs_in": 4912,
+  "docs_out": 4047,
+  "chars_in": 44238163,
+  "chars_out": 28022942
+ },
+ "input_sha256": {
+  "00000_oercommons.json.gz": "9cfdb9c21686bea1df4ab692d7f15e19edf6b9fce6905f2700218492e72b720b"
+ },
+ "output_sha256": {
+  "00000_oercommons.json.gz": "45c5197eec2bff963d8a2746c18d2fc9b5898e01af40c2fb6110179c12a70a7b"
+ },
+ "output_sha256_before_gzip_header_fix": {
+  "00000_oercommons.json.gz": "e5e5b048d3d6fe931ba70f858f97fe55b0b7d65493c2f77e3b74cd6f99bf9128"
+ },
+ "output_content_sha256": {
+  "00000_oercommons.json.gz": "23cd086ffaa78c45f602fba210e7229451cf2e24eebf4d9473966499455ebaee"
+ },
+ "gzip_header_fix": {
+  "at_ist": "2026-10-11T23:30:26+05:30",
+  "code_sha256": {
+   "workflow/corpus.py": "2929999c2736dffc608ed187077f20c718e9f66607edb450f59ba7e52e1246dc"
+  },
+  "note": "The decontam and dedup rewriter wrote the current time into each gzip header. The shards were rewritten with the fixed rewriter (mtime=0, no file name): decompressed content unchanged (output_content_sha256)."
+ }
+}

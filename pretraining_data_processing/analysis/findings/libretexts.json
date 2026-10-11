@@ -1,0 +1,258 @@
+{
+ "dataset": "common-pile/libretexts (raw), compared against common-pile/libretexts_filtered",
+ "files_examined": [
+  "/home/vihaa/CinnamonLM/raw/common_pile/libretexts/00000_libretext.json.gz (the only data shard; no *.incomplete file under .cache)",
+  "/home/vihaa/CinnamonLM/raw/common_pile/libretexts/README.md",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/libretexts/filtered/libretexts-0000.json.gz (the only shard of common-pile/libretexts_filtered)",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/libretexts/filtered/README.md",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/libretexts/report.json (full analysis output)",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/libretexts/samples.txt (48 stratified docs I read: shortest, longest, 7 length buckets)",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/libretexts/dropped_samples.txt (14 docs the filter dropped)"
+ ],
+ "docs_sampled": 62269,
+ "total_docs_estimate": "62,269 docs, counted exactly. One shard holds the whole raw dataset, and the README table also says 62,269. The README says 5.3 UTF-8 GB, but the measured text is 523,051,203 chars (about 0.52 G chars). The filtered README says 3.6 GB; its measured text is 358,867,364 chars in 40,049 docs.",
+ "schema_fields": [
+  "id (str, page URL)",
+  "text (str)",
+  "source (str, always 'libretexts')",
+  "added (ISO timestamp)",
+  "created (ISO timestamp)",
+  "metadata (a JSON dict in the raw files, not a Python-dict string): license, url, book_url, title (null in some docs), author",
+  "filtered version only: metadata.provenance"
+ ],
+ "length_stats": "All 62,269 docs. Chars: min 101, p1 153, p5 358, p25 1,801, p50 4,672, p75 10,660, p95 27,246, p99 46,659, max 1,470,117 (Rousseau, Confessions, in a world-literature anthology); mean 8,400. Whitespace words: min 8, p1 24, p5 55, p25 286, p50 716, p75 1,689, p95 4,400, p99 7,719, max 262,998; mean 1,344. Total chars: 523,051,203. After my chrome stripping, chars are: p1 0, p5 31, p25 1,559, p50 4,383, p99 46,265. Hosts: med 8,366; socialsci 8,058; human 7,669; math 7,600; chem 6,643; bio 6,172; biz 5,741; phys 4,270; workforce 2,313; stats 2,133; geo 1,351; espanol 998; eng 955. URL section: Bookshelves 36,064; Courses 25,043; other 1,162.",
+ "language_mix": "No language-ID library is installed (no fasttext or langdetect), so I used a heuristic on text with chrome and LaTeX removed. It computes English, Spanish and French stopword ratios (fixed lists of about 100, 90 and 40 words) and the ASCII share of letters. A doc is 'en' if en_ratio >= max(es, fr) and en_ratio >= 0.15; 'es' or 'fr' if that ratio beats English and is >= 0.15; 'non_latin' if ASCII letters < 0.5; docs under 20 letter-tokens are 'too_short'. Results: en 55,437 (89.0%, 500.9M chars); too_short 4,681 (7.5%, mostly chrome or TOC stubs); es 1,457 (2.34% of docs, 10.45M chars, 2.0%); unclear_low_stopword 654 (tables, chronologies, exercise lists); fr 24 (some are mislabeled chronologies); non_latin 16 (Arabic-course pages). Spanish docs by host: espanol 913, human 377 (Spanish-language courses), math 166 (the Santiago Canyon 'HiSet Mathematica' course), chem 1. Some espanol content looks machine-translated: TOC text such as 'Resumen de Key Concepts' and LaTeX whose commands were translated and spaced, e.g. '\\ (\\ begin {array} {ras a la izquierda}'. The filter dropped 995 of the 998 espanol-host docs, and only 4 docs my heuristic marks non-English survived it.",
+ "issues": [
+  {
+   "name": "Pages that are only site chrome (MindTouch navigation dump)",
+   "description": "Some pages hold the whole LibreTexts UI. They start with 'Skip to main content', then menu words (build_circle, fact_check, Text Color, Enable Dyslexic Font...), then MindTouch JSON blobs ('property get [Map MindTouch.Deki.Logic...]'), timestamps, 'admin', tag arrays, a login URL and breadcrumbs. They end at 'Page ID\\nNNNN' and an author byline, with no article text after it. I checked full docs by eye.",
+   "prevalence": "1,051 docs (1.69%), 7,660,157 chars (1.46% of all chars), removed by the site_chrome_block rule. The filter dropped 995 of the 1,051 (sites with MindTouch blobs: 39 still in filtered).",
+   "measurement_method": "Doc starts with 'Skip to main content' and contains re.compile(r'Expand/collapse global location\\n.*?Page ID\\n\\d+\\n?', re.S). Chars from doc start to the match end count as chrome, plus up to 3 following byline lines (<80 chars, no final .?!:).",
+   "evidence_examples": [
+    "[https://med.libretexts.org/Bookshelves/Anatomy_and_Physiology/Anatomy_and_Physiology_(Boundless)/10%3A_Overview_of_the_Nervous_System/10.1%3A_Introduction_to_the_Nervous_System] 'Skip to main content / Table of Contents / menu / search / ... { \"10.1A:_Organization_of_the_Nervous_System\" : \"property get [Map MindTouch.Deki.Logic.ExtensionProcessorQueryProvider+<>c__DisplayClass230_0.<PageSubPageProperty>b__1]()\" ... Last updated / Save as PDF / Page ID / 7174' (doc ends here, 8,480 chars)",
+    "[https://math.libretexts.org/Bookshelves/PreAlgebra/Pre-Algebra_I_(Illustrative_Mathematics_-_Grade_7)/01%3A_Scale_Drawings/1.02%3A_New_Page] '... Sat, 25 Jan 2020 01:41:09 GMT / 1.2: Scale Drawings / 34978 / 34978 / admin / { } / Anonymous / ... [ \"article:topic\", \"license:ccby\", \"authorname:im\" ] ... Page ID / 34978 / Illustrative Mathematics / OpenUp Resources'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Chapter landing pages that hold only a header and a table of contents (one line, no newline)",
+   "description": "Chapter index pages flatten to one line: title, 'Last updated Save as PDF Page ID N', author and institution, then a run of 'N.M: Section title' entries. Some have only the title and byline. A Spanish variant uses '\u00daltima actualizaci\u00f3n Guardar como PDF'.",
+   "prevalence": "3,531 docs have no newline; 3,449 of them have this header. The inline_header rule matched 3,515 docs (5.64%); TOC-entry runs total 855,740 chars in 2,711 docs (0.16% of chars). The filter dropped 3,223 of the 3,531 single-line docs, and 302 inline-TOC pages remain in filtered.",
+   "measurement_method": "INLINE_HEADER = r'^(?P<title>.{0,300}?) (?:Last updated|\u00daltima actualizaci\u00f3n) (?:Save as PDF|Guardar como PDF)(?: Page ID \\d+)?'. TOC markers: r'(?:(?<=\\s)|^)\\d{1,3}(?:\\.\\d{1,3})*[A-Z]?: '. A segment from one marker to the next counts as a TOC entry if it is <=150 chars. In multi-line docs, runs of >=3 lines matching r'^(?:- )?\\d{1,3}(?:\\.\\d{1,3})*[A-Z]?: .{1,150}$' also count.",
+   "evidence_examples": [
+    "[https://socialsci.libretexts.org/Bookshelves/Counseling_and_Guidance/Blueprint_for_Success_in_College_and_Career_(Dillon)/11%3A_Conclusion] '11: Conclusion Last updated Save as PDF Page ID 12328 Dave Dillon Grossmont College 11.1: Conclusions' (whole doc)",
+    "[https://biz.libretexts.org/Courses/Lumen_Learning/Human_Resources_Management_(Lumen)/11%3A_Employee_Termination] '11: Employee Termination Last updated Save as PDF Page ID 46946 Nina Burokas Lumen Learning 13.1: Navigating Employee Termination 13.2: Putting It Together- Employee Termination 13.3: ...'",
+    "[https://espanol.libretexts.org ... College of the Canyons, idx 6587] '18: Ap\u00e9ndices \u00daltima actualizaci\u00f3n Guardar como PDF Page ID 50074 Jennifer Paris, Kristin Beeve, & Clint Springer College of the Canyons 18.1: Ap\u00e9ndice A - ...'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Docs with almost no content after chrome is removed",
+   "description": "After all chrome rules run and the title is removed, fewer than 200 chars are left. These are TOC pages, site-chrome pages, 'New Page' placeholders, and pages whose content was images or video.",
+   "prevalence": "4,926 docs (7.91%), 9,190,692 raw chars (1.76%). 2,900 docs (4.66%) are >90% chrome and 4,519 (7.26%) are >50% chrome. 36 docs have 'New Page' as the metadata title.",
+   "measurement_method": "len(content_without_title) < 200, computed on strip_chrome(text) in analyze.py.",
+   "evidence_examples": [
+    "[https://math.libretexts.org/Bookshelves/Abstract_and_Geometric_Algebra/Open_Algebra_and_Knots_(Salomone)/03%3A_Knots_and_Algebra/3.03%3A_Knot_Groups] '3.3: Knot Groups Last updated Save as PDF Page ID 85680 Matthew Salomone Bridgewater State University'",
+    "[https://biz.libretexts.org/Bookshelves/Civil_Law/Fundamentals_of_Business_Law_(Randall_et_al.)/13%3A_Employment_Law/13.03%3A_New_Page] '13.3: New Page Last updated Save as PDF Page ID 42064 Melissa Randall and Community College of Denver Students Community College of Denver'",
+    "[https://bio.libretexts.org/Bookshelves/Microbiology/Microbiology_(Boundless)/04%3A_Cell_Structure_of_Bacteria_Archaea_and_Eukaryotes/4.01%3A_Overview_of_Prokaryotic_and_Eukaryotic_Cells] '4.1: Overview of Prokaryotic and Eukaryotic Cells Last updated Save as PDF Page ID 8644 Boundless Boundless'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Header chrome lines, bylines and empty bullets inside multi-line docs",
+   "description": "Multi-line pages start with '-' / '- Last updated' / '- Save as PDF' and then 0 to 3 byline bullets (author, institution). Throughout the body there are lone '-' lines left from list markup, and in some docs the lines 'selected template will load here' / 'This action is not available.' appear.",
+   "prevalence": "header_lines: 18,912 docs (30.37%), 656,251 chars. byline: 7,485 docs (12.02%), 499,243 chars. Lone '-' lines: 25,730 docs (41.32%), 385,826 chars. 'selected template will load here': 4,265 docs (6.85%). In filtered: 'Last updated...Save as PDF' in 8,452 docs (21.1%), lone '-' lines in 16,810 (42.0%), 'selected template' in 1,503.",
+   "measurement_method": "Exact line match against CHROME_LINES = {'-', '- Last updated', '- Save as PDF', 'Last updated', 'Save as PDF', Spanish variants, 'Page ID', 'Skip to main content', 'selected template will load here', 'This action is not available.'}, plus a digits-only line after 'Page ID'. Byline = up to 3 lines after a 'Save as PDF' line that start with '- ', are <100 chars and do not end in .?!:. Lone dash = line.strip() == '-'.",
+   "evidence_examples": [
+    "[https://bio.libretexts.org/Courses/North_Central_State_College/BIOL_1550%3A_Microbiology_(2025)/01%3A_Introduction_to_Microbiology/1.E%3A_Fundamentals_of_Microbiology_(Exercises)] '1.E: Fundamentals of Microbiology (Exercises) / - / - Last updated / - Save as PDF / - Ying Liu / - City College of San Francisco / These are homework exercises...'",
+    "[https://socialsci.libretexts.org/Bookshelves/Political_Science_and_Civics/American_Government_3e_(OpenStax)/06%3A_The_Politics_of_Public_Opinion/6.01%3A_Introduction] '6.1: Introduction / selected template will load here / This action is not available. / On November 7, 2012, the day after the presidential election...'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Within-source near-duplicates (the same OpenStax/Lumen chapters copied into many Courses remixes)",
+   "description": "LibreTexts 'Courses' are remixes of 'Bookshelves' books, so the same section appears many times with small edits. Template stub pages also cluster, e.g. 98 Lumen 'Self Check' pages that contain only quiz instructions and no quiz.",
+   "prevalence": "MinHash ran on chrome-stripped text of docs with >=30 words: 57,551 docs. Results: 16,818 verified pairs (estimated Jaccard >=0.8), 7,486 clusters with 21,086 docs (33.9% of all docs). Keeping one copy per cluster removes 13,600 docs and 146,614,233 raw chars (28.0% of all chars). 7,841 of the verified pairs (46.6%) link a Courses page to a Bookshelves page. Exact duplicates on normalized raw text: 3,772 docs in groups, 2,110 extra copies. On normalized chrome-stripped text (>=200 chars): 4,423 docs, 2,484 extra copies, 23.8M chars.",
+   "measurement_method": "Word 5-shingles of re.findall(r'\\w+', clean.lower()), each hashed with xxh64. 128 multiply-shift permutations ((a*h+b)>>32, seed 0) give the signature; LSH uses 16 bands x 8 rows. A candidate pair is kept if the fraction of equal signature slots is >=0.8. Clusters are built with union-find. Spot check of exact shingle Jaccard on raw text: 0.948 for a Widener 5.02 / OpenStax Atoms First 8.2 pair, and 0.74 for two Lumen Self Check stubs. Exact dups: md5 of lowercased, whitespace-collapsed text.",
+   "evidence_examples": [
+    "[https://chem.libretexts.org/Courses/Widener_University/CHEM_145%3A_FA22_Van_Bramer/05%3A_Gases/5.02%3A_Relating_Pressure_Volume_Amount_and_Temperature_-_The_Ideal_Gas_Law] vs [https://chem.libretexts.org/Bookshelves/General_Chemistry/Chemistry_-_Atoms_First_1e_(OpenSTAX)/08%3A_Gases/8.2%3A_Relating_Pressure_Volume_Amount_and_Temperature%3A_The_Ideal_Gas_Law]: exact 5-shingle Jaccard 0.948 (24,428 vs 25,142 chars)",
+    "[https://biz.libretexts.org/Bookshelves/Marketing/Principles_of_Marketing_(Lumen)/01%3A_What_Is_Marketing/1.01%3A_Self_Check-_The_Marketing_Concept] 'Check Your Understanding / Answer the question(s) below to see how well you understand the topics covered in the previous section. This short quiz does not count toward your grade...' (cluster of 98 such stubs)"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "LibreTexts \\PageIndex macro and LaTeX layout residue",
+   "description": "Example, figure and exercise numbers come out as the unrendered macro '\\(\\PageIndex{n}\\)'. MathJax display math keeps \\nonumber, \\label{...}, \\\\[4pt] and \\hspace{..}. Real LaTeX math itself is common and useful: it should be kept and normalized, not removed.",
+   "prevalence": "\\PageIndex: 13,521 docs (21.71%), 2,229,694 chars (0.43%); 7,697 filtered docs still have it. Layout residue: 6,953 docs (11.17%), 1,004,678 chars (0.19%). All \\(..\\) and \\[..\\] math spans: 21,037 docs (33.78%), 35,096,961 chars (6.71%).",
+   "measurement_method": "pageindex: r'\\\\\\(\\\\PageIndex\\{[^}]*\\}\\\\\\)'. residue: r'\\\\nonumber|\\\\label\\{[^}]*\\}|\\\\\\\\\\[\\d+pt\\]|\\\\[hv]space\\*?\\{[^}]*\\}'. math spans: r'\\\\\\((.*?)\\\\\\)|\\\\\\[(.*?)\\\\\\]' with re.S.",
+   "evidence_examples": [
+    "[https://math.libretexts.org/Courses/Coastline_College/Math_C120%3A_Trigonometry_(Tran)/03%3A_Trigonometric_Identities_and_Equations/3.06%3A_Solving_Trigonometric_Equations] 'Example \\(\\PageIndex{1A}\\): Solving a Linear Trigonometric Equation Involving the Cosine Function'",
+    "[https://math.libretexts.org/Courses/Highline_College/MATH_141%3A_Precalculus_I_(2nd_Edition)/02%3A_Inequalities_and_Functions/2.06%3A_Average_Rate_of_Change] '\\[\\text{Average rate of change} = \\dfrac{\\text{Change of Output}}{\\text{Change of Input}} =\\dfrac{f(b)-f(a)}{b-a} \\label{avgratefunction}\\nonumber\\]'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Broken LaTeX: spaced or translated commands and unresolved cross-references",
+   "description": "Some LaTeX was broken by machine translation or editing, with a space after the backslash and translated arguments. The pdf-to-LaTeX conversion also left unresolved references such as '( [remainder] )', '[ratrep]' and OpenStax '[link]'.",
+   "prevalence": "Spaced or broken LaTeX: 497 docs (0.80%), 32,595 chars. Cross-reference residue: 110 docs (0.18%).",
+   "measurement_method": "spaced: r'\\\\ (?:\\(|\\)|dfrac|frac|begin|end|sqrt|left|right|cdot|text|mathrm|div|times|pi|alpha|beta|theta) ?\\{?'. crossref: r'(?m)\\( ?\\[[A-Za-z][\\w:.\\-]*\\] ?\\)|^\\[[a-z][\\w:.\\-]*\\](?= )'.",
+   "evidence_examples": [
+    "[https://math.libretexts.org/Courses/Santiago_Canyon_College/HiSet_Mathematica_(Lopez)/23%3A_Raices_Radicales_y_Ecuaciones_de_Raiz_Cuadrada/23.08%3A_Resumen_de_conceptos_clave] '\\ (\\ begin {array} {ras a la izquierda} / \\ sqrt {x + y} &\\ not =\\ sqrt {x}\\ sqrt {y}'",
+    "[https://phys.libretexts.org/Bookshelves/College_Physics/College_Physics_1e_(OpenStax)/21%3A_Circuits_Bioelectricity_and_DC_Instruments/21.06%3A_DC_Circuits_Containing_Resistors_and_Capacitors] 'Example \\ (\\PageIndex{2}\\): Calculating Time: RC Circuit'",
+    "[https://math.libretexts.org/Bookshelves/Combinatorics_and_Discrete_Mathematics/Elementary_Number_Theory_(Raji)/06%3A_Introduction_to_Continued_Fractions/6.01%3A_Basic_Notations] 'It follows from ( [remainder] ) that \\[\\label{l1} r_k=a_k+\\frac{1}{r_{k+1}}.\\]'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Flattened subscripts and superscripts (chemistry, electron configurations, ordinals)",
+   "description": "HTML <sub>/<sup> became a space plus the digit: 'H 2 O', '[Cu(H 2 O) 6 ] 2+', '1s 2 2s 2', '19 th'. This loses meaning and teaches wrong formula spellings.",
+   "prevalence": "Chemical/orbital pattern: 3,751 docs (6.02%), 191,346 chars. Split ordinals: 934 docs (1.50%).",
+   "measurement_method": "r'\\b(?:H|He|Li|C|N|O|F|Na|Mg|Al|Si|P|S|Cl|K|Ca|Fe|Cu|Zn|Br|Mn|Cr|Co|Ni|Pb|Hg|Ag|CH|OH|NH|SO|NO|CO|PO) \\d{1,2}(?= ?(?:[A-Z]|\\(|\\)|\\]|[+\\-\u2212]|$))|\\b\\d[spdf] \\d{1,2}\\b' and r'\\b\\d+ (?:st|nd|rd|th)\\b'. Both are heuristics; the first misses formulas with uncommon elements.",
+   "evidence_examples": [
+    "[https://chem.libretexts.org/Courses/Tennessee_State_University/CHEM_4210%3A_Inorganic_Chem_II_(Siddiquee)/02%3A_d-Block_Metal_Chemistry-_General_Considerations/2.P%3A_Problems] '[Cu(H 2 O) 6 ] 2+ appears blue but is opposite of orange on the color wheel' and 'Ar: 1s 2 2s 2 2p 6 3s 2 3p 6'",
+    "[https://chem.libretexts.org/Bookshelves/General_Chemistry/Chem1_(Lower)/04%3A_The_Basics_of_Chemistry/4.01%3A_Atoms_Elements_and_the_Nucleus] 'not universally accepted until the late 19 th Century'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Text broken at removed inline elements (space before punctuation, split lines)",
+   "description": "Where inline HTML (glossary links, bold terms) was removed, a space was left before the punctuation, or a phrase was split onto its own line and the next line starts with a comma.",
+   "prevalence": "Space before punctuation: 33,463 docs (53.74%), 698,806 chars. Split-line fragments: 3,850 docs (6.18%), 20,991 lines, 283,468 chars.",
+   "measurement_method": "r'(?m)(?<=[A-Za-z]) [,;:](?= )|(?<=[a-z]) \\.(?= [A-Z]|$)'. Fragment = a line of <=4 words that does not start with '- ', '|' or '\\', whose previous line is >=30 chars and does not end in .?!:|, and whose next line has >=3 words and starts lowercase or with ,.;:).",
+   "evidence_examples": [
+    "[https://stats.libretexts.org/Courses/Cerritos_College/Introduction_to_Statistics_with_R/02%3A_Introduction_to_R/2.17%3A_Factors] 'we commonly make the distinction between nominal , ordinal , interval and ratio scale data.'",
+    "[https://socialsci.libretexts.org/Bookshelves/Counseling_and_Guidance/College_Success_(OpenStax)/01%3A_Exploring_College/1.00%3A_Prelude_to_Exploring_College] 'The key is to / be your own best advocate / , because no one else is obliged to advocate on your behalf.'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Attribution footers and footnote/reference lines",
+   "description": "Many pages end with 'Contributors and Attributions' blocks ('Authored by : ... License : ...'). Reference and footnote lines end with the return arrow '\u21b5'. Inline footnote numbers also appear inside sentences (seen when reading; the regex count is noisy).",
+   "prevalence": "Attribution: 8,039 docs (12.91%), 2,780,426 chars (0.53%). Lines ending in '\u21b5': 1,877 docs (3.01%), 1,880,445 chars (0.36%). Inline footnote-number regex: 3,769 docs (6.05%), but its top examples are false positives inside site chrome, so it is low confidence.",
+   "measurement_method": "A line equal to 'Contributors and Attributions', 'Contributors' or 'Attribution(s)' that starts within the last 3,000 chars counts as attribution through end of doc; lines matching r'(?i)^(?:- )?(?:Authored by ?:|Provided by ?:|License ?:|Located at ?:|This page titled .{0,300} is shared under|CC licensed content)' also count. Footnote lines: line.strip().endswith('\u21b5'). Inline numbers: r'(?<=[a-z][.,\u201d\"]) \\d{1,3}(?= [A-Z])'.",
+   "evidence_examples": [
+    "[https://biz.libretexts.org/Bookshelves/Constitutional_Law/Constitutional_Law_(Lumen)/03%3A_Second_Amendment-_Regulations/3.04%3A_Federal_Regulations_v._State_Regulations-_Presser_v._Illinois_116_U.S._252_(1886)] 'Contributors and Attributions / - Authored by : US Government . Located at : https://supreme.justia.com/cases/federal/us/116/252/case.html . License : Public Domain: No Known Copyright'",
+    "[https://biz.libretexts.org/Bookshelves/Finance/Introduction_to_Financial_Analysis_(Bigel)/02%3A_Part_II-_Ratio_Analysis_and_Forecasting_Modeling/06%3A_Profitability_and_Return_Ratios_and_Turnover/6.05%3A_Financial_Ratios_in_Action] '- https://www.macrotrends.net/stocks/c.../balance-sheet \u21b5'",
+    "[https://socialsci.libretexts.org/Bookshelves/Political_Science_and_Civics/American_Government_3e_(OpenStax)/06%3A_The_Politics_of_Public_Opinion/6.01%3A_Introduction] 'leaving space for video of his acceptance speech. 1 Yet, Romney had lost his bid'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Truncated display URLs",
+   "description": "Link text was shortened by LibreTexts with '...', so the URL is not valid and is noise for the model.",
+   "prevalence": "3,585 docs (5.76%), 694,081 chars (0.13%).",
+   "measurement_method": "r'https?://\\S*\\.\\.\\.\\S*'",
+   "evidence_examples": [
+    "[https://biz.libretexts.org/Courses/Northeast_Wisconsin_Technical_College/Team_Building_and_Problem_Solving_(NWTC)/03%3A_Group_Membership/3.11%3A_Personality_and_Organization-_A_Basic_Conflict] '( https://www.fastcompany.com/1827003/...ure-innovation );'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "References to missing media and interactive elements",
+   "description": "The text points to videos, applets, sliders, Desmos calculators and quizzes, or carries image captions, but the media was not extracted. Calculator pages keep only empty form labels.",
+   "prevalence": "Interactive-placeholder regex: 1,484 docs (2.38%). Figure-caption lines: 2,667 docs, 1,583,539 chars (0.30%). Lines that hold only table pipes: 4,269 docs, 247,126 chars.",
+   "measurement_method": "r'(?i)watch (?:this|the following) video|\\(Powered by DESMOS\\)|Query \\\\\\(\\\\PageIndex|use the (?:simulation|applet|slider)|move the slider|interactive (?:element|figure|simulation)'. Caption lines: r'^Figure (?:\\\\\\(\\\\PageIndex\\{[^}]*\\}\\\\\\)|\\d+(?:\\.\\d+)*)\\s*[:.]'. Empty table lines: r'^\\|(?:\\s*\\|)*\\s*$'.",
+   "evidence_examples": [
+    "[https://stats.libretexts.org/Courses/Oxnard_College/Statistics_Calculators_for_Math_105/10%3A_Confidence_Interval_for_a_Population_Mean_Given_Data] 'Data: / | Confidence Level (enter a decimal): | / Output / | Sample Mean (\\(\\bar{x}\\)): | Standard Deviation (\\(s\\)): | Lower Bound: | Upper Bound: | / (Powered by DESMOS)'",
+    "[https://biz.libretexts.org/Courses/Western_Technical_College/Managing_People_(Gehrett)/02%3A_Module_2_-_Selection_and_Hiring_and_Employee_Training/2.07%3A_The_Power_of_Effective_Onboarding] 'Watch / As you watch this video, think about how onboarding can impact the success of the employee AND the organization.' (whole doc)"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Non-English documents (Spanish, some machine-translated)",
+   "description": "The espanol host and Spanish-language courses on the math and human hosts. Some text is machine-translated with broken LaTeX and mixed English.",
+   "prevalence": "Heuristic 'es': 1,457 docs (2.34%), 10,454,022 chars (2.00%). Also 24 'fr' and 16 'non_latin' docs.",
+   "measurement_method": "Stopword-ratio heuristic as described in language_mix.",
+   "evidence_examples": [
+    "[https://espanol.libretexts.org/Under_Construction/Matem%C3%A1ticas/%C3%81lgebra_Intermedia_(OpenStax)/02%3A_Resolver_ecuaciones_lineales/2.05%3A_Solucionar_aplicaciones_de_mezcla_y_movimiento_uniforme/2.5E%3A_Ejercicios] '1. Michaela tiene $2.05 en monedas de diez y cinco centavos en su monedero.'",
+    "[https://math.libretexts.org/Courses/Santiago_Canyon_College/HiSet_Mathematica_(Lopez)/23%3A_Raices_Radicales_y_Ecuaciones_de_Raiz_Cuadrada/23.08%3A_Resumen_de_conceptos_clave] '23.8: Resumen de conceptos clave / Resumen de Key Concepts / Ra\u00edz cuadrada'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Body text names a license that conflicts with the metadata license (NC, ND, all rights reserved)",
+   "description": "Metadata says CC BY or CC BY-SA, but the attribution text says that some content is CC BY-NC(-SA), CC BY-ND, 'All Rights Reserved' or 'used with permission'. Often this refers to embedded YouTube videos or images that were not extracted, but some is adapted text, e.g. from Lally & Valentine-French (CC BY-NC-SA 3.0).",
+   "prevalence": "2,036 docs (3.27%). Docs per sub-pattern: 'cc by nc' 1,137; 'all rights reserved' 670; 'noncommercial' 587; 'used with permission' 255; 'non commercial' 53; 'cc by nd' 50.",
+   "measurement_method": "r'(?i)\\bCC[ -]BY[ -]NC|\\bCC[ -]BY[ -](?:SA[ -])?ND\\b|non-?commercial|all rights reserved|used (?:here )?with permission'",
+   "evidence_examples": [
+    "[https://socialsci.libretexts.org/Bookshelves/Communication/Interpersonal_Communication/I.C.A.T_Interpersonal_Communication_Abridged_Textbook_(Gerber_and_Murphy)/02%3A_Culture_and_Communication] metadata license CC BY; text: 'Communication in the Real World: An Introduction to Communication Studies; University of Minnesota; 2016; / CC BY NC SA 4.0'",
+    "[socialsci ... Child Development ... 11.02%3A_Piagets_Theory_of_Cognitive_Development] metadata CC BY; text: 'Lifespan Development: A Psychological Perspective by Martha Lally and Suzanne Valentine-French is licensed under CC BY-NC-SA 3.0'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "OCR errors in public-domain court opinions (seen when reading, not measured)",
+   "description": "Supreme Court opinions copied into the Constitutional Law (Lumen) book contain OCR errors. I saw this in one doc I read and did not measure prevalence.",
+   "prevalence": "Not measured; seen in 1 of the 62 docs I read in full or as long excerpts.",
+   "measurement_method": "Manual reading.",
+   "evidence_examples": [
+    "[https://biz.libretexts.org/Bookshelves/Constitutional_Law/Constitutional_Law_(Lumen)/03%3A_Second_Amendment-_Regulations/3.04%3A_Federal_Regulations_v._State_Regulations-_Presser_v._Illinois_116_U.S._252_(1886)] 'between eighteen and forty-flue, except those exempted, shall be subject to military duty, and shall he enrolled'"
+   ],
+   "severity": "low"
+  }
+ ],
+ "duplication": "I checked all 62,269 docs, so the duplicate numbers cover the whole dataset. Exact duplicates (md5 of lowercased, whitespace-collapsed raw text): 3,772 docs are in duplicate groups, 2,110 of them extra copies. On chrome-stripped text >=200 chars: 4,423 docs, 2,484 extra copies, 23.8M raw chars. Near-duplicates were found with MinHash: chrome-stripped text, word 5-shingles hashed with xxh64, 128 multiply-shift permutations (seed 0), LSH 16 bands x 8 rows, then a check that estimated Jaccard is >=0.8 and union-find. 57,551 docs (those with >=30 words) were hashed. This gave 18,867 candidate pairs, 16,818 verified, and 7,486 clusters with 21,086 docs. Keeping one doc per cluster removes 13,600 docs and 146.6M raw chars, which is 28.0% of the corpus. 46.6% of verified pairs link a Courses remix to a Bookshelves original. Spot-checked exact Jaccard on two clusters: 0.948 and 0.74. The largest cluster is 98 Lumen 'Self Check' quiz stubs; the next largest are OpenStax Chemistry sections copied into 18 to 22 course remixes.",
+ "filtered_comparison": "Docs were matched by id. All 40,049 filtered ids exist in raw. Raw docs: 22,182 dropped (35.6%), 8,443 changed (13.6% of raw, 21.1% of kept), 31,644 unchanged.\n\nWhat was dropped:\n(a) Every raw doc under 700 chars: 7,360 of 7,360. The shortest kept raw doc is 700 chars.\n(b) Spanish: 995 of the 998 espanol-host docs.\n(c) Chrome-only pages: 995 of 1,051 site-chrome docs and 3,223 of 3,531 single-line TOC pages.\n(d) Many near-duplicates. Docs in my near-dup clusters were dropped at 58% (11,832 of 20,404, counting docs >=500 chars and not already explained by a), b) or c)). Other docs were dropped at 6.8% (2,278 of 33,393).\nSequential attribution of drops: <500 chars 5,145; non-English 1,460; site chrome 995; no content after chrome 472; in a near-dup cluster 11,832; unexplained 2,278. The dataset cards do not document the filter steps, so the link to dedup is an association I measured, not a confirmed mechanism.\n\nWhat still survives in the filtered version:\n- 1,467 near-dup clusters still have 2 or more kept copies, which is 1,624 extra docs and 15.0M chars; 538 clusters were dropped completely.\n- Chrome was not stripped from kept docs: 'Last updated...Save as PDF' in 8,452 docs (21.1%), lone '-' lines in 16,810 (42.0%), \\PageIndex in 7,697 (19.2%), 'selected template' in 1,503, 'Skip to main content' in 1,097, 302 inline TOC pages, and 39 MindTouch blobs.\n- 7 docs are empty and 11 are under 200 chars.\n\nHow the 8,443 changed docs differ:\n(1) Spans deleted with no replacement in 7,146 docs, 2,257,215 chars in total. These look like sentence-level deletions that leave double spaces or dangling numbers. Many of the deleted sentences are benign: an optics exercise 'You are told not to shoot until you see the whites of their eyes.', 'Suppose the amount of mass in a black hole doubles.', blood-pressure exercise text, a child-maltreatment learning objective. The cause is not documented.\n(2) PII placeholders in 1,745 docs: filtered has 1,275 <EMAIL_ADDRESS>, 1,573 <IP_ADDRESS> and 418 <PHONE_NUMBER>. The replacement also removes the space before it. Of 3,021 replacements I aligned to raw text, 2,218 (73.4%) are evident false positives: section numbers such as 'Sections: 2.2.1.2.8' becoming '<IP_ADDRESS>.8' (743); DOIs and other dotted numbers (458); URLs and image filenames such as 'muso-soseki-3.@2x.jpeg' or a cnx.org URL (715 + 61); page ranges, numbers in tables and LaTeX numbers as phone numbers (241). 803 are plausible real values, e.g. faculty emails and phone numbers. 7 docs were emptied.",
+ "license_notes": "Metadata license counts (all 62,269 docs): CC BY 4.0: 39,339. CC BY-SA 4.0: 18,065. Public Domain: 1,593. CC BY 3.0: 1,292. CC BY-SA 3.0: 1,010. GNU FDL: 967. CC BY-SA 2.5: 3. No doc lacks a license value. Docs dropped by the filter, by license: CC BY 15,337 of 40,631; CC BY-SA 6,234 of 19,078; Public Domain 401 of 1,593; GFDL 210 of 967. The license values are per-page tags, but 2,036 docs (3.27%) say in the body that some content is NC, ND, all-rights-reserved or used-with-permission. The metadata license does not cover that content.",
+ "recommended_steps": [
+  {
+   "step": "Drop pages that are only chrome: docs that start with 'Skip to main content' and contain the MindTouch breadcrumb block, single-line docs that match INLINE_HEADER, and any doc with fewer than 200 chars of content after chrome removal and title stripping.",
+   "rationale": "These docs have no article text. They teach UI strings, JSON blobs and TOC lists.",
+   "evidence": "1,051 site-chrome docs (7.66M chars, 1.46%), 3,515 inline-header TOC pages and 4,926 docs (7.91%) with less than 200 content chars. 39 MindTouch docs and 302 TOC pages are still in the filtered version."
+  },
+  {
+   "step": "Strip chrome lines inside the remaining docs: the 'Last updated'/'Save as PDF'/'Page ID' header lines and the following byline bullets, 'selected template will load here'/'This action is not available.', lone '-' lines, and runs of 3 or more 'N.M: Title' TOC lines. Use the strip_chrome() function in analyze.py, which has a --selftest.",
+   "rationale": "This chrome sits at the start of 30 to 41% of docs and repeats in the same form across the corpus.",
+   "evidence": "Header lines in 18,912 docs (30.4%), lone '-' lines in 25,730 docs (41.3%), bylines in 7,485 docs. Filtered still has 'Last updated...Save as PDF' in 21.1% of docs and lone dashes in 42.0%."
+  },
+  {
+   "step": "After chrome stripping, run MinHash near-dedup within the source (word 5-shingles, Jaccard >= 0.8, keep one per cluster). Keep the Bookshelves copy, or the longest copy if there is no Bookshelves copy. Dedup this source with the other OER sources too, because OpenStax books recur elsewhere.",
+   "rationale": "Courses remixes copy Bookshelves books almost verbatim, so the duplicates would over-weight a few OpenStax and Lumen books.",
+   "evidence": "13,600 extra copies, 146.6M chars (28.0% of raw). 46.6% of verified pairs are Courses<->Bookshelves. Filtered still has 1,624 extra docs (15.0M chars) in 1,467 clusters."
+  },
+  {
+   "step": "Normalize the LaTeX instead of removing it: replace \\(\\PageIndex{X}\\) with X, and delete \\nonumber, \\label{...}, \\\\[Npt] and \\hspace/\\vspace{...}. Keep \\( \\) and \\[ \\] math. Drop docs with spaced or translated LaTeX ('\\ dfrac {', '\\ (\\ begin'), or repair the common commands. Remove unresolved '( [label] )' and '[link]' references.",
+   "rationale": "Math is a large, valuable share of the corpus. The leftover macros and broken commands teach syntax that cannot render.",
+   "evidence": "Math spans are 6.71% of chars in 33.8% of docs. \\PageIndex is in 13,521 docs (2.23M chars). Layout residue is in 6,953 docs (1.00M chars). Spaced LaTeX is in 497 docs; crossref residue in 110."
+  },
+  {
+   "step": "Run a real language-ID model (fastText lid.176) and either drop non-English docs or route them to a separate Spanish pool, with extra caution for espanol-host pages that look machine-translated.",
+   "rationale": "The source is meant to be English. My stopword heuristic finds Spanish outside the espanol host as well.",
+   "evidence": "1,457 'es' docs (10.45M chars): espanol 913, human 377, math 166. Translated LaTeX example: '\\ (\\ begin {array} {ras a la izquierda}'."
+  },
+  {
+   "step": "Do not use the Common Pile filtered text as-is. Start from raw and apply your own filters. If PII redaction is needed, use rules that skip URLs, DOIs, dotted section numbers, image filenames and numeric tables, and keep the surrounding whitespace.",
+   "rationale": "The existing pipeline deleted benign sentences, which leaves broken exercises, and its PII step mostly redacts non-PII. It also did not remove the chrome.",
+   "evidence": "7,146 docs had span deletions (2.26M chars), e.g. '102. You are told not to shoot until you see the whites of their eyes. If the eyes...' became '102.  If the eyes...'. 2,218 of 3,021 PII replacements (73.4%) are evident false positives. 7 docs were emptied."
+  },
+  {
+   "step": "Repair inline-element damage: delete the space before , ; : . when it follows a letter, rejoin short split-line fragments with their neighbors, and join flattened ordinals ('19 th' to '19th'). As an option, rejoin flattened chemical formulas on chem and bio pages ('H 2 O' to 'H2O', '[Cu(H 2 O) 6 ] 2+' to '[Cu(H2O)6]2+'), or flag those docs.",
+   "rationale": "These are systematic HTML-to-text faults that make the text less natural and spell formulas wrong.",
+   "evidence": "Space before punctuation in 33,463 docs (53.7%). Split fragments in 3,850 docs. Flattened chemical or orbital notation in 3,751 docs. Split ordinals in 934 docs."
+  },
+  {
+   "step": "Strip 'Contributors and Attributions' footers, 'Authored by/License/Located at' lines, '\u21b5' reference and footnote lines, and URLs whose display text was truncated with '...'.",
+   "rationale": "Boilerplate and broken URLs that repeat across thousands of pages.",
+   "evidence": "Attribution: 8,039 docs, 2.78M chars. '\u21b5' lines: 1,877 docs, 1.88M chars. Truncated URLs: 3,585 docs, 0.69M chars."
+  },
+  {
+   "step": "Review license conflicts: drop docs, or strip the text segments, whose body says the adapted text is CC BY-NC(-SA), ND, all rights reserved or used with permission. Mentions that refer only to embedded media that was not extracted (YouTube, images) can be kept once the attribution line is stripped.",
+   "rationale": "Some page-level CC BY tags cover text adapted from NC-licensed sources.",
+   "evidence": "2,036 docs (3.27%), e.g. text 'Lifespan Development ... by Martha Lally and Suzanne Valentine-French is licensed under CC BY-NC-SA 3.0' under metadata 'Creative Commons - Attribution'."
+  },
+  {
+   "step": "After cleaning, drop stub pages: quiz or self-check pages without questions, calculator or applet pages, and video-only pages. Then apply a minimum-content filter on the cleaned text (for example >=50 words of prose) instead of on raw length.",
+   "rationale": "Raw length counts the chrome, so a raw-length threshold removes short real pages and keeps chrome-heavy ones.",
+   "evidence": "A cluster of 98 Lumen 'Self Check' stubs. 1,484 docs with interactive placeholders. The filter used a raw cut of >=700 chars, yet 340 kept docs have less than 200 content chars."
+  }
+ ],
+ "script_path": "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/libretexts/analyze.py",
+ "open_questions": [
+  "The dataset cards do not document the steps that produced libretexts_filtered. The strong link between drops and my near-dup clusters (58% vs 6.8% drop rate), and the sentence-level deletions, are measured associations. The exact filters (dedup method, sentence-level toxicity or quality classifier) should be checked in the r-three/common-pile GitHub code.",
+  "Both READMEs give sizes 10x larger than the measured text: 5.3 GB vs 0.523 G chars for raw, and 3.6 GB vs 0.359 G chars for filtered. The cause is unknown.",
+  "Language labels come from a stopword heuristic because no language-ID library is installed. The 'fr' label (24 docs) includes chronologies, so a real LID model should confirm the non-English counts.",
+  "The chrome rules may remove a little real content: a 1 to 3 line '- ' bullet list right after 'Save as PDF' that is shorter than 100 chars would be counted as a byline. I did not measure that error rate.",
+  "The inline-footnote-number regex is low precision (its top examples fall inside site chrome), so its count of 3,769 docs is an upper bound.",
+  "The PII false-positive classes come from context heuristics. The 'plausible' class (803) was not checked by hand and may also contain section numbers or numbers inside URLs."
+ ]
+}

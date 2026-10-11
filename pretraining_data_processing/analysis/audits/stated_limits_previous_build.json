@@ -1,0 +1,72 @@
+{
+ "note": "Audit findings of the previous iterative build (data deleted 2026-10-11); same pipeline code, so most limits are expected to hold for the rebuild.",
+ "sources": {
+  "doab": {
+   "stated_limits": [
+    "105 docs keep the running stamp written '\u00d7 FOR PEER REVIEW' (multiplication sign); the stamp pattern matches only 'x'.",
+    "9,840 docs contain U+FFFD from Marker's symbol-font extraction; only U+FFFD before a letter, digit or '(' in docs with symbol-font evidence is repaired.",
+    "64 docs keep figure-caption credit sentences ('Reprinted with permission from [14]') that rejoin_paragraphs formed from split caption lines; they restrict only the figure, which is not in the text.",
+    "1 doc keeps mojibake ('\u00e2\u20ac~memory cell\u2019').",
+    "Subagent limits: bylines with '(Sam)', '(B)' or a final '.'; contents entries before the first contents run; title-case sentence tails are not rejoined."
+   ]
+  },
+  "libretexts": {
+   "known_limits": [
+    "36 lines with NC/ND tokens remain (residual_nc_nd_lines.jsonl, regenerated from the final shard): licence-teaching text, photo credits and external-resource notes; all read by hand.",
+    "5 one-line 'Adaptions: ...' notes remain in Blueprint for Success (Dillon) pages where no attribution heading precedes them.",
+    "LaTeX layout commands glued to other tokens ('\\nonumber_{4}') remain in 10 docs.",
+    "Flattened subscripts and units ('CO 2', 'm 3') remain; a broad regex matches 767 docs (0.6% before was the findings-regex rate for chemistry forms).",
+    "espanol.libretexts.org 7.E exercises page is half translated (English share 0.87) and is kept; 3 espanol reference pages are English reference lists."
+   ]
+  },
+  "oercommons": {
+   "stated_limits": [
+    "Containment: 93 output docs (782,326 chars) have >=80% of their distinct 100+ char lines inside another output doc; symmetric Jaccard >=0.8 near dedup keeps them. A containment rule is a user decision and is not applied.",
+    "Cross-source overlap with libretexts/pressbooks (OpenStax copies) is not handled per source; stage 5 cross-source dedup covers it.",
+    "Mixed-language parallel pages with English share 0.40-0.55 (e.g. lesson/81244, 111995) stay under the calibrated 0.35 threshold.",
+    "Synonym-spun but on-topic lesson text (e.g. lesson/123398) is kept; only the verified merchandise spam page lesson/103598 is removed by id.",
+    "metadata.title of 13 output docs still names Off2Class; the pipeline changes only text."
+   ]
+  },
+  "pressbooks": {
+   "stated_limits": [
+    "131 docs keep shortcode literals ([latex], [footnote]); all are LaTeX or Pressbooks authoring guides that teach the shortcodes.",
+    "144 docs keep HTML tags; they are accessibility and web-authoring lessons that show markup, plus a few embedded link fragments.",
+    "39 'video below/above' lines remain inside prose paragraphs of two or more sentences.",
+    "1,797 lines with NC/ND tokens remain in 557 docs: catalogues of external open textbooks, licence teaching, and photo credits; a random 30 were read.",
+    "One YouTube credit line (nursingskills2 20.2) that the licence filter would strip remains; the video is not in the text.",
+    "containment_dedup also drops near-identical template pages (for example tccoersubjectguides subject guides).",
+    "5 docs keep U+FFFD from the source export (Old English text and broken quote marks)."
+   ]
+  },
+  "project_gutenberg": {
+   "stated_limits": [
+    "181 output books show a post-1930 copyright line; all were kept by the licence filter on the raw text, where the Project Gutenberg renewal-research note clears them; pg_apparatus removes that note, so a classify on the output alone flags them.",
+    "1,284 books keep superscript abbreviations in brace notation ('L^{TD}', 'm^{r}chant'); only digit sub/superscripts are converted.",
+    "221 books mention a transcriber's note (book text references and a few unmatched note boxes).",
+    "703 books keep an 'INDEX' heading; many are front contents pages titled INDEX, some are indexes without page numbers.",
+    "41 books keep page markers inside illustration captions; [Illustration: ...] captions are kept by user choice.",
+    "8 books keep U+FFFD from the source.",
+    "Subagent limits: 68841 title page removed; 42479 manuscript transcription stays wrapped; 7281 justified text; Greek transliteration verse joined."
+   ]
+  },
+  "public_domain_review": {
+   "known_limits": [
+    "53 lines tagged '(Wikipedia)' in 52 docs stay (42 of the 53 input posts with such a line have no other body); the cross-source step must remove them with paragraph-level dedup against Wikipedia.",
+    "Residual footnote markers in essays where '.' follows or an ellipsis precedes (about 7, e.g. 'thorax27.').",
+    "Markers after ':' and before ',;\u2014\u2013' stay, because there the number is a page reference ('(Baldwin:41, also 81\u20132)').",
+    "Kept link/CTA sentences with content in the main clause: 9 short CTA lines, 7 passive 'can be ... here' phrases."
+   ]
+  },
+  "wikimedia": {
+   "stated_limits": [
+    "21,562 docs keep stray template braces ('Ag\u00fcero}}', '{w|...}}') and 12,866 keep stray wikilink brackets ('Toads]]', '[[Agence France-Presse|AFP] ]') from wtf_wikipedia extraction.",
+    "573 docs keep File:/Image: names, 551 keep broken <ref fragments, 126 keep Category: lines, 39 keep HTML tags, 22 keep [mailto: links, 123 keep ''' runs (mostly inside math).",
+    "486 docs contain U+FFFD and 4 docs contain mojibake from the source.",
+    "1,223 docs carry the IP mask placeholder (IP masking stays on for wikis other than Wikibooks and Wikisource).",
+    "22 docs classify as strip/drop on the output only: assembled Wikisource books whose 'All rights reserved' or permission notes date from 1843-1911 (public domain by age); the page-level licence pass kept them.",
+    "Subagent limits: removed_samples ids repeat across wikis; raw OCR with plain letter substitutions (e.g. CE vol 6) is kept."
+   ]
+  }
+ }
+}

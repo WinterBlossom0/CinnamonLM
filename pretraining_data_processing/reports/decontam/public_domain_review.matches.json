@@ -1,0 +1,79 @@
+[
+ {
+  "shard": "v0/00000_collections.jsonl.gz",
+  "line": 1048,
+  "id": "napoleon-at-st-helena-1855",
+  "item": 41698,
+  "shared": 11,
+  "item_fraction": 0.0683,
+  "doc_fraction": 0.0251,
+  "doc_ngrams": 439,
+  "chars": 2632
+ },
+ {
+  "shard": "v0/00000_collections.jsonl.gz",
+  "line": 1048,
+  "id": "napoleon-at-st-helena-1855",
+  "item": 41728,
+  "shared": 11,
+  "item_fraction": 0.0618,
+  "doc_fraction": 0.0251,
+  "doc_ngrams": 439,
+  "chars": 2632
+ },
+ {
+  "shard": "v0/00000_collections.jsonl.gz",
+  "line": 1048,
+  "id": "napoleon-at-st-helena-1855",
+  "item": 41815,
+  "shared": 11,
+  "item_fraction": 0.0692,
+  "doc_fraction": 0.0251,
+  "doc_ngrams": 439,
+  "chars": 2632
+ },
+ {
+  "shard": "v0/00000_essays.jsonl.gz",
+  "line": 42,
+  "id": "revolutionary-colossus",
+  "item": 44218,
+  "shared": 9,
+  "item_fraction": 0.0391,
+  "doc_fraction": 0.0033,
+  "doc_ngrams": 2722,
+  "chars": 16678
+ },
+ {
+  "shard": "v0/00000_essays.jsonl.gz",
+  "line": 42,
+  "id": "revolutionary-colossus",
+  "item": 44243,
+  "shared": 9,
+  "item_fraction": 0.0407,
+  "doc_fraction": 0.0033,
+  "doc_ngrams": 2722,
+  "chars": 16678
+ },
+ {
+  "shard": "v0/00000_essays.jsonl.gz",
+  "line": 42,
+  "id": "revolutionary-colossus",
+  "item": 44323,
+  "shared": 9,
+  "item_fraction": 0.039,
+  "doc_fraction": 0.0033,
+  "doc_ngrams": 2722,
+  "chars": 16678
+ },
+ {
+  "shard": "v0/00000_essays.jsonl.gz",
+  "line": 42,
+  "id": "revolutionary-colossus",
+  "item": 44411,
+  "shared": 9,
+  "item_fraction": 0.0396,
+  "doc_fraction": 0.0033,
+  "doc_ngrams": 2722,
+  "chars": 16678
+ }
+]

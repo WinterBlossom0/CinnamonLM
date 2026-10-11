@@ -1,0 +1,246 @@
+{
+ "near_duplicate_pair": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "ids": [
+   "https://chem.libretexts.org/Courses/University_of_North_Carolina_Charlotte/CHEM_2141%3A__Survey_of_Physical_Chemistry/01%3A_Introduction/1.03%3A_Dimensional_Analysis",
+   "https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/DeVoes_Thermodynamics_and_Chemistry/01%3A_Introduction/1.03%3A_Dimensional_Analysis"
+  ],
+  "texts": [
+   "1.3: Dimensional Analysis\n-\n- Last updated\n- Save as PDF\n- Howard DeVoe\n- University of Maryland\nSometimes you can catch an error in the form of an equation or expression, or in the dimensions of a quantity used for a calculation, by checking for dimensional consistency. Here are some rules that must be satisfied:\n-\nIn this e-book the\ndifferential\nof a function, such as \\(\\df\\), refers to an\ninfinitesimal\nquantity. If one side of an equation is an infinitesimal quantity, the other side must also be. Thus, the equation \\(\\df = a\\dx + b\\dif y\\) (where \\(ax\\) and \\(by\\) have the same dimensions as \\(f\\)) makes mathematical sense, but \\(\\df = ax+b\\dif y\\) does not.\nDerivatives, partial derivatives, and integrals have dimensions that we must take into account when determining the overall dimensions of an expression that includes them. For instance:\n-\nSome examples of applying these principles are given here using symbols described in Sec. 1.2.\nExample 1. Since the gas constant \\(R\\) may be expressed in units of J K\\(^{-1}\\) mol\\(^{-1}\\), it has dimensions of energy divided by thermodynamic temperature and amount. Thus, \\(RT\\) has dimensions of energy divided by amount, and \\(nRT\\) has dimensions of energy. The products \\(RT\\) and \\(nRT\\) appear frequently in thermodynamic expressions.\nExample 3. Find the dimensions of the constants \\(a\\) and \\(b\\) in the van der Waals equation \\[ p = \\frac {nRT}{V-nb} - \\frac {n^{2}a} {V^2} \\] Dimensional analysis tells us that, because \\(nb\\) is subtracted from \\(V\\), \\(nb\\) has dimensions of volume and therefore \\(b\\) has dimensions of volume/amount. Furthermore, since the right side of the equation is a difference of two terms, these terms have the same dimensions as the left side, which is pressure. Therefore, the second term \\(n^{2}a/V^{2}\\) has dimensions of pressure, and \\(a\\) has dimensions of pressure \\(\\times\\) volume\\(^{2}\\) \\(\\times\\) amount\\(^{-2}\\).\nExample 4. Consider an equation of the form \\[ \\Pd{\\ln x}{T}{\\!p} = \\frac {y}{R} \\] What are the SI units of \\(y\\)? \\(\\ln x\\) is dimensionless, so the left side of the equation has the dimensions of \\(1/T\\), and its SI units are K\\(^{-1}\\). The SI units of the right side are therefore also K\\(^{-1}\\). Since \\(R\\) has the units J K\\(^{-1}\\) mol\\(^{-1}\\), the SI units of \\(y\\) are J K\\(^{-2}\\) mol\\(^{-1}\\).\n-\nSome examples of applying these principles are given here using symbols described in Sec. 1.2.",
+   "1.3: Dimensional Analysis\nSometimes you can catch an error in the form of an equation or expression, or in the dimensions of a quantity used for a calculation, by checking for dimensional consistency. Here are some rules that must be satisfied:\n-\nIn this e-book the\ndifferential\nof a function, such as \\(\\df\\), refers to an\ninfinitesimal\nquantity. If one side of an equation is an infinitesimal quantity, the other side must also be. Thus, the equation \\(\\df = a\\dx + b\\dif y\\) (where \\(ax\\) and \\(by\\) have the same dimensions as \\(f\\)) makes mathematical sense, but \\(\\df = ax+b\\dif y\\) does not.\nDerivatives, partial derivatives, and integrals have dimensions that we must take into account when determining the overall dimensions of an expression that includes them. For instance:\n-\nSome examples of applying these principles are given here using symbols described in Sec. 1.2.\nExample 1. Since the gas constant \\(R\\) may be expressed in units of J K\\(^{-1}\\) mol\\(^{-1}\\), it has dimensions of energy divided by thermodynamic temperature and amount. Thus, \\(RT\\) has dimensions of energy divided by amount, and \\(nRT\\) has dimensions of energy. The products \\(RT\\) and \\(nRT\\) appear frequently in thermodynamic expressions.\nExample 3. Find the dimensions of the constants \\(a\\) and \\(b\\) in the van der Waals equation \\[ p = \\frac {nRT}{V-nb} - \\frac {n^{2}a} {V^2} \\] Dimensional analysis tells us that, because \\(nb\\) is subtracted from \\(V\\), \\(nb\\) has dimensions of volume and therefore \\(b\\) has dimensions of volume/amount. Furthermore, since the right side of the equation is a difference of two terms, these terms have the same dimensions as the left side, which is pressure. Therefore, the second term \\(n^{2}a/V^{2}\\) has dimensions of pressure, and \\(a\\) has dimensions of pressure \\(\\times\\) volume\\(^{2}\\) \\(\\times\\) amount\\(^{-2}\\).\nExample 4. Consider an equation of the form \\[ \\Pd{\\ln x}{T}{\\!p} = \\frac {y}{R} \\] What are the SI units of \\(y\\)? \\(\\ln x\\) is dimensionless, so the left side of the equation has the dimensions of \\(1/T\\), and its SI units are K\\(^{-1}\\). The SI units of the right side are therefore also K\\(^{-1}\\). Since \\(R\\) has the units J K\\(^{-1}\\) mol\\(^{-1}\\), the SI units of \\(y\\) are J K\\(^{-2}\\) mol\\(^{-1}\\).\n-\nSome examples of applying these principles are given here using symbols described in Sec. 1.2."
+  ]
+ },
+ "distinct_pair": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "ids": [
+   "https://chem.libretexts.org/Bookshelves/Inorganic_Chemistry/Map%3A_Inorganic_Chemistry_(Miessler_Fischer_Tarr)/05%3A_Molecular_Orbitals/5.01%3A_Formation_of_Molecular_Orbitals_from_Atomic_Orbitals",
+   "https://chem.libretexts.org/Courses/East_Tennessee_State_University/CHEM_4110%3A_Advanced_Inorganic_Chemistry/05%3A_Molecular_Orbitals/5.01%3A_Formation_of_Molecular_Orbitals_from_Atomic_Orbitals"
+  ],
+  "texts": [
+   "5.1: Formation of Molecular Orbitals from Atomic Orbitals\nMolecular orbital theory extends from quantum theory and the atomic orbital wavefunctions (\\(\\psi\\)) described by the Schrödinger equation. While the Schrödinger equation defines a \\(\\Psi\\) for electrons in individual atoms, we can approximate the molecular wavefunction (what \\(\\Psi\\) would look like if we combined the \\(\\psi\\) of individual atoms). The addition or subtraction of wavefunctions is termed linear combination of atomic orbitals (LCAO). Molecular orbital theory is applied to LCAO to describe bonding.\nThe LCAO for the wavefunction of two atoms (\\(\\psi_a\\) and \\(\\psi_b\\)) is represented by the general expression below. The coefficients \\(c_a\\) and \\(c_b\\) quantify the contribution of each atomic \\(\\psi\\) to the molecular \\(\\Psi\\).\n\\[\\Psi=c_{a} \\psi_{a}+c_{b} \\psi_{b} \\nonumber \\]\nFor two atomic \\(\\psi\\)s to form a bond, three conditions must be satisfied:\n- First, the distance between the atoms must be small enough to provide good overlap. This is because the two orbitals must be able to overlap using regions of \\(\\psi^2\\) where the probability of finding electrons is significant. If atoms are not close enough, \\(\\psi_a\\) and \\(\\psi_b\\) cannot interact productively. At the same time, the atoms must be far enough apart that their nuclei do not repel each other.\n- The symmetry of the orbitals must be compatible such that regions of \\(\\psi_a\\) and \\(\\psi_b\\) with the same sign constructively interfere more than regions with opposite sign destructively interfere. In other words, for a productive interaction, there must be a relatively high probability of finding an electron between the two nuclei, and this depends on the symmetry (and sign of the \\(\\psi\\)) of the atomic orbitals.\n- Third, the energies of the atomic orbitals must be similar. Orbitals with similar energy combine to make the most stable bonding molecular orbitals. Atomic orbitals with very different energies form less stable bonding interactions, and the larger the difference in the atomic orbitals, the weaker the bonding interaction will be.\nAtomic orbitals combine to form molecular orbitals when these three conditions are met. The result is a set of bonding molecular orbitals that are lower in energy than the original atomic orbital energies.",
+   "5.1: Formation of Molecular Orbitals from Atomic Orbitals\nselected template will load here\nThis action is not available.\nMolecular orbital theory extends from quantum theory and the atomic orbital wavefunctions (\\(\\psi\\)) described by the Schrödinger equation. While the Schrödinger equation defines a \\(\\Psi\\) for electrons in individual atoms, we can approximate the molecular wavefunction (what \\(\\Psi\\) would look like if we combined the \\(\\psi\\) of individual atoms). The addition or subtraction of wavefunctions is termed linear combination of atomic orbitals (LCAO). Molecular orbital theory is applied to LCAO to describe bonding.\nThe LCAO for the wavefunction of two atoms (\\(\\psi_a\\) and \\(\\psi_b\\)) is represented by the general expression below. The coefficients \\(c_a\\) and \\(c_b\\) quantify the contribution of each atomic \\(\\psi\\) to the molecular \\(\\Psi\\).\n\\[\\Psi=c_{a} \\psi_{a}+c_{b} \\psi_{b} \\nonumber \\]\nFor two atomic \\(\\psi\\)s to form a bond, three conditions must be satisfied:\nAtomic orbitals combine to form molecular orbitals when these three conditions are met. The result is a set of bonding molecular orbitals that are lower in energy than the original atomic orbital energies."
+  ]
+ },
+ "spanish": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "id": "https://human.libretexts.org/Courses/Butler_County_Community_College/FL108%3A_Voces_en_camino_-_Voces_en_marcha_(Beginning_Spanish_2)/01%3A_Unidad_1/1.01%3A_En_contexto-_Los_deportes_y_los_pasatiempos/1.1.02%3A_Practica",
+  "text": "1.1.2: Práctica\nPráctica 1\nPráctica 2\nPráctica 3\nPráctica 4\nLa prima de Amy, Sara, just met Amy’s housemate, Rachel. Ahora hablan de sus pasatiempos y actividades favoritas. Lee la conversación y responde las preguntas.\nSara : Hola, Rachel. Encantada de conocerte.\nRachel : Hola, Sara. Mucho gusto. ¿Te gusta la ciudad?\nSara : Sí, es chiquita ( pequeña ), pero me gusta mucho.\nRachel : ¡Qué bien! Te va a gustar mucho la universidad también.\nSara : ¿Qué haces aquí en tu tiempo libre?\nRachel : Interesante pregunta, Sara. A ver… Bueno, a mí me gusta cocinar, bailar y estudiar porque mis clases son difíciles. También me gusta ir a la playa y sacar muchas fotos, tomar el sol y escuchar música mientras ( while ) tomo un paseo por la playa. Pero hay un problema: No hay playas cerca de nosotras, pero, por suerte, hay parques estatales interesantes. Amy y yo acampamos con otros amigos y hacemos una fogata para comer muchos s’mores. We do that in the fall, for sure!\nSara : Genial. Rachel, eres muy activa. ¿Qué son los s’mores? No tenemos s’mores en Argentina.\nRachel : Ah! Entonces vamos a cocinar s’mores para ti. Y vamos a acampar.\nSara : ¡Claro! Nada más lindo que ver el paisaje y las estrellas en la noche.\nRachel : Done deal then! ¡Acampamos!\nPráctica 5"
+ },
+ "english": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "id": "https://chem.libretexts.org/Courses/University_of_North_Carolina_Charlotte/CHEM_2141%3A__Survey_of_Physical_Chemistry/01%3A_Introduction/1.03%3A_Dimensional_Analysis",
+  "text": "1.3: Dimensional Analysis\n-\n- Last updated\n- Save as PDF\n- Howard DeVoe\n- University of Maryland\nSometimes you can catch an error in the form of an equation or expression, or in the dimensions of a quantity used for a calculation, by checking for dimensional consistency. Here are some rules that must be satisfied:\n-\nIn this e-book the\ndifferential\nof a function, such as \\(\\df\\), refers to an\ninfinitesimal\nquantity. If one side of an equation is an infinitesimal quantity, the other side must also be. Thus, the equation \\(\\df = a\\dx + b\\dif y\\) (where \\(ax\\) and \\(by\\) have the same dimensions as \\(f\\)) makes mathematical sense, but \\(\\df = ax+b\\dif y\\) does not.\nDerivatives, partial derivatives, and integrals have dimensions that we must take into account when determining the overall dimensions of an expression that includes them. For instance:\n-\nSome examples of applying these principles are given here using symbols described in Sec. 1.2.\nExample 1. Since the gas constant \\(R\\) may be expressed in units of J K\\(^{-1}\\) mol\\(^{-1}\\), it has dimensions of energy divided by thermodynamic temperature and amount. Thus, \\(RT\\) has dimensions of energy divided by amount, and \\(nRT\\) has dimensions of energy. The products \\(RT\\) and \\(nRT\\) appear frequently in thermodynamic expressions.\nExample 3. Find the dimensions of the constants \\(a\\) and \\(b\\) in the van der Waals equation \\[ p = \\frac {nRT}{V-nb} - \\frac {n^{2}a} {V^2} \\] Dimensional analysis tells us that, because \\(nb\\) is "
+ },
+ "section_numbers": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "id": "https://socialsci.libretexts.org/Bookshelves/Communication/Interpersonal_Communication/I.C.A.T_Interpersonal_Communication_Abridged_Textbook_(Gerber_and_Murphy)/02%3A_Culture_and_Communication",
+  "text": "utors and Attributions\n-\nSections 2.1.1, 2.3.1-2.3.6, & 2.4.3: adapted from Communication in the Real World: An Introduction to Communication Studies; University of Minnesota; 2016;\nCC BY NC SA 4.0\n-\nSections: 2.2.1.2.8, & 2.4.1: English at Work; EFL, 2014-2017; “The materials are Open Educational Resources. As a learner or trainer, you may download, reproduce, customize and otherwise make use of the materials. You "
+ },
+ "image_filename": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "id": "https://human.libretexts.org/Bookshelves/Art/Art_History_(Boundless)/13%3A_Japan_Before_1333_CE/13.04%3A_The_Kamakura_Period",
+  "text": "edia.org/wiki/Ji. License : CC BY-SA: Attribution-ShareAlike\n- Nichiren Sect. Provided by : Wikipedia. Located at : en.Wikipedia.org/wiki/Nichiren%20Sect. License : CC BY-SA: Attribution-ShareAlike\n- muso-soseki-3.@2x.jpeg . Provided by : Wikipedia. Located at : en.Wikipedia.org/wiki/File:Muso_Soseki_3.jpg. License : Public Domain: No Known Copyright\n- Enso.jpg. Provided by : Wikipedia. Located at : en.Wikipedia.org/wi"
+ },
+ "faculty_contacts": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "id": "https://socialsci.libretexts.org/Courses/College_of_the_Desert/Text_Principles_and_Practices_of_Teaching_College_of_the_Desert_Version/01%3A_Introduction_to_Principles_and_Practices_of_Teaching_Young_Children/1.03%3A_College_of_the_Deserts_Course_of_Study",
+  "text": "Please call 760-568-3093 or one of the faculty advisors listed below:\nECE Faculty Advisors\nMaria Avalos ( Bilingual, Spanish)\nIndio Campus, 304-C\nmaavalos@collegeofthedesert.edu\n760-674-7817\nJessica Huffman\nPalm Desert Campus, ECE Building\njhuffman@collegeofthedesert.edu\n760-396-2408\nTiffanie Schnabel-Moreno\nPalm Desert Campus, ECE Building\ntschnabel-m"
+ },
+ "isbn": {
+  "source": "pressbooks/00000_pressbooks.json.gz",
+  "id": "https://iu.pressbooks.pub/colorawarenessiudpt/chapter/chapter-4/",
+  "text": "): 670-682.\n- Cameron MH. Physical agents in rehabilitation: an evidence-based approach to practice. 6th edition. 2023. ISBN: 9780323761949\n- Falcone D, Uzunbajakava, Richters R, van de kerkhof PCM, "
+ },
+ "staff_contacts": {
+  "source": "pressbooks/00000_pressbooks.json.gz",
+  "id": "https://slcc.pressbooks.pub/elwshandbook/chapter/helpful-contact-information/",
+  "text": "1 Helpful Contact Information\nDepartment:\n- Lisa Bickmore, AD: lisa.bickmore@slcc.edu, (801) 957-4686, AAB 165-F\n- Stephanie Maenhardt, AAD: stephanie.maenhardt@slcc.edu, (801) 957-3445, AAB 158\n- Jayme Warner, ELWS Administrative assistant: jayme.warner@slcc.edu, (801) 957-4020, AAB 165L\n- Anne Canavan, ELWS Co-Coordinator: anne.canavan@slcc.edu, (801)957-3793, AAB 165J\n- Brittany Stephenson, ELW"
+ },
+ "private_ips": {
+  "source": "pressbooks/00000_pressbooks.json.gz",
+  "id": "https://pressbooks.howardcc.edu/cmsy164/chapter/basic-ip-for-windows/",
+  "text": "127.0.0.1, the local loop back has a subnet mask 255.255.255.255\n192.168.11.0 the network address has a subnet mask of 255.255.255.0\nThe computer’s IP address from the above capture is 192.168.13.128. This information is under the interface column.\nWindows wi"
+ },
+ "letter_phone": {
+  "source": "oercommons/00000_oercommons.json.gz",
+  "id": "https://oercommons.org/courseware/lesson/72611/overview",
+  "text": "set up an inspection of property contact him at (908)370-7800.\nHe will also reach out to you and I have signed consent for him to discuss details with bank and insurance company.\nThank you for your prompt attention to this matter.\nSandra L. Reynolds\n732-667-0295\nUPLOAD pictures here with photo icon-mo"
+ },
+ "wikivoyage_phones": {
+  "source": "wikimedia/00000_wikivoyage.com.jsonl.gz",
+  "id": "0-143",
+  "text": "ero. The park averages $$ of snow annually. For the latest in weather information, call the local weather phone line at +1 207-667-8910 or call the park at +1 207-288-3338.\n\nVisitor information\n\n"
+ },
+ "form_feed": {
+  "source": "doab/00000_doab.json.gz",
+  "id": "00356cdb-56f1-45a1-b97a-312d2e8aacab.0",
+  "text": "{13}$$\n\nSince |*φ*(*z*)| < 1 and |*ψ*(*w*)| < 1, *z*, *w* ∈ D, we deduce\n\n *rj* \f ≤ 1 and *sj* \f ≤ 1 (*j* ∈ N). (14)\n\nIn view of (12) and (13), after simplifying"
+ },
+ "c1_bullet": {
+  "source": "project_gutenberg/v0/documents/00000_pg.jsonl.gz",
+  "id": "1010",
+  "text": "IVINA COMMEDIA\n  di Dante Alighieri\n\n\n\n\n\n  PURGATORIO\n\n\n\n\n  Purgatorio  Canto I\n\n\n  Per correr miglior acque alza le vele\n  omai la navicella del mio ingegno,\n  che lascia dietro a sé mar sì crudele;"
+ },
+ "nbsp": {
+  "source": "wikimedia/00000_wikipedia.com.jsonl.gz",
+  "id": "1-354",
+  "text": " 22:21, 14 April 2024 (UTC)\n * Red information icon with gradient background.svg Not done: please see the previous discussions on the talk page. M.Bitton (talk) "
+ },
+ "word_joiner": {
+  "source": "wikimedia/00000_wikipedia.com.jsonl.gz",
+  "id": "0-1168",
+  "text": " infinite is something other than the elements, and from it the elements arise.'⁠—Aristotle Physics. F, 5 204 b 22 (Ritter and Preller (1898) Historia Philosophi"
+ },
+ "soft_hyphen": {
+  "source": "wikimedia/00000_wikipedia.com.jsonl.gz",
+  "id": "1-2556",
+  "text": "eparate testing facility was Duisberg's. Fearful of incurring doctors' wrath by ship­ping drugs that didn't work, Duisberg wanted an additional check that would weed out"
+ },
+ "records": [
+  {
+   "source": "public_domain_review/v0/00000_conjectures.jsonl.gz",
+   "record": {
+    "id": "the-encyclopedia-of-light",
+    "text": "The Encyclopedia of Light\n\nBy Peter Schmidt\nApril 13, 2022\n\nAll writing elides, to a greater or lesser degree, the way it came to be what you read. How many times did I start that last sentence? Five times. But four of them are no more. Had I penned those words in ink, however, scribbling away on a sheet of paper, traces of each false start would remain, and you would see my thinking in a way that, reading me now, you do not. Composition in digital media has, in this way, made for a special kind of frictionless world of sublated erasures, deleted deletions, and endless, invisible recompositions.  In the affecting work of sensory history that follows, Peter Schmidt uses the “strikethrough” as a kind of shadow-writing: his “Encyclopedia of Light” reveals little dark threads of undoing — marks of the second thought that endlessly cancels the first. We write, now, of course, with light, looking at glowing screens. But it is a strangeness of our monitors that we erase what we have written w",
+    "date": "April 13, 2022",
+    "author": "Peter Schmidt",
+    "source": "public-domain-review",
+    "type": "conjecture",
+    "added": "2024-05-01T21:47:35.677037",
+    "metadata": {
+     "license": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/4.0/",
+     "url": "https://publicdomainreview.org/essay/the-encyclopedia-of-light/"
+    }
+   }
+  },
+  {
+   "source": "public_domain_review/v0/00000_conjectures.jsonl.gz",
+   "record": {
+    "id": "an-archaeology-of-surf",
+    "text": "An Archaeology of Surf\n\nBy Melissa McCarthy\nMay 19, 2021\n\n“All plots tend to move deathward.” Thus speaks Jack Gladney, the addled protagonist Don DeLillo’s immortal novel of paranoia, language, and knowledge, White Noise (1985). Gladney says the words, but only becomes aware he has done so after they have come out of his mouth in the course of a rambling undergraduate lecture. Why has he said this, he finds himself wondering? Is it even true? In what follows, the shark-thinking artist-author Melissa McCarthy stages a plot that walks its own way across paranoia, language, and the pursuit of knowledge. And it goes where plots so often do. In this case, however, the whole story comes in a little suitcase: a kind of portmanteau of fiction and archaeology; of historical sources and conjured conjunctions. Surf through the footnotes, and ask: is it all plots that lead deathward, or, rather, all interpretations? — D. Graham Burnett, Series Editor\n\nTo the Editors:\nI am here reporting on the co",
+    "date": "May 19, 2021",
+    "author": "Melissa McCarth",
+    "source": "public-domain-review",
+    "type": "conjecture",
+    "added": "2024-05-01T21:47:36.365300",
+    "metadata": {
+     "license": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/4.0/",
+     "url": "https://publicdomainreview.org/essay/an-archaeology-of-surf/"
+    }
+   }
+  },
+  {
+   "source": "wikimedia/00000_wikinews.com.jsonl.gz",
+   "record": {
+    "id": "6-1",
+    "text": "File:Wiki.png\n\nWikinews logo.",
+    "source": "wiki/dump/wikinews.com",
+    "added": "2024-07-27T16:41:52.819895",
+    "created": "2021-08-30T23:12:36",
+    "metadata": {
+     "license": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/4.0/",
+     "authors": [
+      [
+       "Cromium",
+       "7186"
+      ]
+     ],
+     "url": "https://wikinews.com/wiki/File:Wiki.png",
+     "wiki": "wikinews.com",
+     "namespace": "6",
+     "title": "File:Wiki.png"
+    }
+   }
+  },
+  {
+   "source": "wikimedia/00000_wikinews.com.jsonl.gz",
+   "record": {
+    "id": "4-2",
+    "text": "Wikinews:Upload log\n\n12:24, 3 Dec 2004 Stevertigo uploaded \"JuergenLogo.png\" (Juergen Logo - submitted to &#91;&#91;meta:International logo contest]] under the &#123;&#123;GFDL}} - modified as potential logo Wikinews )  08:11, 8 Nov 2004 Tim uploaded \"Wiki.png\" (Draft logo for wikinews. From &#91;&#91;m:Image:Wikinews-draftlogo.png]]. &#123;&#123;PD}}) \n\n",
+    "source": "wiki/dump/wikinews.com",
+    "added": "2024-07-27T16:41:52.820056",
+    "created": "2011-02-28T10:03:43",
+    "metadata": {
+     "license": "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/4.0/",
+     "authors": [
+      [
+       "Microchip08",
+       "21035"
+      ]
+     ],
+     "url": "https://wikinews.com/wiki/Wikinews:Upload_log",
+     "wiki": "wikinews.com",
+     "namespace": "4",
+     "title": "Wikinews:Upload log"
+    }
+   }
+  },
+  {
+   "source": "libretexts/00000_libretext.json.gz",
+   "record": {
+    "id": "https://math.libretexts.org/Bookshelves/PreAlgebra/Pre-Algebra_I_(Illustrative_Mathematics_-_Grade_7)/01%3A_Scale_Drawings",
+    "text": "1: Scale Drawings Last updated Save as PDF Page ID 34976 Illustrative Mathematics OpenUp Resources 1.1: Scaled Copies 1.1.2: Corresponding Parts and Scale Factors 1.1.3: Making Scaled Copies 1.1.4: Scaled Relationships 1.1.5: The Size of the Scale Factor 1.1.6: Scaling and Area 1.2: Scale Drawings 1.2.1: Scale Drawings 1.2.2: Scale Drawings and Maps 1.2.3: Creating Scale Drawings 1.2.4: Changing Scales in Scale Drawings 1.2.5: Scales without Units 1.2.6: Units in Scale Drawings 1.3: Let's Put It to Work 1.3.1: Draw It to Scale",
+    "source": "libretexts",
+    "added": "2025-03-17T19:52:06.516389",
+    "created": "2020-01-25T01:41:07Z",
+    "metadata": {
+     "license": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/4.0/",
+     "url": "https://math.libretexts.org/Bookshelves/PreAlgebra/Pre-Algebra_I_(Illustrative_Mathematics_-_Grade_7)/01%3A_Scale_Drawings",
+     "book_url": "https://commons.libretexts.org/book/math-34975",
+     "title": "1: Scale Drawings",
+     "author": "Illustrative Mathematics"
+    }
+   }
+  },
+  {
+   "source": "doab/00000_doab.json.gz",
+   "record": {
+    "id": "0004666f-919b-4eaa-ac9b-a02a0e3c589b",
+    "text": "# **HUMAN CULTURES THROUGH THE SCIENTIFIC LENS**\n\n**Pascal Boyer**\n\nHuman Cultures through the Scientific Lens\n\n**oBP**\n\nwww.openbookpublishers.com\n\nHUMAN CULTURES THROUGH\n\nThis volume brings together a collection of seven articles previously published by the author, with a new introduction reframing the articles in the context of past and present questions in anthropology, psychology and human evolution. It promotes the perspective of 'integrated' social science, in which social science questions are addressed in a deliberately eclectic manner, combining results and models from evolutionary biology, experimental psychology, economics, anthropology and history. It thus constitutes a welcome contribution to a gradually emerging approach to social science based on E. O.\n\n*Human Cultures through the Scientific Lens* spans a wide range of topics, from an examination of ritual behaviour, integrating neuro-science, ethology and anthropology to explain why humans engage in ritual actions (bot",
+    "source": "doab",
+    "added": "2025-04-07T03:56:57.561690",
+    "created": "5-8-2021 06:01",
+    "metadata": {
+     "license": "Creative Commons - Attribution - https://creativecommons.org/licenses/by/4.0/",
+     "book_id": "0004666f-919b-4eaa-ac9b-a02a0e3c589b",
+     "url": "https://library.oapen.org/bitstream/20.500.12657/50315/1/9781800642089.pdf",
+     "author": "Boyer, Pascal",
+     "title": "Human Cultures through the Scientific Lens",
+     "publisher": "Open Book Publishers",
+     "isbn": "",
+     "section_idx": 0
+    }
+   }
+  }
+ ],
+ "english_teaching_spanish": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "id": "https://human.libretexts.org/Courses/Skyline_College/SPAN_120%3A_Advanced_Elementary_Spanish_(Skyline)/05%3A_Adonde_fuiste_de_vacaciones/5.09%3A_To_become__to_realize",
+  "text": "5.9: “To become” + “to realize”\n-\n- Last updated\n- Save as PDF\nObjetivos\nUnderstand and use the various ways to say “to become” and “to realize” in Spanish\nNote: This section’s grammar involves some verbs that are not only reflexive, but also frequently (not exclusively) used with the preterit past tense.\n“To become” en español\nThere are three verbs in Spanish that are used reflexively and imply transformations or changes; these verbs are not interchangeable! Note the situations described below for each verb:\n-\nPonerse\n(sudden, physical or emotional change, effortless, almost always a person)\nExamples: -\nVolverse\n(sudden and extreme transformation, emotional/physical/situational, involuntary change; doesn’t have to be a person)\nExamples:- Mi perro se vuelve loco con el olor a comida. ( My dog goes crazy with the smell of food. )\n- La madre se volvió un ogro cuando trataron de hacerle daño a sus hijos. ( The mother turned into an ogress when they tried to harm her children .)\n- La situación se volvió peligrosa cuando empezó a nevar y la temperatura bajó rápidamente. ( The situation got dangerous when it started to snow and the temperature dropped quickly .)\n-\nHacerse/\nPasar a ser/\nLlegar a ser\n(long term, requires an effort; these are usually used in the past when the action is completed)\nExamples:\nDarse cuenta de\nThis is often translated into English as “to realize”, meaning “to find out” or “to know for the first time”. When followed by a noun or an infinitive use “darse cuenta de”. When followed by a conjugated verb, standard Spanish uses “darse cuenta que”, but it’s possible to say “darse cuenta de que”.\nExamples:\n- Las personas que escuchan música con audífonos en el metro no se dan cuenta de lo fuerte que es el sonido. ( The people who listen to music on headphones on the subway don’t realize how loud the sound is .)\n- Dejé mi pasaporte en el hotel y solo me di cuenta del error cuando llegué al aeropuerto. ( I left my passport in the hotel and only realized my error when I got to the airport .)\n¡OJO! There is a related false cognate that English speakers will need to be careful of—“realizar” actually means “to make real” or “to achieve”."
+ },
+ "english_with_spanish_passage": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "id": "https://biz.libretexts.org/Bookshelves/Management/Book%3A_Corporate_Governance_(Frey_and_CruzCruz)/04%3A_Changing_Organizational/4.01%3A_Pirate_Code_for_Engineering_Ethics",
+  "text": "4.1: Pirate Code for Engineering Ethics\nModule Introduction\nIn this module, you will learn about professional and occupational codes of ethics by looking at a bad code, writing your own code, and then critically examine a professional code of ethics, the engineering code for the Colegio de Ingenieros y Agrimensores de Puerto Rico. Three exercises will take you through the process of examining the Pirate Creed, writing your own code, and examining the Colegio’s code. Text boxes will provide helpful background information on purposes served by professional codes, philosophical objections, and a framework for working your way through a stakeholder-based code like that of the CIAPR or the National Society of Professional Engineers. This module provides a Spanish translation of the Pirate Creed prepared by Dr. Dana Livingston Collins of the Department of Humanities in the University of Puerto Rico at Mayagüez.\nConcluding this module are two word documents uploaded as media files. One provides the exercises that are presented in this module in XML format. The other provides the background information that has been presented in this module as Textboxes.\nModule Activities\n- You will analyze the Pirate Creed in terms of (a) its different functions, (b) the community values it embodies, and (c) how it stands toward nonmembers of the pirate community as well as members.\n- You will write a code of ethics for an occupational or professional area such as business or engineering.\n- You will debrief the rest of the class on your group's code, clarify its functions and values, and defend it if necessary.\n- This module will conclude with a look at the code of ethics of the Puerto Rico State Society of Professional Engineers and Land surveyors or Colegio de Ingenieros y Agrimensores de Puerto Rico.\nPirates Creed of Ethics (translated into Spanish by Dana Collins)\n- El capitán tendrá comando total durante una batalla y tendrá la autoridad para dirigir el barco. El que no sigua al capitán podrá ser castigado se la tripulación no vota en contra del castigo.\n- Si el barco naufraga, la tripulación permanecerá unidos hasta el capitán consigue otra nave. Si la nave es propiedad común de la tripulación, la primera nave capturada pertenecerá al capitán con una (1) parte de botín.\n- El cirujano del barco recibirá doscientas (200) coronas para el mantenimiento de su equipo médico y recibirá una (1) parte del botín.\n- Los otros oficiales recibirán una (1) parte cada uno, y si se distinguen, la tripulación determinará cuanto recibirán como recompensa.\n- El botín de una nave capturada será distribuido en partes iguales.\n- El primero que señale la aparición de un barco que sea capturado recibirá cien (100) coronas.\n- El que pierda un ojo, una mano, o una pierna mientras está en servicio, recibirá hasta seis esclavos o seiscientas (600) coronas.\n- Los suministros y raciones serán compartidos por igual.\n- La penalidad por traer una mujer disfrazada a bordo es la muerte.\n- Si un hermano roba de otro, perderá su nariz u orejas. Se peca de nuevo, se le darán un mosquete, municiones, plomo y una botella de agua y será abandonado en una isla.\n- Si hay duda en una disputa entre hermanos, una corte de honor determinará el veredicto. Si un hermano es encontrado culpable, la primera vez será perdonado, pero al ofender de nuevo, será atado a un cañón y recibirá un latigazo de cada miembro de la tripulación. El mismo castigo será dado a todos, incluyendo oficiales, quienes se emborrachen al punto de perder sus sentidos mientras estén en el barco.\n- El que se duerma mientras está trabajando como centinela, recibirán latigazos por todos los miembros de la tripulación. Se repite el crimen, su cabeza será rajada.\n- A todos quienes conspiren para desertar, o lo que hayan desertado y sean capturados, sus cabezas serán rajadas.\n- Pelas entre varios hermanos mientras estén a bordo será resueltos en tierra con pistolas y espadas. El que saque primera sangre será el vencedor. No pueden golpear a otro mientras estén a bordo de la nave.\nExercise 1: Pirate Creed\n- What is good about the Pirate Creed of Ethics?\n- what is bad about the Pirate Creed of Ethics?\n- What is the purpose of the Creed for the Pirate Community?\n- What values are embedded in the Pirate Creed\n- How does the Pirate Creed deal with nonmembers?\nExercise 2: Writing a Code of Ethics for Engineers\n- Step One: Identify the purpose of your engineering code of ethics. For example, is it to punish wrongful behavior, provide a set of guidelines, educate the community, support ethical behavior, or create an ethics dialogue?\n- Step Two: Identify the contributions that engineering makes to society.\n- Step Three: Identify the stakeholders of the engineering profession. A stakeholder is any group or individual with a vital or essential interest tied to what engineers do. along with these stakeholders, identify their stakes, that is, the goods, rights, interests or values that are maintained, promoted, or diminished by what engineers do?\n- Step Four: Enumerate the obligations or duties that engineers have toward each of these stakeholders. In other words, what can engineers do to maintain, promote, or diminish the stakes of each stakeholder?\n- Step Five: Identify the conflicting obligations that arise from the fact that engineers have different stakeholders who hold conflicting stakes? Do any of these stakeholders or stakes have obvious priority over the others?\n- Step Six: Step back and reflect on what you have written. For example, look for different kinds of provisions. Does your code use ideals of the profession which set forth the profession's central or cardinal objectives? Does your code contain principles of professional conduct which set forth minimal levels of behavior and prerscribe sanctions and punishments for compliance failures? In the CIAPR (Colegio de Ingenieros y Agrimensores de Puerto Rico) code of ethics, the fundamental principles and basic canons set forth the ideals of "
+ },
+ "french_gutenberg": {
+  "source": "project_gutenberg/v0/documents/00000_pg.jsonl.gz",
+  "id": "10053",
+  "text": "Elle tressaillit et se leva, faisant un large signe de croix avant de\nquitter sa place.\n\n--Ne me suivez pas, ordonna-t-elle précipitamment.\n\nEt elle s'éloigna d'un pas rapide.\n\nRené, immobile, entendit bientôt un pas d'homme, lourd et ferme, se\njoindre au léger bruit que faisait son pied de fée en frôlant les\ndalles de la chapelle.\n\nQuand il tourna enfin la tête, il ne vit plus rien. L'enchanteresse et\nson cavalier avaient franchi la porte du Calvaire.\n\nRené s'élança sur leurs traces ivre et fou.\n\nIl sortit par l'issue qui donne sur le passage Saint-Roch. Le passage\nétait désert.\n\nIvre et fou, nous avons bien dit. Il rentra chez lui dans un état\nd'excitation fiévreuse.\n\nCelle-là le prenait par le cerveau, centre d'action bien autrement\npuissant que cet organe aux aspirations vaguement chevaleresques que\nnous appelons le coeur.\n\nDepuis que le monde est monde, le coeur fut toujours vaincu par le\ncerveau.\n\nPour un temps, du moins, et quand la fièvre chaude est calmée, quand\nvient l'heure du repentir qui expie, une voix s'élève, prononçant ce\nmot impitoyable et inutile, car il n'empêcha jamais aucun crime et\njamais il ne prévint aucun malheur:\n\n--Il est trop tard!\n\nLa vie humaine est là.\n\nAvant de rentrer chez lui, René dut frapper à la porte du père adoptif\nd'Angèle.\n\nIl y a des convenances, et ces braves gens ne lui avaient jamais fait\nque du bien.\n\nLà, c'était le calme bon et noble, la sainte sérénité des familles.\n\nLa vieille mère berçait un enfant, car René de Kervoz était bien\nautrement engagé que le commun des fiancés; le père à cheveux blancs\nlisait, la jeune fille brodait, pensive et triste.\n\nMais vîtes-vous jamais le changement féerique que produit sur le\npaysage désolé le premier rayon de soleil au printemps?\n\nRené était ici le soleil; l'entrée de René fut comme une contagion de\nsourires.\n\nLa mère lui tendit la main, le père jeta son livre, la jeune fille,\nheureuse, se leva et vint à lui les deux bras ouverts.\n\nRené paya de son mieux cet accueil, toujours le même, et dont la chère\nmonotonie était naguère sa meilleure joie. Le plus cruel supplice\npour l'homme qui se noie, est, dit-on, la vue du rivage. Ici était le\nrivage, et René se noyait.\n\nL'aïeule lui mit l'enfant endormi dans les bras. René le baisa avec\nun serrement de coeur et n'osa point regarder la jeune mère,--non\npas qu'il eût à un degré quelconque la pensée lâche d'abandonner ces\npauvres créatures. Nous l'avons dit, René était l'honneur même; mais\nla conscience des torts qu'il avait envers eux déjà le navrait.\nIl sentait bien qu'il les entraînait avec lui sur la pente d'un\nirréparable malheur.\n\nEt il n'avait ni le pouvoir de s'arrêter ni la volonté peut-être.\n\nIl n'y avait encore rien eu dans la maison; nous savons, en effet, que\nl'absence nocturne de René avait passé inaperçue. L'inquiétude n'était\npas née encore chez ces bonnes âmes. Elle naquit justement ce soir-là.\n\nQuand René se fut retiré à l'heure ordinaire, la mère alla se coucher,\nmaussade et triste pour la première foi"
+ },
+ "toll_free_phone": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "id": "https://socialsci.libretexts.org/Courses/Northeast_Wisconsin_Technical_College/Health%2C_Safety%2C_and_Nutrition_(WI_version%2C_Paris)/02%3A_Section_II-_Safety/2.04%3A_Caring_for_Minor_Injuries_and_Preparing_for_and_Managing_Emergencies",
+  "text": "ing adult to feel emotionally safe?\nPoisoning\nIf a child ingests a potentially poisonous substance, Poison Control should be contacted at 1-800-222-1222. They will advise about the"
+ },
+ "museum_accession_numbers": {
+  "source": "libretexts/00000_libretext.json.gz",
+  "id": "https://human.libretexts.org/Bookshelves/Art/Book%3A_Creators_Collectors_and_Communities_(Martin)/01%3A_The_Old_World_in_the_New/01.1%3A_Snuff_Box",
+  "text": "1.1: Snuff Box\n|\nSnuff Box\nNorwegian Maker attributed to Gude, Norwegian sculptor, c.1800 Wood Gift of Nancy Pearson MHAHS 1978.004.0001 |\nFor Norwegian immi"
+ },
+ "talk_page_ipv6": {
+  "source": "wikimedia/00000_wikipedia.com.jsonl.gz",
+  "id": "1-672",
+  "text": "the 16th century. https://en.wikipedia.org/wiki/Eternal_flame#Extinguished_flames — Preceding unsigned comment added by 2A02:C7F:9EBA:7400:B88B:FD3F:AE01:9552 (talk) 20:37, 13 Dece"
+ }
+}

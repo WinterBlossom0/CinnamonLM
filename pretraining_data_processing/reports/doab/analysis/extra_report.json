@@ -1,0 +1,319 @@
+{
+ "shards": [
+  "00000",
+  "00001",
+  "00002",
+  "00003",
+  "00004",
+  "00005",
+  "00006",
+  "00007",
+  "00008",
+  "00009",
+  "00010",
+  "00011",
+  "00012"
+ ],
+ "docs": 474050,
+ "chars": 12217120546,
+ "per_measure": {
+  "reference_heading_empty": {
+   "docs": 38583,
+   "docs_frac": 0.08139,
+   "chars_of_affected_docs_frac": 0.66171,
+   "matches": 105430,
+   "top_publishers_docs": [
+    [
+     "MDPI - Multidisciplinary Digital Publishing Institute",
+     25088
+    ],
+    [
+     "IntechOpen",
+     7510
+    ],
+    [
+     "Frontiers Media SA",
+     2810
+    ],
+    [
+     "Springer Nature",
+     1715
+    ],
+    [
+     "Firenze University Press",
+     248
+    ],
+    [
+     "InTechOpen",
+     200
+    ]
+   ]
+  },
+  "reference_heading_with_entries": {
+   "docs": 32673,
+   "docs_frac": 0.06892,
+   "chars_of_affected_docs_frac": 0.63564,
+   "matches": 121120,
+   "top_publishers_docs": [
+    [
+     "IntechOpen",
+     22705
+    ],
+    [
+     "MDPI - Multidisciplinary Digital Publishing Institute",
+     3473
+    ],
+    [
+     "Frontiers Media SA",
+     2837
+    ],
+    [
+     "Springer Nature",
+     1817
+    ],
+    [
+     "Firenze University Press",
+     271
+    ],
+    [
+     "InTechOpen",
+     242
+    ]
+   ]
+  },
+  "table_caption_without_rows": {
+   "docs": 87817,
+   "docs_frac": 0.18525,
+   "chars_of_affected_docs_frac": 0.59424,
+   "matches": 469525,
+   "top_publishers_docs": [
+    [
+     "MDPI - Multidisciplinary Digital Publishing Institute",
+     44133
+    ],
+    [
+     "IntechOpen",
+     40858
+    ],
+    [
+     "Springer Nature",
+     1352
+    ],
+    [
+     "InTechOpen",
+     266
+    ],
+    [
+     "Language Science Press",
+     195
+    ],
+    [
+     "KIT Scientific Publishing",
+     151
+    ]
+   ]
+  },
+  "table_caption_with_rows": {
+   "docs": 0,
+   "docs_frac": 0.0,
+   "chars_of_affected_docs_frac": 0.0,
+   "matches": 0,
+   "top_publishers_docs": []
+  },
+  "compilation_restriction": {
+   "docs": 11725,
+   "docs_frac": 0.02473,
+   "chars_of_affected_docs_frac": 0.09362,
+   "matches": 17878,
+   "top_publishers_docs": [
+    [
+     "IntechOpen",
+     6131
+    ],
+    [
+     "MDPI - Multidisciplinary Digital Publishing Institute",
+     5444
+    ],
+    [
+     "Bentham Science Publishers",
+     74
+    ],
+    [
+     "",
+     71
+    ],
+    [
+     "InTechOpen",
+     4
+    ],
+    [
+     "Frontiers Media SA",
+     1
+    ]
+   ]
+  },
+  "math_font_garble": {
+   "docs": 9052,
+   "docs_frac": 0.0191,
+   "chars_of_affected_docs_frac": 0.07745,
+   "matches": 590556,
+   "top_publishers_docs": [
+    [
+     "IntechOpen",
+     8682
+    ],
+    [
+     "Springer Nature",
+     191
+    ],
+    [
+     "InTechOpen",
+     45
+    ],
+    [
+     "Frontiers Media SA",
+     45
+    ],
+    [
+     "MDPI - Multidisciplinary Digital Publishing Institute",
+     31
+    ],
+    [
+     "UCL Press",
+     8
+    ]
+   ]
+  },
+  "catalogue_ad": {
+   "docs": 119,
+   "docs_frac": 0.00025,
+   "chars_of_affected_docs_frac": 0.00596,
+   "matches": 989,
+   "top_publishers_docs": [
+    [
+     "transcript Verlag",
+     90
+    ],
+    [
+     "Verlag Barbara Budrich",
+     18
+    ],
+    [
+     "Bielefeld University Press",
+     7
+    ],
+    [
+     "",
+     4
+    ]
+   ]
+  },
+  "cover_credit": {
+   "docs": 10796,
+   "docs_frac": 0.02277,
+   "chars_of_affected_docs_frac": 0.15646,
+   "matches": 10801,
+   "top_publishers_docs": [
+    [
+     "IntechOpen",
+     10764
+    ],
+    [
+     "",
+     8
+    ],
+    [
+     "Frontiers Media SA",
+     5
+    ],
+    [
+     "Springer Nature",
+     5
+    ],
+    [
+     "InTechOpen",
+     4
+    ],
+    [
+     "UCL Press",
+     3
+    ]
+   ]
+  },
+  "glued_words": {
+   "docs": 12788,
+   "docs_frac": 0.02698,
+   "chars_of_affected_docs_frac": 0.28011,
+   "matches": 34466,
+   "top_publishers_docs": [
+    [
+     "IntechOpen",
+     6077
+    ],
+    [
+     "MDPI - Multidisciplinary Digital Publishing Institute",
+     3679
+    ],
+    [
+     "Frontiers Media SA",
+     1223
+    ],
+    [
+     "Springer Nature",
+     713
+    ],
+    [
+     "Firenze University Press",
+     150
+    ],
+    [
+     "transcript Verlag",
+     123
+    ]
+   ]
+  }
+ },
+ "glued_words_per_1M_scanned_chars": 4.33,
+ "publisher_docs_top": [
+  [
+   "IntechOpen",
+   296326
+  ],
+  [
+   "MDPI - Multidisciplinary Digital Publishing Institute",
+   169682
+  ],
+  [
+   "Frontiers Media SA",
+   2840
+  ],
+  [
+   "Springer Nature",
+   2122
+  ],
+  [
+   "Firenze University Press",
+   540
+  ],
+  [
+   "InTechOpen",
+   440
+  ],
+  [
+   "Open Book Publishers",
+   210
+  ],
+  [
+   "Language Science Press",
+   205
+  ],
+  [
+   "KIT Scientific Publishing",
+   167
+  ],
+  [
+   "transcript Verlag",
+   160
+  ]
+ ]
+}

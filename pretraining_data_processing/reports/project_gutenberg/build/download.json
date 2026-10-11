@@ -1,0 +1,43 @@
+{
+ "stage": "download",
+ "started_at_ist": "2026-10-11T17:51:34+05:30",
+ "finished_at_ist": "2026-10-11T17:59:30+05:30",
+ "repo": "common-pile/project_gutenberg",
+ "revision": "01dc90a5002f8977c7fb03a372c14bca29c65cf1",
+ "code_sha256": {
+  "workflow/build_corpus.py": "65d1e5dc7e63fce56ee1ea4ff7c96b8e0f46769a051f972972f05650766b01ca",
+  "workflow/raw_manifest.json": "6b3ae62c7c697be3dbfc2516d31f8eddfbd8d66eb4485ff90f4fcdf40f3f7292"
+ },
+ "output_sha256": {
+  "v0/documents/00000_pg.jsonl.gz": "e85210b8f8b55623b7d4ee0fba41504e67143a1eb295c49a164fd998fbd45a05",
+  "v0/documents/00001_pg.jsonl.gz": "eb5db5f2b7cf524ff06d0d6034d9f4ea4c84001d8c7747ba9022f26a9fea73f3",
+  "v0/documents/00002_pg.jsonl.gz": "73fc5b5ef6b752a3780acdefeeb5adfdcf57eaf03529533a5919bf66b59994d3",
+  "v0/documents/00003_pg.jsonl.gz": "c30e9d71bb4773a7476345503c28f74cdb6f6044aeaada2b9dfdd083b0a7cb6d",
+  "v0/documents/00004_pg.jsonl.gz": "83407be99f5f59542957080e0660f6e5c3a8884b1add361dfb99bbd158c82b14",
+  "v0/documents/00005_pg.jsonl.gz": "590487ffce5358227ea3728ce5e1d409447cb8414dd9703707f3109958737213",
+  "v0/documents/00006_pg.jsonl.gz": "b64b2100bf6bf171e69a1879533e43634a6fc8a3ea8d4fad344a33c68340e384",
+  "v0/documents/00007_pg.jsonl.gz": "60606d58c218e2afdf50096d860d95d160db497b4075c4c8350a8220b3c8b3ab",
+  "v0/documents/00008_pg.jsonl.gz": "4ad8a17edec6719f269b208ec82fab46706648de17491480630893fd3466d6a9",
+  "v0/documents/00009_pg.jsonl.gz": "ad83cade517c72a418f65ac788f785e96884d7fb29e5edf3fd96e6fb308183c0",
+  "v0/documents/00010_pg.jsonl.gz": "0c27eb7577e7ccb2c1ee815fd9004a0193b403a465e428e6eca5e61a0a88d7df",
+  "v0/documents/00011_pg.jsonl.gz": "3f9b1fa335a72693f8c654169339b41f598c391486380312140cb70084ebae32",
+  "v0/documents/00012_pg.jsonl.gz": "6ad6ef51cbf8c03a7364e423495ce5172092db1320359d4f5cad9ce15b4e09f2",
+  "v0/documents/00013_pg.jsonl.gz": "69e06d09308c61a1f87f111b0dac30e7a48b4f3ab006d144c894cfdd21239887",
+  "v0/documents/00014_pg.jsonl.gz": "517fa1e18a76cc81bb137a9fb40a1bf31dccb8da7fb9789c82f6e01525baefb8",
+  "v0/documents/00015_pg.jsonl.gz": "931f903ead726bc8d36bf1b931cb8796618bfd6434cb57c3634dd4c9ce9a6887",
+  "v0/documents/00016_pg.jsonl.gz": "07d83917d67450b8a88ffd37ec3cc60845bbc06f621fe5b825e27f003c3b9936",
+  "v0/documents/00017_pg.jsonl.gz": "d9f86961ea0d67b2f7bf05976da341a015a6de814640247713d6c71ba1468d34",
+  "v0/documents/00018_pg.jsonl.gz": "6cc8c0ffa964b1ffc76b6f5670e347cfded173721bfedefe912a88a9866ef9c9",
+  "v0/documents/00019_pg.jsonl.gz": "430cf281cf20d61a050f57e2746d0d50066b6f2b6fa26b51fb99df9d4b8a0821",
+  "v0/documents/00020_pg.jsonl.gz": "c29e311d751fbe4b61a3f870305e007a30143fb55792f07ca693ceb01493be0e",
+  "v0/documents/00021_pg.jsonl.gz": "238c3642d00573c7dff3cf5ed6cf1b69a4cf8dfec0723837bce254446c7fc939",
+  "v0/documents/00022_pg.jsonl.gz": "bce02f1f1ab0b821243f1ee2e8847a8dad904b71b611d8de19a4a6d2e471985c",
+  "v0/documents/00023_pg.jsonl.gz": "434fd76c49807573466130ec0eccea01c978bd1c96b254ca06b57ffa5b2f74ce",
+  "v0/documents/00024_pg.jsonl.gz": "36ef0005437d6137d616c228d6d75e321e9a6751482a95cd313fba1b4b886fb8",
+  "v0/documents/00025_pg.jsonl.gz": "c092d3eaca9c1969fa721cff7f23189f2b02cc13f8b166e0711a72b7bfb04b16",
+  "v0/documents/00026_pg.jsonl.gz": "935f1632319930cd32f75195ac3256d4ed1d8bdddc924dde8db5cb4e83985151",
+  "v0/documents/00027_pg.jsonl.gz": "d9d1e2a4f2b75ba532b9e8393f770c601836cf3a728f0723c0cf3845bf86ece7",
+  "v0/documents/00028_pg.jsonl.gz": "3202fa62c216634ff560dda46d7609f2bd7ff578699dcecb8ca2beaf941c4725",
+  "v0/documents/00029_pg.jsonl.gz": "f9146b1f51318f135f42e5519d5259d25d95a098f8cda8acacde1f5c2f23fad5"
+ }
+}

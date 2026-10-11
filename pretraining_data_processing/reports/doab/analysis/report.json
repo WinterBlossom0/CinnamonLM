@@ -1,0 +1,3371 @@
+{
+ "shards": [
+  "00000",
+  "00001",
+  "00002",
+  "00003",
+  "00004",
+  "00005",
+  "00006",
+  "00007",
+  "00008",
+  "00009",
+  "00010",
+  "00011",
+  "00012"
+ ],
+ "docs": 474445,
+ "total_chars": 12454913258,
+ "chars": {
+  "p1": 63.0,
+  "p5": 116.0,
+  "p10": 201.0,
+  "p25": 884.0,
+  "p50": 2833.0,
+  "p75": 9166.0,
+  "p90": 32639.6,
+  "p95": 66533.2,
+  "p99": 629612.96,
+  "min": 50.0,
+  "max": 5488882.0,
+  "mean": 26251.54
+ },
+ "words": {
+  "p1": 8.0,
+  "p5": 15.0,
+  "p10": 26.0,
+  "p25": 128.0,
+  "p50": 411.0,
+  "p75": 1365.0,
+  "p90": 4873.0,
+  "p95": 9873.8,
+  "p99": 94366.8,
+  "min": 3.0,
+  "max": 821920.0,
+  "mean": 3915.8
+ },
+ "structure": {
+  "books": 19883,
+  "section_docs": 466157,
+  "section_chars": 7947215619,
+  "whole_book_docs": 8288,
+  "whole_book_chars": 4507697639,
+  "section_docs_chars": {
+   "p1": 63.0,
+   "p5": 115.0,
+   "p10": 197.0,
+   "p25": 860.0,
+   "p50": 2740.0,
+   "p75": 8512.0,
+   "p90": 27627.4,
+   "p95": 50310.4,
+   "p99": 288314.08,
+   "min": 50.0,
+   "max": 4142634.0,
+   "mean": 17048.37
+  },
+  "whole_book_chars_pct": {
+   "p1": 13560.19,
+   "p5": 33669.5,
+   "p10": 56083.9,
+   "p25": 309236.5,
+   "p50": 498314.0,
+   "p75": 704222.5,
+   "p90": 985691.2,
+   "p95": 1213031.9,
+   "p99": 1874145.09,
+   "min": 1446.0,
+   "max": 5488882.0,
+   "mean": 543882.44
+  },
+  "sections_per_book": {
+   "p1": 1.0,
+   "p5": 2.0,
+   "p10": 2.0,
+   "p25": 4.0,
+   "p50": 11.0,
+   "p75": 59.0,
+   "p90": 122.0,
+   "p95": 163.3,
+   "p99": 267.0,
+   "min": 1.0,
+   "max": 652.0,
+   "mean": 40.2
+  },
+  "section_publishers": [
+   [
+    "IntechOpen",
+    296457
+   ],
+   [
+    "MDPI - Multidisciplinary Digital Publishing Institute",
+    169700
+   ]
+  ],
+  "length_buckets": {
+   "0-200": {
+    "docs": 47118,
+    "chars": 5622133
+   },
+   "200-1000": {
+    "docs": 81246,
+    "chars": 45891979
+   },
+   "1000-10000": {
+    "docs": 234450,
+    "chars": 877841110
+   },
+   "10000-100000": {
+    "docs": 93925,
+    "chars": 2713638840
+   },
+   "100000-1000000": {
+    "docs": 16012,
+    "chars": 6326593687
+   },
+   "1000000-1000000000": {
+    "docs": 1694,
+    "chars": 2485325509
+   }
+  }
+ },
+ "publishers_top": [
+  [
+   "IntechOpen",
+   6091,
+   296457,
+   4898962466
+  ],
+  [
+   "MDPI - Multidisciplinary Digital Publishing Institute",
+   5504,
+   169700,
+   3048253153
+  ],
+  [
+   "Frontiers Media SA",
+   2891,
+   2891,
+   1870457268
+  ],
+  [
+   "Springer Nature",
+   2193,
+   2193,
+   1341028448
+  ],
+  [
+   "Language Science Press",
+   209,
+   209,
+   143317931
+  ],
+  [
+   "Open Book Publishers",
+   227,
+   227,
+   140226358
+  ],
+  [
+   "transcript Verlag",
+   164,
+   164,
+   98529855
+  ],
+  [
+   "Firenze University Press",
+   541,
+   541,
+   75870662
+  ],
+  [
+   "",
+   123,
+   123,
+   74501739
+  ],
+  [
+   "De Gruyter",
+   92,
+   92,
+   69042581
+  ],
+  [
+   "UCL Press",
+   108,
+   108,
+   63836553
+  ],
+  [
+   "KIT Scientific Publishing",
+   170,
+   170,
+   57112811
+  ],
+  [
+   "Peter Lang International Academic Publishing Group",
+   89,
+   89,
+   41129388
+  ],
+  [
+   "Verlag Barbara Budrich",
+   64,
+   64,
+   35707676
+  ],
+  [
+   "Bentham Science Publishers",
+   80,
+   80,
+   34017371
+  ],
+  [
+   "Universit\u00e4tsverlag G\u00f6ttingen",
+   55,
+   55,
+   33124432
+  ],
+  [
+   "Taylor & Francis",
+   78,
+   78,
+   29200538
+  ],
+  [
+   "Brill",
+   27,
+   27,
+   23879547
+  ],
+  [
+   "InTechOpen",
+   440,
+   440,
+   22952616
+  ],
+  [
+   "Peter Lang International Academic Publishers",
+   43,
+   43,
+   22427561
+  ],
+  [
+   "Ubiquity Press",
+   59,
+   59,
+   21883294
+  ],
+  [
+   "Open Humanities Press",
+   47,
+   47,
+   21832410
+  ],
+  [
+   "Stockholm University Press",
+   28,
+   28,
+   15954579
+  ],
+  [
+   "Heidelberg University Publishing (heiUP)",
+   21,
+   21,
+   15127975
+  ],
+  [
+   "African Minds",
+   24,
+   24,
+   15056882
+  ]
+ ],
+ "publishers_distinct": 120,
+ "licenses": [
+  [
+   "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+   296808,
+   4940165689
+  ],
+  [
+   "Creative Commons - Attribution - https://creativecommons.org/licenses/by/4.0/",
+   177208,
+   7297104153
+  ],
+  [
+   "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/4.0/",
+   420,
+   213037239
+  ],
+  [
+   "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+   9,
+   4606177
+  ]
+ ],
+ "issues_all": {
+  "line:boilerplate": {
+   "docs_frac": 0.4383,
+   "chars_frac": 0.0218
+  },
+  "line:admin_statement": {
+   "docs_frac": 0.1939,
+   "chars_frac": 0.00735
+  },
+  "line:page_number": {
+   "docs_frac": 0.1622,
+   "chars_frac": 0.0002
+  },
+  "line:running_header": {
+   "docs_frac": 0.0878,
+   "chars_frac": 0.00273
+  },
+  "line:reference": {
+   "docs_frac": 0.1725,
+   "chars_frac": 0.04619
+  },
+  "line:index": {
+   "docs_frac": 0.0123,
+   "chars_frac": 0.00141
+  },
+  "line:toc": {
+   "docs_frac": 0.014,
+   "chars_frac": 0.00012
+  },
+  "line:caption": {
+   "docs_frac": 0.3499,
+   "chars_frac": 0.02134
+  },
+  "line:footnote_text": {
+   "docs_frac": 0.0494,
+   "chars_frac": 0.00982
+  },
+  "line:math_debris": {
+   "docs_frac": 0.1193,
+   "chars_frac": 0.00828
+  },
+  "line:repeated_line": {
+   "docs_frac": 0.0408,
+   "chars_frac": 0.00142
+  },
+  "line:heading": {
+   "docs_frac": 0.8939,
+   "chars_frac": 0.02021
+  },
+  "line:body": {
+   "docs_frac": 0.9663,
+   "chars_frac": 0.85542
+  },
+  "inline:soft_hyphen": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:mojibake_utf8_as_latin1": {
+   "docs_frac": 0.0,
+   "matches": 58,
+   "match_chars_frac": 0.0
+  },
+  "inline:replacement_char": {
+   "docs_frac": 0.0226,
+   "matches": 658580,
+   "match_chars_frac": 5.3e-05
+  },
+  "inline:replacement_char_then_space": {
+   "docs_frac": 0.0025,
+   "matches": 9776,
+   "match_chars_frac": 3e-06
+  },
+  "inline:private_use_char": {
+   "docs_frac": 0.0001,
+   "matches": 72,
+   "match_chars_frac": 0.0
+  },
+  "inline:cid_glyph": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:ligature_codepoint": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:control_char": {
+   "docs_frac": 0.0034,
+   "matches": 17097,
+   "match_chars_frac": 1e-06
+  },
+  "inline:missing_space_after_punct": {
+   "docs_frac": 0.0152,
+   "matches": 30516,
+   "match_chars_frac": 3.7e-05
+  },
+  "inline:glued_token_30plus_letters": {
+   "docs_frac": 0.0125,
+   "matches": 23257,
+   "match_chars_frac": 9.9e-05
+  },
+  "inline:caesar_shift_font_garble": {
+   "docs_frac": 0.0002,
+   "matches": 1246,
+   "match_chars_frac": 0.0
+  },
+  "inline:html_sup_sub_tag": {
+   "docs_frac": 0.265,
+   "matches": 17415961,
+   "match_chars_frac": 0.007691
+  },
+  "inline:footnote_marker_sup_after_word": {
+   "docs_frac": 0.1015,
+   "matches": 1035896,
+   "match_chars_frac": 0.000996
+  },
+  "inline:html_entity": {
+   "docs_frac": 0.0,
+   "matches": 12,
+   "match_chars_frac": 0.0
+  },
+  "inline:latex_display_math": {
+   "docs_frac": 0.1076,
+   "matches": 1063201,
+   "match_chars_frac": 0.014725
+  },
+  "inline:latex_inline_math": {
+   "docs_frac": 0.0044,
+   "matches": 9725,
+   "match_chars_frac": 2.1e-05
+  },
+  "inline:escaped_markdown_char": {
+   "docs_frac": 0.2672,
+   "matches": 6541390,
+   "match_chars_frac": 0.00105
+  },
+  "inline:markdown_bold_marker": {
+   "docs_frac": 0.8223,
+   "matches": 21667403,
+   "match_chars_frac": 0.003479
+  },
+  "inline:markdown_heading_line": {
+   "docs_frac": 0.4015,
+   "matches": 4329943,
+   "match_chars_frac": 0.001491
+  },
+  "inline:markdown_table_row": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:image_placeholder": {
+   "docs_frac": 0.0,
+   "matches": 28,
+   "match_chars_frac": 0.0
+  },
+  "inline:email": {
+   "docs_frac": 0.1375,
+   "matches": 247940,
+   "match_chars_frac": 0.000443
+  },
+  "inline:url": {
+   "docs_frac": 0.3527,
+   "matches": 973764,
+   "match_chars_frac": 0.003058
+  },
+  "inline:gap_3plus_newlines": {
+   "docs_frac": 0.2982,
+   "matches": 1380562,
+   "match_chars_frac": 0.000344
+  },
+  "inline:dangling_colon_before_gap": {
+   "docs_frac": 0.079,
+   "matches": 145687,
+   "match_chars_frac": 5.9e-05
+  },
+  "inline:nc_nd_licence_text": {
+   "docs_frac": 0.0278,
+   "matches": 17662,
+   "match_chars_frac": 1.6e-05
+  },
+  "ligature_drop": {
+   "docs_frac": 0.0078,
+   "matches": 603245,
+   "docs_frac_ge_10": 0.0015,
+   "per_1M_chars": 48.43
+  },
+  "split_word": {
+   "docs_frac": 0.0113,
+   "matches": 23731,
+   "docs_frac_ge_10": 0.0005,
+   "per_1M_chars": 1.91
+  },
+  "hyphen_break": {
+   "docs_frac": 0.1126,
+   "matches": 1016481,
+   "docs_frac_ge_10": 0.0236,
+   "per_1M_chars": 81.61
+  },
+  "hyphen_break_validated": {
+   "docs_frac": 0.0726,
+   "matches": 858090,
+   "docs_frac_ge_10": 0.0191,
+   "per_1M_chars": 68.9
+  },
+  "garbled_font_encoding": {
+   "docs": 137,
+   "chars_frac": 0.0008
+  },
+  "tiny_doc_body_words_lt_30": {
+   "docs": 65434,
+   "docs_frac": 0.1379,
+   "chars_frac": 0.00161
+  },
+  "frontback_section_doc": {
+   "docs": 53985,
+   "docs_frac": 0.1138,
+   "chars_frac": 0.12217
+  },
+  "partial_licence_statement": {
+   "docs": 177,
+   "chars_frac": 0.00492
+  },
+  "consecutive_repeated_line_run_ge5": {
+   "docs": 571,
+   "chars_frac": 0.02483
+  },
+  "dup_line_char_frac_ge_0.3": {
+   "docs": 2491,
+   "chars_frac": 0.00415
+  },
+  "paragraph_flow": {
+   "body_paragraphs": 24098553,
+   "starts_lowercase_frac": 0.1764,
+   "ends_mid_sentence_frac": 0.1524,
+   "ends_mid_sentence_then_lowercase_within_3": 1844189,
+   "joined_directly": 836414,
+   "interrupted_by": {
+    "other": 669855,
+    "footnote": 61089,
+    "caption": 124374,
+    "page_header_or_number": 47922,
+    "display_math": 104535
+   },
+   "docs_with_orphan_frac": 0.4535
+  }
+ },
+ "issues_section_docs": {
+  "line:boilerplate": {
+   "docs_frac": 0.4283,
+   "chars_frac": 0.02425
+  },
+  "line:admin_statement": {
+   "docs_frac": 0.1892,
+   "chars_frac": 0.00996
+  },
+  "line:page_number": {
+   "docs_frac": 0.1552,
+   "chars_frac": 0.00028
+  },
+  "line:running_header": {
+   "docs_frac": 0.0799,
+   "chars_frac": 0.00371
+  },
+  "line:reference": {
+   "docs_frac": 0.158,
+   "chars_frac": 0.06163
+  },
+  "line:index": {
+   "docs_frac": 0.007,
+   "chars_frac": 0.00015
+  },
+  "line:toc": {
+   "docs_frac": 0.0118,
+   "chars_frac": 0.00015
+  },
+  "line:caption": {
+   "docs_frac": 0.3406,
+   "chars_frac": 0.02759
+  },
+  "line:footnote_text": {
+   "docs_frac": 0.0366,
+   "chars_frac": 0.00186
+  },
+  "line:math_debris": {
+   "docs_frac": 0.1089,
+   "chars_frac": 0.00979
+  },
+  "line:repeated_line": {
+   "docs_frac": 0.0322,
+   "chars_frac": 0.00174
+  },
+  "line:heading": {
+   "docs_frac": 0.892,
+   "chars_frac": 0.02091
+  },
+  "line:body": {
+   "docs_frac": 0.9657,
+   "chars_frac": 0.83375
+  },
+  "inline:soft_hyphen": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:mojibake_utf8_as_latin1": {
+   "docs_frac": 0.0,
+   "matches": 20,
+   "match_chars_frac": 0.0
+  },
+  "inline:replacement_char": {
+   "docs_frac": 0.0227,
+   "matches": 648645,
+   "match_chars_frac": 8.2e-05
+  },
+  "inline:replacement_char_then_space": {
+   "docs_frac": 0.0023,
+   "matches": 5088,
+   "match_chars_frac": 2e-06
+  },
+  "inline:private_use_char": {
+   "docs_frac": 0.0001,
+   "matches": 67,
+   "match_chars_frac": 0.0
+  },
+  "inline:cid_glyph": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:ligature_codepoint": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:control_char": {
+   "docs_frac": 0.0028,
+   "matches": 8787,
+   "match_chars_frac": 1e-06
+  },
+  "inline:missing_space_after_punct": {
+   "docs_frac": 0.0112,
+   "matches": 14782,
+   "match_chars_frac": 3.3e-05
+  },
+  "inline:glued_token_30plus_letters": {
+   "docs_frac": 0.0103,
+   "matches": 18104,
+   "match_chars_frac": 0.000129
+  },
+  "inline:caesar_shift_font_garble": {
+   "docs_frac": 0.0001,
+   "matches": 270,
+   "match_chars_frac": 0.0
+  },
+  "inline:html_sup_sub_tag": {
+   "docs_frac": 0.2528,
+   "matches": 10930030,
+   "match_chars_frac": 0.007564
+  },
+  "inline:footnote_marker_sup_after_word": {
+   "docs_frac": 0.091,
+   "matches": 473504,
+   "match_chars_frac": 0.000712
+  },
+  "inline:html_entity": {
+   "docs_frac": 0.0,
+   "matches": 10,
+   "match_chars_frac": 0.0
+  },
+  "inline:latex_display_math": {
+   "docs_frac": 0.1023,
+   "matches": 812805,
+   "match_chars_frac": 0.017679
+  },
+  "inline:latex_inline_math": {
+   "docs_frac": 0.0036,
+   "matches": 5828,
+   "match_chars_frac": 2.1e-05
+  },
+  "inline:escaped_markdown_char": {
+   "docs_frac": 0.2551,
+   "matches": 5002189,
+   "match_chars_frac": 0.001259
+  },
+  "inline:markdown_bold_marker": {
+   "docs_frac": 0.8198,
+   "matches": 16813016,
+   "match_chars_frac": 0.004231
+  },
+  "inline:markdown_heading_line": {
+   "docs_frac": 0.3908,
+   "matches": 2217010,
+   "match_chars_frac": 0.001287
+  },
+  "inline:markdown_table_row": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:image_placeholder": {
+   "docs_frac": 0.0,
+   "matches": 9,
+   "match_chars_frac": 0.0
+  },
+  "inline:email": {
+   "docs_frac": 0.1273,
+   "matches": 138410,
+   "match_chars_frac": 0.000385
+  },
+  "inline:url": {
+   "docs_frac": 0.3419,
+   "matches": 732094,
+   "match_chars_frac": 0.003511
+  },
+  "inline:gap_3plus_newlines": {
+   "docs_frac": 0.286,
+   "matches": 824520,
+   "match_chars_frac": 0.000322
+  },
+  "inline:dangling_colon_before_gap": {
+   "docs_frac": 0.0681,
+   "matches": 85029,
+   "match_chars_frac": 5.4e-05
+  },
+  "inline:nc_nd_licence_text": {
+   "docs_frac": 0.026,
+   "matches": 13980,
+   "match_chars_frac": 2e-05
+  },
+  "ligature_drop": {
+   "docs_frac": 0.0051,
+   "matches": 5051,
+   "docs_frac_ge_10": 0.0001,
+   "per_1M_chars": 0.64
+  },
+  "split_word": {
+   "docs_frac": 0.0095,
+   "matches": 9825,
+   "docs_frac_ge_10": 0.0002,
+   "per_1M_chars": 1.24
+  },
+  "hyphen_break": {
+   "docs_frac": 0.105,
+   "matches": 989846,
+   "docs_frac_ge_10": 0.0232,
+   "per_1M_chars": 124.55
+  },
+  "hyphen_break_validated": {
+   "docs_frac": 0.0692,
+   "matches": 844576,
+   "docs_frac_ge_10": 0.0191,
+   "per_1M_chars": 106.27
+  },
+  "garbled_font_encoding": {
+   "docs": 124,
+   "chars_frac": 0.00033
+  },
+  "tiny_doc_body_words_lt_30": {
+   "docs": 65434,
+   "docs_frac": 0.1404,
+   "chars_frac": 0.00252
+  },
+  "frontback_section_doc": {
+   "docs": 53985,
+   "docs_frac": 0.1158,
+   "chars_frac": 0.19146
+  },
+  "partial_licence_statement": {
+   "docs": 0,
+   "chars_frac": 0.0
+  },
+  "consecutive_repeated_line_run_ge5": {
+   "docs": 526,
+   "chars_frac": 0.03392
+  },
+  "dup_line_char_frac_ge_0.3": {
+   "docs": 2489,
+   "chars_frac": 0.00607
+  },
+  "paragraph_flow": {
+   "body_paragraphs": 17393207,
+   "starts_lowercase_frac": 0.2088,
+   "ends_mid_sentence_frac": 0.1754,
+   "ends_mid_sentence_then_lowercase_within_3": 1480120,
+   "joined_directly": 675982,
+   "interrupted_by": {
+    "other": 629730,
+    "caption": 64099,
+    "page_header_or_number": 35096,
+    "display_math": 68641,
+    "footnote": 6572
+   },
+   "docs_with_orphan_frac": 0.444
+  }
+ },
+ "issues_whole_book_docs": {
+  "line:boilerplate": {
+   "docs_frac": 0.9981,
+   "chars_frac": 0.01748
+  },
+  "line:admin_statement": {
+   "docs_frac": 0.4599,
+   "chars_frac": 0.00275
+  },
+  "line:page_number": {
+   "docs_frac": 0.5539,
+   "chars_frac": 5e-05
+  },
+  "line:running_header": {
+   "docs_frac": 0.5282,
+   "chars_frac": 0.001
+  },
+  "line:reference": {
+   "docs_frac": 0.9841,
+   "chars_frac": 0.01897
+  },
+  "line:index": {
+   "docs_frac": 0.3146,
+   "chars_frac": 0.00363
+  },
+  "line:toc": {
+   "docs_frac": 0.1396,
+   "chars_frac": 7e-05
+  },
+  "line:caption": {
+   "docs_frac": 0.8763,
+   "chars_frac": 0.01032
+  },
+  "line:footnote_text": {
+   "docs_frac": 0.7674,
+   "chars_frac": 0.02385
+  },
+  "line:math_debris": {
+   "docs_frac": 0.7044,
+   "chars_frac": 0.00564
+  },
+  "line:repeated_line": {
+   "docs_frac": 0.5224,
+   "chars_frac": 0.00085
+  },
+  "line:heading": {
+   "docs_frac": 0.999,
+   "chars_frac": 0.01899
+  },
+  "line:body": {
+   "docs_frac": 1.0,
+   "chars_frac": 0.89363
+  },
+  "inline:soft_hyphen": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:mojibake_utf8_as_latin1": {
+   "docs_frac": 0.0002,
+   "matches": 38,
+   "match_chars_frac": 0.0
+  },
+  "inline:replacement_char": {
+   "docs_frac": 0.0224,
+   "matches": 9935,
+   "match_chars_frac": 2e-06
+  },
+  "inline:replacement_char_then_space": {
+   "docs_frac": 0.016,
+   "matches": 4688,
+   "match_chars_frac": 4e-06
+  },
+  "inline:private_use_char": {
+   "docs_frac": 0.0004,
+   "matches": 5,
+   "match_chars_frac": 0.0
+  },
+  "inline:cid_glyph": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:ligature_codepoint": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:control_char": {
+   "docs_frac": 0.0393,
+   "matches": 8310,
+   "match_chars_frac": 2e-06
+  },
+  "inline:missing_space_after_punct": {
+   "docs_frac": 0.2425,
+   "matches": 15734,
+   "match_chars_frac": 4.5e-05
+  },
+  "inline:glued_token_30plus_letters": {
+   "docs_frac": 0.1373,
+   "matches": 5153,
+   "match_chars_frac": 4.6e-05
+  },
+  "inline:caesar_shift_font_garble": {
+   "docs_frac": 0.0057,
+   "matches": 976,
+   "match_chars_frac": 1e-06
+  },
+  "inline:html_sup_sub_tag": {
+   "docs_frac": 0.9475,
+   "matches": 6485931,
+   "match_chars_frac": 0.007914
+  },
+  "inline:footnote_marker_sup_after_word": {
+   "docs_frac": 0.6961,
+   "matches": 562392,
+   "match_chars_frac": 0.001498
+  },
+  "inline:html_entity": {
+   "docs_frac": 0.0002,
+   "matches": 2,
+   "match_chars_frac": 0.0
+  },
+  "inline:latex_display_math": {
+   "docs_frac": 0.4076,
+   "matches": 250396,
+   "match_chars_frac": 0.009516
+  },
+  "inline:latex_inline_math": {
+   "docs_frac": 0.0524,
+   "matches": 3897,
+   "match_chars_frac": 2e-05
+  },
+  "inline:escaped_markdown_char": {
+   "docs_frac": 0.9457,
+   "matches": 1539201,
+   "match_chars_frac": 0.000683
+  },
+  "inline:markdown_bold_marker": {
+   "docs_frac": 0.962,
+   "matches": 4854387,
+   "match_chars_frac": 0.002154
+  },
+  "inline:markdown_heading_line": {
+   "docs_frac": 0.9994,
+   "matches": 2112933,
+   "match_chars_frac": 0.001852
+  },
+  "inline:markdown_table_row": {
+   "docs_frac": 0.0,
+   "matches": 0,
+   "match_chars_frac": 0.0
+  },
+  "inline:image_placeholder": {
+   "docs_frac": 0.0008,
+   "matches": 19,
+   "match_chars_frac": 0.0
+  },
+  "inline:email": {
+   "docs_frac": 0.712,
+   "matches": 109530,
+   "match_chars_frac": 0.000544
+  },
+  "inline:url": {
+   "docs_frac": 0.9625,
+   "matches": 241670,
+   "match_chars_frac": 0.002258
+  },
+  "inline:gap_3plus_newlines": {
+   "docs_frac": 0.9838,
+   "matches": 556042,
+   "match_chars_frac": 0.000384
+  },
+  "inline:dangling_colon_before_gap": {
+   "docs_frac": 0.6898,
+   "matches": 60658,
+   "match_chars_frac": 6.9e-05
+  },
+  "inline:nc_nd_licence_text": {
+   "docs_frac": 0.1286,
+   "matches": 3682,
+   "match_chars_frac": 9e-06
+  },
+  "ligature_drop": {
+   "docs_frac": 0.1571,
+   "matches": 598194,
+   "docs_frac_ge_10": 0.0823,
+   "per_1M_chars": 132.7
+  },
+  "split_word": {
+   "docs_frac": 0.1149,
+   "matches": 13906,
+   "docs_frac_ge_10": 0.0198,
+   "per_1M_chars": 3.08
+  },
+  "hyphen_break": {
+   "docs_frac": 0.5408,
+   "matches": 26635,
+   "docs_frac_ge_10": 0.0487,
+   "per_1M_chars": 5.91
+  },
+  "hyphen_break_validated": {
+   "docs_frac": 0.2617,
+   "matches": 13514,
+   "docs_frac_ge_10": 0.0229,
+   "per_1M_chars": 3.0
+  },
+  "garbled_font_encoding": {
+   "docs": 13,
+   "chars_frac": 0.00163
+  },
+  "tiny_doc_body_words_lt_30": {
+   "docs": 0,
+   "docs_frac": 0.0,
+   "chars_frac": 0.0
+  },
+  "frontback_section_doc": {
+   "docs": 0,
+   "docs_frac": 0.0,
+   "chars_frac": 0.0
+  },
+  "partial_licence_statement": {
+   "docs": 177,
+   "chars_frac": 0.0136
+  },
+  "consecutive_repeated_line_run_ge5": {
+   "docs": 45,
+   "chars_frac": 0.00882
+  },
+  "dup_line_char_frac_ge_0.3": {
+   "docs": 2,
+   "chars_frac": 0.00076
+  },
+  "paragraph_flow": {
+   "body_paragraphs": 6705346,
+   "starts_lowercase_frac": 0.0924,
+   "ends_mid_sentence_frac": 0.0929,
+   "ends_mid_sentence_then_lowercase_within_3": 364069,
+   "joined_directly": 160432,
+   "interrupted_by": {
+    "other": 40125,
+    "footnote": 54517,
+    "caption": 60275,
+    "display_math": 35894,
+    "page_header_or_number": 12826
+   },
+   "docs_with_orphan_frac": 0.9888
+  }
+ },
+ "issues_by_publisher": {
+  "IntechOpen": {
+   "line:boilerplate": {
+    "docs_frac": 0.4456,
+    "chars_frac": 0.02674
+   },
+   "line:running_header": {
+    "docs_frac": 0.105,
+    "chars_frac": 0.00565
+   },
+   "line:reference": {
+    "docs_frac": 0.1451,
+    "chars_frac": 0.09821
+   },
+   "line:index": {
+    "docs_frac": 0.0091,
+    "chars_frac": 0.0002
+   },
+   "line:math_debris": {
+    "docs_frac": 0.1101,
+    "chars_frac": 0.00971
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.0355,
+    "matches": 648473,
+    "match_chars_frac": 0.000132
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.0724,
+    "matches": 233129,
+    "match_chars_frac": 0.000562
+   },
+   "ligature_drop": {
+    "docs_frac": 0.0068,
+    "matches": 4110,
+    "docs_frac_ge_10": 0.0001,
+    "per_1M_chars": 0.84
+   },
+   "split_word": {
+    "docs_frac": 0.0033,
+    "matches": 1804,
+    "docs_frac_ge_10": 0.0,
+    "per_1M_chars": 0.37
+   },
+   "hyphen_break": {
+    "docs_frac": 0.142,
+    "matches": 966273,
+    "docs_frac_ge_10": 0.035,
+    "per_1M_chars": 197.24
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 13336860,
+    "starts_lowercase_frac": 0.2465,
+    "ends_mid_sentence_frac": 0.2012,
+    "ends_mid_sentence_then_lowercase_within_3": 1239433,
+    "joined_directly": 491372,
+    "interrupted_by": {
+     "other": 617601,
+     "caption": 61647,
+     "page_header_or_number": 32257,
+     "display_math": 31778,
+     "footnote": 4778
+    },
+    "docs_with_orphan_frac": 0.4943
+   }
+  },
+  "MDPI - Multidisciplinary Digital Publishing Institute": {
+   "line:boilerplate": {
+    "docs_frac": 0.3981,
+    "chars_frac": 0.02025
+   },
+   "line:running_header": {
+    "docs_frac": 0.0361,
+    "chars_frac": 0.0006
+   },
+   "line:reference": {
+    "docs_frac": 0.1806,
+    "chars_frac": 0.00285
+   },
+   "line:index": {
+    "docs_frac": 0.0032,
+    "chars_frac": 7e-05
+   },
+   "line:math_debris": {
+    "docs_frac": 0.1069,
+    "chars_frac": 0.00991
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.0002,
+    "matches": 172,
+    "match_chars_frac": 0.0
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.1234,
+    "matches": 240375,
+    "match_chars_frac": 0.000952
+   },
+   "ligature_drop": {
+    "docs_frac": 0.0022,
+    "matches": 941,
+    "docs_frac_ge_10": 0.0001,
+    "per_1M_chars": 0.31
+   },
+   "split_word": {
+    "docs_frac": 0.0204,
+    "matches": 8021,
+    "docs_frac_ge_10": 0.0005,
+    "per_1M_chars": 2.63
+   },
+   "hyphen_break": {
+    "docs_frac": 0.0403,
+    "matches": 23573,
+    "docs_frac_ge_10": 0.0025,
+    "per_1M_chars": 7.73
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 4056347,
+    "starts_lowercase_frac": 0.0847,
+    "ends_mid_sentence_frac": 0.0906,
+    "ends_mid_sentence_then_lowercase_within_3": 240687,
+    "joined_directly": 184610,
+    "interrupted_by": {
+     "page_header_or_number": 2839,
+     "other": 12129,
+     "caption": 2452,
+     "display_math": 36863,
+     "footnote": 1794
+    },
+    "docs_with_orphan_frac": 0.356
+   }
+  },
+  "Frontiers Media SA": {
+   "line:boilerplate": {
+    "docs_frac": 1.0,
+    "chars_frac": 0.03016
+   },
+   "line:running_header": {
+    "docs_frac": 0.486,
+    "chars_frac": 0.0004
+   },
+   "line:reference": {
+    "docs_frac": 1.0,
+    "chars_frac": 0.0257
+   },
+   "line:index": {
+    "docs_frac": 0.063,
+    "chars_frac": 4e-05
+   },
+   "line:math_debris": {
+    "docs_frac": 0.8274,
+    "chars_frac": 0.00159
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.0017,
+    "matches": 5,
+    "match_chars_frac": 0.0
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.9471,
+    "matches": 244827,
+    "match_chars_frac": 0.001581
+   },
+   "ligature_drop": {
+    "docs_frac": 0.0661,
+    "matches": 323,
+    "docs_frac_ge_10": 0.001,
+    "per_1M_chars": 0.17
+   },
+   "split_word": {
+    "docs_frac": 0.0346,
+    "matches": 1007,
+    "docs_frac_ge_10": 0.0003,
+    "per_1M_chars": 0.54
+   },
+   "hyphen_break": {
+    "docs_frac": 0.6818,
+    "matches": 6002,
+    "docs_frac_ge_10": 0.0239,
+    "per_1M_chars": 3.21
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 2339782,
+    "starts_lowercase_frac": 0.1091,
+    "ends_mid_sentence_frac": 0.0969,
+    "ends_mid_sentence_then_lowercase_within_3": 149860,
+    "joined_directly": 98074,
+    "interrupted_by": {
+     "caption": 26416,
+     "other": 13181,
+     "footnote": 5991,
+     "page_header_or_number": 397,
+     "display_math": 5801
+    },
+    "docs_with_orphan_frac": 1.0
+   }
+  },
+  "Springer Nature": {
+   "line:boilerplate": {
+    "docs_frac": 1.0,
+    "chars_frac": 0.01148
+   },
+   "line:running_header": {
+    "docs_frac": 0.7168,
+    "chars_frac": 0.00095
+   },
+   "line:reference": {
+    "docs_frac": 0.9936,
+    "chars_frac": 0.01561
+   },
+   "line:index": {
+    "docs_frac": 0.5531,
+    "chars_frac": 0.00366
+   },
+   "line:math_debris": {
+    "docs_frac": 0.7811,
+    "chars_frac": 0.0098
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.0018,
+    "matches": 16,
+    "match_chars_frac": 0.0
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.5568,
+    "matches": 131683,
+    "match_chars_frac": 0.001224
+   },
+   "ligature_drop": {
+    "docs_frac": 0.3342,
+    "matches": 529518,
+    "docs_frac_ge_10": 0.2709,
+    "per_1M_chars": 394.86
+   },
+   "split_word": {
+    "docs_frac": 0.1186,
+    "matches": 4893,
+    "docs_frac_ge_10": 0.0078,
+    "per_1M_chars": 3.65
+   },
+   "hyphen_break": {
+    "docs_frac": 0.4478,
+    "matches": 4855,
+    "docs_frac_ge_10": 0.0356,
+    "per_1M_chars": 3.62
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 2170013,
+    "starts_lowercase_frac": 0.0652,
+    "ends_mid_sentence_frac": 0.0887,
+    "ends_mid_sentence_then_lowercase_within_3": 102234,
+    "joined_directly": 21139,
+    "interrupted_by": {
+     "caption": 24898,
+     "display_math": 20649,
+     "other": 13012,
+     "footnote": 20193,
+     "page_header_or_number": 2343
+    },
+    "docs_with_orphan_frac": 0.9964
+   }
+  },
+  "Language Science Press": {
+   "line:boilerplate": {
+    "docs_frac": 1.0,
+    "chars_frac": 0.00268
+   },
+   "line:running_header": {
+    "docs_frac": 1.0,
+    "chars_frac": 0.00854
+   },
+   "line:reference": {
+    "docs_frac": 0.8565,
+    "chars_frac": 0.00259
+   },
+   "line:index": {
+    "docs_frac": 0.9856,
+    "chars_frac": 0.01579
+   },
+   "line:math_debris": {
+    "docs_frac": 0.9378,
+    "chars_frac": 0.01708
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.0191,
+    "matches": 10,
+    "match_chars_frac": 0.0
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.9809,
+    "matches": 32770,
+    "match_chars_frac": 0.002815
+   },
+   "ligature_drop": {
+    "docs_frac": 0.1818,
+    "matches": 71,
+    "docs_frac_ge_10": 0.0,
+    "per_1M_chars": 0.5
+   },
+   "split_word": {
+    "docs_frac": 0.1196,
+    "matches": 236,
+    "docs_frac_ge_10": 0.0144,
+    "per_1M_chars": 1.65
+   },
+   "hyphen_break": {
+    "docs_frac": 0.6794,
+    "matches": 640,
+    "docs_frac_ge_10": 0.0574,
+    "per_1M_chars": 4.47
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 315305,
+    "starts_lowercase_frac": 0.0888,
+    "ends_mid_sentence_frac": 0.0798,
+    "ends_mid_sentence_then_lowercase_within_3": 11656,
+    "joined_directly": 3122,
+    "interrupted_by": {
+     "page_header_or_number": 4359,
+     "footnote": 2418,
+     "other": 1010,
+     "caption": 712,
+     "display_math": 35
+    },
+    "docs_with_orphan_frac": 1.0
+   }
+  },
+  "Open Book Publishers": {
+   "line:boilerplate": {
+    "docs_frac": 1.0,
+    "chars_frac": 0.00302
+   },
+   "line:running_header": {
+    "docs_frac": 0.533,
+    "chars_frac": 0.00032
+   },
+   "line:reference": {
+    "docs_frac": 0.9868,
+    "chars_frac": 0.00957
+   },
+   "line:index": {
+    "docs_frac": 0.7137,
+    "chars_frac": 0.01376
+   },
+   "line:math_debris": {
+    "docs_frac": 0.6256,
+    "chars_frac": 0.00671
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.533,
+    "matches": 6568,
+    "match_chars_frac": 4.7e-05
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.3568,
+    "matches": 4034,
+    "match_chars_frac": 0.000369
+   },
+   "ligature_drop": {
+    "docs_frac": 0.2863,
+    "matches": 36133,
+    "docs_frac_ge_10": 0.1542,
+    "per_1M_chars": 257.68
+   },
+   "split_word": {
+    "docs_frac": 0.7225,
+    "matches": 1728,
+    "docs_frac_ge_10": 0.3216,
+    "per_1M_chars": 12.32
+   },
+   "hyphen_break": {
+    "docs_frac": 0.2291,
+    "matches": 117,
+    "docs_frac_ge_10": 0.0,
+    "per_1M_chars": 0.83
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 252579,
+    "starts_lowercase_frac": 0.1096,
+    "ends_mid_sentence_frac": 0.0911,
+    "ends_mid_sentence_then_lowercase_within_3": 12481,
+    "joined_directly": 3920,
+    "interrupted_by": {
+     "other": 1001,
+     "footnote": 6664,
+     "caption": 329,
+     "page_header_or_number": 258,
+     "display_math": 309
+    },
+    "docs_with_orphan_frac": 1.0
+   }
+  },
+  "transcript Verlag": {
+   "line:boilerplate": {
+    "docs_frac": 1.0,
+    "chars_frac": 0.00245
+   },
+   "line:running_header": {
+    "docs_frac": 0.4939,
+    "chars_frac": 0.00033
+   },
+   "line:reference": {
+    "docs_frac": 0.9878,
+    "chars_frac": 0.00647
+   },
+   "line:index": {
+    "docs_frac": 0.1646,
+    "chars_frac": 0.00136
+   },
+   "line:math_debris": {
+    "docs_frac": 0.4146,
+    "chars_frac": 0.00067
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.0183,
+    "matches": 82,
+    "match_chars_frac": 1e-06
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.9146,
+    "matches": 37202,
+    "match_chars_frac": 0.004888
+   },
+   "ligature_drop": {
+    "docs_frac": 0.189,
+    "matches": 1146,
+    "docs_frac_ge_10": 0.0305,
+    "per_1M_chars": 11.63
+   },
+   "split_word": {
+    "docs_frac": 0.4024,
+    "matches": 2062,
+    "docs_frac_ge_10": 0.122,
+    "per_1M_chars": 20.93
+   },
+   "hyphen_break": {
+    "docs_frac": 0.6646,
+    "matches": 508,
+    "docs_frac_ge_10": 0.0671,
+    "per_1M_chars": 5.16
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 130112,
+    "starts_lowercase_frac": 0.1285,
+    "ends_mid_sentence_frac": 0.1114,
+    "ends_mid_sentence_then_lowercase_within_3": 9191,
+    "joined_directly": 4318,
+    "interrupted_by": {
+     "other": 363,
+     "footnote": 4097,
+     "page_header_or_number": 290,
+     "caption": 120,
+     "display_math": 3
+    },
+    "docs_with_orphan_frac": 1.0
+   }
+  },
+  "Firenze University Press": {
+   "line:boilerplate": {
+    "docs_frac": 0.9889,
+    "chars_frac": 0.0115
+   },
+   "line:running_header": {
+    "docs_frac": 0.1645,
+    "chars_frac": 0.00113
+   },
+   "line:reference": {
+    "docs_frac": 0.9593,
+    "chars_frac": 0.03139
+   },
+   "line:index": {
+    "docs_frac": 0.0924,
+    "chars_frac": 0.00343
+   },
+   "line:math_debris": {
+    "docs_frac": 0.3124,
+    "chars_frac": 0.00618
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.0314,
+    "matches": 547,
+    "match_chars_frac": 7e-06
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.2089,
+    "matches": 4122,
+    "match_chars_frac": 0.00064
+   },
+   "ligature_drop": {
+    "docs_frac": 0.0518,
+    "matches": 49,
+    "docs_frac_ge_10": 0.0018,
+    "per_1M_chars": 0.65
+   },
+   "split_word": {
+    "docs_frac": 0.0647,
+    "matches": 337,
+    "docs_frac_ge_10": 0.0129,
+    "per_1M_chars": 4.44
+   },
+   "hyphen_break": {
+    "docs_frac": 0.3346,
+    "matches": 1383,
+    "docs_frac_ge_10": 0.0573,
+    "per_1M_chars": 18.23
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 156326,
+    "starts_lowercase_frac": 0.1561,
+    "ends_mid_sentence_frac": 0.1224,
+    "ends_mid_sentence_then_lowercase_within_3": 9526,
+    "joined_directly": 3322,
+    "interrupted_by": {
+     "footnote": 1548,
+     "other": 2984,
+     "page_header_or_number": 831,
+     "caption": 316,
+     "display_math": 525
+    },
+    "docs_with_orphan_frac": 0.8706
+   }
+  }
+ },
+ "frontmatter_whole_books": {
+  "docs_with_intro_heading_in_first_30pct": 7834,
+  "of_whole_books": 8288,
+  "chars_before_intro": {
+   "p1": 100.33,
+   "p5": 479.65,
+   "p10": 838.0,
+   "p25": 2759.0,
+   "p50": 6498.5,
+   "p75": 19125.5,
+   "p90": 27487.0,
+   "p95": 41140.3,
+   "p99": 93445.69,
+   "min": 0.0,
+   "max": 334616.0,
+   "mean": 13225.11
+  },
+  "chars_before_intro_total_frac_of_whole_book_chars": 0.02298
+ },
+ "index_tail": {
+  "docs": 1717,
+  "whole_book_docs": 1698,
+  "chars": 20824239,
+  "chars_pct": {
+   "p1": 343.28,
+   "p5": 938.0,
+   "p10": 1497.8,
+   "p25": 3444.0,
+   "p50": 8084.0,
+   "p75": 15610.0,
+   "p90": 26558.8,
+   "p95": 36364.8,
+   "p99": 61286.72,
+   "min": 8.0,
+   "max": 210490.0,
+   "mean": 12128.27
+  }
+ },
+ "language": {
+  "doc_level_fasttext_label_docs": {
+   "en": 472945,
+   "es": 482,
+   "pt": 302,
+   "fr": 219,
+   "it": 120,
+   "de": 110,
+   "zh": 55,
+   "pl": 51,
+   "fi": 15,
+   "ja": 15,
+   "hu": 15,
+   "tr": 15,
+   "cs": 9,
+   "ru": 9,
+   "el": 7,
+   "fa": 6,
+   "lt": 6,
+   "ro": 6,
+   "war": 6,
+   "nl": 6,
+   "id": 5,
+   "hr": 5,
+   "ceb": 4,
+   "no": 4,
+   "ca": 3
+  },
+  "doc_level_fasttext_label_chars_frac": {
+   "en": 0.99789,
+   "de": 0.0009,
+   "it": 0.00036,
+   "fr": 0.00029,
+   "la": 0.00014,
+   "pt": 0.00013,
+   "ru": 0.0001,
+   "ar": 5e-05,
+   "es": 5e-05,
+   "no": 4e-05,
+   "ja": 1e-05,
+   "pl": 1e-05,
+   "zh": 1e-05,
+   "fi": 0.0,
+   "fa": 0.0,
+   "uk": 0.0,
+   "tr": 0.0,
+   "cs": 0.0,
+   "ro": 0.0,
+   "id": 0.0,
+   "eu": 0.0,
+   "hu": 0.0,
+   "nl": 0.0,
+   "eo": 0.0,
+   "lt": 0.0
+  },
+  "doc_level_en_score_percentiles": {
+   "p1": 0.407,
+   "p5": 0.631,
+   "p10": 0.727,
+   "p25": 0.852,
+   "p50": 0.909,
+   "p75": 0.934,
+   "p90": 0.95,
+   "p95": 0.959,
+   "p99": 0.974,
+   "min": 0.065,
+   "max": 0.998,
+   "mean": 0.87
+  },
+  "doc_level_en_score_lt_0.5_docs": 11115,
+  "chunk_level_chars_frac_by_label": {
+   "en": 0.96736,
+   "uncertain": 0.02865,
+   "de": 0.00134,
+   "it": 0.0007,
+   "fr": 0.00059,
+   "pt": 0.00034,
+   "es": 0.00033,
+   "ru": 0.00012,
+   "la": 0.00011,
+   "no": 6e-05,
+   "ar": 6e-05,
+   "el": 5e-05,
+   "pl": 5e-05,
+   "he": 3e-05,
+   "tr": 2e-05,
+   "nl": 2e-05,
+   "sv": 2e-05,
+   "fi": 2e-05,
+   "ro": 2e-05,
+   "ja": 1e-05,
+   "uk": 1e-05,
+   "bg": 1e-05,
+   "zh": 1e-05,
+   "cs": 1e-05,
+   "hu": 1e-05
+  },
+  "english_chunk_share_bands": {
+   "0-0.1": {
+    "docs": 4011,
+    "chars": 10150680,
+    "whole_book_docs": 32
+   },
+   "0.1-0.3": {
+    "docs": 532,
+    "chars": 8330758,
+    "whole_book_docs": 7
+   },
+   "0.3-0.5": {
+    "docs": 1897,
+    "chars": 34589254,
+    "whole_book_docs": 19
+   },
+   "0.5-0.7": {
+    "docs": 7125,
+    "chars": 120306382,
+    "whole_book_docs": 48
+   },
+   "0.7-0.9": {
+    "docs": 22179,
+    "chars": 717978576,
+    "whole_book_docs": 351
+   },
+   "0.9-0.97": {
+    "docs": 25034,
+    "chars": 2971133975,
+    "whole_book_docs": 941
+   },
+   "0.97-1.0": {
+    "docs": 391967,
+    "chars": 8590288345,
+    "whole_book_docs": 6890
+   }
+  },
+  "docs_without_lid_chunk": {
+   "docs": 21700,
+   "chars": 2135288
+  },
+  "dominant_non_english_label_for_share_lt_0.5": {
+   "es": 342,
+   "pt": 238,
+   "fr": 106,
+   "it": 70,
+   "de": 58,
+   "ru": 32,
+   "pl": 18,
+   "tr": 9,
+   "ro": 4,
+   "cs": 4,
+   "id": 4,
+   "nl": 4,
+   "fi": 3,
+   "is": 3,
+   "hu": 3,
+   "ja": 3,
+   "eo": 2,
+   "ceb": 1,
+   "la": 1,
+   "no": 1
+  },
+  "docs": 474445
+ },
+ "language_whole_books": {
+  "doc_level_fasttext_label_docs": {
+   "en": 8230,
+   "it": 24,
+   "de": 17,
+   "fr": 5,
+   "ru": 3,
+   "ja": 3,
+   "pt": 2,
+   "la": 1,
+   "no": 1,
+   "ar": 1,
+   "pl": 1
+  },
+  "doc_level_fasttext_label_chars_frac": {
+   "en": 0.99464,
+   "de": 0.00247,
+   "it": 0.001,
+   "fr": 0.00062,
+   "la": 0.00039,
+   "ru": 0.00029,
+   "pt": 0.00029,
+   "ar": 0.00014,
+   "no": 0.00011,
+   "pl": 3e-05,
+   "ja": 1e-05
+  },
+  "doc_level_en_score_percentiles": {
+   "p1": 0.733,
+   "p5": 0.854,
+   "p10": 0.886,
+   "p25": 0.906,
+   "p50": 0.923,
+   "p75": 0.943,
+   "p90": 0.955,
+   "p95": 0.961,
+   "p99": 0.974,
+   "min": 0.21,
+   "max": 0.993,
+   "mean": 0.92
+  },
+  "doc_level_en_score_lt_0.5_docs": 75,
+  "chunk_level_chars_frac_by_label": {
+   "en": 0.97549,
+   "uncertain": 0.01551,
+   "de": 0.00352,
+   "it": 0.0018,
+   "fr": 0.00138,
+   "pt": 0.0004,
+   "es": 0.00031,
+   "la": 0.0003,
+   "ru": 0.00026,
+   "no": 0.00016,
+   "ar": 0.00015,
+   "el": 0.00014,
+   "he": 9e-05,
+   "pl": 6e-05,
+   "nl": 5e-05,
+   "sv": 5e-05,
+   "fi": 5e-05,
+   "ja": 4e-05,
+   "ro": 3e-05,
+   "uk": 3e-05,
+   "bg": 3e-05,
+   "tr": 2e-05,
+   "zh": 2e-05,
+   "da": 1e-05,
+   "af": 1e-05
+  },
+  "english_chunk_share_bands": {
+   "0-0.1": {
+    "docs": 32,
+    "chars": 7425636,
+    "whole_book_docs": 32
+   },
+   "0.1-0.3": {
+    "docs": 7,
+    "chars": 4097059,
+    "whole_book_docs": 7
+   },
+   "0.3-0.5": {
+    "docs": 19,
+    "chars": 13347972,
+    "whole_book_docs": 19
+   },
+   "0.5-0.7": {
+    "docs": 48,
+    "chars": 34580094,
+    "whole_book_docs": 48
+   },
+   "0.7-0.9": {
+    "docs": 351,
+    "chars": 173701423,
+    "whole_book_docs": 351
+   },
+   "0.9-0.97": {
+    "docs": 941,
+    "chars": 500140736,
+    "whole_book_docs": 941
+   },
+   "0.97-1.0": {
+    "docs": 6890,
+    "chars": 3774404719,
+    "whole_book_docs": 6890
+   }
+  },
+  "docs_without_lid_chunk": {
+   "docs": 0,
+   "chars": 0
+  },
+  "dominant_non_english_label_for_share_lt_0.5": {
+   "it": 23,
+   "de": 17,
+   "ru": 3,
+   "ja": 3,
+   "pl": 2,
+   "pt": 2,
+   "fr": 2,
+   "la": 1,
+   "no": 1,
+   "ar": 1,
+   "sa": 1
+  },
+  "docs": 8288
+ },
+ "filter": {
+  "filtered_shards": [
+   "doab-0000.json.gz",
+   "doab-0001.json.gz",
+   "doab-0002.json.gz",
+   "doab-0003.json.gz",
+   "doab-0004.json.gz"
+  ],
+  "filtered_metadata_keys": [
+   "author",
+   "book_id",
+   "isbn",
+   "license",
+   "provenance",
+   "publisher",
+   "section_idx",
+   "title",
+   "url"
+  ],
+  "filtered_docs": 403992,
+  "filtered_chars": 11981377206,
+  "filtered_ids_not_in_raw": 0,
+  "status_docs": {
+   "modified": 88080,
+   "same": 315912,
+   "dropped": 70453
+  },
+  "status_raw_chars": {
+   "modified": 9703743063,
+   "same": 2335712038,
+   "dropped": 415458157
+  },
+  "modified_chars_removed": 58077895,
+  "modified_chars_delta_pct": {
+   "p1": -30.0,
+   "p5": -5.0,
+   "p10": 0.0,
+   "p25": 8.0,
+   "p50": 22.0,
+   "p75": 250.0,
+   "p90": 1200.0,
+   "p95": 2772.05,
+   "p99": 11401.42,
+   "min": -3344.0,
+   "max": 251458.0,
+   "mean": 659.38
+  },
+  "diff_sample_stats": {
+   "diffed_docs": 737,
+   "equal_sentences": 138349,
+   "placeholder:<IP_ADDRESS>": 255,
+   "placeholder_edit_sentences": 900,
+   "placeholder:<EMAIL_ADDRESS>": 750,
+   "deleted_sentences": 1475,
+   "deleted_sentence_chars": 107097,
+   "placeholder:<PHONE_NUMBER>": 104,
+   "other_edit_sentences": 90,
+   "other_edit_chars_delta": 6112
+  },
+  "drop_rate_by_length": {
+   "0-200": {
+    "docs": 47118,
+    "dropped": 47118,
+    "chars": 5622133,
+    "dropped_chars": 5622133
+   },
+   "200-500": {
+    "docs": 35099,
+    "dropped": 6328,
+    "chars": 11836093,
+    "dropped_chars": 2311079
+   },
+   "500-1000": {
+    "docs": 46147,
+    "dropped": 4651,
+    "chars": 34055886,
+    "dropped_chars": 3246196
+   },
+   "1000-5000": {
+    "docs": 172038,
+    "dropped": 7600,
+    "chars": 433761524,
+    "dropped_chars": 17333868
+   },
+   "5000-50000": {
+    "docs": 142973,
+    "dropped": 3657,
+    "chars": 2254727701,
+    "dropped_chars": 68514446
+   },
+   "50000-1000000000": {
+    "docs": 31070,
+    "dropped": 1099,
+    "chars": 9714909921,
+    "dropped_chars": 318430435
+   }
+  },
+  "drop_rate_by_doc_lid": {
+   "en": {
+    "docs": 472945,
+    "dropped": 68953,
+    "chars": 12428623754,
+    "dropped_chars": 389168653
+   },
+   "de": {
+    "docs": 110,
+    "dropped": 110,
+    "chars": 11184754,
+    "dropped_chars": 11184754
+   },
+   "fr": {
+    "docs": 219,
+    "dropped": 219,
+    "chars": 3603073,
+    "dropped_chars": 3603073
+   },
+   "es": {
+    "docs": 482,
+    "dropped": 482,
+    "chars": 571347,
+    "dropped_chars": 571347
+   },
+   "it": {
+    "docs": 120,
+    "dropped": 120,
+    "chars": 4535356,
+    "dropped_chars": 4535356
+   },
+   "pt": {
+    "docs": 302,
+    "dropped": 302,
+    "chars": 1646060,
+    "dropped_chars": 1646060
+   }
+  },
+  "drop_rate_doc_en_score_le_0.5": {
+   "docs": 11115,
+   "dropped": 11091,
+   "chars": 70357658,
+   "dropped_chars": 70251029
+  },
+  "drop_rate_doc_en_score_gt_0.5": {
+   "docs": 463330,
+   "dropped": 59362,
+   "chars": 12384555600,
+   "dropped_chars": 345207128
+  },
+  "drop_rate_by_english_chunk_share": {
+   "0-0.3": {
+    "docs": 4543,
+    "dropped": 4401,
+    "chars": 18481438,
+    "dropped_chars": 18236413
+   },
+   "0.3-0.5": {
+    "docs": 1897,
+    "dropped": 1037,
+    "chars": 34589254,
+    "dropped_chars": 27078662
+   },
+   "0.5-0.7": {
+    "docs": 7125,
+    "dropped": 810,
+    "chars": 120306382,
+    "dropped_chars": 21599806
+   },
+   "0.7-0.9": {
+    "docs": 22179,
+    "dropped": 493,
+    "chars": 717978576,
+    "dropped_chars": 16027682
+   },
+   "0.9-1.01": {
+    "docs": 417001,
+    "dropped": 42093,
+    "chars": 11561422320,
+    "dropped_chars": 330483416
+   }
+  },
+  "drop_rate_section_vs_whole": {
+   "section": {
+    "docs": 466157,
+    "dropped": 69706,
+    "chars": 7947215619,
+    "dropped_chars": 186250846
+   },
+   "whole": {
+    "docs": 8288,
+    "dropped": 747,
+    "chars": 4507697639,
+    "dropped_chars": 229207311
+   }
+  },
+  "drop_rate_by_publisher": {
+   "IntechOpen": {
+    "docs": 296457,
+    "dropped": 49188,
+    "chars": 4898962466,
+    "dropped_chars": 47220234
+   },
+   "MDPI - Multidisciplinary Digital Publishing Institute": {
+    "docs": 169700,
+    "dropped": 20518,
+    "chars": 3048253153,
+    "dropped_chars": 139030612
+   },
+   "Frontiers Media SA": {
+    "docs": 2891,
+    "dropped": 34,
+    "chars": 1870457268,
+    "dropped_chars": 23044960
+   },
+   "Springer Nature": {
+    "docs": 2193,
+    "dropped": 103,
+    "chars": 1341028448,
+    "dropped_chars": 70142478
+   },
+   "Language Science Press": {
+    "docs": 209,
+    "dropped": 21,
+    "chars": 143317931,
+    "dropped_chars": 19748481
+   },
+   "Open Book Publishers": {
+    "docs": 227,
+    "dropped": 34,
+    "chars": 140226358,
+    "dropped_chars": 20689166
+   },
+   "transcript Verlag": {
+    "docs": 164,
+    "dropped": 18,
+    "chars": 98529855,
+    "dropped_chars": 11105473
+   },
+   "Firenze University Press": {
+    "docs": 541,
+    "dropped": 246,
+    "chars": 75870662,
+    "dropped_chars": 13582327
+   },
+   "": {
+    "docs": 123,
+    "dropped": 9,
+    "chars": 74501739,
+    "dropped_chars": 4941920
+   },
+   "De Gruyter": {
+    "docs": 92,
+    "dropped": 0,
+    "chars": 69042581,
+    "dropped_chars": 0
+   }
+  },
+  "dropped_not_explained_by_length_le_200_or_lang": {
+   "docs": 17448,
+   "dropped": 17448,
+   "chars": 340141207,
+   "dropped_chars": 340141207
+  },
+  "issues_kept_by_filter": {
+   "line:boilerplate": {
+    "docs_frac": 0.4628,
+    "chars_frac": 0.02177
+   },
+   "line:admin_statement": {
+    "docs_frac": 0.2197,
+    "chars_frac": 0.0073
+   },
+   "line:page_number": {
+    "docs_frac": 0.1855,
+    "chars_frac": 0.0002
+   },
+   "line:running_header": {
+    "docs_frac": 0.1,
+    "chars_frac": 0.00275
+   },
+   "line:reference": {
+    "docs_frac": 0.1925,
+    "chars_frac": 0.0469
+   },
+   "line:index": {
+    "docs_frac": 0.0139,
+    "chars_frac": 0.00134
+   },
+   "line:toc": {
+    "docs_frac": 0.0155,
+    "chars_frac": 0.00012
+   },
+   "line:caption": {
+    "docs_frac": 0.4005,
+    "chars_frac": 0.02141
+   },
+   "line:footnote_text": {
+    "docs_frac": 0.0556,
+    "chars_frac": 0.00938
+   },
+   "line:math_debris": {
+    "docs_frac": 0.1338,
+    "chars_frac": 0.00777
+   },
+   "line:repeated_line": {
+    "docs_frac": 0.0465,
+    "chars_frac": 0.00141
+   },
+   "line:heading": {
+    "docs_frac": 0.9173,
+    "chars_frac": 0.02018
+   },
+   "line:body": {
+    "docs_frac": 0.9964,
+    "chars_frac": 0.85576
+   },
+   "inline:soft_hyphen": {
+    "docs_frac": 0.0,
+    "matches": 0,
+    "match_chars_frac": 0.0
+   },
+   "inline:mojibake_utf8_as_latin1": {
+    "docs_frac": 0.0,
+    "matches": 21,
+    "match_chars_frac": 0.0
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.0258,
+    "matches": 621212,
+    "match_chars_frac": 5.2e-05
+   },
+   "inline:replacement_char_then_space": {
+    "docs_frac": 0.0028,
+    "matches": 8829,
+    "match_chars_frac": 3e-06
+   },
+   "inline:private_use_char": {
+    "docs_frac": 0.0001,
+    "matches": 72,
+    "match_chars_frac": 0.0
+   },
+   "inline:cid_glyph": {
+    "docs_frac": 0.0,
+    "matches": 0,
+    "match_chars_frac": 0.0
+   },
+   "inline:ligature_codepoint": {
+    "docs_frac": 0.0,
+    "matches": 0,
+    "match_chars_frac": 0.0
+   },
+   "inline:control_char": {
+    "docs_frac": 0.0036,
+    "matches": 15348,
+    "match_chars_frac": 1e-06
+   },
+   "inline:missing_space_after_punct": {
+    "docs_frac": 0.0174,
+    "matches": 29704,
+    "match_chars_frac": 3.8e-05
+   },
+   "inline:glued_token_30plus_letters": {
+    "docs_frac": 0.0143,
+    "matches": 22171,
+    "match_chars_frac": 9.6e-05
+   },
+   "inline:caesar_shift_font_garble": {
+    "docs_frac": 0.0002,
+    "matches": 1199,
+    "match_chars_frac": 0.0
+   },
+   "inline:html_sup_sub_tag": {
+    "docs_frac": 0.2983,
+    "matches": 16264601,
+    "match_chars_frac": 0.00743
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.1138,
+    "matches": 988944,
+    "match_chars_frac": 0.000983
+   },
+   "inline:html_entity": {
+    "docs_frac": 0.0,
+    "matches": 12,
+    "match_chars_frac": 0.0
+   },
+   "inline:latex_display_math": {
+    "docs_frac": 0.1209,
+    "matches": 1000794,
+    "match_chars_frac": 0.014028
+   },
+   "inline:latex_inline_math": {
+    "docs_frac": 0.0048,
+    "matches": 8779,
+    "match_chars_frac": 1.9e-05
+   },
+   "inline:escaped_markdown_char": {
+    "docs_frac": 0.2984,
+    "matches": 6067405,
+    "match_chars_frac": 0.001008
+   },
+   "inline:image_placeholder": {
+    "docs_frac": 0.0,
+    "matches": 28,
+    "match_chars_frac": 0.0
+   },
+   "inline:email": {
+    "docs_frac": 0.1412,
+    "matches": 233269,
+    "match_chars_frac": 0.000428
+   },
+   "inline:url": {
+    "docs_frac": 0.3842,
+    "matches": 940362,
+    "match_chars_frac": 0.003064
+   },
+   "inline:gap_3plus_newlines": {
+    "docs_frac": 0.3334,
+    "matches": 1327577,
+    "match_chars_frac": 0.000342
+   },
+   "inline:dangling_colon_before_gap": {
+    "docs_frac": 0.0897,
+    "matches": 139576,
+    "match_chars_frac": 5.9e-05
+   },
+   "inline:nc_nd_licence_text": {
+    "docs_frac": 0.0319,
+    "matches": 17015,
+    "match_chars_frac": 1.6e-05
+   },
+   "ligature_drop": {
+    "docs_frac": 0.0088,
+    "matches": 564550,
+    "docs_frac_ge_10": 0.0017,
+    "per_1M_chars": 46.89
+   },
+   "split_word": {
+    "docs_frac": 0.013,
+    "matches": 22889,
+    "docs_frac_ge_10": 0.0006,
+    "per_1M_chars": 1.9
+   },
+   "hyphen_break": {
+    "docs_frac": 0.1289,
+    "matches": 1008242,
+    "docs_frac_ge_10": 0.0274,
+    "per_1M_chars": 83.74
+   },
+   "hyphen_break_validated": {
+    "docs_frac": 0.0833,
+    "matches": 852336,
+    "docs_frac_ge_10": 0.0222,
+    "per_1M_chars": 70.8
+   },
+   "garbled_font_encoding": {
+    "docs": 32,
+    "chars_frac": 0.00071
+   },
+   "tiny_doc_body_words_lt_30": {
+    "docs": 14300,
+    "docs_frac": 0.0354,
+    "chars_frac": 0.00091
+   },
+   "frontback_section_doc": {
+    "docs": 40938,
+    "docs_frac": 0.1013,
+    "chars_frac": 0.12523
+   },
+   "partial_licence_statement": {
+    "docs": 165,
+    "chars_frac": 0.00477
+   },
+   "consecutive_repeated_line_run_ge5": {
+    "docs": 541,
+    "chars_frac": 0.02482
+   },
+   "dup_line_char_frac_ge_0.3": {
+    "docs": 2464,
+    "chars_frac": 0.00423
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 23322952,
+    "starts_lowercase_frac": 0.179,
+    "ends_mid_sentence_frac": 0.1544,
+    "ends_mid_sentence_then_lowercase_within_3": 1806645,
+    "joined_directly": 819070,
+    "interrupted_by": {
+     "other": 664185,
+     "footnote": 56603,
+     "caption": 121860,
+     "page_header_or_number": 46049,
+     "display_math": 98878
+    },
+    "docs_with_orphan_frac": 0.5116
+   }
+  },
+  "issues_dropped_by_filter": {
+   "line:boilerplate": {
+    "docs_frac": 0.2979,
+    "chars_frac": 0.02272
+   },
+   "line:admin_statement": {
+    "docs_frac": 0.0459,
+    "chars_frac": 0.00875
+   },
+   "line:page_number": {
+    "docs_frac": 0.0282,
+    "chars_frac": 9e-05
+   },
+   "line:running_header": {
+    "docs_frac": 0.0175,
+    "chars_frac": 0.00213
+   },
+   "line:reference": {
+    "docs_frac": 0.0574,
+    "chars_frac": 0.02573
+   },
+   "line:index": {
+    "docs_frac": 0.0035,
+    "chars_frac": 0.00339
+   },
+   "line:toc": {
+    "docs_frac": 0.0056,
+    "chars_frac": 0.00017
+   },
+   "line:caption": {
+    "docs_frac": 0.0603,
+    "chars_frac": 0.0193
+   },
+   "line:footnote_text": {
+    "docs_frac": 0.0138,
+    "chars_frac": 0.02252
+   },
+   "line:math_debris": {
+    "docs_frac": 0.0366,
+    "chars_frac": 0.02315
+   },
+   "line:repeated_line": {
+    "docs_frac": 0.0081,
+    "chars_frac": 0.00162
+   },
+   "line:heading": {
+    "docs_frac": 0.7601,
+    "chars_frac": 0.02119
+   },
+   "line:body": {
+    "docs_frac": 0.7935,
+    "chars_frac": 0.8455
+   },
+   "inline:soft_hyphen": {
+    "docs_frac": 0.0,
+    "matches": 0,
+    "match_chars_frac": 0.0
+   },
+   "inline:mojibake_utf8_as_latin1": {
+    "docs_frac": 0.0,
+    "matches": 37,
+    "match_chars_frac": 0.0
+   },
+   "inline:replacement_char": {
+    "docs_frac": 0.0047,
+    "matches": 37368,
+    "match_chars_frac": 9e-05
+   },
+   "inline:replacement_char_then_space": {
+    "docs_frac": 0.0009,
+    "matches": 947,
+    "match_chars_frac": 9e-06
+   },
+   "inline:private_use_char": {
+    "docs_frac": 0.0,
+    "matches": 0,
+    "match_chars_frac": 0.0
+   },
+   "inline:cid_glyph": {
+    "docs_frac": 0.0,
+    "matches": 0,
+    "match_chars_frac": 0.0
+   },
+   "inline:ligature_codepoint": {
+    "docs_frac": 0.0,
+    "matches": 0,
+    "match_chars_frac": 0.0
+   },
+   "inline:control_char": {
+    "docs_frac": 0.0024,
+    "matches": 1749,
+    "match_chars_frac": 4e-06
+   },
+   "inline:missing_space_after_punct": {
+    "docs_frac": 0.0029,
+    "matches": 812,
+    "match_chars_frac": 2.5e-05
+   },
+   "inline:glued_token_30plus_letters": {
+    "docs_frac": 0.0026,
+    "matches": 1086,
+    "match_chars_frac": 0.00018
+   },
+   "inline:caesar_shift_font_garble": {
+    "docs_frac": 0.0001,
+    "matches": 47,
+    "match_chars_frac": 0.0
+   },
+   "inline:html_sup_sub_tag": {
+    "docs_frac": 0.0739,
+    "matches": 1151360,
+    "match_chars_frac": 0.015242
+   },
+   "inline:footnote_marker_sup_after_word": {
+    "docs_frac": 0.031,
+    "matches": 46952,
+    "match_chars_frac": 0.001383
+   },
+   "inline:html_entity": {
+    "docs_frac": 0.0,
+    "matches": 0,
+    "match_chars_frac": 0.0
+   },
+   "inline:latex_display_math": {
+    "docs_frac": 0.0317,
+    "matches": 62407,
+    "match_chars_frac": 0.034913
+   },
+   "inline:latex_inline_math": {
+    "docs_frac": 0.0024,
+    "matches": 946,
+    "match_chars_frac": 6.8e-05
+   },
+   "inline:escaped_markdown_char": {
+    "docs_frac": 0.0882,
+    "matches": 473985,
+    "match_chars_frac": 0.002282
+   },
+   "inline:image_placeholder": {
+    "docs_frac": 0.0,
+    "matches": 0,
+    "match_chars_frac": 0.0
+   },
+   "inline:email": {
+    "docs_frac": 0.1164,
+    "matches": 14671,
+    "match_chars_frac": 0.000867
+   },
+   "inline:url": {
+    "docs_frac": 0.1724,
+    "matches": 33402,
+    "match_chars_frac": 0.002871
+   },
+   "inline:gap_3plus_newlines": {
+    "docs_frac": 0.0963,
+    "matches": 52985,
+    "match_chars_frac": 0.000398
+   },
+   "inline:dangling_colon_before_gap": {
+    "docs_frac": 0.0177,
+    "matches": 6111,
+    "match_chars_frac": 7.6e-05
+   },
+   "inline:nc_nd_licence_text": {
+    "docs_frac": 0.0046,
+    "matches": 647,
+    "match_chars_frac": 1.5e-05
+   },
+   "ligature_drop": {
+    "docs_frac": 0.0019,
+    "matches": 38695,
+    "docs_frac_ge_10": 0.0006,
+    "per_1M_chars": 93.14
+   },
+   "split_word": {
+    "docs_frac": 0.0018,
+    "matches": 842,
+    "docs_frac_ge_10": 0.0003,
+    "per_1M_chars": 2.03
+   },
+   "hyphen_break": {
+    "docs_frac": 0.0189,
+    "matches": 8239,
+    "docs_frac_ge_10": 0.002,
+    "per_1M_chars": 19.83
+   },
+   "hyphen_break_validated": {
+    "docs_frac": 0.0112,
+    "matches": 5754,
+    "docs_frac_ge_10": 0.0016,
+    "per_1M_chars": 13.85
+   },
+   "garbled_font_encoding": {
+    "docs": 105,
+    "chars_frac": 0.00341
+   },
+   "tiny_doc_body_words_lt_30": {
+    "docs": 51134,
+    "docs_frac": 0.7258,
+    "chars_frac": 0.02164
+   },
+   "frontback_section_doc": {
+    "docs": 13047,
+    "docs_frac": 0.1852,
+    "chars_frac": 0.03355
+   },
+   "partial_licence_statement": {
+    "docs": 12,
+    "chars_frac": 0.00941
+   },
+   "consecutive_repeated_line_run_ge5": {
+    "docs": 30,
+    "chars_frac": 0.0252
+   },
+   "dup_line_char_frac_ge_0.3": {
+    "docs": 27,
+    "chars_frac": 0.00162
+   },
+   "paragraph_flow": {
+    "body_paragraphs": 775601,
+    "starts_lowercase_frac": 0.0974,
+    "ends_mid_sentence_frac": 0.0932,
+    "ends_mid_sentence_then_lowercase_within_3": 37544,
+    "joined_directly": 17344,
+    "interrupted_by": {
+     "page_header_or_number": 1873,
+     "other": 5670,
+     "display_math": 5657,
+     "footnote": 4486,
+     "caption": 2514
+    },
+    "docs_with_orphan_frac": 0.1206
+   }
+  }
+ },
+ "exact_dup": {
+  "groups": 5768,
+  "redundant_docs": 15965,
+  "redundant_chars": 278715362,
+  "redundant_docs_cross_book": 15821,
+  "redundant_docs_ge_1000_chars": 4469,
+  "redundant_chars_ge_1000_chars": 275399947,
+  "redundant_docs_kept_by_filter": 2267,
+  "largest": [
+   [
+    3057,
+    "0004847e-ab80-435d-9a35-50f7f1b13b00.4",
+    180
+   ],
+   [
+    1434,
+    "0071a6c6-eff7-449d-a548-4af9bff79a91.54",
+    71
+   ],
+   [
+    342,
+    "005f4cc4-de17-43d3-8915-84cd53654c1d.15",
+    77
+   ],
+   [
+    288,
+    "023211da-a7f6-4191-bb5f-456d8e25e28a.3",
+    412
+   ],
+   [
+    283,
+    "01915e1c-6b49-4c0a-add6-5000f415bff1.3",
+    596
+   ],
+   [
+    236,
+    "010dbc47-49d1-47ae-a9ab-eda9967b9e04.3",
+    412
+   ],
+   [
+    226,
+    "0473c8ad-213e-479b-b2b8-d486590719c9.63",
+    71
+   ],
+   [
+    225,
+    "0125951d-801e-4c01-940d-d4ffdd45bf3c.3",
+    412
+   ],
+   [
+    186,
+    "0008a8ec-01ff-4139-b26e-22862621b722.3",
+    596
+   ],
+   [
+    146,
+    "0138acc2-bc66-4db4-acbc-043624189309.3",
+    438
+   ],
+   [
+    91,
+    "00064f14-4c6c-4123-bed8-b5ae765fbfc8.2",
+    622
+   ],
+   [
+    91,
+    "05c5c9b7-72bb-4b6d-a82b-e06ec44b2ca5.3",
+    438
+   ],
+   [
+    74,
+    "018987ed-7631-419e-b25f-78a540f28850.3",
+    596
+   ],
+   [
+    68,
+    "0a877da8-ec77-4efc-9b68-335c53dd3e70.201",
+    72
+   ],
+   [
+    64,
+    "0637f541-b550-45b8-bb02-4a84d5e23097.3",
+    411
+   ]
+  ],
+  "largest_by_chars": [
+   [
+    2,
+    "996040a7-efd6-4cbb-a1e3-6f0c9a176f06",
+    2878528,
+    [
+     "b06eebbc-e407-48cb-b9e2-1f547da04a88"
+    ]
+   ],
+   [
+    2,
+    "0f65b279-d2ce-41d0-b2c5-42087e389f59",
+    2177550,
+    [
+     "a6c2ed1e-ea90-4739-8e15-4138c9959f60"
+    ]
+   ],
+   [
+    3,
+    "0578eb52-e291-4fa0-8d55-65f138947a7e",
+    1027752,
+    [
+     "0e20adf1-5573-4cf2-821a-c83d5635a7b6",
+     "2894af27-9f55-43f4-8d1f-3ac50f138c95"
+    ]
+   ],
+   [
+    2,
+    "283cb9ad-612a-442e-86bc-a0af88897b56",
+    1979968,
+    [
+     "65a80994-64e8-44db-b29b-835a76932a2d"
+    ]
+   ],
+   [
+    3,
+    "daa9ebf8-8bcd-4225-872a-9cb9ae976b4c",
+    872438,
+    [
+     "eab841cf-cfc3-4045-b40e-cca0e69dba33",
+     "fa325662-d2f6-4a7d-9795-b18f90164d93"
+    ]
+   ],
+   [
+    2,
+    "11f19ab0-4c2c-4298-b2f9-c27d277d8859",
+    1676338,
+    [
+     "499d85da-0f2c-4d90-b5df-32498f6a939c"
+    ]
+   ],
+   [
+    2,
+    "00eda821-c332-4349-a515-66aa424452b1",
+    1667890,
+    [
+     "53f1b3a8-e745-4cdc-9bd4-33472a6aa9f7"
+    ]
+   ],
+   [
+    2,
+    "a3151f60-75e0-43ec-9b31-c0fb34065839",
+    1638798,
+    [
+     "e94b6e05-0cbd-4486-9a7c-0d23c9723cf4"
+    ]
+   ],
+   [
+    2,
+    "4e85e6c3-dcf5-4d2b-b924-54a342485f31",
+    1636326,
+    [
+     "feb03dcb-931e-4650-8a4c-29c73c7550ca"
+    ]
+   ],
+   [
+    4,
+    "5c247d10-fc1e-4a07-a4d0-8c9aa52dceb8.2",
+    539959,
+    [
+     "621212f7-8ca3-4be9-8c6f-d1c1a33a765d.2",
+     "be402b98-c71d-485f-a7a3-5d8d5b38d4c0.2",
+     "f10da68d-b714-47c9-85b8-277424049957.2"
+    ]
+   ]
+  ]
+ },
+ "near_dup": {
+  "docs_considered": 398853,
+  "candidate_pairs": 25049138,
+  "pairs_sharing_ge_25pct_of_sketch": 54260,
+  "sketch_values_skipped_posting_over_cap": 1015,
+  "pairs_jaccard_ge_0.5": 8529,
+  "pairs_jaccard_ge_0.8": 2310,
+  "pairs_ge_0.8_within_same_book": 1776,
+  "clusters_jaccard_ge_0.8": 1981,
+  "docs_in_clusters": 4085,
+  "redundant_docs_jaccard_ge_0.8": 2104,
+  "sample_pairs": [
+   [
+    "00064f14-4c6c-4123-bed8-b5ae765fbfc8.2",
+    "2cb98296-4c89-4233-8a8e-ca73f9aa13cc.3",
+    0.885
+   ],
+   [
+    "0008a8ec-01ff-4139-b26e-22862621b722.3",
+    "018987ed-7631-419e-b25f-78a540f28850.3",
+    0.88
+   ],
+   [
+    "0008a8ec-01ff-4139-b26e-22862621b722.3",
+    "01915e1c-6b49-4c0a-add6-5000f415bff1.3",
+    0.88
+   ],
+   [
+    "0008a8ec-01ff-4139-b26e-22862621b722.3",
+    "08136683-d1fa-4664-9f5d-886affc3f7f4.3",
+    0.88
+   ],
+   [
+    "0008a8ec-01ff-4139-b26e-22862621b722.3",
+    "19125edd-cde9-4686-822b-693b3e6632fd.3",
+    0.88
+   ],
+   [
+    "001c1372-3390-4f92-8b42-7dfe9fe510d8",
+    "73343ceb-ded0-4760-a33f-02e5be6612d0",
+    0.992
+   ],
+   [
+    "006df1b2-f518-4d6b-8d96-484202f13086.3",
+    "0a4210d1-e50d-4d10-be28-2de7f94a621c.3",
+    0.878
+   ],
+   [
+    "006df1b2-f518-4d6b-8d96-484202f13086.3",
+    "3f664446-00e2-4144-a5ac-ae5d3d8bb07a.3",
+    0.849
+   ],
+   [
+    "00cbb2b5-9563-4034-986e-c366128abce6.8",
+    "38373398-99f9-4594-83ba-2ac0673a400e.7",
+    0.93
+   ],
+   [
+    "00eda821-c332-4349-a515-66aa424452b1",
+    "11f19ab0-4c2c-4298-b2f9-c27d277d8859",
+    0.828
+   ],
+   [
+    "00eda821-c332-4349-a515-66aa424452b1",
+    "4e85e6c3-dcf5-4d2b-b924-54a342485f31",
+    0.852
+   ],
+   [
+    "00eda821-c332-4349-a515-66aa424452b1",
+    "8e91ee95-4f13-4791-9efa-b2e4936da085",
+    0.883
+   ],
+   [
+    "0102e34c-a96c-4dbc-8bdf-8cb51ba9fc38.7",
+    "45f52e30-69a5-42da-9e64-8801632077a4.4",
+    0.93
+   ],
+   [
+    "0102e34c-a96c-4dbc-8bdf-8cb51ba9fc38.7",
+    "c6b4c9dc-d09e-48a8-a212-6d61bfbd1304.4",
+    0.938
+   ],
+   [
+    "0102e34c-a96c-4dbc-8bdf-8cb51ba9fc38.7",
+    "e2228321-88aa-46b0-81e6-63b1e252700e.4",
+    0.938
+   ],
+   [
+    "0104c458-0331-44b4-a413-243d84a08163.0",
+    "0104c458-0331-44b4-a413-243d84a08163.143",
+    0.867
+   ],
+   [
+    "01179f1c-bf5e-409e-88bb-09c1b6259a8a.0",
+    "01179f1c-bf5e-409e-88bb-09c1b6259a8a.56",
+    0.832
+   ],
+   [
+    "0125951d-801e-4c01-940d-d4ffdd45bf3c.0",
+    "0125951d-801e-4c01-940d-d4ffdd45bf3c.91",
+    0.852
+   ],
+   [
+    "0138acc2-bc66-4db4-acbc-043624189309.0",
+    "0138acc2-bc66-4db4-acbc-043624189309.187",
+    0.898
+   ],
+   [
+    "013f152a-c332-42eb-8194-a6a9b92538b1.0",
+    "013f152a-c332-42eb-8194-a6a9b92538b1.98",
+    0.812
+   ],
+   [
+    "016f29c2-2b67-48f9-b63e-3e7b641db3dc.0",
+    "e36fced0-7a83-4508-86a5-1b97fa5b3fc1.0",
+    0.828
+   ],
+   [
+    "018987ed-7631-419e-b25f-78a540f28850.3",
+    "01915e1c-6b49-4c0a-add6-5000f415bff1.3",
+    0.88
+   ],
+   [
+    "018987ed-7631-419e-b25f-78a540f28850.3",
+    "08136683-d1fa-4664-9f5d-886affc3f7f4.3",
+    0.88
+   ],
+   [
+    "018987ed-7631-419e-b25f-78a540f28850.3",
+    "19125edd-cde9-4686-822b-693b3e6632fd.3",
+    0.88
+   ],
+   [
+    "01915e1c-6b49-4c0a-add6-5000f415bff1.3",
+    "08136683-d1fa-4664-9f5d-886affc3f7f4.3",
+    0.88
+   ],
+   [
+    "01915e1c-6b49-4c0a-add6-5000f415bff1.3",
+    "19125edd-cde9-4686-822b-693b3e6632fd.3",
+    0.88
+   ],
+   [
+    "019f73d9-4940-461a-9688-b10a7b66a2b5.0",
+    "019f73d9-4940-461a-9688-b10a7b66a2b5.85",
+    0.805
+   ],
+   [
+    "019f73d9-4940-461a-9688-b10a7b66a2b5.4",
+    "2e0dcc51-d47c-4489-b700-0ab50ccf0990.4",
+    0.848
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.0",
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.202",
+    0.803
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+    "1e2527b1-dc9a-4af3-8b3d-6e51ee94fce6.4",
+    0.977
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+    "1f779234-fcab-4573-8b01-5b25aa946bc1.10",
+    0.875
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+    "25007427-6e3e-430f-aa48-44417bfb6100.3",
+    0.969
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+    "42c40dbd-a115-4359-9f34-420edb51715b.4",
+    0.969
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+    "484adc7d-9e4e-4ed0-959d-f59fa2f532c3.4",
+    0.961
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+    "977fc3a3-75e3-4f32-99f0-8b942f58a311.4",
+    0.961
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+    "99645af4-f045-444d-a44f-9c2a01841354.3",
+    0.961
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+    "f93c996c-730f-42fa-9629-6b51eebdf581.3",
+    0.977
+   ],
+   [
+    "01addb72-2864-48d0-8437-0b554ffcd764",
+    "4537e969-10b5-4187-8f25-6c2ebb3c07bb",
+    1.0
+   ],
+   [
+    "01b14dbc-d1e7-4a9b-a227-17bd2fd45c49.0",
+    "01b14dbc-d1e7-4a9b-a227-17bd2fd45c49.41",
+    0.812
+   ],
+   [
+    "01b85ee8-7f8e-45be-846b-a1567421682f.2",
+    "1cb87535-d472-48e5-a176-9b5202916c2d.2",
+    0.885
+   ]
+  ],
+  "largest_clusters": [
+   [
+    "15938d5d-6c36-4864-b9ff-97bb9dc44bf4.1",
+    "1ad54596-3534-46c1-bece-a8d3f9dbcb00.0",
+    "40552c11-54e7-47f9-896d-4fd2b0200c7c.1",
+    "51c02aa7-19e2-434e-8b69-e103a725c77a.0",
+    "5d161986-3c16-48aa-abee-0fd0e8e339ce.1",
+    "8f7251ea-3579-4c00-833c-0eef50e15613.0",
+    "...size 11"
+   ],
+   [
+    "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+    "1e2527b1-dc9a-4af3-8b3d-6e51ee94fce6.4",
+    "1f779234-fcab-4573-8b01-5b25aa946bc1.10",
+    "25007427-6e3e-430f-aa48-44417bfb6100.3",
+    "42c40dbd-a115-4359-9f34-420edb51715b.4",
+    "484adc7d-9e4e-4ed0-959d-f59fa2f532c3.4",
+    "...size 9"
+   ],
+   [
+    "0524521c-5f92-4b93-95d9-860489a3484a.4",
+    "09239762-0d69-4bb2-8589-2ad94d5b1191.4",
+    "1a58a9a5-ebdb-4711-a8ef-ef7589c7085c.4",
+    "1b9eabcb-c69e-4085-ab4e-78db626a3085.4",
+    "1eb1fe7b-10b3-4181-be92-0072673c01bf.4",
+    "2ceffa38-c702-4728-a631-3b78523fb73a.4",
+    "...size 9"
+   ],
+   [
+    "02737e36-672e-4454-a40b-13081c5115e3.167",
+    "2dbdb099-1137-4729-91ec-28e5114988f8.170",
+    "407d2c80-8455-4c01-a800-ed1879d5d63c.185",
+    "4a46d1e3-f892-45e1-b696-f775a7d0d7c9.77",
+    "88560587-15d3-43f6-a121-ccd83beb9a01.85",
+    "966e5a8a-aad1-4714-b96d-0799788c6793.190",
+    "...size 8"
+   ],
+   [
+    "1688bcbe-5ec2-4692-8a19-f9865ca96cf8.4",
+    "1bea29ec-c246-49c7-a97f-3df67f28e4e1.9",
+    "1c038e18-8201-45d0-b5f3-5bdafcc89bfb.4",
+    "2b5ff710-bf0b-4569-aa7f-abb25af4f484.4",
+    "4bb19e7c-41b6-451e-8970-f61e62af890c.4",
+    "b3c5aca4-2221-47bf-944c-ed9016882469.4",
+    "...size 8"
+   ],
+   [
+    "0bc91a50-c137-4949-bdd6-ca2bbae4afa4.3",
+    "1034a0e1-d04c-4672-8e2e-ea4b8454cb9c.3",
+    "227829e9-1de1-45f7-9624-890e067d47aa.3",
+    "233d7c0f-5a7b-47d2-b643-383f045d4b08.2",
+    "394aac15-10e5-4ac6-a613-d9dc5ecfba6f.3",
+    "569d08e8-7122-4444-9535-751d54cc0055.2",
+    "...size 7"
+   ],
+   [
+    "0de3b24f-af80-489a-bbfe-525ea1fa55e2.3",
+    "1146be19-01e8-4bea-9ba8-329414f4257c.7",
+    "9c37ffd5-54a5-4215-a707-5492c91525f8.4",
+    "ae5e036e-58f5-4a13-a496-bf1b00270962.4",
+    "d7a87446-7022-4f12-bf80-2b59303f1e8a.4",
+    "e4f56369-6b4e-4e1d-b824-9e45eea0487a.4",
+    "...size 7"
+   ],
+   [
+    "1afd241e-1e1e-435f-b898-f66d0925d79f.3",
+    "2e654868-b056-464f-a0e2-270242660b4c.3",
+    "6c6d92aa-0a15-4c9e-aea7-c9df82a79f04.3",
+    "723a9411-bb62-46d8-953f-ec078c38da9e.2",
+    "77f903f5-088d-47b8-b0ee-a57f0847a312.3",
+    "962bb590-7f45-4d60-944b-3f4b66acab99.3",
+    "...size 7"
+   ],
+   [
+    "45783b7d-4556-44d5-b3fa-722b61061953.2",
+    "6545f0f0-ecbf-4aff-9937-08a72dea639a.3",
+    "a2b4b5ab-c64c-4281-b617-93e22dae00f2.3",
+    "c5b36d20-0d82-4d90-a2fc-93f018572e42.3",
+    "c91f99d8-46ee-4786-abfa-39afa3d6df2a.3",
+    "cfbe2815-7d63-4a84-ab66-c2f34aa6c958.3",
+    "...size 7"
+   ],
+   [
+    "02160b48-ca26-432f-8f7a-b8f66020ff76.2",
+    "116d178d-970a-4ef6-a848-7b9800b52af9.3",
+    "1c4a83fa-5bf8-4cd5-8f20-a283bfcaefbf.3",
+    "1f34a498-c379-4e28-a931-b715a97bddd9.2",
+    "22503db1-75ad-4d26-ac2b-4b3206118574.3",
+    "36fdfbd3-5144-4a73-9804-ddbe1435050b.3",
+    "...size 6"
+   ],
+   [
+    "05fbd3be-444c-410e-8b61-b2eadf0fa576.3",
+    "0d30a644-b809-4f87-8583-3af17a78ff77.3",
+    "0e0fd212-4583-4813-b0a0-6ad1f8c8b6a7.3",
+    "0e72ed29-a11e-4ed1-bbe9-e739fa80f6f1.3",
+    "134e7c02-6dcc-4493-83d9-60f9f5457c3b.2",
+    "8effcc69-dc89-41bb-a3d2-6eb9ea72df3d.3",
+    "...size 6"
+   ],
+   [
+    "09559d28-b3f7-4bd9-9a7c-550c4cc72bb8.2",
+    "67d4bbf2-4eb1-42e7-8e54-d8a66b1682b9.2",
+    "80f00c4f-37be-43f3-a268-014506726665.2",
+    "93e56432-82af-4b11-aebd-f206f3387cd0.2",
+    "bce7ea3c-2b15-4591-99c3-54f81f31d467.2",
+    "cfd94b8c-99ba-4263-a1e9-ce034dcd9950.2",
+    "...size 6"
+   ],
+   [
+    "0008a8ec-01ff-4139-b26e-22862621b722.3",
+    "018987ed-7631-419e-b25f-78a540f28850.3",
+    "01915e1c-6b49-4c0a-add6-5000f415bff1.3",
+    "08136683-d1fa-4664-9f5d-886affc3f7f4.3",
+    "19125edd-cde9-4686-822b-693b3e6632fd.3",
+    "...size 5"
+   ],
+   [
+    "00eda821-c332-4349-a515-66aa424452b1",
+    "11f19ab0-4c2c-4298-b2f9-c27d277d8859",
+    "4e85e6c3-dcf5-4d2b-b924-54a342485f31",
+    "8e91ee95-4f13-4791-9efa-b2e4936da085",
+    "9bfc61b9-11ba-4e1c-9068-aea5732e4d4b",
+    "...size 5"
+   ],
+   [
+    "020711c3-c322-4060-9120-6ffbcfc9f4da.3",
+    "0e952b4e-1035-416d-adf3-a11f1d09d74c.3",
+    "12c9592f-96cd-475b-a791-307d1f8250e6.3",
+    "1b841d2c-2e68-4187-b069-aa4161076861.3",
+    "dad80026-6ebf-47be-8529-e5e255b7ccf4.3",
+    "...size 5"
+   ]
+  ]
+ },
+ "paragraph_dup": {
+  "paragraphs_hashed_ge_200_chars": 15408965,
+  "paragraph_chars": 10541868938,
+  "redundant_paragraph_copies": 1089270,
+  "redundant_paragraph_chars": 624157006,
+  "redundant_paragraph_chars_frac": 0.05921,
+  "paragraphs_shared_across_books": 1173590,
+  "chars_in_paragraphs_shared_across_books_frac": 0.06633,
+  "books": 19883,
+  "books_with_cross_book_shared_paragraph_share": {
+   ">=0.1": 2011,
+   ">=0.3": 1871,
+   ">=0.5": 1843,
+   ">=0.8": 1694,
+   ">=0.95": 1487
+  },
+  "largest_paragraph_groups": [
+   {
+    "copies": 34211,
+    "chars": 204,
+    "books": 2791
+   },
+   {
+    "copies": 25246,
+    "chars": 407,
+    "books": 1673
+   },
+   {
+    "copies": 21515,
+    "chars": 419,
+    "books": 1354
+   },
+   {
+    "copies": 18657,
+    "chars": 252,
+    "books": 3098
+   },
+   {
+    "copies": 17134,
+    "chars": 252,
+    "books": 2599
+   },
+   {
+    "copies": 11365,
+    "chars": 238,
+    "books": 2181
+   },
+   {
+    "copies": 6100,
+    "chars": 427,
+    "books": 6100
+   },
+   {
+    "copies": 5999,
+    "chars": 238,
+    "books": 1122
+   },
+   {
+    "copies": 5198,
+    "chars": 369,
+    "books": 1214
+   },
+   {
+    "copies": 4840,
+    "chars": 301,
+    "books": 744
+   },
+   {
+    "copies": 4839,
+    "chars": 301,
+    "books": 960
+   },
+   {
+    "copies": 4593,
+    "chars": 252,
+    "books": 1085
+   }
+  ],
+  "most_contained_books": [
+   [
+    "e7d2ca9f-703d-45d2-aa7c-c876519235d1",
+    1.0,
+    "Firenze University Press"
+   ],
+   [
+    "a2c6d2e9-dbf4-4b33-a3e5-be46ca56fab8",
+    1.0,
+    "InTechOpen"
+   ],
+   [
+    "df9afc5b-7516-480b-8ef9-23cd4307dcc8",
+    1.0,
+    "Frontiers Media SA"
+   ],
+   [
+    "3b2f1081-0c25-4e06-82d0-63284a23c591",
+    1.0,
+    "MDPI - Multidisciplinary Digital Publishing Institute"
+   ],
+   [
+    "3b52c82a-c27e-4277-8081-6fde59f629c7",
+    1.0,
+    "MDPI - Multidisciplinary Digital Publishing Institute"
+   ],
+   [
+    "6df76c4a-e8ce-437e-8d28-30546f976295",
+    1.0,
+    "Firenze University Press"
+   ],
+   [
+    "6de4422d-8b8e-49f4-ba8d-a20a0a7d3067",
+    1.0,
+    "Firenze University Press, Genova University Press"
+   ],
+   [
+    "6dc68742-c3dc-41b8-bf0e-f7b6f6c51475",
+    1.0,
+    "KIT Scientific Publishing"
+   ],
+   [
+    "5165099e-165e-466a-91f5-74f00325c6cb",
+    1.0,
+    "Universit\u00e4tsverlag G\u00f6ttingen"
+   ],
+   [
+    "518d4779-6ee0-4b88-a274-c83c47f4ac1c",
+    1.0,
+    "Bentham Science Publishers"
+   ],
+   [
+    "51bfbf55-5080-4ac7-b1ac-317ef2c993a1",
+    1.0,
+    "MDPI - Multidisciplinary Digital Publishing Institute"
+   ],
+   [
+    "1716ead6-5a0d-4d15-8ad0-a174f4cddb86",
+    1.0,
+    "Firenze University Press"
+   ],
+   [
+    "b258cc6b-4194-45fc-b035-4aece9a0dc35",
+    1.0,
+    "Taylor & Francis"
+   ],
+   [
+    "0d038b54-32d7-41a2-80ba-410d73684277",
+    1.0,
+    "Springer Nature"
+   ],
+   [
+    "fc580171-fd56-46a4-84ea-5c9072f2793c",
+    1.0,
+    "MDPI - Multidisciplinary Digital Publishing Institute"
+   ],
+   [
+    "b2773f95-299f-4664-8b8d-45f1fea045af",
+    1.0,
+    "MDPI - Multidisciplinary Digital Publishing Institute"
+   ],
+   [
+    "3b28240d-43e3-480a-9113-31305fe38c69",
+    1.0,
+    "Firenze University Press"
+   ],
+   [
+    "f967ddbc-77c2-4c3d-ba8a-4b46f170cf16",
+    1.0,
+    "KIT Scientific Publishing"
+   ],
+   [
+    "f9637225-9978-4e90-a3d7-0857721e7238",
+    1.0,
+    "MDPI - Multidisciplinary Digital Publishing Institute"
+   ],
+   [
+    "1742cbae-3863-4b74-bab3-5d34a5b493ac",
+    1.0,
+    "MDPI - Multidisciplinary Digital Publishing Institute"
+   ],
+   [
+    "cb9ce95e-0590-4729-9816-7982c4e98007",
+    1.0,
+    "Language Science Press"
+   ],
+   [
+    "cb877452-ffcf-41cd-ab21-e4154d7de307",
+    1.0,
+    "Springer Nature"
+   ],
+   [
+    "65a80994-64e8-44db-b29b-835a76932a2d",
+    1.0,
+    "Springer Nature"
+   ],
+   [
+    "8c78a886-c87a-4aaa-895b-ddcd8bb86532",
+    1.0,
+    "MDPI - Multidisciplinary Digital Publishing Institute"
+   ],
+   [
+    "26b22e05-5152-4494-a6df-325c789ec92c",
+    1.0,
+    "Open Book Publishers"
+   ]
+  ],
+  "cross_book_shared_chars_frac_by_publisher": {
+   "IntechOpen": 0.0157,
+   "MDPI - Multidisciplinary Digital Publishing Institute": 0.0835,
+   "Frontiers Media SA": 0.035,
+   "Springer Nature": 0.1225,
+   "Open Book Publishers": 0.2903,
+   "Language Science Press": 0.1843,
+   "transcript Verlag": 0.1254,
+   "": 0.1722,
+   "Firenze University Press": 0.3533,
+   "De Gruyter": 0.0118,
+   "UCL Press": 0.0055,
+   "KIT Scientific Publishing": 0.1386
+  }
+ }
+}

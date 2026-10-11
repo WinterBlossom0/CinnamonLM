@@ -1,0 +1,99 @@
+{
+ "stage": "dedup",
+ "started_at_ist": "2026-10-11T22:16:17+05:30",
+ "finished_at_ist": "2026-10-11T22:16:55+05:30",
+ "method": {
+  "ngram": 13,
+  "threshold": 0.8,
+  "hash_count": 7,
+  "bloom_bits": 52000000000,
+  "priority": [
+   "public_domain_review",
+   "project_gutenberg",
+   "libretexts",
+   "pressbooks",
+   "oercommons",
+   "doab",
+   "wikimedia"
+  ]
+ },
+ "code_sha256": {
+  "workflow/cross_dedup.py": "5919ffb679f72af82e65d6d1c042ea66aca4ad085edf284809126878ba8a9e10",
+  "workflow/corpus.py": "e96e3b37565d2923500416e59ea55f7365e497ab5e4d9530cd8ffcdd77fc09d1",
+  "data_pipeline/common/dedup.py": "70b218abf0831861c3919b1b3bccf3e75411899381437321e1a1d2474b696660"
+ },
+ "decisions_sha256": "0601a9fa0a4e72001a5d0dd3a77bf935bb07d7859b269fe66e580733aeb0d3e2",
+ "totals": {
+  "docs_in": 358349,
+  "docs_out": 358345,
+  "chars_in": 10323344417,
+  "chars_out": 10321480755
+ },
+ "input_sha256": {
+  "00000_doab.json.gz": "25bcd5b3d082682d855b34077080453535970416b1887a6d73e8958f376f38e7",
+  "00001_doab.json.gz": "ef6827d9e2454c72061744fa30b31aabaf158b7c0ff5bd8bb90727a31a002309",
+  "00002_doab.json.gz": "78d8f9c1a3fec9cb2af1785357f9e3388268e1f47f8d883d3b1a754e36942f3d",
+  "00003_doab.json.gz": "f0c805a30c4432b20e134feef9ea9c9b6e600cb77bcff653aa6d52671838ded7",
+  "00004_doab.json.gz": "b73b3bef032f337a7fe60bddf4dd3d5ee64b2f31c191527d0067223d25dd97f8",
+  "00005_doab.json.gz": "8538b070988f45629f85350c55c2c5393d0c502df70bdbbc567a3f8c731a71ac",
+  "00006_doab.json.gz": "fb32be2593d8954b5a890b1f0406896a63a4227899e4db939418601e7c1c87d9",
+  "00007_doab.json.gz": "0ae26458a8c9cccf815c91c2327e559f1e47a591198984435f525ef2a58ce6b4",
+  "00008_doab.json.gz": "81ae11dcfe531baa41f52b2416c7449f42080705b6540ef4b12f5d2cbf5fc222",
+  "00009_doab.json.gz": "3945795e218cf53547eef9db7def6e436adb078d9cd83978e279e1c39daec7bd",
+  "00010_doab.json.gz": "b7625b3cffb4fc732d5cab7701f308715ecf6258a191d2e1d7039ef1e9839209",
+  "00011_doab.json.gz": "50177a727a32577620f7aee5667b5d23fa462e35aca699c3c0cb8a7407ec9329",
+  "00012_doab.json.gz": "983eacfeec2d9fd41f16a35dbd5bf588a6db8728e8e23a1a9063b1072c837e5c"
+ },
+ "output_sha256": {
+  "00000_doab.json.gz": "4c7636088a5bb4c48f028217818db3339fc2d64182412f6d47ba3553d062e865",
+  "00001_doab.json.gz": "4d3136d5994f3ad8230a8574d7132282b165ac8d7d50e91270511fb1a9753a14",
+  "00002_doab.json.gz": "03da9061597eb2b7e3a3071bf02404289fa9c3bb5a9b318acec28243df09afc2",
+  "00003_doab.json.gz": "1d192fbdb36309b164d9cf381e3e3ff0712cf018570c96cd5362434ab3a64dfd",
+  "00004_doab.json.gz": "c55dd79033f014b2ef62651df8126fb7ba7f2156028371d71104babfe27feda8",
+  "00005_doab.json.gz": "add5ed6866ea7938bc8db5dc3563c023f61ea8326031efc7f486ac61ec87d5b0",
+  "00006_doab.json.gz": "a1066c16eee9dc7e8631b1d4b63eda21b1122e4f827445ec9c945cd2313d94ea",
+  "00007_doab.json.gz": "65df4ce6d473df790adc27b2ba2ed63b92d7bb6d97dbcf26b3c888d104fda3bc",
+  "00008_doab.json.gz": "3ff7693ed8a3e0c9c015acbbdc93482d259a35f6255db41baac00817e43be79e",
+  "00009_doab.json.gz": "4c5c4be2e409e75b18411d7c0a5524febe01e1734bc3732fb6ae654fbeac93e7",
+  "00010_doab.json.gz": "a8251c20f9d5a04dce6c34936c1e5d6772a7665b37c52c676bc4ee639ef40891",
+  "00011_doab.json.gz": "e40a92eff8b9498108f5d5529e2d4f416fcbaec01e672563672e982110e371ed",
+  "00012_doab.json.gz": "8b8bd7295374df4697dac614151f23ed66144b0e645954d367ada0b914518549"
+ },
+ "output_sha256_before_gzip_header_fix": {
+  "00000_doab.json.gz": "e95ea214cf171b8d80343f4f28f26d7fc1ebadbcab21722975ad52f851da34c6",
+  "00001_doab.json.gz": "96ac6dbd996849ac215b16b14519f05693816b37554e1f246c0afe01c2b74923",
+  "00002_doab.json.gz": "98c0b6b7861a89cdf12205b4e251a673ccc3e6414d8d3ae7bd23975374e88203",
+  "00003_doab.json.gz": "d288f55a90b72e03535350558624c4108eb9a5137234775eb77fd38ac4d3d896",
+  "00004_doab.json.gz": "6897486c01cc1654a39ff9acb86c4bb3291192418390725297b9b8847e1473ab",
+  "00005_doab.json.gz": "f1a29692fce14f4ae3c41a839ac9408b57551bf1f05007e4d972fc46fea02ce8",
+  "00006_doab.json.gz": "23c1ccf9db498525f4cc4e301bfb2940acafca94a6beb4690e1deaa90e13286c",
+  "00007_doab.json.gz": "29efc14fffaecd184ab44628116ca77a4ac153213ddf6e14c310da923229dbd9",
+  "00008_doab.json.gz": "ad707d14abe943e06b2f888f808986a772b73d3110269e731f88b3ac1ce4bdb1",
+  "00009_doab.json.gz": "caba5bcc03b585b632cfae9cd994033340eb89df9a26b6070384d0b9b6a12cfb",
+  "00010_doab.json.gz": "f242e3b6e0e40cb0796702dfcf178c4d16887513c6e97dbcb14ac3523a4e686a",
+  "00011_doab.json.gz": "8f09550304761ab2fd357e0c187202ce66351a4916277ef95f634ad159724744",
+  "00012_doab.json.gz": "9c30150df14965cf910b6d297ad0e668ad63d9b2fae0d530b08eb93acfdc9e26"
+ },
+ "output_content_sha256": {
+  "00000_doab.json.gz": "bc3b778bde28471c27a65ce10f0cb8ff15181fd1e54f0f35fd65c82c5dc9daf0",
+  "00001_doab.json.gz": "2c422b2add259d9d9c99baa8ba7a71959832ce37075a409e8d24d87c0a2e4709",
+  "00002_doab.json.gz": "f29636918c230d32518bce88b6db12e5dd07f8f840c394a2a3d5798c6c4cf822",
+  "00003_doab.json.gz": "24cffca5c99f73628828156dafbc84455cd7e41e4d21c66722e4796b68ec8edd",
+  "00004_doab.json.gz": "bd0298e73edabc97a173d3f2d124fb4c7097a0e6d191fa9369393bde5b8e1f26",
+  "00005_doab.json.gz": "0297b1f1d27da0022d550a73a807da1e354ca3d5b3240125441d8806636690d0",
+  "00006_doab.json.gz": "cb62f41209d3b743398b6e621c9e7df9651862ec5fdaf8a46027fd1ab10e91c2",
+  "00007_doab.json.gz": "972c5d1bae88f44857d90e6730f4c5b44a2f53bb84155e7245a1c1ecb647efb6",
+  "00008_doab.json.gz": "3468556e03486592f760cb37614a89475b8f00bcf234753856d6f55dc165325c",
+  "00009_doab.json.gz": "e0a27ca654c2d48c5dbe998eecb69fc86884584ba8624b7dc58e47c9123886e4",
+  "00010_doab.json.gz": "39a44f2783408e54d4c064d3f1503f1aea8d24e9a9694ed8b398d8a0da87f76b",
+  "00011_doab.json.gz": "d77e57d39b113611fe388bc4b45f75602e82e863b4aeadabac4a5775e864d4c5",
+  "00012_doab.json.gz": "7d8d347fafd70bb5842d18d3ce0c63c810c91d9f735418d3f963a437e8ca47a7"
+ },
+ "gzip_header_fix": {
+  "at_ist": "2026-10-11T23:30:26+05:30",
+  "code_sha256": {
+   "workflow/corpus.py": "2929999c2736dffc608ed187077f20c718e9f66607edb450f59ba7e52e1246dc"
+  },
+  "note": "The decontam and dedup rewriter wrote the current time into each gzip header. The shards were rewritten with the fixed rewriter (mtime=0, no file name): decompressed content unchanged (output_content_sha256)."
+ }
+}

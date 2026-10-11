@@ -1,0 +1,300 @@
+{
+ "dataset": "common-pile/pressbooks (raw), compared against common-pile/pressbooks_filtered",
+ "files_examined": [
+  "/home/vihaa/CinnamonLM/raw/common_pile/pressbooks/00000_pressbooks.json.gz (73,943 docs, read-only; no .incomplete file under .cache)",
+  "/home/vihaa/CinnamonLM/raw/common_pile/pressbooks/00001_pressbooks.json.gz (32,938 docs, read-only)",
+  "/home/vihaa/CinnamonLM/raw/common_pile/pressbooks/README.md",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/pressbooks/filtered/pressbooks-0000.json.gz (pressbooks_filtered, its only shard, 54,455 docs)",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/pressbooks/filtered/README.md",
+  "Outputs: /tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/pressbooks/report.json (main run) and followup.json (filtered-side run) in the same directory"
+ ],
+ "docs_sampled": 106881,
+ "total_docs_estimate": "106,881 docs, counted exactly by streaming every line of both shards. This matches the README figure. The sample is 1,467,598,452 chars and 236,594,507 whitespace words, from 1,993 distinct books (book = host plus first path segment of the id). Every doc was measured. I also read about 50 docs or long excerpts by hand: the 5 shortest, the 3 longest, 30 stratified across length deciles in both shards, 10 random docs from shard 00001, and targeted greps for nav chrome, H5P, shortcodes, Spanish text and legal cases.",
+ "schema_fields": [
+  "id (str): the chapter URL. It is not unique: 2,104 id values repeat, covering 4,209 docs. 22,024 ids end in '#chapter-N-section-M'.",
+  "text (str)",
+  "source (str): always 'pressbooks'",
+  "added (str, ISO timestamp)",
+  "created (str, e.g. '09-30-2024')",
+  "metadata (a real dict in the raw files, not a string): license, url, book_url, title, author, institution, subject",
+  "pressbooks_filtered adds metadata.provenance (e.g. 'pressbooks-0000.json.gz:28'). It also adds PII placeholders in the text: <EMAIL_ADDRESS>, <IP_ADDRESS> and <PHONE_NUMBER>."
+ ],
+ "length_stats": "All 106,881 docs. Chars: p1=297, p5=572, p25=2,334, p50=6,573, p75=15,767, p95=45,980, p99=102,806, max=2,179,415, mean=13,731. Whitespace words: p1=46, p5=91, p25=372, p50=1,052, p75=2,529, p95=7,256, p99=16,335, max=340,502, mean=2,214. Total: 1,467,598,452 chars and 236,594,507 words. The tail is driven by whole books stored as one 'chapter': 359 docs are over 200k chars, and they hold 8.94% of all chars. Example: library.achievingthedream.org/hostosinterpersonalrelations1/... is 2.18M chars and contains the whole textbook 'Communication in the Real World'.",
+ "language_mix": "No language-ID library is installed (no fasttext, langdetect or lingua), so I used a heuristic. It looks at the first 20k chars of each doc. If 50% or more of the letters are in one non-Latin script, the doc gets that script label. Docs with fewer than 30 words get 'too_short'. Otherwise the doc takes the language whose stopword list matches the largest fraction of its words, from 7 lists: en, es, fr, de, pt, it, nl (about 25 words each, one-letter words removed). A best ratio below 0.08 gives 'unknown_latin'. Results: en 104,976 docs (98.22%, 99.20% of chars). unknown_latin 796. On inspection these are mostly nav-chrome stubs, word lists in Mohawk, Cree or Norwegian, and tables. pt 314 (e.g. the proteincookbookforcancerportuguese book), fr 305, es 290 (Spanish courses and cookbooks), de 94, nl 35, it 10, CJK 29, Indic 11 (Tamil Thirukkural), Arabic 1, Cyrillic 1, Greek 1, too_short 18. Non-English labels total 1,905 docs (1.78%, 0.80% of chars). 192 docs have an ASCII-letter ratio below 0.9. English stopword ratio over all docs: p1=0.038, p5=0.158, p50=0.293.",
+ "issues": [
+  {
+   "name": "Section-anchor duplicate docs (#chapter-N-section-M)",
+   "description": "The crawler saved the same chapter page once per in-page section anchor. Every anchored copy holds the full chapter text, not just the section. This is the largest single quality problem in the raw data.",
+   "prevalence": "22,024 docs (20.61%), 599,391,793 chars (40.84% of raw chars). 22,023 are exact duplicates (normalized) of some other doc, and 22,017 are identical to the doc at the same URL without the anchor. The filter dropped 22,022 of them.",
+   "measurement_method": "Doc id matches regex '#chapter-\\d+-section-\\d+$'. Duplicate test: md5 of ' '.join(text.lower().split()), compared with the doc whose id is the part before '#'.",
+   "evidence_examples": [
+    "[https://pressbooks.library.upei.ca/infographicsmanual/chapter/designing-the-infographic/] and #chapter-363-section-1 ... #chapter-363-section-5: all 21,111 chars, identical text",
+    "[https://press.rebus.community/openamlit/chapter/herman-melville/#chapter-99-section-1/-2/-3] all 1,312,177 chars, identical"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Exact and near duplicates, including the same chapter across books",
+   "description": "Many chapters appear more than once. Sources: the section anchors above, ids that repeat, and books that are adaptations or clones of each other. Examples are OpenStax or Lumen derivatives, 'clone' books, and the same reader used by several colleges.",
+   "prevalence": "Exact (normalized md5): 8,494 groups covering 35,509 docs. Removing all but one per group removes 27,015 docs and 641,818,917 chars (43.7%). 1,477 groups span more than one book (2,365 redundant docs). Near-dup (estimated Jaccard of 0.8 or more on word 5-shingles): 15,355 clusters covering 57,646 docs, so 42,291 docs and 816,895,506 chars (55.7%) are redundant. 9,717 clusters span 2 or more books (30,331 docs), with 22,775 cross-book pairs.",
+   "measurement_method": "One-permutation MinHash with 128 bins and rotation densification. Shingles are lowercased whitespace-word 5-grams, hashed with Python hash (PYTHONHASHSEED=0) and splitmix64. LSH uses 16 bands x 8 rows. A candidate pair is confirmed when 80% or more of signature slots agree. Clusters come from union-find.",
+   "evidence_examples": [
+    "[https://louis.pressbooks.pub/introphilosophy/chapter/plato-on-defending-philosophy/] ~ [https://ecampusontario.pressbooks.pub/classicreadings/chapter/plato-on-defending-philosophy/]",
+    "[https://louis.pressbooks.pub/generalbiology2leclab/chapter/population-evolution/] ~ [https://caul-cbua.pressbooks.pub/biology/chapter/19-1-population-evolution/] ~ [https://pressbooks.umn.edu/introbio/chapter/popevo/]",
+    "[https://library.achievingthedream.org/bhccspanish2/chapter/lesson-2-days-months-and-seasons/] ~ [https://library.achievingthedream.org/baycollegespanish1/chapter/days-of-the-week-months-seasons-dates-and-weather/]"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Pressbooks site chrome: navigation TOC and promo line",
+   "description": "Some pages were scraped with the site chrome. The whole book table of contents (sometimes more than 240 entries) sits between 'Primary Navigation' and 'Previous/next navigation'. A promo line also appears. Many such pages hold almost no chapter content.",
+   "prevalence": "Nav block: 2,394 docs (2.24%), 11,121,188 chars (0.76%). Promo line: 2,770 docs (2.59%), 0.02% of chars.",
+   "measurement_method": "Nav: all lines from a line equal to 'Primary Navigation' through a line equal to 'Previous/next navigation'. Promo: line equal to 'Want to create or adapt books like this? Learn more about how Pressbooks supports open publishing practices.'",
+   "evidence_examples": [
+    "[https://library.achievingthedream.org/sacmacroeconomics/chapter/assignment-fiscal-policy-problem-set/] Primary Navigation\\nWant to create or adapt books like this?...\\nBook Contents Navigation\\n1. About This Course ... 242. Assignment: Problem Set ... Click on the following link to download the problem set for this module:\\nPrevious/next navigation",
+    "[https://opentextbc.ca/adaptopentextbook/chapter/different-copyright/] 977-char doc that is only a TOC plus a copyright line"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Stub pages (almost no content once boilerplate is removed)",
+   "description": "Pages that once held only an H5P activity, video or download link, or that are only chrome and a license. After the boilerplate goes, little or nothing is left.",
+   "prevalence": "3,488 docs (3.26%), 11,905,033 chars (0.81%). Separately, 4,388 docs (4.11%) are under 500 chars. The filter dropped all 4,388 of them.",
+   "measurement_method": "len(text) minus chars of 'removable' lines (nav chrome, promo, license/attribution lines, media-attribution list items, UI widget lines, pipe-only lines, repeated lines) is under 200.",
+   "evidence_examples": [
+    "[https://pressbooks.openeducationalberta.ca/deafeducation/chapter/h5p-grammar/] Want to create or adapt books like this?...\\n26 H5P \u2013 DAD Content \u2013 ASL grammar using ASL notation \u2013 Fill in blanks (text only)\\nLicense\\nTo the extent possible under law, Joanne Weber has waived all copyright...",
+    "[https://wtcs.pressbooks.pub/medterm/chapter/14-8-muscular-learning-activities/] 14.8 Muscular Learning Activities\\nInteractive Learning Activity: Study muscular system medical terms ... using these flashcards."
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Table debris and flattened tables",
+   "description": "HTML tables come out as pipe rows (sometimes well-formed markdown) or as one cell per line with lone '|' lines between cells. The first record is an example of the second kind. The second kind loses row and column structure and reads as word salad.",
+   "prevalence": "Pipe-only lines ('|', '||', '|---|---|'): 13,934 docs (13.04%), 632,823 chars (0.04%). Table rows: 20,001 docs (18.71%), 31,477,930 chars (2.14%). Flattened one-cell-per-line docs: 1,482 docs (1.39%), 24,406,763 chars (1.66%). Docs where table lines are over 50% of chars: 1,234 (1.15%), 0.58% of chars.",
+   "measurement_method": "Pipe-only: stripped line matches ^[|\\-: ]*\\|[|\\-: ]*$. Table row: ^\\|.*\\|$ or ^\\|\\s or \\s\\|$. Flattened: 5 or more lines equal to '|', '||' or '|||', and at least 10% of all lines.",
+   "evidence_examples": [
+    "[https://ecampusontario.pressbooks.pub/oerbysubjectpeerguide/chapter/__unknown__/] |\\nCredibility\\n|\\nRelevance\\n|\\n|\\nAuthorship\\n|\\nPublisher,\\nYear of Update\\n|\\nTitle of Open Textbook\\n|",
+    "[https://pressbooks.saskpolytech.ca/pressbooks/chapter/export-files/] | Book Format | Requirements | Features | Access Options\\n|\\n| Online web book |\\n|\\n|\\n|\\n| Digital PDF |"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Raw WordPress/Pressbooks LaTeX shortcodes and MathML-converted junk",
+   "description": "Math is left as [latex]...[/latex] shortcodes (and [latexpage]), often holding MathML-to-TeX output full of \\phantom{\\rule{..}{0ex}} and \\text{} fragments. This is not clean LaTeX and not rendered text.",
+   "prevalence": "[latex] spans: 8,413 docs (7.87%), 21,496,887 chars (1.46%). \\phantom{\\rule{}{}} fragments: 1,611 docs (1.51%), 735,180 chars (0.05%).",
+   "measurement_method": "Regex \\[latex\\].{0,4000}?\\[/latex\\]|\\[/?latexpage\\] (DOTALL), and \\\\phantom\\{\\\\rule\\{[^{}]*\\}\\{[^{}]*\\}\\}",
+   "evidence_examples": [
+    "[https://openbooks.lib.msu.edu/collegephysics1/chapter/heat-2/#chapter-2558-section-2] [latex]1\\text{.00 kcal}\\phantom{\\rule{0.25em}{0ex}}=\\phantom{\\rule{0.25em}{0ex}}\\text{4186 J.}[/latex]",
+    "[https://opentextbooks.uregina.ca/creemathdictionaryv2/chapter/d-2/] - [latex]18\u00f79=2[/latex]\\n- [latex]70\u00f75=14[/latex]"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "H5P, interactive and other unrendered shortcodes",
+   "description": "Embedded interactives came through as literal shortcodes ([h5p id=\"9\"], [footnote], [reveal-answer], [hidden-answer], [practice-area]), or vanished and left only their headings.",
+   "prevalence": "Shortcodes (lowercase, case-sensitive list): 980 docs (0.92%), 305,705 chars (0.02%). Any H5P mention: 1,362 docs (1.27%).",
+   "measurement_method": "\\[/?(?:h5p|table|caption|embed|audio|video|footnote|glossary|pb_glossary|textbox|qrcode|iframe|gallery|wpvideo|youtube|vimeo|pdf-embedder|pdfviewer|anchor|heading|reveal-answer|hidden-answer|equation)(?:\\s[^\\]\\n]{0,200})?\\] ; H5P: (?i)\\[h5p[^\\]\\n]{0,60}\\]|interactive h5p element|h5p\\.(?:com|org)|\\bh5p\\b",
+   "evidence_examples": [
+    "[https://opentextbc.ca/testing/chapter/4/] Read the following sentences. Type the correct form of the \u201cBe\u201d verb in the blank boxes. [h5p id=\u201d13\u2033]",
+    "[https://fscj.pressbooks.pub/engcomp1/chapter/common-sentence-structures/] [practice-area rows=\u201d4\u2033][/practice-area]\\n[reveal-answer q=\u201d77635\u2033]Show Answer[/reveal-answer]\\n[hidden-answer a=\u201d77635\u2033]"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Dangling references to removed embeds (video, quiz, audio)",
+   "description": "The text points to media or activities that are not in the text, e.g. 'watch the video below' or 'complete the quiz below'.",
+   "prevalence": "4,719 docs (4.42%). The matching lines hold 2,075,211 chars (0.14%).",
+   "measurement_method": "Line regex (?i)\\b(?:the|this) (?:following|below|embedded) (?:video|quiz|activity|simulation|interactive|exercise|flashcards?|podcast|audio|slideshow|presentation|game|self-check|knowledge check)|\\b(?:video|quiz|...)s? (?:below|above)\\b|^interactive learning activity\\b|\\bcomplete the (?:quiz|activity|exercise)s? below\\b",
+   "evidence_examples": [
+    "[https://pressbooks.bccampus.ca/financialimpactclimatechange/chapter/banking/] Watch the video below for a brief overview of climate-related risks to the banking system.",
+    "[https://opentextbc.ca/basichvac/chapter/hydronic-heating-systems/] Click play on the following audio player to listen along as you read this section."
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "License/attribution boilerplate, media-attribution lists and image credits",
+   "description": "Repeated license statements, 'Attributions' blocks, and 'Media Attributions' lists of image file names and credits. Image alt text was not found in the text. Captions appear as 'Figure N. ...' lines and 'Image by X is in the public domain'.",
+   "prevalence": "License/attribution lines: 26,804 docs (25.08%), 13,089,628 chars (0.89%). Media-attribution list items: 6,546 docs (6.12%), 8,932,405 chars (0.61%). Caption/credit lines: 5,736 docs (5.37%), 3,307,348 chars (0.23%).",
+   "measurement_method": "License line (length under 600): (?i)(licen[sc]ed under|creative commons|\\bCC[ -]?BY\\b|\\bCC0\\b|except where otherwise noted|to the extent possible under law|all rights reserved|waived all copyright|^licen[sc]e:|^(?:text |media )?attributions?$|^licen[sc]es? and attributions|^cc licensed content|^licen[sc]e$). Media list: lines starting '- ' that directly follow a 'Media Attributions' line. Caption: ^(?:Figure|Fig\\.|Image|Photo|Picture|Illustration|Diagram)\\s*\\d+(?:[.\\-\u2013]\\d+)*[a-z]?\\s*[:.\\-\u2013|]\\s, '(credit: ...)', '^(?:image|photo) (?:credit|by|source|courtesy)', '^(image|long|figure) description', plus image-filename lines inside Media Attributions.",
+   "evidence_examples": [
+    "[https://pressbooks.oer.hawaii.edu/honcchist151/chapter/14-european-exploration-and-colonization/#chapter-350-section-6] Media Attributions\\n- INCA\\n- ireland\\n- 796px-MHS_47632_Astrolabe\\n- 1600px-Magellan_Elcano_Circumnavigation-en.svg",
+    "[https://opentextbc.ca/abealf6/chapter/whats-your-story/] Image by sebadelval is in the public domain.",
+    "[https://ecampusontario.pressbooks.pub/structureandfunctionofhumanbodymohawkedition/chapter/11-3-explain-the-criteria-used-to-name-skeletal-muscles/] This work, Anatomy & Physiology, is adapted from Anatomy & Physiology by OpenStax, licensed under CC BY. This edition ... is licensed under CC BY-SA"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "In-text non-permissive license or permission statements (license-laundering risk)",
+   "description": "The book-level metadata says CC BY, BY-SA or PD. Inside the text, however, parts are marked CC BY-NC(-SA/-ND), 'All rights reserved', 'License: Copyright' or 'used with permission'. Some hits only mention or teach licenses (e.g. OER-training books), so not every hit is a violation.",
+   "prevalence": "8,139 docs (7.62%). Matched chars are 0.03% (the content they govern is larger and not measured). About 4,018 of these docs survive into the filtered set (raw-side count, see filtered_comparison caveat).",
+   "measurement_method": "Regex \\b[Cc][Cc][ -]BY[ -](?:NC|ND)\\b|\\b[Bb][Yy]-[Nn][CcDd]\\b|NonCommercial|Non-Commercial|NoDerivatives|NoDerivs|(?i:all rights reserved|license: copyright|used with permission|reprinted (?:here )?(?:with|by) permission)",
+   "evidence_examples": [
+    "[https://pressbooks.nvcc.edu/eng255/chapter/ifrom-i-midaq-alley-naguib-mahfouz/] from Midaq Alley\\nLicense: Copyright\\nTrevor Le Gassick\\nVisit here to read or download this work.",
+    "[https://pressbooks.pub/odugencyber/chapter/microsoft-windows-security/] \u00a9 2018 Teach Cyber\\nThis work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.",
+    "[https://pressbooks.pub/newmexico5/chapter/chapter-1-introduction-to-college-writing-at-cnm-mytext-cnm/] Adapted from \u201cChapter One \u201d of Successful Writing, 2012, used according to creative commons 3.0 cc-by-nc-sa"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Footnote backlink lines, inline footnote splicing, and orphan glossary definitions",
+   "description": "Footnotes are collected at the end of the doc as '- ... \u21b5' lines. In some books, footnote or citation text was spliced into the sentence with no separator. Glossary tooltip definitions also appear at the end of the doc without their terms. Only the \u21b5 lines were measured. The splicing and orphan-glossary patterns were seen while reading but are not quantified, because my regex attempts gave false positives.",
+   "prevalence": "Footnote-backlink lines: 11,492 docs (10.75%), 20,806,017 chars (1.42%). Splicing and orphan glossary: not measured.",
+   "measurement_method": "Line regex \u21b5\\s*$",
+   "evidence_examples": [
+    "[https://ecampusontario.pressbooks.pub/demographyandeconomics/chapter/chapter-6-calculating-life-expectancy/] - An actuary is a professional specializing in risk measurement and management. \u21b5",
+    "[https://ecampusontario.pressbooks.pub/mohawkcollegenursingpharmacology/chapter/nursing-fundamentals/] ...the 2019 NCLEX-RN Test Plan,NCSBN. (n.d.). 2019 NCLEX-RN test plan. https://www.ncsbn.org/2019_RN_TestPlan-English.htm the 2020 NCLEX-PN Test Plan,NCSBN. (2019)...",
+    "[https://ecampusontario.pressbooks.pub/medicalterminology2/chapter/medical-language-rules/] (end of doc) A word root with a combining form vowel.\\nThe combining form vowel is used to join word parts and to ease pronunciation."
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Repeated lines inside a doc",
+   "description": "Headings, captions or paragraphs repeated in the same doc. These come from responsive or duplicated HTML blocks.",
+   "prevalence": "19,044 docs (17.82%). The repeats hold 11,522,231 chars (0.79%).",
+   "measurement_method": "A stripped line of 30 or more chars that equals an earlier line in the same doc. Only the repeats are counted.",
+   "evidence_examples": [
+    "[https://library.achievingthedream.org/herkimerarthistory2/chapter/eva-hesse-untitled/] Dr. Beth Harris and Dr. Steven Zucker provide a description... (paragraph pair repeated twice in a 439-char doc)",
+    "[https://pressbooks.pub/pippad/chapter/resources/] Online Job Search\\nCareer Guides\\ncareersherpa ... (entire list repeated)"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Whole books embedded as one chapter",
+   "description": "Some 'chapters' hold a full novel, a whole textbook, or a large section of one. These docs are very long, and they duplicate content that also exists elsewhere.",
+   "prevalence": "359 docs over 200k chars (0.34%), 131,173,167 chars (8.94%).",
+   "measurement_method": "len(text) > 200000",
+   "evidence_examples": [
+    "[https://pressbooks.pub/earlybritishliteratureanthology/chapter/evelina-by-fanny-burney/] 872,572 chars",
+    "[https://ecampusontario.pressbooks.pub/mohawkcollegenursingpharmacology/chapter/nursing-fundamentals/] 1,594,940 chars (whole Open RN Nursing Fundamentals book inside a pharmacology book)"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Non-English documents",
+   "description": "Spanish, Portuguese and French courses and cookbooks, German and Dutch books, CJK, Tamil, and Indigenous-language word lists, all in an English-tagged dataset.",
+   "prevalence": "1,905 docs (1.78%), 0.80% of chars (heuristic labels). Of the clearly non-English labels (es, fr, de, CJK), 100% were dropped by the filter.",
+   "measurement_method": "Stopword and script heuristic (see language_mix).",
+   "evidence_examples": [
+    "[https://pressbooks.openeducationalberta.ca/proteincookbookforcancerspanish/chapter/avena-de-manzana-y-canela/] Avena de manzana y canela\\n| Porci\u00f3ns: 1 | Tiempo de preparaci\u00f3n: 5 minutos |",
+    "[https://ecampusontario.pressbooks.pub/mohawklanguageresource/chapter/days-months/] Awentatokenht\u00ed:ke Sunday\\nAwententa\u00f3n:ke Monday"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Leading chapter-number title prefix, URLs, UI widget strings, mojibake",
+   "description": "Minor issues. The first line often starts with the chapter ordinal ('14 7. Foreseeable Barriers'). Bare URLs appear. Widget strings appear ('Show Answer', 'Licenses and Attributions (Click to expand)'). A little mojibake appears.",
+   "prevalence": "Leading number: 31,090 docs (29.09%). URLs: 28,832 docs (26.98%), 0.81% of chars. UI lines: 2,858 docs (2.67%), 0.03% of chars. Mojibake: 39 docs, 478 chars.",
+   "measurement_method": "^\\d{1,3} \\S on the first line. https?://\\S+|www\\.\\S+\\.\\S+ . UI: ^(?:(?:show|hide|reveal|toggle) (?:answers?|solutions?|glossary|hints?|explanation|feedback|transcript)|licenses and attributions \\(click to expand\\)|\\(?click to expand\\)?|jump to the next .* box\\..*|check your answers?|an interactive (?:h5p )?element has been excluded.*|you can view it online here.*)$ (case-insensitive). Mojibake: \u00e2\u20ac[\u2122\u0153\u201c\u201d\u02dc\u00a6]|\u00c3[\u00a9\u00a8\u00a2\u00a7\u00b1\u00b6\u00bc]|\u00ef\u00bf\u00bd|\ufffd",
+   "evidence_examples": [
+    "[https://openwa.pressbooks.pub/rblais/chapter/foreseeablebarriers/] 14 7. Foreseeable Barriers",
+    "[https://pressbooks.pub/openeal/chapter/the-murders-in-the-rue-morgue/] ...only by some recherch\u00c3\u00a9 movement..."
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Filtered version: PII redaction false positives",
+   "description": "The Common Pile filter replaced matches with <IP_ADDRESS>, <EMAIL_ADDRESS> and <PHONE_NUMBER>. Many replacements hit non-PII. Hits include outline numbers ('4.2.1.3'), example IPs in networking labs (192.168.1.30, 8.8.8.8), ISBNs, and URLs. Spaces around the placeholder are sometimes removed.",
+   "prevalence": "Placeholders in filtered: 1,940 IP, 1,877 email, 797 phone. Diffed against raw: 1,777 docs were changed by redaction. IP replacements: 1,233 of form a.b.c.d with all octets 255 or less and first octet 10 or more, 609 of form a.b.c.d with first octet under 10 or an octet over 255 (this mixes outline numbers with real IPs like 8.8.8.8), and 90 'other' (e.g. '001', '1.1.1'). Phone: 556 were 10 or 13 digits (phones or ISBNs, not separated). Email: 1,679 real emails, 3 URLs.",
+   "measurement_method": "Line-level difflib between raw and filtered for kept docs, then char-level difflib within changed blocks of 20k chars or less. The raw text replaced by each placeholder was classified with the regex categories in classify_replaced() in analyze.py.",
+   "evidence_examples": [
+    "[filtered] 'arison per concept is portrayed in the following findings:\\n<IP_ADDRESS> The Core Concepts of Seamless Learning'",
+    "[https://iu.pressbooks.pub/colorawarenessiudpt/chapter/chapter-4/] '9780323761' -> '<PHONE_NUMBER>' (ISBN)",
+    "[https://pressbooks.bccampus.ca/practicalphysicsphys1104/chapter/11-0-introduction/] 'http://cnx' -> '<EMAIL_ADDRESS>'",
+    "[https://opentextbc.ca/fortigatefirewall/chapter/security-policy/] '192.168.1.30' -> '<IP_ADDRESS>'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Filtered version: sentences deleted from inside kept docs",
+   "description": "In kept docs, the filter removed individual sentences or lines and left blank lines or double spaces. This breaks dialogue, poems and plays. I did not verify the mechanism. The deleted sentences contain sensitive words far more often than kept sentences, but many deleted sentences are harmless. Most sampled deleted sentences occur once in the raw corpus (doc-frequency 1 for 26 of 40 sampled), so this does not look like dedup of repeated text.",
+   "prevalence": "13,850 of 54,455 filtered docs (25.4%) differ from their raw copy. 33,407 deleted segments of 20 chars or more, totalling 4,401,397 chars. 27.3% of deleted segments (9,114) match a sensitive-word lexicon, against 3.9% (42 of 1,089) of randomly sampled kept sentences.",
+   "measurement_method": "Filtered-side pass (--filtered-followup in analyze.py). A deletion is a changed char span whose replacement is empty or whitespace. The lexicon is SENSITIVE_LEXICON_RE in analyze.py (kill, blood, sex, die, hate, black, gay, ...). Kept sentences are 1 random sentence from every 50th filtered doc. Doc-frequency is substring presence across all raw docs for 40 random deleted segments.",
+   "evidence_examples": [
+    "[https://ecampusontario.pressbooks.pub/conversationalai/chapter/1-into-converstational-ai/] raw 'PARRY: I thought I told you, people get on my nerves.' -> empty line in filtered",
+    "[https://ecampusontario.pressbooks.pub/adultlitfund1/chapter/arctic-plants/] 'Tell the story to your instructor. Your instructor will write down your words. Then copy...' -> 'Tell the story to your instructor.  Then copy...'",
+    "[https://opentextbc.ca/abealfreader4/chapter/the-story-of-jim-egan/] deleted: 'Being gay meant being left out by the world.'",
+    "[https://wtcs.pressbooks.pub/nursingskills/chapter/4-7-checklist-for-personal-protective-equipment-ppe/] deleted: 'Grasp the top strap and bring it carefully over the head, and then pull the respirator away...'"
+   ],
+   "severity": "medium"
+  }
+ ],
+ "duplication": "Measured over all 106,881 raw docs. Exact duplicates (md5 of lowercased, whitespace-collapsed text): 8,494 groups covering 35,509 docs. Keeping one per group removes 27,015 docs (25.3%) and 641.8M chars (43.7%). 1,477 exact groups span more than one book. Near duplicates (my own one-permutation MinHash with 128 bins over lowercased word 5-shingles, LSH 16x8, confirmed at 80% or more signature agreement; datasketch is not installed): 15,355 clusters covering 57,646 docs, so 42,291 docs (39.6%) and 816.9M chars (55.7%) are redundant. 9,717 clusters (30,331 docs) span 2 or more books, i.e. the same chapter appears in several books. Main sources: (1) 22,024 '#chapter-N-section-M' copies of their parent page; 22,017 are identical to it and they hold 40.8% of raw chars. (2) 2,104 id values that repeat (4,209 docs). (3) Adapted or cloned books (OpenStax/Lumen derivatives, shared readers). Inside pressbooks_filtered itself: only 21 redundant exact duplicates remain, but near-dup clustering of the 54,455 filtered docs still finds 1,727 clusters (3,985 docs). That is 2,258 redundant docs (4.1%), and 1,640 of the clusters span 2 or more books.",
+ "filtered_comparison": "pressbooks_filtered has one shard: 54,455 docs and 54,452 unique ids. Every filtered id exists in raw. Measured from the filtered side: 40,605 filtered docs (74.6%) are byte-identical to a raw copy with the same id, and 13,850 (25.4%) were modified. Edits found in the diff: sentence or line deletions (33,407 segments of 20 chars or more, 4.40M chars), PII placeholder substitution (1,777 docs, many false positives, see issues), and 158 docs with other edits. Measured from the raw side by id: 51,241 raw docs (47.9%, 879.0M chars) have no filtered doc with their id. Drop rates (raw side): 100% of docs under 500 chars (4,388). 38.7% for 500-1k chars, 32.3% for 1-2k, 35.2% for 2-5k, 48.5% for 5-20k, 61.2% for 20-100k, 77.0% for 100k and over. 22,022 of 22,024 section-anchor duplicates. 100% of es, fr, de and CJK docs, 99.7% of pt. 96.8% of docs with English stopword ratio under 0.05. 80.9% of my 'stub' docs. 73% of nav-chrome docs. Exact duplicates: in 4,989 groups exactly 1 copy survived, in 2,324 groups none survived. The raw-side count shows 1,181 groups with more than one copy kept, but this comes from repeated ids. The filtered-side check finds only 21 exact duplicates. So the existing pipeline did: language filtering, removal of short docs, exact dedup, some quality or length-related dropping (drop rate rises with length; I did not verify the cause), PII redaction, and sentence-level deletions inside docs (mechanism not verified). What the filter misses, measured over kept raw docs (raw-side counts; repeated ids inflate these by up to 1,185 docs): 3,582 near-duplicate redundant docs, or 2,258 measured directly within filtered. Also: nav chrome in 646 docs, promo line in 761, stubs 666, pipe-only debris 6,393, flattened tables 946, [latex] shortcodes 3,419, other shortcodes 419, H5P mentions 565, dangling embed references 2,254, license/attribution lines 12,517, media-attribution lists 2,175, in-text NC/ND/permission statements 4,018, non-English labels 170. Removable boilerplate lines are 12.75M chars (2.2% of kept chars).",
+ "license_notes": "metadata.license over all 106,881 raw docs: 'Creative Commons - Attribution' (CC BY 4.0) 82,843; 'Creative Commons - Attribution Share-Alike' (CC BY-SA 4.0) 16,410; 'Public Domain' 4,287; 'Creative Commons Zero - Public Domain' (CC0) 3,341. This is the book-level license only. 8,139 docs (7.62%) contain in-text CC BY-NC/ND, NonCommercial, NoDerivatives, 'All rights reserved', 'License: Copyright' or 'used with permission' statements, and about 4,018 of them survive into the filtered set. Some are only discussions of licenses. Others mark third-party content under a more restrictive license than the metadata (e.g. 'License: Copyright' on a Midaq Alley excerpt in a CC BY-SA book; whole chapters marked CC BY-NC-SA). Filter drop rate by metadata license: CC BY 48.2%, CC BY-SA 51.6%, CC0 43.8%, Public Domain 32.5%.",
+ "recommended_steps": [
+  {
+   "step": "Canonicalize ids and drop section-anchor copies. Strip the '#...' fragment from the id, then keep one doc per canonical URL (the longest, or the one without the anchor).",
+   "rationale": "Removes the largest block of redundancy before any fuzzy dedup, at almost no cost.",
+   "evidence": "22,024 anchor docs (20.6%) hold 40.8% of raw chars, and 22,017 are identical to the page without the anchor. 2,104 id values repeat."
+  },
+  {
+   "step": "Run exact dedup on normalized text, then near-dup dedup (MinHash/LSH on word 5-shingles, Jaccard about 0.8) across the whole source, and preferably across the other OER sources (LibreTexts, OERCommons, DOAB) as well. Keep one representative per cluster.",
+   "rationale": "The same chapter appears in many books (adaptations, clones, shared readers). The Common Pile filtered set still keeps cross-book near-duplicates.",
+   "evidence": "Raw: 42,291 redundant near-dup docs (55.7% of chars), 9,717 clusters spanning 2 or more books. Within pressbooks_filtered: 2,258 redundant near-dup docs remain in 1,727 clusters (1,640 cross-book)."
+  },
+  {
+   "step": "Strip Pressbooks chrome by line rules: delete the block from 'Primary Navigation' through 'Previous/next navigation', the 'Want to create or adapt books like this?...' line, UI strings ('Show Answer', 'Licenses and Attributions (Click to expand)', 'Jump to the next ... box'), and repeated lines of 30 or more chars inside a doc. Then drop docs with under 200 chars of remaining content.",
+   "rationale": "This is pure template text and repetition. After removal, many pages are empty stubs.",
+   "evidence": "Nav chrome 2,394 docs (0.76% of chars), promo 2,770 docs, UI lines 2,858 docs, repeated lines 19,044 docs (0.79% of chars), stubs 3,488 docs. The filtered set still has 646 nav docs and 666 stubs."
+  },
+  {
+   "step": "Remove license/attribution boilerplate: the 'Media Attributions' list items, license and copyright lines (length under 600 matching the license regex), and image-credit lines ('Image by X is in the public domain'). Keep 'Figure N.' captions that hold descriptive sentences, or remove them only when they are short credit lines.",
+   "rationale": "These are repetitive, low-information lines that the model would learn to emit at chapter ends.",
+   "evidence": "License lines in 25.1% of docs (0.89% of chars). Media-attribution lists in 6.1% (0.61%). Caption/credit lines in 5.4% (0.23%)."
+  },
+  {
+   "step": "Fix or remove math shortcodes. Unwrap [latex]X[/latex] to $X$, drop [latexpage], and delete \\phantom{\\rule{..}{..}} and \\hfill fragments. Where unwrapping leaves broken TeX (MathML conversion residue), consider dropping the formula.",
+   "rationale": "Math in shortcode form is neither clean LaTeX nor readable text.",
+   "evidence": "[latex] spans in 8,413 docs (1.46% of chars). \\phantom{\\rule} junk in 1,611 docs. The filtered set still has 3,419 docs with [latex]."
+  },
+  {
+   "step": "Delete all remaining WordPress/H5P shortcodes ([h5p id=..], [footnote]...[/footnote] unwrapped to text, [reveal-answer]/[hidden-answer], [practice-area]). Also remove lines that only point to a missing embed ('watch the video below', 'Interactive Learning Activity: ...').",
+   "rationale": "These are unrendered markup and references to content that is not present.",
+   "evidence": "Shortcodes in 980 docs. Dangling embed references in 4,719 docs (2,254 still in the filtered set)."
+  },
+  {
+   "step": "Normalize tables. Keep well-formed pipe tables (header plus separator row) as markdown. Drop lone '|' and '|---|' lines. For one-cell-per-line flattened tables, either rebuild them from the source HTML or drop docs where table debris dominates.",
+   "rationale": "Flattened tables lose structure and produce noisy text. Clean markdown tables are useful.",
+   "evidence": "Flattened-table docs 1,482 (1.66% of chars; 946 still in filtered). Pipe-only lines in 13,934 docs. Table-dominated docs 1,234."
+  },
+  {
+   "step": "Handle footnotes. Keep '- ... \u21b5' footnote lines but strip the \u21b5 marker, or move them under a 'Notes' heading. Optionally drop trailing orphan glossary definitions (definition lines after the last footnote with no term).",
+   "rationale": "The \u21b5 is a rendering artifact. Orphan definitions with no terms are confusing text.",
+   "evidence": "\u21b5 lines in 11,492 docs (1.42% of chars). Orphan glossary blocks and spliced citations were seen while reading but are not quantified."
+  },
+  {
+   "step": "Split or cap whole-book 'chapters', and dedup them against the standalone copies of the same books.",
+   "rationale": "Docs over 200k chars are usually whole novels or textbooks that also exist as separate chapters or books.",
+   "evidence": "359 docs over 200k chars hold 8.94% of chars. Example: a 1.59M-char 'Nursing Fundamentals' chapter inside the Mohawk pharmacology book."
+  },
+  {
+   "step": "Add a document-level language filter (e.g. fastText lid.176, which is not installed here) and keep only English, or route other languages to separate buckets.",
+   "rationale": "The source is tagged English but contains language courses and translated books.",
+   "evidence": "1,905 docs (1.78%) get non-English heuristic labels: pt 314, fr 305, es 290, de 94, CJK 29, Tamil 11."
+  },
+  {
+   "step": "Run a license audit pass. Flag docs with in-text NC/ND, 'All rights reserved', 'License: Copyright' or 'used with permission'. Drop the flagged spans or docs where the statement governs the content, not where it is only a citation of a license name.",
+   "rationale": "Book-level metadata licenses (CC BY / BY-SA / PD / CC0) do not reflect embedded third-party content.",
+   "evidence": "8,139 docs (7.62%) with such statements, about 4,018 in the filtered set. Example: 'License: Copyright / Trevor Le Gassick' in a CC BY-SA book."
+  },
+  {
+   "step": "If you start from raw, write your own PII redaction with tighter rules. Do not reuse the Common Pile placeholders as they are: require IP context (e.g. not at line start followed by a heading, exclude RFC1918 and well-known example IPs in networking texts if pedagogically wanted), exclude ISBNs (978/979 prefix) from phone detection, and never replace URLs as emails. Keep the whitespace around replacements.",
+   "rationale": "The existing redaction damages outline numbers, ISBNs, URLs and networking examples.",
+   "evidence": "609 IP placeholders replaced a.b.c.d strings with first octet under 10 or an octet over 255 (outline numbers such as '4.2.1.3' mixed with 8.8.8.8). 556 phone placeholders replaced 10- or 13-digit strings (including the ISBN '9780323761'). 3 URLs became <EMAIL_ADDRESS>."
+  },
+  {
+   "step": "Decide whether to accept the filtered version's sentence-level deletions. Where intact text matters (literature, dialogue, nursing procedures), rebuild from raw with the steps above instead of using pressbooks_filtered text.",
+   "rationale": "Deletions leave gaps in plays, poems, dialogues and step lists, and the mechanism is not documented in the README.",
+   "evidence": "13,850 filtered docs (25.4%) modified. 33,407 deleted segments (4.40M chars). Deleted segments match the sensitive lexicon 27.3% of the time against 3.9% for kept sentences, yet many are harmless (e.g. PPE checklist steps)."
+  }
+ ],
+ "script_path": "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/pressbooks/analyze.py (main run: 'python3 -I analyze.py > report.json'; filtered-side run: 'python3 -I analyze.py --filtered-followup > followup.json'; the script re-executes itself with PYTHONHASHSEED=0; set PB_SMOKE_LIMIT=N for a quick check)",
+ "open_questions": [
+  "What mechanism removed sentences inside kept docs in pressbooks_filtered? The Common Pile code was not inspected. The lexicon enrichment (27.3% vs 3.9%) suggests a sentence-level toxicity or safety classifier, but this is not verified.",
+  "What caused the length-dependent drop rate in the filtered set (77% for docs of 100k chars or more, 32-35% for 1-5k)? It is not verified whether this is a quality classifier, a perplexity or OCR rule, or something else.",
+  "Inline citation splicing (footnote text glued into sentences without a separator) and orphan glossary definitions at the end of docs were seen while reading, but are not quantified. Measuring them needs a better detector, or re-extraction from HTML.",
+  "The near-dup numbers depend on my own one-permutation MinHash (datasketch is not installed) at a 0.8 threshold. Exact pairwise Jaccard was not computed for confirmation.",
+  "Language labels come from a stopword heuristic, not a trained language-ID model. Indigenous-language word lists (Mohawk, Cree) fall into 'unknown_latin'.",
+  "Should cross-source dedup with the other OER sources (LibreTexts, OERCommons, DOAB) be done? Many Pressbooks chapters are OpenStax or Lumen derivatives that probably also appear in those sources. This was not measured."
+ ]
+}

@@ -1,0 +1,157 @@
+{
+ "stage": "clean",
+ "started_at_ist": "2026-10-11T20:50:54+05:30",
+ "finished_at_ist": "2026-10-11T20:51:00+05:30",
+ "steps": [
+  {
+   "name": "nbsp_line_breaks",
+   "docs_in": 1412,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 12,
+   "chars_before_modified": 138289,
+   "chars_after_modified": 138031
+  },
+  {
+   "name": "normalize",
+   "docs_in": 1412,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 1153,
+   "chars_before_modified": 3082653,
+   "chars_after_modified": 3080254
+  },
+  {
+   "name": "header",
+   "docs_in": 1412,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 911,
+   "chars_before_modified": 3292973,
+   "chars_after_modified": 3292062
+  },
+  {
+   "name": "markup",
+   "docs_in": 1412,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 3,
+   "chars_before_modified": 9831,
+   "chars_after_modified": 9499
+  },
+  {
+   "name": "boilerplate",
+   "docs_in": 1412,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 393,
+   "chars_before_modified": 4750260,
+   "chars_after_modified": 4706591
+  },
+  {
+   "name": "footnote_markers",
+   "docs_in": 1412,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 140,
+   "chars_before_modified": 2436933,
+   "chars_after_modified": 2433756
+  },
+  {
+   "name": "joined_lines",
+   "docs_in": 1412,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 89,
+   "chars_before_modified": 954251,
+   "chars_after_modified": 954953
+  },
+  {
+   "name": "stub",
+   "docs_in": 1412,
+   "docs_removed": 48,
+   "chars_removed": 8458,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "english",
+   "docs_in": 1364,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "exact_dedup",
+   "docs_in": 1364,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0,
+   "build": {
+    "duplicates": 0
+   }
+  },
+  {
+   "name": "near_dedup",
+   "docs_in": 1364,
+   "docs_removed": 6,
+   "chars_removed": 4831,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0,
+   "build": {
+    "duplicates": 6,
+    "contained_pairs": 6
+   }
+  },
+  {
+   "name": "pii",
+   "docs_in": 1358,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  }
+ ],
+ "input": {
+  "docs": 1412,
+  "chars": 6964459,
+  "shards": 3
+ },
+ "output": {
+  "docs": 1358,
+  "chars": 6901126
+ },
+ "code_sha256": {
+  "data_pipeline/sources/public_domain_review.py": "585225376dfb24fa7c8e4f6bc19130136639f57972686b414ed0a2bd68813653",
+  "data_pipeline/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "data_pipeline/common/cli.py": "ab42a74d4f70fd74839bf3edd62cbd75329601a44b1bdd60d870808a17a8f4dd",
+  "data_pipeline/common/dedup.py": "70b218abf0831861c3919b1b3bccf3e75411899381437321e1a1d2474b696660",
+  "data_pipeline/common/io.py": "361c0ce5b5dac1e6440a3709ab407f13a7991eb5e2e135fc621a3749163e76cc",
+  "data_pipeline/common/langid.py": "8450e730268fa781b1d6d0f8d4568955ef4638b0a459a5fdeb90251468581555",
+  "data_pipeline/common/licence.py": "fa67526ba987693b7d56c54d580c63d290717cde304ee832f74ff6d983d73ade",
+  "data_pipeline/common/pii.py": "8ecba1b1cabe64a3a18b158c0446d5d7727c4a7d83e73b58bdd77e713c237989",
+  "data_pipeline/common/pipeline.py": "8de145ee9a80d9213984a06821dd114330f6f0f6b68acd69185001df989a4962",
+  "data_pipeline/common/text.py": "d6d06db9bf5aaffb5c085b5d8c5809080da5bebef48539937d8c9abd00cd5bdf",
+  "licence/licence_filter.py": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+  "data_pipeline/uv.lock": "18d03e9361b9c8bc5f44f68aaf726ca6b82dd4ea6d0bd960ac7c2262ae54771e",
+  "workflow/build_corpus.py": "0608030cd6903e4baa9db71b0499d6e42619450623765a6283c8fd65a5d6fb21"
+ },
+ "language_model_sha256": "7e69ec5451bc261cc7844e49e4792a85d7f09c06789ec800fc4a44aec362764e",
+ "input_sha256": {
+  "v0/00000_collections.jsonl.gz": "603ebdcc40271cf2353419fd69453fff9aa8f32529fd664e8300359b859abd05",
+  "v0/00000_conjectures.jsonl.gz": "dc595f9fd1786cb93dc955592fd6eae888c042b198e6e508b5a66dd13f4f9110",
+  "v0/00000_essays.jsonl.gz": "7b4182c6c89c97416e70b13545643bb2acb1f78d9cdd101f59754ded8201381b"
+ },
+ "output_sha256": {
+  "v0/00000_collections.jsonl.gz": "59d89f68628f1ba23eda724c36c9cd88475060afa3393626f6102efe9c610057",
+  "v0/00000_conjectures.jsonl.gz": "9f8548a73d52df13f38a6fb26459ada8b956630b379c77ddb551d77e534651b5",
+  "v0/00000_essays.jsonl.gz": "7ae3e7b13b1df035fee41bf50340942ea3d23f565ea83057491d6b21193c1cf5"
+ }
+}

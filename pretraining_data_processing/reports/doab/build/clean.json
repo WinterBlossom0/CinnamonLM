@@ -1,0 +1,255 @@
+{
+ "stage": "clean",
+ "started_at_ist": "2026-10-11T19:30:25+05:30",
+ "finished_at_ist": "2026-10-11T20:51:27+05:30",
+ "steps": [
+  {
+   "name": "normalize",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 471651,
+   "chars_before_modified": 12239092557,
+   "chars_after_modified": 12236021684
+  },
+  {
+   "name": "garbled_paragraphs",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 507,
+   "chars_before_modified": 162978084,
+   "chars_after_modified": 162180423
+  },
+  {
+   "name": "page_furniture",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 335414,
+   "chars_before_modified": 11968126115,
+   "chars_after_modified": 11229815568
+  },
+  {
+   "name": "back_matter",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 117444,
+   "chars_before_modified": 9770048800,
+   "chars_after_modified": 9223832376
+  },
+  {
+   "name": "markup",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 132441,
+   "chars_before_modified": 9528560461,
+   "chars_after_modified": 9432934995
+  },
+  {
+   "name": "symbol_font",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 6928,
+   "chars_before_modified": 559661439,
+   "chars_after_modified": 559661439
+  },
+  {
+   "name": "ligatures",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 13395,
+   "chars_before_modified": 1362086100,
+   "chars_after_modified": 1362609777
+  },
+  {
+   "name": "dehyphenate",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 35009,
+   "chars_before_modified": 4625325814,
+   "chars_after_modified": 4623872897
+  },
+  {
+   "name": "rejoin_paragraphs",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 352943,
+   "chars_before_modified": 10688066058,
+   "chars_after_modified": 10670279131
+  },
+  {
+   "name": "repeated_paragraphs",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 38679,
+   "chars_before_modified": 4923670016,
+   "chars_after_modified": 4765461600
+  },
+  {
+   "name": "renormalize",
+   "docs_in": 474102,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 66171,
+   "chars_before_modified": 8243771080,
+   "chars_after_modified": 8243234169
+  },
+  {
+   "name": "garbled_font",
+   "docs_in": 474102,
+   "docs_removed": 9,
+   "chars_removed": 719016,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "min_words",
+   "docs_in": 474093,
+   "docs_removed": 97447,
+   "chars_removed": 9172233,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "content",
+   "docs_in": 376646,
+   "docs_removed": 3861,
+   "chars_removed": 11230585,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "english",
+   "docs_in": 372785,
+   "docs_removed": 75,
+   "chars_removed": 30890181,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "exact_dedup",
+   "docs_in": 372710,
+   "docs_removed": 4606,
+   "chars_removed": 247383157,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0,
+   "build": {
+    "duplicates": 4606
+   }
+  },
+  {
+   "name": "near_dedup",
+   "docs_in": 368104,
+   "docs_removed": 2770,
+   "chars_removed": 34531605,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0,
+   "build": {
+    "duplicates": 2770,
+    "candidate_pairs": 26816,
+    "verified_pairs": 24594
+   }
+  },
+  {
+   "name": "containment_dedup",
+   "docs_in": 365334,
+   "docs_removed": 6985,
+   "chars_removed": 27034968,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0,
+   "build": {
+    "duplicates": 6985,
+    "rounds": 3
+   }
+  },
+  {
+   "name": "pii",
+   "docs_in": 358349,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 1617,
+   "chars_before_modified": 872693315,
+   "chars_after_modified": 872669222
+  },
+  {
+   "name": "licence_credits",
+   "docs_in": 358349,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 63,
+   "chars_before_modified": 26174763,
+   "chars_after_modified": 26152577
+  }
+ ],
+ "input": {
+  "docs": 474102,
+  "chars": 12245848060,
+  "shards": 13
+ },
+ "output": {
+  "docs": 358349,
+  "chars": 10323357571
+ },
+ "code_sha256": {
+  "data_pipeline/sources/doab.py": "cb5dd4a1ef9bde52f644b47001fcdd02dde537e1f1c1051ffc188bf63ac87479",
+  "data_pipeline/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "data_pipeline/common/cli.py": "ab42a74d4f70fd74839bf3edd62cbd75329601a44b1bdd60d870808a17a8f4dd",
+  "data_pipeline/common/dedup.py": "70b218abf0831861c3919b1b3bccf3e75411899381437321e1a1d2474b696660",
+  "data_pipeline/common/io.py": "361c0ce5b5dac1e6440a3709ab407f13a7991eb5e2e135fc621a3749163e76cc",
+  "data_pipeline/common/langid.py": "8450e730268fa781b1d6d0f8d4568955ef4638b0a459a5fdeb90251468581555",
+  "data_pipeline/common/licence.py": "fa67526ba987693b7d56c54d580c63d290717cde304ee832f74ff6d983d73ade",
+  "data_pipeline/common/pii.py": "8ecba1b1cabe64a3a18b158c0446d5d7727c4a7d83e73b58bdd77e713c237989",
+  "data_pipeline/common/pipeline.py": "8de145ee9a80d9213984a06821dd114330f6f0f6b68acd69185001df989a4962",
+  "data_pipeline/common/text.py": "d6d06db9bf5aaffb5c085b5d8c5809080da5bebef48539937d8c9abd00cd5bdf",
+  "licence/licence_filter.py": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+  "data_pipeline/uv.lock": "18d03e9361b9c8bc5f44f68aaf726ca6b82dd4ea6d0bd960ac7c2262ae54771e",
+  "workflow/build_corpus.py": "0608030cd6903e4baa9db71b0499d6e42619450623765a6283c8fd65a5d6fb21"
+ },
+ "language_model_sha256": "7e69ec5451bc261cc7844e49e4792a85d7f09c06789ec800fc4a44aec362764e",
+ "boilerplate_table_sha256": "2b10f7cb971674d25179f050e5e3af7c495e99611295f9be1ec6cb8b9051f60f",
+ "input_sha256": {
+  "00000_doab.json.gz": "f68e7aa0cd6f58203f5ec579ab470014dcb98e7335f4b52fbec1bfc07caf7c83",
+  "00001_doab.json.gz": "84cc4f6430ffc5a1f4aad52a9fcb02923d5096034e80e933417624ba28a61310",
+  "00002_doab.json.gz": "47f6f93e022f7e727ddd223eb87c7658e240887bfb8adce2c87e8133c562598f",
+  "00003_doab.json.gz": "d9843eeafe0ea1059ac18fe0162ce714b1cf82440ecca687147516fb4a130227",
+  "00004_doab.json.gz": "dd0544083ac9c61d2aca80ee505dda9d7f763f7b63a341c372fe0e4544f78a66",
+  "00005_doab.json.gz": "57c228b9ad7d2fb16d95702cc8625b311142eff5701f0e0b4630d00d84ec1bf0",
+  "00006_doab.json.gz": "36b40f9b3c15d165b47953fa81c3955ec4a911de7b68340e6d939501f490b132",
+  "00007_doab.json.gz": "812ec7f5db2bbd6e7a5cbb6eae66d8e06bb9780bb1d70f5727993e7d315b5dda",
+  "00008_doab.json.gz": "b6592ceeb73815e067c6426382c68cf674e74adf35ccb395fe1a0c3ca037ce5f",
+  "00009_doab.json.gz": "b1241ab769257e4f2bf3db5c2edd7d5fd2b5acedc7a8bee43ebbfc3623b4023d",
+  "00010_doab.json.gz": "522fb1998222de17d6332056ead3eb96ae0cf69293a7e4733e65dab4e5c9c5a1",
+  "00011_doab.json.gz": "ae25a88ceb811ab5bf36657ab5aee64fc8eab9a771e6288c6dd9099f90bc8ffc",
+  "00012_doab.json.gz": "71bfe2ce12632fec4544ceb465e7b6e7948349c9357368190577d2013f660f80"
+ },
+ "output_sha256": {
+  "00000_doab.json.gz": "b30b51089b7c130a07e8b7537441ca3a23c4b117036aa93219da599dce6a08cb",
+  "00001_doab.json.gz": "edf9ce8ae6dcd18218496e2b42b46312fe9162d8d4de6f7f3804076e9739299e",
+  "00002_doab.json.gz": "91cc909389b94c71c880c1f0319a9d8d3257e38af17842588047835d8d50eb13",
+  "00003_doab.json.gz": "0a989d03fd00543f3f9245c430b8e96ca3f9e58fd833ed14023413d994022fc0",
+  "00004_doab.json.gz": "085c690c52b68a13312c46da6a8e0e8f91006f9039bab9c4fbf632b569da065a",
+  "00005_doab.json.gz": "6505dc5f5b8c9b79bc516185bd72a1a762f73c97dc44a82482e2a36c91a9731a",
+  "00006_doab.json.gz": "175aa866de259707039479bae67309903710fc04abb8694b92845e512fbf6c24",
+  "00007_doab.json.gz": "044a2f96f39fd9f738f015879a125544c73f34d94d9edb4164830e028f7af021",
+  "00008_doab.json.gz": "131210103f4319f9abbca59cb7eeb38f8a28788308b087d68d77f5a0db1721c7",
+  "00009_doab.json.gz": "51f5a20790120abe68c09d17e3fc7914e5636098d7d8e80288176b500a4c5086",
+  "00010_doab.json.gz": "381fffc17453246d0ba8878b84dff2ddfd265a059c7b08e75d7748c77a2042e5",
+  "00011_doab.json.gz": "adfba9b9371d998a66e742476f246eea2ea03afd15eb7c3cc261951e43256989",
+  "00012_doab.json.gz": "a2faf92965b1a86dec155bcba29f7a55eb4d4fc35c3820506be8cdaacad65fce"
+ }
+}

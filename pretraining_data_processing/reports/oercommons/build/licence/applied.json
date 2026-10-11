@@ -1,0 +1,48 @@
+{
+ "source": "oercommons",
+ "source_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/oercommons",
+ "in_place": true,
+ "filter_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/licence/licence_filter.py",
+ "filter_sha256": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+ "actions_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/oercommons/build/licence/oercommons_actions.jsonl",
+ "actions_sha256": "7a40d64924b3ffe9b96aa616214581dd7a83e7c5bfe316fa8cb512b9551fb024",
+ "summary_strip_span_chars": 44571,
+ "per_shard": {
+  "00000_oercommons.json.gz": {
+   "docs_before": 9339,
+   "chars_before": 94359491,
+   "docs_after": 9036,
+   "chars_after": 83064795,
+   "drops": 303,
+   "drop_chars": 11250124,
+   "strips": 148,
+   "strip_chars_removed": 44572,
+   "verify": {
+    "dropped_ids": 206,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 206
+   },
+   "recount_docs": 9036,
+   "recount_chars": 83064795,
+   "recount_matches": true
+  }
+ },
+ "totals": {
+  "docs_before": 9339,
+  "chars_before": 94359491,
+  "docs_after": 9036,
+  "chars_after": 83064795,
+  "drops": 303,
+  "drop_chars": 11250124,
+  "strips": 148,
+  "strip_chars_removed": 44572
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ }
+}

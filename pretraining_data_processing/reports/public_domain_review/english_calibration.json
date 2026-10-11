@@ -1,0 +1,66 @@
+{
+ "measured_on": "all documents that reach the english step in the full-source sample run (sample = whole source, 1,412 docs)",
+ "docs": 1365,
+ "min_english_share": 0.8143322475570033,
+ "percentiles": {
+  "0.5": 0.9492,
+  "1": 0.9655,
+  "2": 0.9958,
+  "5": 1.0,
+  "10": 1.0,
+  "50": 1.0
+ },
+ "docs_below": {
+  "0.5": 0,
+  "0.6": 0,
+  "0.7": 0,
+  "0.8": 0,
+  "0.9": 3,
+  "0.95": 7
+ },
+ "lowest_docs": [
+  {
+   "id": "giambattista-della-porta-s-de-humana-physiognomonia-libri-iiii-1586",
+   "english_share": 0.8143
+  },
+  {
+   "id": "recordings-of-pygmy-music-from-the-1946-ogooue-congo-mission",
+   "english_share": 0.857
+  },
+  {
+   "id": "novum-instrumentum-geometricum-1607",
+   "english_share": 0.8977
+  },
+  {
+   "id": "plantscapes-from-kerner-von-marilaun-s-pflanzenleben-1887",
+   "english_share": 0.9028
+  },
+  {
+   "id": "mecanisme-de-la-physionomie-humaine",
+   "english_share": 0.9192
+  },
+  {
+   "id": "a-midsummer-schottische",
+   "english_share": 0.9306
+  },
+  {
+   "id": "emile-cohl-s-fantasmagorie-1908",
+   "english_share": 0.944
+  },
+  {
+   "id": "le-centre-de-l-amour-ca-1687",
+   "english_share": 0.9504
+  },
+  {
+   "id": "jehan-cousin-s-livre-de-pourtraiture-1608",
+   "english_share": 0.9523
+  },
+  {
+   "id": "sourire-d-avril-1906",
+   "english_share": 0.9548
+  }
+ ],
+ "reading": "The 10 lowest documents were read: all are English posts whose only non-English segment is a foreign title in the header (e.g. 'De humana physiognomonia libri IIII') or a quoted French record title.",
+ "threshold": 0.5,
+ "decision": "Keep 0.5 (Dolma). No document is below 0.81, so any threshold up to 0.8 removes nothing; 0.9 would remove 3 English documents."
+}

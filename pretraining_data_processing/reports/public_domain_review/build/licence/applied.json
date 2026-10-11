@@ -1,0 +1,84 @@
+{
+ "source": "public_domain_review",
+ "source_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/public_domain_review",
+ "in_place": true,
+ "filter_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/licence/licence_filter.py",
+ "filter_sha256": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+ "actions_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/public_domain_review/build/licence/public_domain_review_actions.jsonl",
+ "actions_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+ "summary_strip_span_chars": 0,
+ "per_shard": {
+  "00000_collections.jsonl.gz": {
+   "docs_before": 1127,
+   "chars_before": 2700174,
+   "docs_after": 1127,
+   "chars_after": 2700174,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 1127,
+   "recount_chars": 2700174,
+   "recount_matches": true
+  },
+  "00000_conjectures.jsonl.gz": {
+   "docs_before": 19,
+   "chars_before": 372258,
+   "docs_after": 19,
+   "chars_after": 372258,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 19,
+   "recount_chars": 372258,
+   "recount_matches": true
+  },
+  "00000_essays.jsonl.gz": {
+   "docs_before": 266,
+   "chars_before": 3892027,
+   "docs_after": 266,
+   "chars_after": 3892027,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 266,
+   "recount_chars": 3892027,
+   "recount_matches": true
+  }
+ },
+ "totals": {
+  "docs_before": 1412,
+  "chars_before": 6964459,
+  "docs_after": 1412,
+  "chars_after": 6964459,
+  "drops": 0,
+  "drop_chars": 0,
+  "strips": 0,
+  "strip_chars_removed": 0
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ }
+}

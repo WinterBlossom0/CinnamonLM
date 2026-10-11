@@ -1,0 +1,26 @@
+{
+ "stage": "download",
+ "started_at_ist": "2026-10-11T18:41:42+05:30",
+ "finished_at_ist": "2026-10-11T18:44:23+05:30",
+ "repo": "common-pile/doab",
+ "revision": "89e7a35935045f2b268a2229347e38f16fbeb729",
+ "code_sha256": {
+  "workflow/build_corpus.py": "7b96be89a6af443dac89f19c2948ee47a6842f3187b1be3da6557dd009dc8bd6",
+  "workflow/raw_manifest.json": "6b3ae62c7c697be3dbfc2516d31f8eddfbd8d66eb4485ff90f4fcdf40f3f7292"
+ },
+ "output_sha256": {
+  "00000_doab.json.gz": "38da5ce390a8c21f4b2fb5ba2bd30d87adafae93fd186c1af04a298a7320a9d3",
+  "00001_doab.json.gz": "7bc7cc973c9da65ae0b53162d6ddaff9817c86da76ffd08d749f9098ef27485f",
+  "00002_doab.json.gz": "d6375a2c8e241af46fafb5d9cb36a66b805d63d679c5fbc41444a6f61e0c230f",
+  "00003_doab.json.gz": "4ce9bac3ad91f0609e7b368a2e54c527f6ae43a9599648fb6bb0472066b46cc0",
+  "00004_doab.json.gz": "e0bee66e1f571f3644c236daa7460af6796cbe07866acba6667e5d513ba08ec7",
+  "00005_doab.json.gz": "3a970d5428e7d4f6f49215e1835ecd8fa6861d428b131af7a83b352d6cb1bd8f",
+  "00006_doab.json.gz": "fc05bacf23cdde1cc43e2605b51e76584bd02a67e9dc8d4e53425a7b8f6e911e",
+  "00007_doab.json.gz": "d535fa3873cca51bb00d04d31b404840f8bb64660b66b6ee7e85b47574369263",
+  "00008_doab.json.gz": "14576e179e9ec476a03d584bcd62fcca83693742e1edb51f3af92432aaa7fc59",
+  "00009_doab.json.gz": "0d3827feae1978bb6acfaf91c3da186b73f66ecfef2e3884a18e6c58ff2f11c4",
+  "00010_doab.json.gz": "9d40a46f92f6bfbab2d7ea3df58a1082a03563f47086e3613a4bf01355253686",
+  "00011_doab.json.gz": "43e90d00103b797ab2a34c116e1e254fa70086dfeda5bfbd26031f622ae3788e",
+  "00012_doab.json.gz": "ce36071b6e82586c2e2bfec741b82f6e0a1d26ce9e63ff1cc6119345f3dccfbc"
+ }
+}

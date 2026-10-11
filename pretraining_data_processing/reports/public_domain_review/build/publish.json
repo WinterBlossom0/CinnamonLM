@@ -1,0 +1,27 @@
+{
+ "stage": "publish",
+ "finished_at_ist": "2026-10-11T22:19:35+05:30",
+ "path": "data/common_pile/public_domain_review",
+ "output_sha256": {
+  "v0/00000_collections.jsonl.gz": "f11b61cc87995468583269f378e3e80e930bcf0da87e7d02b6f5e91dadaf2f71",
+  "v0/00000_conjectures.jsonl.gz": "e025b52f1528277c0a09c021eeed607bbe5fd58cdca6176a003c0e5a2f234cfc",
+  "v0/00000_essays.jsonl.gz": "605f6e86bb42fc14a2f2eec9a9171b0e95f99fbce18f3f31110a9f4cf00a17c6"
+ },
+ "output_sha256_before_gzip_header_fix": {
+  "v0/00000_collections.jsonl.gz": "8c3947baa38184764a3981b1bca454d1c2c91a3db86a0853b70fae0ab6ab1ee1",
+  "v0/00000_conjectures.jsonl.gz": "3be0b65490bb13e0531e5c066b29c9c4ef880c3d906acb54e50a21ce9cbf64a4",
+  "v0/00000_essays.jsonl.gz": "a6fdcfda43b1c81d72dc18fb71611f94a8d4189bebf63d519448f87b88f23c92"
+ },
+ "output_content_sha256": {
+  "v0/00000_collections.jsonl.gz": "ceb81e29301d91564b7172c35caa4c9a5c64c58952e30bfecd144c0ec0e70ca4",
+  "v0/00000_conjectures.jsonl.gz": "0e4b635098fdf15ef332826e29b33f1423351466e2107dc5548ca4e567387656",
+  "v0/00000_essays.jsonl.gz": "ba5bbba17124f83bd5d74ff79caa3a18e3ca16735a58b2ff402b6cd5d851844d"
+ },
+ "gzip_header_fix": {
+  "at_ist": "2026-10-11T23:30:26+05:30",
+  "code_sha256": {
+   "workflow/corpus.py": "2929999c2736dffc608ed187077f20c718e9f66607edb450f59ba7e52e1246dc"
+  },
+  "note": "The decontam and dedup rewriter wrote the current time into each gzip header. The shards were rewritten with the fixed rewriter (mtime=0, no file name): decompressed content unchanged (output_content_sha256)."
+ }
+}

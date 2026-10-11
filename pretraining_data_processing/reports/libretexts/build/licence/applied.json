@@ -1,0 +1,48 @@
+{
+ "source": "libretexts",
+ "source_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/libretexts",
+ "in_place": true,
+ "filter_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/licence/licence_filter.py",
+ "filter_sha256": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+ "actions_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/libretexts/build/licence/libretexts_actions.jsonl",
+ "actions_sha256": "5eac7b1fad645ced472f26e28f1bd68fdc922c6349e2e017aca9d80d00e9443c",
+ "summary_strip_span_chars": 266298,
+ "per_shard": {
+  "00000_libretext.json.gz": {
+   "docs_before": 62269,
+   "chars_before": 523051203,
+   "docs_after": 61238,
+   "chars_after": 511197639,
+   "drops": 1031,
+   "drop_chars": 11591436,
+   "strips": 1001,
+   "strip_chars_removed": 262128,
+   "verify": {
+    "dropped_ids": 1031,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1031
+   },
+   "recount_docs": 61238,
+   "recount_chars": 511197639,
+   "recount_matches": true
+  }
+ },
+ "totals": {
+  "docs_before": 62269,
+  "chars_before": 523051203,
+  "docs_after": 61238,
+  "chars_after": 511197639,
+  "drops": 1031,
+  "drop_chars": 11591436,
+  "strips": 1001,
+  "strip_chars_removed": 262128
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ }
+}

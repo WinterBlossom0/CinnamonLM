@@ -1,0 +1,21 @@
+{
+ "stage": "publish",
+ "finished_at_ist": "2026-10-11T22:19:41+05:30",
+ "path": "data/common_pile/oercommons",
+ "output_sha256": {
+  "00000_oercommons.json.gz": "45c5197eec2bff963d8a2746c18d2fc9b5898e01af40c2fb6110179c12a70a7b"
+ },
+ "output_sha256_before_gzip_header_fix": {
+  "00000_oercommons.json.gz": "e5e5b048d3d6fe931ba70f858f97fe55b0b7d65493c2f77e3b74cd6f99bf9128"
+ },
+ "output_content_sha256": {
+  "00000_oercommons.json.gz": "23cd086ffaa78c45f602fba210e7229451cf2e24eebf4d9473966499455ebaee"
+ },
+ "gzip_header_fix": {
+  "at_ist": "2026-10-11T23:30:26+05:30",
+  "code_sha256": {
+   "workflow/corpus.py": "2929999c2736dffc608ed187077f20c718e9f66607edb450f59ba7e52e1246dc"
+  },
+  "note": "The decontam and dedup rewriter wrote the current time into each gzip header. The shards were rewritten with the fixed rewriter (mtime=0, no file name): decompressed content unchanged (output_content_sha256)."
+ }
+}

@@ -1,0 +1,2120 @@
+{
+ "dataset": "common-pile/doab (raw version; 13 gzipped JSON-lines shards, PDF -> Markdown by Marker)",
+ "files_examined": [
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00000_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00001_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00002_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00003_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00004_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00005_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00006_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00007_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00008_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00009_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00010_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00011_doab.json.gz",
+  "/home/vihaa/CinnamonLM/raw/common_pile/doab/00012_doab.json.gz",
+  "common-pile/doab_filtered: doab-0000..0004.json.gz (5 shards, 403,992 docs; downloaded to /home/vihaa/CinnamonLM/raw/common_pile_processed/doab/_filtered_ref/, indexed, then deleted)"
+ ],
+ "data_state_note": "The per-document metrics pass (raw/report/sample commands) ran on the ORIGINAL raw shards (474,445 docs; metrics written 2026-10-10 10:00-11:45 IST). At 13:45 IST the licence step rewrote the shards in place (licence_applied.json: 395 docs dropped = 235.2M chars, 4,292 credit-line strips = 2.57M chars; 474,050 docs / 12,217,120,546 chars remain). The 'extra' pass and all manual reading used the licence-applied shards. Doc ids are unchanged, so ids in this file resolve in the current shards unless the licence step dropped them (e.g. 4b877d36-0091-4b0b-bdb8-f4f33e96d9d6).",
+ "docs_sampled": {
+  "manual_reading": "105 document excerpts read (head 2-3k chars, middle 1.5-2k, tail 1-1.5k): 31 in batch 1 (1 of 32 selected was licence-dropped; 2 shortest, 2 at p5, 4 longest, 14 random whole books, 10 random sections; shards 00000-00012), 24 in batch 2 (English-share bands, filter-dropped English docs, font-garbled docs, one whole book each of Language Science Press, InTechOpen, Bentham, UCL Press, KIT, transcript, Taylor & Francis), 42 head+middle excerpts from the 'sample' command (English-share bands and filter drops), 8 mixed-language whole books at 5 offsets each. Also 25 random lines per line class (precision check, shard 00005, ~1,200 docs) and the reservoir examples of every issue.",
+  "measured_by_code": "all 474,445 docs (metrics pass, original raw) and all 474,050 docs (extra pass, licence-applied)"
+ },
+ "total_docs_estimate": {
+  "raw_original": 474445,
+  "after_licence_step_on_disk": 474050,
+  "chars_raw_original": 12454913258,
+  "chars_on_disk": 12217120546,
+  "books": 19883,
+  "publishers_distinct": 120,
+  "readme_states": "474,445 docs, 12.5 GB (matches)"
+ },
+ "schema_fields": {
+  "top_level": [
+   "id",
+   "text",
+   "source",
+   "added",
+   "created",
+   "metadata"
+  ],
+  "metadata": [
+   "license",
+   "book_id",
+   "url",
+   "author",
+   "title",
+   "publisher",
+   "isbn",
+   "section_idx"
+  ],
+  "filtered_release_metadata": [
+   "author",
+   "book_id",
+   "isbn",
+   "license",
+   "provenance",
+   "publisher",
+   "section_idx",
+   "title",
+   "url"
+  ],
+  "id_format": "'<book uuid>' for a whole book (8,288 docs, 4.51G chars) or '<book uuid>.<section_idx>' for a section of a book split at Marker headings (466,157 docs, 7.95G chars; only IntechOpen 296,457 and MDPI 169,700). Split books: 11,595; sections per book p50 11, max 652. Splitting is uneven: in 3,679 of the split books with >=3 sections one section holds >50% of the book text (e.g. 9ef47a7e-6e36-4f0b-84ec-c0cb93761508.4 = 4,119,662 of 4,125,167 chars), so 'section' docs range from a bare heading (50 chars) to a whole book. Only 6 books span two shards.",
+  "text_format": "Marker Markdown: '#' headings, **bold**/*italic*, <sup>/<sub> HTML tags, $$...$$ LaTeX display math, backslash-escaped markdown characters; NO markdown tables (0 table rows in 474,445 docs) and almost no image placeholders (28)."
+ },
+ "length_stats": {
+  "chars_all_docs": {
+   "p1": 63.0,
+   "p5": 116.0,
+   "p10": 201.0,
+   "p25": 884.0,
+   "p50": 2833.0,
+   "p75": 9166.0,
+   "p90": 32639.6,
+   "p95": 66533.2,
+   "p99": 629612.96,
+   "min": 50.0,
+   "max": 5488882.0,
+   "mean": 26251.54
+  },
+  "words_all_docs": {
+   "p1": 8.0,
+   "p5": 15.0,
+   "p10": 26.0,
+   "p25": 128.0,
+   "p50": 411.0,
+   "p75": 1365.0,
+   "p90": 4873.0,
+   "p95": 9873.8,
+   "p99": 94366.8,
+   "min": 3.0,
+   "max": 821920.0,
+   "mean": 3915.8
+  },
+  "section_docs_chars": {
+   "p1": 63.0,
+   "p5": 115.0,
+   "p10": 197.0,
+   "p25": 860.0,
+   "p50": 2740.0,
+   "p75": 8512.0,
+   "p90": 27627.4,
+   "p95": 50310.4,
+   "p99": 288314.08,
+   "min": 50.0,
+   "max": 4142634.0,
+   "mean": 17048.37
+  },
+  "whole_book_chars": {
+   "p1": 13560.19,
+   "p5": 33669.5,
+   "p10": 56083.9,
+   "p25": 309236.5,
+   "p50": 498314.0,
+   "p75": 704222.5,
+   "p90": 985691.2,
+   "p95": 1213031.9,
+   "p99": 1874145.09,
+   "min": 1446.0,
+   "max": 5488882.0,
+   "mean": 543882.44
+  },
+  "length_buckets_chars": {
+   "0-200": {
+    "docs": 47118,
+    "chars": 5622133
+   },
+   "200-1000": {
+    "docs": 81246,
+    "chars": 45891979
+   },
+   "1000-10000": {
+    "docs": 234450,
+    "chars": 877841110
+   },
+   "10000-100000": {
+    "docs": 93925,
+    "chars": 2713638840
+   },
+   "100000-1000000": {
+    "docs": 16012,
+    "chars": 6326593687
+   },
+   "1000000-1000000000": {
+    "docs": 1694,
+    "chars": 2485325509
+   }
+  },
+  "publishers_top_by_chars_[publisher,books,docs,chars]": [
+   [
+    "IntechOpen",
+    6091,
+    296457,
+    4898962466
+   ],
+   [
+    "MDPI - Multidisciplinary Digital Publishing Institute",
+    5504,
+    169700,
+    3048253153
+   ],
+   [
+    "Frontiers Media SA",
+    2891,
+    2891,
+    1870457268
+   ],
+   [
+    "Springer Nature",
+    2193,
+    2193,
+    1341028448
+   ],
+   [
+    "Language Science Press",
+    209,
+    209,
+    143317931
+   ],
+   [
+    "Open Book Publishers",
+    227,
+    227,
+    140226358
+   ],
+   [
+    "transcript Verlag",
+    164,
+    164,
+    98529855
+   ],
+   [
+    "Firenze University Press",
+    541,
+    541,
+    75870662
+   ],
+   [
+    "",
+    123,
+    123,
+    74501739
+   ],
+   [
+    "De Gruyter",
+    92,
+    92,
+    69042581
+   ],
+   [
+    "UCL Press",
+    108,
+    108,
+    63836553
+   ],
+   [
+    "KIT Scientific Publishing",
+    170,
+    170,
+    57112811
+   ]
+  ],
+  "notes": "Char volume is dominated by docs >=100k chars (16,012 + 1,694 docs = 8.81G of 12.45G chars). 47,118 docs are <200 chars (5.6M chars): bare section titles, editor lines, 'Contents' fragments, e.g. 0125951d-801e-4c01-940d-d4ffdd45bf3c.85 = '**6. Other potential therapeutic targets in HCC**'."
+ },
+ "language_mix": {
+  "method": "fastText lid.176 (/home/vihaa/CinnamonLM/data_pipeline/models/lid.176.bin). (a) doc level on whitespace-joined lowercased text; (b) chunk level: consecutive paragraphs merged to >=300 chars after removing tags, markup, '$', URLs; chunks with <50% letters skipped; label kept if score>=0.5 else 'uncertain'.",
+  "doc_level_label_docs": {
+   "en": 472945,
+   "es": 482,
+   "pt": 302,
+   "fr": 219,
+   "it": 120,
+   "de": 110,
+   "zh": 55,
+   "pl": 51,
+   "fi": 15,
+   "ja": 15,
+   "hu": 15,
+   "tr": 15,
+   "cs": 9,
+   "ru": 9,
+   "el": 7,
+   "fa": 6,
+   "lt": 6,
+   "ro": 6,
+   "war": 6,
+   "nl": 6,
+   "id": 5,
+   "hr": 5,
+   "ceb": 4,
+   "no": 4,
+   "ca": 3
+  },
+  "doc_level_label_chars_frac": {
+   "en": 0.99789,
+   "de": 0.0009,
+   "it": 0.00036,
+   "fr": 0.00029,
+   "la": 0.00014,
+   "pt": 0.00013,
+   "ru": 0.0001,
+   "ar": 5e-05,
+   "es": 5e-05,
+   "no": 4e-05
+  },
+  "doc_level_en_score_percentiles": {
+   "p1": 0.407,
+   "p5": 0.631,
+   "p10": 0.727,
+   "p25": 0.852,
+   "p50": 0.909,
+   "p75": 0.934,
+   "p90": 0.95,
+   "p95": 0.959,
+   "p99": 0.974,
+   "min": 0.065,
+   "max": 0.998,
+   "mean": 0.87
+  },
+  "docs_with_doc_level_en_le_0.5": 11115,
+  "chunk_level_chars_frac": {
+   "en": 0.96736,
+   "uncertain": 0.02865,
+   "de": 0.00134,
+   "it": 0.0007,
+   "fr": 0.00059,
+   "pt": 0.00034,
+   "es": 0.00033,
+   "ru": 0.00012,
+   "la": 0.00011,
+   "no": 6e-05
+  },
+  "english_share_of_all_chunks_bands": {
+   "0-0.1": {
+    "docs": 4011,
+    "chars": 10150680,
+    "whole_book_docs": 32
+   },
+   "0.1-0.3": {
+    "docs": 532,
+    "chars": 8330758,
+    "whole_book_docs": 7
+   },
+   "0.3-0.5": {
+    "docs": 1897,
+    "chars": 34589254,
+    "whole_book_docs": 19
+   },
+   "0.5-0.7": {
+    "docs": 7125,
+    "chars": 120306382,
+    "whole_book_docs": 48
+   },
+   "0.7-0.9": {
+    "docs": 22179,
+    "chars": 717978576,
+    "whole_book_docs": 351
+   },
+   "0.9-0.97": {
+    "docs": 25034,
+    "chars": 2971133975,
+    "whole_book_docs": 941
+   },
+   "0.97-1.0": {
+    "docs": 391967,
+    "chars": 8590288345,
+    "whole_book_docs": 6890
+   }
+  },
+  "english_share_of_language_decided_chunks_bands (uncertain excluded)": {
+   "<0.5": {
+    "whole_books": 49,
+    "sections": 605
+   },
+   "0.5-0.8": {
+    "whole_books": 55,
+    "sections": 409
+   },
+   "0.8-0.95": {
+    "whole_books": 205,
+    "sections": 1126
+   },
+   ">=0.95": {
+    "whole_books": 7979,
+    "sections": 438801
+   },
+   "chars": {
+    "<0.5": 21172921,
+    "0.5-0.8": 35487279,
+    "0.8-0.95": 127120407,
+    ">=0.95": 12267594790
+   }
+  },
+  "reading_results": [
+   "Low English share over ALL chunks is mostly NOT foreign language: of the sampled sections with share <0.5, nearly all were English text dominated by LaTeX math, reference lists, author/affiliation lists or Marker font garble (e.g. 7d8866bf-f8ba-45f4-a5c2-bbe7360bed6d.79 share 0.25 = finite-difference equations; 20441714-9d5d-4c7e-8b55-12bac511d446.112 = appendix of equations; e5519bf8-f11d-494d-a4f1-a8cc1bea1adc.148 = MATLAB code). These fall in 'uncertain', so the share must be computed over language-decided chunks only.",
+   "Doc-level fastText en score is also depressed by math/references: 11,115 docs have en<=0.5 but only 1,500 docs have a non-English doc label; the Common Pile filter (en>0.5) dropped 11,091 of the 11,115, i.e. it removed English math-heavy sections too.",
+   "Truly non-English whole books exist: 49 whole books with English share <0.5 of decided chunks, e.g. 195ebd74-72ef-42ed-aa9c-951293eec527 (Verlag Barbara Budrich, German, 541,836 chars), 21 Firenze University Press Italian volumes/chapters, cefa18b7-2aea-42b0-bfd2-b0d76c7964a9 (Language Science Press, French 1.13M), 4d0c038c-88d6-49d1-a2a9-253ca17f6176 (Portuguese), 5cc01636-c69f-4e73-824b-386a12874194 (Norwegian), a5ff2d3a-3d3c-41a5-ab19-0d522580bb21 (Japanese).",
+   "Mixed books (0.3-0.8) are multilingual edited volumes with whole chapters in German/French/Italian next to English chapters (63232ac3-b236-42a8-99d0-907c32451f38 transcript yearbook de/en 0.45; 1a8e9108-5463-49e0-ae0e-9e255389b016 'Entanglements of the Maghreb' fr/en 0.55; 9bd4e9e5-a8c7-40d2-a1a4-f7ed74872645 Carnap volume de/en 0.30) or source editions with translation (19bd841e-a1fb-452f-8422-db29ff22c964 Judaeo-Arabic/Hebrew text + English, 0.75; 8a2802ae-126a-43ef-9a7a-daa8477495bc Saussure French original + English, 0.57).",
+   "English monographs with long foreign quotations sit at 0.8-0.95: 7334ad09-51c5-4b23-8b3e-16768bc9c556 'The Atheist's Bible' (fr quotes, 0.85), 24eba420-de60-43be-91a9-9e757d5a8349 (English with Italian quotes). These are English documents that the user decision says to keep.",
+   "Sections with real foreign text are usually reference lists in French/Spanish/Portuguese inside English chapters (04da9bbc-be1c-46b7-bdda-cb93bf584ccb.47 fr refs; a4e12729-6e41-4256-bfaf-3e01a3e0e5c5.42 Spanish/French refs)."
+  ],
+  "calibrated_proposal": "Per document: share = en_chars / (all chunk chars - uncertain chars). Keep >=0.8 (8,184 whole books, 439,927 sections). Drop <0.5 (49 whole books, 605 sections; read list in /home/vihaa/CinnamonLM/raw/common_pile_processed/doab/analysis/whole_lowen.txt). 0.5-0.8 (55 whole books, 409 sections, 35.5M chars) are multilingual collections; see open_questions. Docs with no decidable chunk (21,700 docs, 2.1M chars) are tiny and are handled by the length/content rules."
+ },
+ "issues": [
+  {
+   "name": "section_split_fragments_and_tiny_docs",
+   "description": "IntechOpen/MDPI books are split into one doc per Marker heading. 13.8% of docs have <30 body words (headings only, 'Edited by', 'Conflict of interest' blocks, 'We are IntechOpen' ad pages). 11.4% of docs are front/back-matter sections (preface, contents, author details, acknowledgements, references, notes, index).",
+   "prevalence": {
+    "tiny_doc_body_words_lt_30": {
+     "docs": 65434,
+     "docs_frac": 0.1379,
+     "chars_frac": 0.00161
+    },
+    "frontback_section_doc": {
+     "docs": 53985,
+     "docs_frac": 0.1138,
+     "chars_frac": 0.12217
+    },
+    "docs_lt_200_chars": 47118
+   },
+   "measurement_method": "body_words = words on lines classified body/heading by classify_lines(); front/back section = first line (markup and numbering removed) matches FRONTBACK_SECTION regex (meet the editor|preface|contents|we are intechopen|author details|acknowledgements|conflicts of interest|funding|abbreviations|references|bibliography|notes|index|appendix ...).",
+   "evidence_examples": [
+    "018950d6-67cc-4d53-8897-3b0b3f50ce03.1: 'Women and Society\\n\\n*Edited by Medani P. Bhandari*'",
+    "199d2a90-27ab-4f95-85f5-39afe162296a.126: '**Conflict of interest**\\n\\nThe authors declare no conflict of interest.'",
+    "2738faf5-77f4-4319-b32b-c4cf5b45ffd4.5: 'Interested in publishing with us? Contact book.department@intechopen.com ...'",
+    "436218b3-e2d8-40f7-b179-2b6e157e3e5d.7: IntechOpen book-series editor page"
+   ],
+   "severity": "high (count), low (chars: 0.16% / 12.2%)"
+  },
+  {
+   "name": "publisher_boilerplate_and_front_matter",
+   "description": "Copyright/licence pages, ISBN/ISSN/DOI lines, Deutsche Nationalbibliothek/LoC CIP notices, 'We are IntechOpen' ad pages, Frontiers 'About Frontiers' pages, MDPI 'Publisher's Note', 'Citation:/Received:/Accepted:' lines, IntechOpen 'Additional information is available at the end of the chapter', '*Address all correspondence to', chapter-level CC licence paragraphs repeated in every chapter, back-cover blurbs and cover credits ('Photo by X / iStock'), series pages and editorial boards; publisher catalogue adverts with prices at the end of transcript/Budrich books.",
+   "prevalence": {
+    "line_boilerplate": {
+     "all_docs": {
+      "docs_frac": 0.4383,
+      "chars_frac": 0.0218
+     },
+     "section_docs": {
+      "docs_frac": 0.4283,
+      "chars_frac": 0.02425
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.9981,
+      "chars_frac": 0.01748
+     }
+    },
+    "line_admin_statement": {
+     "all_docs": {
+      "docs_frac": 0.1939,
+      "chars_frac": 0.00735
+     },
+     "section_docs": {
+      "docs_frac": 0.1892,
+      "chars_frac": 0.00996
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.4599,
+      "chars_frac": 0.00275
+     }
+    },
+    "front_matter_before_intro_heading_whole_books": {
+     "docs_with_intro_heading_in_first_30pct": 7834,
+     "of_whole_books": 8288,
+     "chars_before_intro": {
+      "p1": 100.33,
+      "p5": 479.65,
+      "p10": 838.0,
+      "p25": 2759.0,
+      "p50": 6498.5,
+      "p75": 19125.5,
+      "p90": 27487.0,
+      "p95": 41140.3,
+      "p99": 93445.69,
+      "min": 0.0,
+      "max": 334616.0,
+      "mean": 13225.11
+     },
+     "chars_before_intro_total_frac_of_whole_book_chars": 0.02298
+    },
+    "cover_credit_iStock": {
+     "docs": 10796,
+     "docs_frac": 0.02277,
+     "chars_of_affected_docs_frac": 0.15646,
+     "matches": 10801,
+     "top_publishers_docs": [
+      [
+       "IntechOpen",
+       10764
+      ],
+      [
+       "",
+       8
+      ],
+      [
+       "Frontiers Media SA",
+       5
+      ],
+      [
+       "Springer Nature",
+       5
+      ],
+      [
+       "InTechOpen",
+       4
+      ],
+      [
+       "UCL Press",
+       3
+      ]
+     ]
+    },
+    "catalogue_ad": {
+     "docs": 119,
+     "docs_frac": 0.00025,
+     "chars_of_affected_docs_frac": 0.00596,
+     "matches": 989,
+     "top_publishers_docs": [
+      [
+       "transcript Verlag",
+       90
+      ],
+      [
+       "Verlag Barbara Budrich",
+       18
+      ],
+      [
+       "Bielefeld University Press",
+       7
+      ],
+      [
+       "",
+       4
+      ]
+     ]
+    },
+    "frontiers_ebook_copyright_statement_docs": "1,755 of 2,840 Frontiers docs (zgrep count on licence-applied shards)"
+   },
+   "measurement_method": "Line classes from classify_lines(): BOILERPLATE regex list (23 alternatives, searched in the first 400 chars of a markup-stripped line) and ADMIN_STATEMENT (Author Contributions|Funding|Data Availability|Conflicts of Interest|Keywords|Edited by ...). Precision on 25 random lines each: boilerplate 25/25 non-prose (21/25 publisher boilerplate, 4/25 reference lines with DOI/ISSN); admin_statement 25/25. Front matter = chars before the first Introduction/Preface/Foreword/Prologue/Abstract heading within the first 30% of a whole book.",
+   "evidence_examples": [
+    "9edf9017-5134-46e6-9e0c-9405f6400d53: 'ISBN 978-94-6265-272-9 ... © The Editor(s) (if applicable) and The Author(s) 2019. This book is an open access publication. Open Access This book is licensed under ...'",
+    "5f916b75-8765-40f7-b084-58dfb439a28d: 'We are IntechOpen, the world's leading publisher of Open Access books Built by scientists, for scientists ... Open access books available 5,300'",
+    "c72bc744-c355-4a90-8fcc-0fee5b59015f: '#### Frontiers Copyright Statement © Copyright 2007-2019 Frontiers Media SA. All rights reserved.'",
+    "62ebaff3-b7fe...: '**Publisher's Note:** MDPI stays neutral with regard to jurisdictional claims'",
+    "9ef47a7e-6e36-4f0b-84ec-c0cb93761508.4 end: 'Photo by Natali\\_Mis / iStock'",
+    "fec3f037-4009-4fe9-99ac-cbc64a3059d5 end: 'March 2021, 244 p., pb. 29,00 € (DE), 978-3-8376-5620-6 E-Book: PDF: 25,99 € (DE)'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "references_bibliography",
+   "description": "Reference lists, often scrambled into fragments ('2009, 91, (3), 652-63.'), and inline citation lines. Half of the 'References' headings are EMPTY (heading followed by a licence paragraph, next heading or end of doc), mostly MDPI/Frontiers/Springer, so the reference list was not extracted for them (cause unknown); IntechOpen keeps its lists. Some section docs consist only of reference fragments + the next chapter's title page.",
+   "prevalence": {
+    "line_reference": {
+     "all_docs": {
+      "docs_frac": 0.1725,
+      "chars_frac": 0.04619
+     },
+     "section_docs": {
+      "docs_frac": 0.158,
+      "chars_frac": 0.06163
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.9841,
+      "chars_frac": 0.01897
+     }
+    },
+    "reference_heading_without_entries": {
+     "docs": 38583,
+     "docs_frac": 0.08139,
+     "chars_of_affected_docs_frac": 0.66171,
+     "matches": 105430,
+     "top_publishers_docs": [
+      [
+       "MDPI - Multidisciplinary Digital Publishing Institute",
+       25088
+      ],
+      [
+       "IntechOpen",
+       7510
+      ],
+      [
+       "Frontiers Media SA",
+       2810
+      ],
+      [
+       "Springer Nature",
+       1715
+      ],
+      [
+       "Firenze University Press",
+       248
+      ],
+      [
+       "InTechOpen",
+       200
+      ]
+     ]
+    },
+    "reference_heading_with_entries": {
+     "docs": 32673,
+     "docs_frac": 0.06892,
+     "chars_of_affected_docs_frac": 0.63564,
+     "matches": 121120,
+     "top_publishers_docs": [
+      [
+       "IntechOpen",
+       22705
+      ],
+      [
+       "MDPI - Multidisciplinary Digital Publishing Institute",
+       3473
+      ],
+      [
+       "Frontiers Media SA",
+       2837
+      ],
+      [
+       "Springer Nature",
+       1817
+      ],
+      [
+       "Firenze University Press",
+       271
+      ],
+      [
+       "InTechOpen",
+       242
+      ]
+     ]
+    },
+    "by_publisher_reference_chars_frac": {
+     "IntechOpen": 0.0982,
+     "Frontiers": 0.0257,
+     "Springer": 0.0156,
+     "MDPI": 0.0029
+    }
+   },
+   "measurement_method": "REF_HEAD heading switches a 'reference' section until the next heading; outside it, is_reference_line(): [n] prefix, 'n. Surname, X.' prefix, DOI, short numeric fragments with year/page range, or name+year+locator patterns. Precision 23/25 on random lines. Empty heading = next non-blank line is a heading, boilerplate, or end of doc (extra pass).",
+   "evidence_examples": [
+    "feb0e705-b563-43f9-903c-9fa1ea76fd5a.22: '[103] David, L.; Feige, J. J.; Bailly, S., Emerging role of bone morphogenetic proteins in ... 2009, 91, (3), 652-63. 2010, 16, (12), 1400-6.'",
+    "02c3ab7c-17b5-4ce9-b27b-645f77c32f7a.5: '#### **References**' -> '© 2019 by the authors. Licensee MDPI, Basel, Switzerland...'",
+    "1221e911-70a2-4a55-8849-e1670723ac30: ends with '#### **References**' and nothing after it"
+   ],
+   "severity": "high (IntechOpen), medium overall"
+  },
+  {
+   "name": "index_and_toc",
+   "description": "Back-of-book indexes (comma-separated term + page lists) and tables of contents with page numbers, frequently in broken reading order (IntechOpen contents pages are shuffled).",
+   "prevalence": {
+    "line_index": {
+     "all_docs": {
+      "docs_frac": 0.0123,
+      "chars_frac": 0.00141
+     },
+     "section_docs": {
+      "docs_frac": 0.007,
+      "chars_frac": 0.00015
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.3146,
+      "chars_frac": 0.00363
+     }
+    },
+    "index_tail_after_last_Index_heading": {
+     "docs": 1717,
+     "whole_book_docs": 1698,
+     "chars": 20824239,
+     "chars_pct": {
+      "p1": 343.28,
+      "p5": 938.0,
+      "p10": 1497.8,
+      "p25": 3444.0,
+      "p50": 8084.0,
+      "p75": 15610.0,
+      "p90": 26558.8,
+      "p95": 36364.8,
+      "p99": 61286.72,
+      "min": 8.0,
+      "max": 210490.0,
+      "mean": 12128.27
+     }
+    },
+    "line_toc": {
+     "all_docs": {
+      "docs_frac": 0.014,
+      "chars_frac": 0.00012
+     },
+     "section_docs": {
+      "docs_frac": 0.0118,
+      "chars_frac": 0.00015
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.1396,
+      "chars_frac": 7e-05
+     }
+    }
+   },
+   "measurement_method": "INDEX_HEAD heading + is_index_line() (>=3 'term, 12-15' entries, entries/words>=0.12, letters>=30%); index_tail_chars = chars after the last 'Index' heading in the final 25% of a doc; TOC = 20-250 char line with a trailing page number and a TOC word, or dot leaders. Precision: index 20/25, toc 16/20.",
+   "evidence_examples": [
+    "2fc6c944-b49c-487f-ad1f-fc84ea259b04 end: 'Target organism, 20, 94, 95, 127, 128, 135, 147 ... Technically generated non-knowledge, 230, 232'",
+    "7142b2e8-8477-470c-91f9-0352faaac8e3 end: 'soil water content, 190 status of cotton, 186 stochastic frontier models, 231 ...'",
+    "9ef47a7e-6e36-4f0b-84ec-c0cb93761508.4: 'Chapter 2 **Double Strand Break Signaling in Health and Diseases 47** Chapter 3 ... **and Its Genetic Variants 73**' (shuffled contents)"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "running_headers_footers_page_numbers",
+   "description": "Page furniture kept inline: book-title + page-number headers ('134 Advances in the Biology, Imaging and Therapies for Glioblastoma'), chapter running heads with DOI ('*High Entropy Alloys for Medical Applications DOI: http://dx.doi.org/10.5772/intechopen.89318*'), MDPI proof stamps ('*Water* **2020**, *12*, x FOR PEER REVIEW 9 of 22'), Frontiers proof stamps ('fmicb-09-01241 June 15, 2018 Time: 12:0 # 9'), bare page numbers ('**187**').",
+   "prevalence": {
+    "line_running_header": {
+     "all_docs": {
+      "docs_frac": 0.0878,
+      "chars_frac": 0.00273
+     },
+     "section_docs": {
+      "docs_frac": 0.0799,
+      "chars_frac": 0.00371
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.5282,
+      "chars_frac": 0.001
+     }
+    },
+    "line_page_number": {
+     "all_docs": {
+      "docs_frac": 0.1622,
+      "chars_frac": 0.0002
+     },
+     "section_docs": {
+      "docs_frac": 0.1552,
+      "chars_frac": 0.00028
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.5539,
+      "chars_frac": 5e-05
+     }
+    },
+    "line_repeated_ge3_times": {
+     "all_docs": {
+      "docs_frac": 0.0408,
+      "chars_frac": 0.00142
+     },
+     "section_docs": {
+      "docs_frac": 0.0322,
+      "chars_frac": 0.00174
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.5224,
+      "chars_frac": 0.00085
+     }
+    },
+    "boilerplate_running_head_with_DOI": "inside line_boilerplate"
+   },
+   "measurement_method": "running_header: FIXED_RUNNING_HEADER regex, or a <=150-char line with a number at its start/end whose digit-stripped text (>=8 chars) recurs >=2 times in the doc and is not a numbered section heading. page_number: line that is only 1-4 digits or a roman numeral (with markup). Precision on 25 random lines: running_header 19/25 (misses: repeated numeric experiment lines, math), page_number 25/25.",
+   "evidence_examples": [
+    "b6467971-62f6-4201-8256-a348b367eed3.55: '132 Advances in the Biology, Imaging and Therapies for Glioblastoma'",
+    "1297272e-4fd3-42de-9137-a72008f987e8.144: '*High Entropy Alloys for Medical Applications DOI: http://dx.doi.org/10.5772/intechopen.89318*' ... '**187**'",
+    "2017d042-8547-4b88-8e0a-990a3fb6d545.10: '*Water* **2020**, *12*, x FOR PEER REVIEW 9 of 22'",
+    "630626fb-bbfe...: 'fmicb-09-01241 June 15, 2018 Time: 12:0 # 9'"
+   ],
+   "severity": "medium (many docs, ~0.3% chars)"
+  },
+  {
+   "name": "broken_reading_order",
+   "description": "Paragraphs split by page/column breaks, figure captions, footnotes and running heads; in older IntechOpen books (2011-2013 templates) whole sentence tails are moved to the end of the page ('was only 4%.', 'the following figure.'), and text blocks are duplicated. 24.7% of IntechOpen body paragraphs start in lowercase vs 6.5% for Springer.",
+   "prevalence": {
+    "paragraph_flow_all": {
+     "body_paragraphs": 24098553,
+     "starts_lowercase_frac": 0.1764,
+     "ends_mid_sentence_frac": 0.1524,
+     "ends_mid_sentence_then_lowercase_within_3": 1844189,
+     "joined_directly": 836414,
+     "interrupted_by": {
+      "other": 669855,
+      "footnote": 61089,
+      "caption": 124374,
+      "page_header_or_number": 47922,
+      "display_math": 104535
+     },
+     "docs_with_orphan_frac": 0.4535
+    },
+    "paragraph_flow_whole_books": {
+     "body_paragraphs": 6705346,
+     "starts_lowercase_frac": 0.0924,
+     "ends_mid_sentence_frac": 0.0929,
+     "ends_mid_sentence_then_lowercase_within_3": 364069,
+     "joined_directly": 160432,
+     "interrupted_by": {
+      "other": 40125,
+      "footnote": 54517,
+      "caption": 60275,
+      "display_math": 35894,
+      "page_header_or_number": 12826
+     },
+     "docs_with_orphan_frac": 0.9888
+    },
+    "starts_lowercase_frac_by_publisher": {
+     "IntechOpen": 0.2465,
+     "Firenze": 0.1561,
+     "transcript": 0.1285,
+     "Frontiers": 0.1091,
+     "OBP": 0.1096,
+     "MDPI": 0.0847,
+     "Springer": 0.0652
+    }
+   },
+   "measurement_method": "paragraph_flow(): body paragraphs (blank-line separated, >=20 chars, not heading/list/table/math) starting with a lowercase word not in a continuation list (where|and|which|i.e.|...), and paragraphs ending with a lowercase word and no sentence punctuation; for those, the next 3 blocks are scanned for a lowercase continuation and the intervening block type is recorded.",
+   "evidence_examples": [
+    "b6467971-62f6-4201-8256-a348b367eed3.55: '... optimal contrast was\\n\\nThe gradient-echo sequence provided almost no contrast ...\\n\\nachieved with a short TE and a flip angle between 25° and 50°.\\n\\nthe following figure.'",
+    "1297272e-4fd3-42de-9137-a72008f987e8.144: same paragraph appears twice; fragments 'detector from the LAMET, UPB laboratory.', 'rapid cooling).'",
+    "200da220-21aa-4e68-949f-2608ffda24f3.7: '...cemented by composite cement slurry is' || 'Quartz sand with different particle sizes ...'",
+    "d5fdda06-d80f-4e3d-94fe-d9cf200eae4d.73: conclusions paragraph, author contributions and funding duplicated (two text layers)"
+   ],
+   "severity": "high for IntechOpen pre-2015 books; repair is not reliable, filtering by rate is possible"
+  },
+  {
+   "name": "hyphenation_across_line_breaks",
+   "description": "Marker joins lines but keeps the end-of-line hyphen plus a space ('techni‐ cally', 'Cucurbita‐ ceae', U+2010 or ASCII), or keeps 'Univer-\\n\\nsity' across a block break. Separately, hyphens of compounds broken at line end are dropped ('hardto-melt', 'nullsignal', 'userfriendly', 'CVDdiamond').",
+   "prevalence": {
+    "hyphen_break": {
+     "docs_frac": 0.1126,
+     "matches": 1016481,
+     "docs_frac_ge_10": 0.0236,
+     "per_1M_chars": 81.61
+    },
+    "hyphen_break_validated": {
+     "docs_frac": 0.0726,
+     "matches": 858090,
+     "docs_frac_ge_10": 0.0191,
+     "per_1M_chars": 68.9
+    },
+    "per_1M_chars_by_publisher": {
+     "IntechOpen": 197.24,
+     "Firenze": 18.23,
+     "MDPI": 7.73,
+     "transcript": 5.16,
+     "Springer": 3.62
+    }
+   },
+   "measurement_method": "HYPHEN_BREAK = ([A-Za-z]{2,})[‐­-](?: |\\n+)([a-z]{2,}), excluding second parts and/or/to/... ; 'validated' = joined form occurs elsewhere in the doc or in /usr/share/dict/american-english.",
+   "evidence_examples": [
+    "0278ce50-a95d-4cf0-b021-fdceeb7b6748.112: 'techni‐ cally or economically irreparable'",
+    "386e9c0f-ff3d-478c-a49f-517386acd018.109: 'plant family *Cucurbita‐ ceae,*'",
+    "122720da-2956-45f7-8895-ba0bb2560bc7.5: 'St.-Petersburg Univer-\\n\\nsity of Telecommunications'",
+    "1297272e-4fd3-42de-9137-a72008f987e8.144: 'hardto-melt elements'"
+   ],
+   "severity": "medium (IntechOpen), low elsewhere"
+  },
+  {
+   "name": "ligature_and_glyph_loss",
+   "description": "Dropped f-ligatures ('frst', 'signifcantly', 'feldwork', 'confdential') concentrated in Springer and Open Book Publishers PDFs; ligatures split by a space ('di fference', 'defi ned', 'aff ord', 'tari ffs') in MDPI/transcript/OBP; words glued by lost spaces ('towardsthe', 'theinfluence', 'ofdiseasessuchas'). No raw ligature codepoints, no (cid:N), almost no UTF-8 mojibake (58 matches).",
+   "prevalence": {
+    "ligature_drop": {
+     "docs_frac": 0.0078,
+     "matches": 603245,
+     "docs_frac_ge_10": 0.0015,
+     "per_1M_chars": 48.43
+    },
+    "ligature_drop_per_1M_by_publisher": {
+     "Springer": 394.86,
+     "OBP": 257.68,
+     "transcript": 11.63,
+     "IntechOpen": 0.84
+    },
+    "split_word": {
+     "docs_frac": 0.0113,
+     "matches": 23731,
+     "docs_frac_ge_10": 0.0005,
+     "per_1M_chars": 1.91
+    },
+    "glued_function_word": {
+     "docs": 12788,
+     "docs_frac": 0.02698,
+     "chars_of_affected_docs_frac": 0.28011,
+     "matches": 34466,
+     "top_publishers_docs": [
+      [
+       "IntechOpen",
+       6077
+      ],
+      [
+       "MDPI - Multidisciplinary Digital Publishing Institute",
+       3679
+      ],
+      [
+       "Frontiers Media SA",
+       1223
+      ],
+      [
+       "Springer Nature",
+       713
+      ],
+      [
+       "Firenze University Press",
+       150
+      ],
+      [
+       "transcript Verlag",
+       123
+      ]
+     ]
+    },
+    "glued_per_1M_scanned_chars": 4.33,
+    "missing_space_after_punct": {
+     "docs_frac": 0.0152,
+     "matches": 30516,
+     "match_chars_frac": 3.7e-05
+    },
+    "mojibake_utf8_as_latin1": {
+     "docs_frac": 0.0,
+     "matches": 58,
+     "match_chars_frac": 0.0
+    }
+   },
+   "measurement_method": "dictionary_word_issues(): lowercase token not in /usr/share/dict/american-english that becomes a dictionary word when 'i', 'l' or 'f' is inserted after an 'f' (ligature drop); adjacent tokens whose concatenation is a dictionary word and the second part is not (split). glued_word_split(): token >=6 letters outside the word list = function word (the|of|and|to|for|with|that|was|are|from|this|which|its|their|has|have|not|were|been) + dictionary word >=4 letters; precision on 88 distinct hits in 1,500 docs about 84% (misses: formate, foramen, offence, wherewith).",
+   "evidence_examples": [
+    "b6ef6c63-97ed-4308-a64b-ad8425776490: 'physically or mentally unft for work', 'how the exhibitions of her ... frst began'",
+    "1c7b12b9-a14c-4105-996d-9c7874aefd1a: 'humanities felds ... Rather than focusing on the scientifc fndings alone'",
+    "7d8866bf-f8ba-45f4-a5c2-bbe7360bed6d.79: 'finite di fference method ... partial di fferential Equations'",
+    "37fa0031-cb5a-42c2-af11-3743c5e8e6ed: 'a standard defi ned by the World Wide Web Consortium'",
+    "3e181112-8f43-43b8-8d76-fa867c90eaff: 'towardsthe cure ofdiseasessuchas,for example,Alzheimer's'",
+    "1792395b-22fe-4caa-bde7-a0f44b2d5c57: 'FederalMinistry of Education and Research(BMBF)'"
+   ],
+   "severity": "medium (Springer/OBP books are affected throughout)"
+  },
+  {
+   "name": "font_encoding_garble",
+   "description": "(a) MDPI docs typeset with a custom font: text extracted as Latin Extended symbols ('řǯŘǯ ¢ ǰ Ȭ'), unreadable; (b) Caesar-shifted text ('WKH' for 'THE'); (c) IntechOpen math typeset with a symbol font: '=' -> '¼', '+' -> 'þ', '-' -> '�', '( )' -> 'ð Þ' inside otherwise good prose ('*y* ¼ *a* þ *βx*').",
+   "prevalence": {
+    "garbled_font_encoding_docs": {
+     "docs": 137,
+     "chars_frac": 0.0008
+    },
+    "caesar_shift": {
+     "docs_frac": 0.0002,
+     "matches": 1246,
+     "match_chars_frac": 0.0
+    },
+    "math_font_garble": {
+     "docs": 9052,
+     "docs_frac": 0.0191,
+     "chars_of_affected_docs_frac": 0.07745,
+     "matches": 590556,
+     "top_publishers_docs": [
+      [
+       "IntechOpen",
+       8682
+      ],
+      [
+       "Springer Nature",
+       191
+      ],
+      [
+       "InTechOpen",
+       45
+      ],
+      [
+       "Frontiers Media SA",
+       45
+      ],
+      [
+       "MDPI - Multidisciplinary Digital Publishing Institute",
+       31
+      ],
+      [
+       "UCL Press",
+       8
+      ]
+     ]
+    },
+    "replacement_char": {
+     "docs_frac": 0.0226,
+     "matches": 658580,
+     "match_chars_frac": 5.3e-05
+    }
+   },
+   "measurement_method": "garbled = >=20 chars from [ƀ-ȗȜ-ɏ¢¡] and ratio >=2% of non-space chars, or >=5 Caesar-shift tokens (wkh|dqg|zlwk|iru|wkdw|WKH|DQG; note 'iru' also matches Japanese romaji). math_font_garble = 'ð Þ' | ' ¼ ' / ' þ ' between non-space chars | <sup>¼</sup>.",
+   "evidence_examples": [
+    "4f376d46-6ab4-4d2c-99b1-9fff98a8b3cc.41: '*řǯŘǯ ¢*  ¢ ¢ ¢ ǰ £ǰ ǰ ǰ ǽŚŗǾ ǻǰ'",
+    "00ba6921-2bb3-460b-bbd8-137104b107ca.3: 'H ILIWK OLQN UHODWHGZLWK SRVWUHVXVFLWDWLRQ FDUH'",
+    "020ce1bf-8ca7-44ca-8d0e-ee0aeb22f169.8: 'The regression line is a line with the equation *y* ¼ *a* þ *βx*'",
+    "0b1c8073-5111-469c-9ec7-1b7e4d66b897.34: 'return ranges from �0.649% to 0.644%'"
+   ],
+   "severity": "high per affected doc (a,b: drop); medium (c: 9,052 docs, repairable by mapping inside math context)"
+  },
+  {
+   "name": "footnotes_and_markers",
+   "description": "Footnote markers as <sup>n</sup> after words, footnote bodies interleaved with body text at page ends, superscript/subscript HTML tags in chemistry/units ('CO<sup>2</sup>', 'cm<sup>3</sup>'), affiliation lines '<sup>1</sup> Department of ...'.",
+   "prevalence": {
+    "line_footnote_text": {
+     "all_docs": {
+      "docs_frac": 0.0494,
+      "chars_frac": 0.00982
+     },
+     "section_docs": {
+      "docs_frac": 0.0366,
+      "chars_frac": 0.00186
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.7674,
+      "chars_frac": 0.02385
+     }
+    },
+    "html_sup_sub_tag": {
+     "docs_frac": 0.265,
+     "matches": 17415961,
+     "match_chars_frac": 0.007691
+    },
+    "footnote_marker_sup_after_word": {
+     "docs_frac": 0.1015,
+     "matches": 1035896,
+     "match_chars_frac": 0.000996
+    }
+   },
+   "measurement_method": "footnote line = starts with <sup>n</sup>, superscript digits, or 'n | '; inline marker = <sup>1-3 digits</sup> or superscript digits right after a letter/punctuation. Precision on 25 footnote lines: 20/25 footnotes or affiliations, 5/25 math fragments (all non-body).",
+   "evidence_examples": [
+    "1792395b-22fe-4caa-bde7-a0f44b2d5c57: '<sup>4</sup> Accessibility to many products and services throughout the European Union will have to be secured by 2025'",
+    "6b30c94d-a8f1-41f7-8805-381a33bb5bf2: '<sup>75</sup> Explanatory report to the Convention on Human Rights and Biomedicine, *supra* note 27.'",
+    "2bb3e25a-a7cf-46fc-a0d1-c0017c5b544e: '<sup>11 &#</sup>x27;Relation'' (entity split by tag)"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "tables_figures_math_debris",
+   "description": "Tables were removed during extraction (0 markdown table rows) but 469,525 table captions remain without content; figure captions and figure-internal labels ('N O R T H', axis ticks '0 10 20 30 40 50 60') remain; LaTeX display math is 1.5% of chars; low-word lines (numeric table remnants, broken inline math) 0.8% of chars.",
+   "prevalence": {
+    "line_caption": {
+     "all_docs": {
+      "docs_frac": 0.3499,
+      "chars_frac": 0.02134
+     },
+     "section_docs": {
+      "docs_frac": 0.3406,
+      "chars_frac": 0.02759
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.8763,
+      "chars_frac": 0.01032
+     }
+    },
+    "table_caption_without_rows": {
+     "docs": 87817,
+     "docs_frac": 0.18525,
+     "chars_of_affected_docs_frac": 0.59424,
+     "matches": 469525,
+     "top_publishers_docs": [
+      [
+       "MDPI - Multidisciplinary Digital Publishing Institute",
+       44133
+      ],
+      [
+       "IntechOpen",
+       40858
+      ],
+      [
+       "Springer Nature",
+       1352
+      ],
+      [
+       "InTechOpen",
+       266
+      ],
+      [
+       "Language Science Press",
+       195
+      ],
+      [
+       "KIT Scientific Publishing",
+       151
+      ]
+     ]
+    },
+    "latex_display_math": {
+     "docs_frac": 0.1076,
+     "matches": 1063201,
+     "match_chars_frac": 0.014725
+    },
+    "line_math_debris": {
+     "all_docs": {
+      "docs_frac": 0.1193,
+      "chars_frac": 0.00828
+     },
+     "section_docs": {
+      "docs_frac": 0.1089,
+      "chars_frac": 0.00979
+     },
+     "whole_book_docs": {
+      "docs_frac": 0.7044,
+      "chars_frac": 0.00564
+     }
+    },
+    "dangling_colon_before_gap": {
+     "docs_frac": 0.079,
+     "matches": 145687,
+     "match_chars_frac": 5.9e-05
+    }
+   },
+   "measurement_method": "caption = line starting Figure|Fig.|Table|Scheme|Plate|... + number (precision 25/25); table caption without rows = 'Table N.' line whose next non-blank line (after an optional italic caption line) does not start with '|'; math_debris = line >=30 chars with >=8 tokens of which <30% are 3+-letter words (precision about 19/25 non-prose; misses: index lines, prose with many numbers); dangling colon = 'as follows:' followed by 3+ newlines (removed list/equation/table).",
+   "evidence_examples": [
+    "b0a94ba9-8bbe-47fa-b1a0-a4fb29d5dd4c.29: '**Table 3.** Physical properties of low-carbon steel (1.0402) [16].' followed directly by body text",
+    "dac674dc-6491-4acc-9790-7c72c03f8324 end: 'N O R T | H | E A S | T | S O U T H'",
+    "0a42b598-73f3-4942-a94a-abb20bbc1127.37: 'the aggregated EER values became as follows:\\n\\n\\nHowever, EER values ...'",
+    "63bd6407-3120...: '1 Male 65 70 172 189 29 R I F3 2 Male 61 89 172 84 67 L H F3'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "markdown_markup",
+   "description": "Marker Markdown markup: '**' in 82% of docs, heading lines in 40%, backslash escapes ('\\*Address', 'Natali\\_Mis') in 27%, <sup>/<sub> in 26.5%.",
+   "prevalence": {
+    "markdown_bold_marker": {
+     "docs_frac": 0.8223,
+     "matches": 21667403,
+     "match_chars_frac": 0.003479
+    },
+    "markdown_heading_line": {
+     "docs_frac": 0.4015,
+     "matches": 4329943,
+     "match_chars_frac": 0.001491
+    },
+    "escaped_markdown_char": {
+     "docs_frac": 0.2672,
+     "matches": 6541390,
+     "match_chars_frac": 0.00105
+    },
+    "html_entity": {
+     "docs_frac": 0.0,
+     "matches": 12,
+     "match_chars_frac": 0.0
+    }
+   },
+   "measurement_method": "regex counts (INLINE dict in analyze.py)",
+   "evidence_examples": [
+    "29232d50-367c-4300-b265-cefb86d02851.7: '#### **Bing-Chen Yang 1, Jing-Wei Lee 2, Chien-Ping Ju 1,\\* and Jiin-Huey Chern Lin 1,\\***'",
+    "31f556c0-15d2-418d-9631-3cebb55b7c92.0: 'Photo by Dr\\_Microbe / iStock'"
+   ],
+   "severity": "low (format decision)"
+  },
+  {
+   "name": "pii_contacts",
+   "description": "Author e-mail addresses, phone numbers and postal addresses in correspondence lines; the Common Pile filtered release replaced them with <EMAIL_ADDRESS>/<PHONE_NUMBER>/<IP_ADDRESS>.",
+   "prevalence": {
+    "email": {
+     "docs_frac": 0.1375,
+     "matches": 247940,
+     "match_chars_frac": 0.000443
+    },
+    "url": {
+     "docs_frac": 0.3527,
+     "matches": 973764,
+     "match_chars_frac": 0.003058
+    }
+   },
+   "measurement_method": "e-mail regex [A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}",
+   "evidence_examples": [
+    "19f5e963-1d38-446d-b986-5d4dec825f25.5: '\\*Address all correspondence to: sun1496@hanmail.net'",
+    "2708d26f-0ed7-4bbb-ae3b-3bccf8e7aa65.65: '**\\*** Correspondence: rlbgtu@gmail.com; Tel.: +7-4722-230530'"
+   ],
+   "severity": "medium (privacy); the lines are boilerplate and can be removed as lines"
+  },
+  {
+   "name": "repeated_lines_and_duplicated_blocks",
+   "description": "Lines repeated inside a doc (running heads, affiliations, licence sentence fragments) and runs of identical consecutive lines; MDPI/IntechOpen PDFs with two text layers produce duplicated paragraphs.",
+   "prevalence": {
+    "consecutive_repeated_line_run_ge5": {
+     "docs": 571,
+     "chars_frac": 0.02483
+    },
+    "dup_line_char_frac_ge_0.3": {
+     "docs": 2491,
+     "chars_frac": 0.00415
+    }
+   },
+   "measurement_method": "duplicate_line_fraction(): chars of lines >=20 chars that occur >1 times / all line chars; longest run of identical consecutive lines.",
+   "evidence_examples": [
+    "d5fdda06-d80f-4e3d-94fe-d9cf200eae4d.73: conclusions text present twice",
+    "888a33c7-341b-4338-b68a-897d71e4af33.121: title 'Laser Ablation in Liquid: ... Laser Ablation in Liquid: ...' and author list repeated",
+    "37bf8871-cfcb-4b89-a419-e10fd204190e.122: 'Additional information is available at the end of the chapter Additional information is available at the end of the chapter'"
+   ],
+   "severity": "low-medium"
+  },
+  {
+   "name": "compilation_level_licence_notices",
+   "description": "Text that restricts the BOOK AS A WHOLE while chapters/articles are CC BY: IntechOpen 'All rights to the book as a whole are reserved by INTECH ... cannot be reproduced ... for commercial or non-commercial purposes', MDPI 'The book as a whole is distributed by MDPI under ... CC BY-NC-ND', Bentham 'The book taken as a whole is © ... CC BY-NC-ND', Frontiers e-book 'All rights reserved ... compilation ... exclusive property of Frontiers'. KIT: 'excluding parts marked otherwise, the cover, pictures and graphs'.",
+   "prevalence": {
+    "compilation_restriction_docs_after_licence_step": {
+     "docs": 11725,
+     "docs_frac": 0.02473,
+     "chars_of_affected_docs_frac": 0.09362,
+     "matches": 17878,
+     "top_publishers_docs": [
+      [
+       "IntechOpen",
+       6131
+      ],
+      [
+       "MDPI - Multidisciplinary Digital Publishing Institute",
+       5444
+      ],
+      [
+       "Bentham Science Publishers",
+       74
+      ],
+      [
+       "",
+       71
+      ],
+      [
+       "InTechOpen",
+       4
+      ],
+      [
+       "Frontiers Media SA",
+       1
+      ]
+     ]
+    },
+    "frontiers_ebook_statement": "1,755 of 2,840 Frontiers docs",
+    "partial_licence_statement_whole_books": {
+     "docs": 177,
+     "chars_frac": 0.00492
+    },
+    "nc_nd_text_pre_licence": {
+     "docs_frac": 0.0278,
+     "matches": 17662,
+     "match_chars_frac": 1.6e-05
+    }
+   },
+   "measurement_method": "COMPILATION_RESTRICTION regex (extra pass on licence-applied shards); PARTIAL_LICENCE regex in first 20k chars; zgrep for 'Frontiers Copyright Statement'.",
+   "evidence_examples": [
+    "01b85ee8-7f8e-45be-846b-a1567421682f.1: 'All rights to the book as a whole are reserved by INTECH. The book as a whole (compilation) cannot be reproduced, distributed or used for commercial or non-commercial purposes without INTECH's written permission'",
+    "01ba1854-5f0b-48a2-92dd-0968d15af1e4.3: 'The book as a whole is distributed by MDPI under the terms and conditions of the Creative Commons license CC BY-NC-ND.'",
+    "3e181112-8f43-43b8-8d76-fa867c90eaff: 'Chapters in this eBook are ... CC BY 4.0 ... The book taken as a whole is © 2015 Bentham Science Publishers under ... CC BY-NC-ND.'",
+    "d8bb5bc9-7bde-41fe-bcb0-1943c44df578: 'This document – excluding parts marked otherwise, the cover, pictures and graphs – is licensed under ... CC BY-SA 4.0'"
+   ],
+   "severity": "licence question (see license_notes)"
+  },
+  {
+   "name": "non_english_content",
+   "description": "See language_mix: 49 non-English whole books, 55 multilingual whole books, ~1,000 sections with mostly foreign text (largely foreign reference lists).",
+   "prevalence": {
+    "doc_level_non_en_docs": 1500,
+    "decided_share_lt_0.5_chars": 21172921,
+    "decided_share_0.5_0.8_chars": 35487279
+   },
+   "measurement_method": "fastText lid.176 doc and chunk level (see language_mix).",
+   "evidence_examples": [
+    "195ebd74-72ef-42ed-aa9c-951293eec527: German book, {'de': 538530}",
+    "63232ac3-b236-42a8-99d0-907c32451f38: de 338,559 / en 277,285 chars",
+    "04da9bbc-be1c-46b7-bdda-cb93bf584ccb.47: French reference list in an English chapter"
+   ],
+   "severity": "low by volume (<0.5% chars)"
+  }
+ ],
+ "duplication": {
+  "exact": {
+   "groups": 5768,
+   "redundant_docs": 15965,
+   "redundant_chars": 278715362,
+   "redundant_docs_cross_book": 15821,
+   "redundant_docs_ge_1000_chars": 4469,
+   "redundant_chars_ge_1000_chars": 275399947,
+   "redundant_docs_kept_by_filter": 2267,
+   "largest": [
+    [
+     3057,
+     "0004847e-ab80-435d-9a35-50f7f1b13b00.4",
+     180
+    ],
+    [
+     1434,
+     "0071a6c6-eff7-449d-a548-4af9bff79a91.54",
+     71
+    ],
+    [
+     342,
+     "005f4cc4-de17-43d3-8915-84cd53654c1d.15",
+     77
+    ],
+    [
+     288,
+     "023211da-a7f6-4191-bb5f-456d8e25e28a.3",
+     412
+    ],
+    [
+     283,
+     "01915e1c-6b49-4c0a-add6-5000f415bff1.3",
+     596
+    ],
+    [
+     236,
+     "010dbc47-49d1-47ae-a9ab-eda9967b9e04.3",
+     412
+    ],
+    [
+     226,
+     "0473c8ad-213e-479b-b2b8-d486590719c9.63",
+     71
+    ],
+    [
+     225,
+     "0125951d-801e-4c01-940d-d4ffdd45bf3c.3",
+     412
+    ],
+    [
+     186,
+     "0008a8ec-01ff-4139-b26e-22862621b722.3",
+     596
+    ],
+    [
+     146,
+     "0138acc2-bc66-4db4-acbc-043624189309.3",
+     438
+    ],
+    [
+     91,
+     "00064f14-4c6c-4123-bed8-b5ae765fbfc8.2",
+     622
+    ],
+    [
+     91,
+     "05c5c9b7-72bb-4b6d-a82b-e06ec44b2ca5.3",
+     438
+    ],
+    [
+     74,
+     "018987ed-7631-419e-b25f-78a540f28850.3",
+     596
+    ],
+    [
+     68,
+     "0a877da8-ec77-4efc-9b68-335c53dd3e70.201",
+     72
+    ],
+    [
+     64,
+     "0637f541-b550-45b8-bb02-4a84d5e23097.3",
+     411
+    ]
+   ],
+   "largest_by_chars": [
+    [
+     2,
+     "996040a7-efd6-4cbb-a1e3-6f0c9a176f06",
+     2878528,
+     [
+      "b06eebbc-e407-48cb-b9e2-1f547da04a88"
+     ]
+    ],
+    [
+     2,
+     "0f65b279-d2ce-41d0-b2c5-42087e389f59",
+     2177550,
+     [
+      "a6c2ed1e-ea90-4739-8e15-4138c9959f60"
+     ]
+    ],
+    [
+     3,
+     "0578eb52-e291-4fa0-8d55-65f138947a7e",
+     1027752,
+     [
+      "0e20adf1-5573-4cf2-821a-c83d5635a7b6",
+      "2894af27-9f55-43f4-8d1f-3ac50f138c95"
+     ]
+    ],
+    [
+     2,
+     "283cb9ad-612a-442e-86bc-a0af88897b56",
+     1979968,
+     [
+      "65a80994-64e8-44db-b29b-835a76932a2d"
+     ]
+    ],
+    [
+     3,
+     "daa9ebf8-8bcd-4225-872a-9cb9ae976b4c",
+     872438,
+     [
+      "eab841cf-cfc3-4045-b40e-cca0e69dba33",
+      "fa325662-d2f6-4a7d-9795-b18f90164d93"
+     ]
+    ],
+    [
+     2,
+     "11f19ab0-4c2c-4298-b2f9-c27d277d8859",
+     1676338,
+     [
+      "499d85da-0f2c-4d90-b5df-32498f6a939c"
+     ]
+    ],
+    [
+     2,
+     "00eda821-c332-4349-a515-66aa424452b1",
+     1667890,
+     [
+      "53f1b3a8-e745-4cdc-9bd4-33472a6aa9f7"
+     ]
+    ],
+    [
+     2,
+     "a3151f60-75e0-43ec-9b31-c0fb34065839",
+     1638798,
+     [
+      "e94b6e05-0cbd-4486-9a7c-0d23c9723cf4"
+     ]
+    ],
+    [
+     2,
+     "4e85e6c3-dcf5-4d2b-b924-54a342485f31",
+     1636326,
+     [
+      "feb03dcb-931e-4650-8a4c-29c73c7550ca"
+     ]
+    ],
+    [
+     4,
+     "5c247d10-fc1e-4a07-a4d0-8c9aa52dceb8.2",
+     539959,
+     [
+      "621212f7-8ca3-4be9-8c6f-d1c1a33a765d.2",
+      "be402b98-c71d-485f-a7a3-5d8d5b38d4c0.2",
+      "f10da68d-b714-47c9-85b8-277424049957.2"
+     ]
+    ]
+   ],
+   "method": "sha1 of lowercased text with markup chars [*#_>\\|] replaced by space and whitespace collapsed"
+  },
+  "near": {
+   "docs_considered": 398853,
+   "candidate_pairs": 25049138,
+   "pairs_sharing_ge_25pct_of_sketch": 54260,
+   "sketch_values_skipped_posting_over_cap": 1015,
+   "pairs_jaccard_ge_0.5": 8529,
+   "pairs_jaccard_ge_0.8": 2310,
+   "pairs_ge_0.8_within_same_book": 1776,
+   "clusters_jaccard_ge_0.8": 1981,
+   "docs_in_clusters": 4085,
+   "redundant_docs_jaccard_ge_0.8": 2104,
+   "largest_clusters": [
+    [
+     "15938d5d-6c36-4864-b9ff-97bb9dc44bf4.1",
+     "1ad54596-3534-46c1-bece-a8d3f9dbcb00.0",
+     "40552c11-54e7-47f9-896d-4fd2b0200c7c.1",
+     "51c02aa7-19e2-434e-8b69-e103a725c77a.0",
+     "5d161986-3c16-48aa-abee-0fd0e8e339ce.1",
+     "8f7251ea-3579-4c00-833c-0eef50e15613.0",
+     "...size 11"
+    ],
+    [
+     "01a740c4-b08e-4821-a6d3-b6929250a63e.7",
+     "1e2527b1-dc9a-4af3-8b3d-6e51ee94fce6.4",
+     "1f779234-fcab-4573-8b01-5b25aa946bc1.10",
+     "25007427-6e3e-430f-aa48-44417bfb6100.3",
+     "42c40dbd-a115-4359-9f34-420edb51715b.4",
+     "484adc7d-9e4e-4ed0-959d-f59fa2f532c3.4",
+     "...size 9"
+    ],
+    [
+     "0524521c-5f92-4b93-95d9-860489a3484a.4",
+     "09239762-0d69-4bb2-8589-2ad94d5b1191.4",
+     "1a58a9a5-ebdb-4711-a8ef-ef7589c7085c.4",
+     "1b9eabcb-c69e-4085-ab4e-78db626a3085.4",
+     "1eb1fe7b-10b3-4181-be92-0072673c01bf.4",
+     "2ceffa38-c702-4728-a631-3b78523fb73a.4",
+     "...size 9"
+    ],
+    [
+     "02737e36-672e-4454-a40b-13081c5115e3.167",
+     "2dbdb099-1137-4729-91ec-28e5114988f8.170",
+     "407d2c80-8455-4c01-a800-ed1879d5d63c.185",
+     "4a46d1e3-f892-45e1-b696-f775a7d0d7c9.77",
+     "88560587-15d3-43f6-a121-ccd83beb9a01.85",
+     "966e5a8a-aad1-4714-b96d-0799788c6793.190",
+     "...size 8"
+    ],
+    [
+     "1688bcbe-5ec2-4692-8a19-f9865ca96cf8.4",
+     "1bea29ec-c246-49c7-a97f-3df67f28e4e1.9",
+     "1c038e18-8201-45d0-b5f3-5bdafcc89bfb.4",
+     "2b5ff710-bf0b-4569-aa7f-abb25af4f484.4",
+     "4bb19e7c-41b6-451e-8970-f61e62af890c.4",
+     "b3c5aca4-2221-47bf-944c-ed9016882469.4",
+     "...size 8"
+    ],
+    [
+     "0bc91a50-c137-4949-bdd6-ca2bbae4afa4.3",
+     "1034a0e1-d04c-4672-8e2e-ea4b8454cb9c.3",
+     "227829e9-1de1-45f7-9624-890e067d47aa.3",
+     "233d7c0f-5a7b-47d2-b643-383f045d4b08.2",
+     "394aac15-10e5-4ac6-a613-d9dc5ecfba6f.3",
+     "569d08e8-7122-4444-9535-751d54cc0055.2",
+     "...size 7"
+    ],
+    [
+     "0de3b24f-af80-489a-bbfe-525ea1fa55e2.3",
+     "1146be19-01e8-4bea-9ba8-329414f4257c.7",
+     "9c37ffd5-54a5-4215-a707-5492c91525f8.4",
+     "ae5e036e-58f5-4a13-a496-bf1b00270962.4",
+     "d7a87446-7022-4f12-bf80-2b59303f1e8a.4",
+     "e4f56369-6b4e-4e1d-b824-9e45eea0487a.4",
+     "...size 7"
+    ],
+    [
+     "1afd241e-1e1e-435f-b898-f66d0925d79f.3",
+     "2e654868-b056-464f-a0e2-270242660b4c.3",
+     "6c6d92aa-0a15-4c9e-aea7-c9df82a79f04.3",
+     "723a9411-bb62-46d8-953f-ec078c38da9e.2",
+     "77f903f5-088d-47b8-b0ee-a57f0847a312.3",
+     "962bb590-7f45-4d60-944b-3f4b66acab99.3",
+     "...size 7"
+    ],
+    [
+     "45783b7d-4556-44d5-b3fa-722b61061953.2",
+     "6545f0f0-ecbf-4aff-9937-08a72dea639a.3",
+     "a2b4b5ab-c64c-4281-b617-93e22dae00f2.3",
+     "c5b36d20-0d82-4d90-a2fc-93f018572e42.3",
+     "c91f99d8-46ee-4786-abfa-39afa3d6df2a.3",
+     "cfbe2815-7d63-4a84-ab66-c2f34aa6c958.3",
+     "...size 7"
+    ],
+    [
+     "02160b48-ca26-432f-8f7a-b8f66020ff76.2",
+     "116d178d-970a-4ef6-a848-7b9800b52af9.3",
+     "1c4a83fa-5bf8-4cd5-8f20-a283bfcaefbf.3",
+     "1f34a498-c379-4e28-a931-b715a97bddd9.2",
+     "22503db1-75ad-4d26-ac2b-4b3206118574.3",
+     "36fdfbd3-5144-4a73-9804-ddbe1435050b.3",
+     "...size 6"
+    ],
+    [
+     "05fbd3be-444c-410e-8b61-b2eadf0fa576.3",
+     "0d30a644-b809-4f87-8583-3af17a78ff77.3",
+     "0e0fd212-4583-4813-b0a0-6ad1f8c8b6a7.3",
+     "0e72ed29-a11e-4ed1-bbe9-e739fa80f6f1.3",
+     "134e7c02-6dcc-4493-83d9-60f9f5457c3b.2",
+     "8effcc69-dc89-41bb-a3d2-6eb9ea72df3d.3",
+     "...size 6"
+    ],
+    [
+     "09559d28-b3f7-4bd9-9a7c-550c4cc72bb8.2",
+     "67d4bbf2-4eb1-42e7-8e54-d8a66b1682b9.2",
+     "80f00c4f-37be-43f3-a268-014506726665.2",
+     "93e56432-82af-4b11-aebd-f206f3387cd0.2",
+     "bce7ea3c-2b15-4591-99c3-54f81f31d467.2",
+     "cfd94b8c-99ba-4263-a1e9-ce034dcd9950.2",
+     "...size 6"
+    ],
+    [
+     "0008a8ec-01ff-4139-b26e-22862621b722.3",
+     "018987ed-7631-419e-b25f-78a540f28850.3",
+     "01915e1c-6b49-4c0a-add6-5000f415bff1.3",
+     "08136683-d1fa-4664-9f5d-886affc3f7f4.3",
+     "19125edd-cde9-4686-822b-693b3e6632fd.3",
+     "...size 5"
+    ],
+    [
+     "00eda821-c332-4349-a515-66aa424452b1",
+     "11f19ab0-4c2c-4298-b2f9-c27d277d8859",
+     "4e85e6c3-dcf5-4d2b-b924-54a342485f31",
+     "8e91ee95-4f13-4791-9efa-b2e4936da085",
+     "9bfc61b9-11ba-4e1c-9068-aea5732e4d4b",
+     "...size 5"
+    ],
+    [
+     "020711c3-c322-4060-9120-6ffbcfc9f4da.3",
+     "0e952b4e-1035-416d-adf3-a11f1d09d74c.3",
+     "12c9592f-96cd-475b-a791-307d1f8250e6.3",
+     "1b841d2c-2e68-4187-b069-aa4161076861.3",
+     "dad80026-6ebf-47be-8529-e5e255b7ccf4.3",
+     "...size 5"
+    ]
+   ],
+   "method": "bottom-128 MinHash sketch of word 5-shingles (splitmix64 over xxh64 word hashes), docs >=50 words, exact-duplicate representatives only; candidate pairs share a sketch value (posting lists >200 skipped); Jaccard estimated from the merged bottom-k sketch; union-find at J>=0.8.",
+   "sample_pairs": [
+    [
+     "00064f14-4c6c-4123-bed8-b5ae765fbfc8.2",
+     "2cb98296-4c89-4233-8a8e-ca73f9aa13cc.3",
+     0.885
+    ],
+    [
+     "0008a8ec-01ff-4139-b26e-22862621b722.3",
+     "018987ed-7631-419e-b25f-78a540f28850.3",
+     0.88
+    ],
+    [
+     "0008a8ec-01ff-4139-b26e-22862621b722.3",
+     "01915e1c-6b49-4c0a-add6-5000f415bff1.3",
+     0.88
+    ],
+    [
+     "0008a8ec-01ff-4139-b26e-22862621b722.3",
+     "08136683-d1fa-4664-9f5d-886affc3f7f4.3",
+     0.88
+    ],
+    [
+     "0008a8ec-01ff-4139-b26e-22862621b722.3",
+     "19125edd-cde9-4686-822b-693b3e6632fd.3",
+     0.88
+    ],
+    [
+     "001c1372-3390-4f92-8b42-7dfe9fe510d8",
+     "73343ceb-ded0-4760-a33f-02e5be6612d0",
+     0.992
+    ],
+    [
+     "006df1b2-f518-4d6b-8d96-484202f13086.3",
+     "0a4210d1-e50d-4d10-be28-2de7f94a621c.3",
+     0.878
+    ],
+    [
+     "006df1b2-f518-4d6b-8d96-484202f13086.3",
+     "3f664446-00e2-4144-a5ac-ae5d3d8bb07a.3",
+     0.849
+    ],
+    [
+     "00cbb2b5-9563-4034-986e-c366128abce6.8",
+     "38373398-99f9-4594-83ba-2ac0673a400e.7",
+     0.93
+    ],
+    [
+     "00eda821-c332-4349-a515-66aa424452b1",
+     "11f19ab0-4c2c-4298-b2f9-c27d277d8859",
+     0.828
+    ],
+    [
+     "00eda821-c332-4349-a515-66aa424452b1",
+     "4e85e6c3-dcf5-4d2b-b924-54a342485f31",
+     0.852
+    ],
+    [
+     "00eda821-c332-4349-a515-66aa424452b1",
+     "8e91ee95-4f13-4791-9efa-b2e4936da085",
+     0.883
+    ]
+   ]
+  },
+  "paragraph_level": {
+   "paragraphs_hashed_ge_200_chars": 15408965,
+   "paragraph_chars": 10541868938,
+   "redundant_paragraph_copies": 1089270,
+   "redundant_paragraph_chars": 624157006,
+   "redundant_paragraph_chars_frac": 0.05921,
+   "paragraphs_shared_across_books": 1173590,
+   "chars_in_paragraphs_shared_across_books_frac": 0.06633,
+   "books": 19883,
+   "books_with_cross_book_shared_paragraph_share": {
+    ">=0.1": 2011,
+    ">=0.3": 1871,
+    ">=0.5": 1843,
+    ">=0.8": 1694,
+    ">=0.95": 1487
+   },
+   "largest_paragraph_groups": [
+    {
+     "copies": 34211,
+     "chars": 204,
+     "books": 2791
+    },
+    {
+     "copies": 25246,
+     "chars": 407,
+     "books": 1673
+    },
+    {
+     "copies": 21515,
+     "chars": 419,
+     "books": 1354
+    },
+    {
+     "copies": 18657,
+     "chars": 252,
+     "books": 3098
+    },
+    {
+     "copies": 17134,
+     "chars": 252,
+     "books": 2599
+    },
+    {
+     "copies": 11365,
+     "chars": 238,
+     "books": 2181
+    },
+    {
+     "copies": 6100,
+     "chars": 427,
+     "books": 6100
+    },
+    {
+     "copies": 5999,
+     "chars": 238,
+     "books": 1122
+    },
+    {
+     "copies": 5198,
+     "chars": 369,
+     "books": 1214
+    },
+    {
+     "copies": 4840,
+     "chars": 301,
+     "books": 744
+    },
+    {
+     "copies": 4839,
+     "chars": 301,
+     "books": 960
+    },
+    {
+     "copies": 4593,
+     "chars": 252,
+     "books": 1085
+    }
+   ],
+   "most_contained_books": [
+    [
+     "e7d2ca9f-703d-45d2-aa7c-c876519235d1",
+     1.0,
+     "Firenze University Press"
+    ],
+    [
+     "a2c6d2e9-dbf4-4b33-a3e5-be46ca56fab8",
+     1.0,
+     "InTechOpen"
+    ],
+    [
+     "df9afc5b-7516-480b-8ef9-23cd4307dcc8",
+     1.0,
+     "Frontiers Media SA"
+    ],
+    [
+     "3b2f1081-0c25-4e06-82d0-63284a23c591",
+     1.0,
+     "MDPI - Multidisciplinary Digital Publishing Institute"
+    ],
+    [
+     "3b52c82a-c27e-4277-8081-6fde59f629c7",
+     1.0,
+     "MDPI - Multidisciplinary Digital Publishing Institute"
+    ],
+    [
+     "6df76c4a-e8ce-437e-8d28-30546f976295",
+     1.0,
+     "Firenze University Press"
+    ],
+    [
+     "6de4422d-8b8e-49f4-ba8d-a20a0a7d3067",
+     1.0,
+     "Firenze University Press, Genova University Press"
+    ],
+    [
+     "6dc68742-c3dc-41b8-bf0e-f7b6f6c51475",
+     1.0,
+     "KIT Scientific Publishing"
+    ],
+    [
+     "5165099e-165e-466a-91f5-74f00325c6cb",
+     1.0,
+     "Universitätsverlag Göttingen"
+    ],
+    [
+     "518d4779-6ee0-4b88-a274-c83c47f4ac1c",
+     1.0,
+     "Bentham Science Publishers"
+    ],
+    [
+     "51bfbf55-5080-4ac7-b1ac-317ef2c993a1",
+     1.0,
+     "MDPI - Multidisciplinary Digital Publishing Institute"
+    ],
+    [
+     "1716ead6-5a0d-4d15-8ad0-a174f4cddb86",
+     1.0,
+     "Firenze University Press"
+    ],
+    [
+     "b258cc6b-4194-45fc-b035-4aece9a0dc35",
+     1.0,
+     "Taylor & Francis"
+    ],
+    [
+     "0d038b54-32d7-41a2-80ba-410d73684277",
+     1.0,
+     "Springer Nature"
+    ],
+    [
+     "fc580171-fd56-46a4-84ea-5c9072f2793c",
+     1.0,
+     "MDPI - Multidisciplinary Digital Publishing Institute"
+    ],
+    [
+     "b2773f95-299f-4664-8b8d-45f1fea045af",
+     1.0,
+     "MDPI - Multidisciplinary Digital Publishing Institute"
+    ],
+    [
+     "3b28240d-43e3-480a-9113-31305fe38c69",
+     1.0,
+     "Firenze University Press"
+    ],
+    [
+     "f967ddbc-77c2-4c3d-ba8a-4b46f170cf16",
+     1.0,
+     "KIT Scientific Publishing"
+    ],
+    [
+     "f9637225-9978-4e90-a3d7-0857721e7238",
+     1.0,
+     "MDPI - Multidisciplinary Digital Publishing Institute"
+    ],
+    [
+     "1742cbae-3863-4b74-bab3-5d34a5b493ac",
+     1.0,
+     "MDPI - Multidisciplinary Digital Publishing Institute"
+    ],
+    [
+     "cb9ce95e-0590-4729-9816-7982c4e98007",
+     1.0,
+     "Language Science Press"
+    ],
+    [
+     "cb877452-ffcf-41cd-ab21-e4154d7de307",
+     1.0,
+     "Springer Nature"
+    ],
+    [
+     "65a80994-64e8-44db-b29b-835a76932a2d",
+     1.0,
+     "Springer Nature"
+    ],
+    [
+     "8c78a886-c87a-4aaa-895b-ddcd8bb86532",
+     1.0,
+     "MDPI - Multidisciplinary Digital Publishing Institute"
+    ],
+    [
+     "26b22e05-5152-4494-a6df-325c789ec92c",
+     1.0,
+     "Open Book Publishers"
+    ]
+   ],
+   "cross_book_shared_chars_frac_by_publisher": {
+    "IntechOpen": 0.0157,
+    "MDPI - Multidisciplinary Digital Publishing Institute": 0.0835,
+    "Frontiers Media SA": 0.035,
+    "Springer Nature": 0.1225,
+    "Open Book Publishers": 0.2903,
+    "Language Science Press": 0.1843,
+    "transcript Verlag": 0.1254,
+    "": 0.1722,
+    "Firenze University Press": 0.3533,
+    "De Gruyter": 0.0118,
+    "UCL Press": 0.0055,
+    "KIT Scientific Publishing": 0.1386
+   },
+   "method": "xxh64 of normalized blank-line paragraphs >=200 chars; 'shared across books' = hash present in >=2 books"
+  },
+  "interpretation": [
+   "Exact duplicates: 15,965 redundant docs, mostly tiny cross-book IntechOpen/MDPI template sections (3,057 copies of one 180-char section) but 4,469 redundant docs >=1,000 chars hold 275.4M chars, including whole books uploaded twice under different ids (996040a7-efd6-4cbb-a1e3-6f0c9a176f06 = b06eebbc-e407-48cb-b9e2-1f547da04a88, 2.88M chars; 1b911a62-f9be-46e9-a5cf-45889b219765 = 6ee31538-742c-4835-8973-172785bcae16).",
+   "Paragraph containment: 1,487 books have >=95% of their paragraph chars in other books (chapter-level PDFs of Firenze/KIT/Springer volumes that also exist as whole books, MDPI/IntechOpen reprints). Document-level Jaccard does not see these (a chapter is small relative to its book), so containment is the required measure.",
+   "Within-book near duplicates (1,776 of 2,310 pairs at J>=0.8): IntechOpen section '.0' (preface/front block) vs the last section (back-cover blurb repeating the preface).",
+   "Cross-book boilerplate paragraphs: the largest groups (34,211 copies of a 204-char paragraph in 2,791 books) are licence/ad paragraphs; 5.9% of paragraph chars are redundant copies."
+  ]
+ },
+ "filtered_comparison": {
+  "what_common_pile_did_for_doab (paper 2506.05209 + repo, from LITERATURE.md)": "fastText English score >0.5; length >200 chars; toxicity span deletion (min_score 0.1, sentence spans replaced by empty string); regex PII replacement; no doab line regex; global Bloom-filter dedup (doc is a duplicate if >90% of its 20-grams were already seen).",
+  "docs": {
+   "raw": 474445,
+   "filtered": 403992,
+   "filtered_ids_not_in_raw": 0,
+   "status_docs": {
+    "modified": 88080,
+    "same": 315912,
+    "dropped": 70453
+   },
+   "status_raw_chars": {
+    "modified": 9703743063,
+    "same": 2335712038,
+    "dropped": 415458157
+   },
+   "filtered_chars": 11981377206
+  },
+  "dropped_by_length": "all 47,118 docs <200 chars",
+  "dropped_by_language": {
+   "docs": 11115,
+   "dropped": 11091,
+   "chars": 70357658,
+   "dropped_chars": 70251029,
+   "note": "11,091 of 11,115 docs with doc-level en<=0.5 dropped; most of these are English math/reference-heavy sections, not foreign text (see language_mix). All 110 de, 219 fr, 120 it, 482 es, 302 pt doc-label docs dropped, including the multilingual books."
+  },
+  "dropped_not_explained_by_length_or_language": {
+   "docs": 17448,
+   "dropped": 17448,
+   "chars": 340141207,
+   "dropped_chars": 340141207,
+   "breakdown": "9,650 have an exact twin in raw (277.7M chars); 325 more are near-dup redundant; 7,473 (42.1M chars, 86% IntechOpen sections) remain; in a 400-doc sample of such drops >1000 chars from shard 00003, 70% have >=90% of their >=200-char paragraphs present elsewhere in the corpus, consistent with the 20-gram Bloom dedup; the other 27% (<50% shared paragraphs) are not explained (cause unknown)."
+  },
+  "drop_rate_by_length": {
+   "0-200": {
+    "docs": 47118,
+    "dropped": 47118,
+    "chars": 5622133,
+    "dropped_chars": 5622133
+   },
+   "200-500": {
+    "docs": 35099,
+    "dropped": 6328,
+    "chars": 11836093,
+    "dropped_chars": 2311079
+   },
+   "500-1000": {
+    "docs": 46147,
+    "dropped": 4651,
+    "chars": 34055886,
+    "dropped_chars": 3246196
+   },
+   "1000-5000": {
+    "docs": 172038,
+    "dropped": 7600,
+    "chars": 433761524,
+    "dropped_chars": 17333868
+   },
+   "5000-50000": {
+    "docs": 142973,
+    "dropped": 3657,
+    "chars": 2254727701,
+    "dropped_chars": 68514446
+   },
+   "50000-1000000000": {
+    "docs": 31070,
+    "dropped": 1099,
+    "chars": 9714909921,
+    "dropped_chars": 318430435
+   }
+  },
+  "drop_rate_by_publisher": {
+   "IntechOpen": {
+    "docs": 296457,
+    "dropped": 49188,
+    "chars": 4898962466,
+    "dropped_chars": 47220234
+   },
+   "MDPI - Multidisciplinary Digital Publishing Institute": {
+    "docs": 169700,
+    "dropped": 20518,
+    "chars": 3048253153,
+    "dropped_chars": 139030612
+   },
+   "Frontiers Media SA": {
+    "docs": 2891,
+    "dropped": 34,
+    "chars": 1870457268,
+    "dropped_chars": 23044960
+   },
+   "Springer Nature": {
+    "docs": 2193,
+    "dropped": 103,
+    "chars": 1341028448,
+    "dropped_chars": 70142478
+   },
+   "Language Science Press": {
+    "docs": 209,
+    "dropped": 21,
+    "chars": 143317931,
+    "dropped_chars": 19748481
+   },
+   "Open Book Publishers": {
+    "docs": 227,
+    "dropped": 34,
+    "chars": 140226358,
+    "dropped_chars": 20689166
+   },
+   "transcript Verlag": {
+    "docs": 164,
+    "dropped": 18,
+    "chars": 98529855,
+    "dropped_chars": 11105473
+   },
+   "Firenze University Press": {
+    "docs": 541,
+    "dropped": 246,
+    "chars": 75870662,
+    "dropped_chars": 13582327
+   },
+   "": {
+    "docs": 123,
+    "dropped": 9,
+    "chars": 74501739,
+    "dropped_chars": 4941920
+   },
+   "De Gruyter": {
+    "docs": 92,
+    "dropped": 0,
+    "chars": 69042581,
+    "dropped_chars": 0
+   }
+  },
+  "modified_docs": {
+   "count": 88080,
+   "raw_chars_removed_total": 58077895,
+   "chars_removed_per_doc_percentiles": {
+    "p1": -30.0,
+    "p5": -5.0,
+    "p10": 0.0,
+    "p25": 8.0,
+    "p50": 22.0,
+    "p75": 250.0,
+    "p90": 1200.0,
+    "p95": 2772.05,
+    "p99": 11401.42,
+    "min": -3344.0,
+    "max": 251458.0,
+    "mean": 659.38
+   }
+  },
+  "sentence_diff_sample (737 modified docs, 1% id sample, <=200k chars)": {
+   "diffed_docs": 737,
+   "equal_sentences": 138349,
+   "placeholder:<IP_ADDRESS>": 255,
+   "placeholder_edit_sentences": 900,
+   "placeholder:<EMAIL_ADDRESS>": 750,
+   "deleted_sentences": 1475,
+   "deleted_sentence_chars": 107097,
+   "placeholder:<PHONE_NUMBER>": 104,
+   "other_edit_sentences": 90,
+   "other_edit_chars_delta": 6112
+  },
+  "observations": [
+   "PII: e-mails, phones, IPs replaced by placeholders (<EMAIL_ADDRESS> 750, <IP_ADDRESS> 255, <PHONE_NUMBER> 104 in the sample). Some <IP_ADDRESS> replacements hit numeric strings that are not IP addresses (counted, not verified individually).",
+   "Toxicity span deletion removed 1,475 sentences (107k chars) in 737 diffed docs; the deleted sentences read are ordinary scientific text ('Hyperandrogenism accompanies increased intra-abdominal fat storage in normal weight polycystic ovary syndrome women.' 3672ca38-68e6-4090-8c35-4650e62ef985.45; 'They include dogs, cats, ferrets, pet birds, rodents, rabbits, guinea pigs ...' 3b5d52b8-cdca-4435-ad6f-bd10be83c60f.52), i.e. the deletion damages text and leaves broken paragraphs.",
+   "No PDF-artifact cleaning: line-level issue rates in kept docs equal raw rates (boilerplate 2.18% chars kept vs 2.18% raw; references 4.69% vs 4.62%; running headers 0.275% vs 0.273%; 32 of 137 font-garbled docs kept).",
+   "Dropped set is 72.6% tiny docs (<30 body words)."
+  ]
+ },
+ "license_notes": {
+  "metadata_licence_counts_[licence,docs,chars]": [
+   [
+    "Creative Commons - Attribution - https://creativecommons.org/licenses/by/3.0/",
+    296808,
+    4940165689
+   ],
+   [
+    "Creative Commons - Attribution - https://creativecommons.org/licenses/by/4.0/",
+    177208,
+    7297104153
+   ],
+   [
+    "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/4.0/",
+    420,
+    213037239
+   ],
+   [
+    "Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/3.0/",
+    9,
+    4606177
+   ]
+  ],
+  "all_metadata_licences_permit_commercial_use": true,
+  "licence_step_already_applied_in_place": {
+   "file": "/home/vihaa/CinnamonLM/raw/common_pile_processed/doab/licence_applied.json",
+   "drops": 395,
+   "dropped_chars": 235226612,
+   "strips": 4292,
+   "strip_chars_removed": 2566100,
+   "docs_after": 474050
+  },
+  "inline_statements_still_present": [
+   "Compilation-level restrictions remain in 11,725 docs (IntechOpen 6,131, MDPI 5,444, Bentham 74): the BOOK AS A WHOLE is 'all rights reserved' (IntechOpen) or CC BY-NC-ND (MDPI, Bentham), while each chapter/article states CC BY 3.0/4.0. The docs that carry the notice are mostly the front-matter section of a split book (e.g. 01b85ee8-7f8e-45be-846b-a1567421682f.1).",
+   "Frontiers e-books: 1,755 docs carry 'Frontiers Copyright Statement ... All rights reserved ... compilation of articles constituting this e-book ... is the exclusive property of Frontiers ... Individual articles may be downloaded and reproduced in accordance with the principles of the CC-BY licence ... They may not be re-sold as an e-book.' Each article in the e-book carries its own CC BY statement.",
+   "Partial statements (177 whole books, mostly KIT): text CC BY(-SA) 'excluding the cover, pictures and graphs' – restriction covers non-text parts only.",
+   "Common Pile README: books were kept only if a whitelisted open-licence statement appears in front/back matter; licence laundering is possible (paper §2.1)."
+  ]
+ },
+ "recommended_steps": [
+  {
+   "step": "Resolve the licence question for compilation-level notices before cleaning (user decision): keep chapter/article text that carries its own CC BY statement and remove the compilation notice paragraphs, or drop the affected books.",
+   "rationale": "User rule: an inline statement overrides metadata and a restriction of the whole work drops the document. Here the restriction targets the compilation, the chapters state CC BY.",
+   "evidence": "11,725 docs with COMPILATION_RESTRICTION; 1,755 Frontiers e-book statements; examples in issues.compilation_level_licence_notices"
+  },
+  {
+   "step": "Rebuild books: concatenate IntechOpen/MDPI section docs per book_id in section_idx order, then drop front/back-matter units (editor page, contents, 'We are IntechOpen' ad, author details, acknowledgements/funding/COI/data availability, references, index, back cover) at heading boundaries; or keep the split but drop sections that are only such blocks and tiny sections (<30 body words).",
+   "rationale": "Section docs are heading-split fragments (13.8% have <30 body words) and some 'sections' contain the whole book; per-section dedup and filtering on fragments is noisy.",
+   "evidence": "structure + tiny_doc + frontback_section prevalence; 3,679 split books with one section >50% of text"
+  },
+  {
+   "step": "Remove boilerplate lines/blocks with publisher-specific rules: licence/copyright paragraphs, ISBN/ISSN/DOI/CIP lines, IntechOpen running heads with DOI, 'Additional information ...', correspondence/address lines (also removes PII), MDPI 'Publisher's Note'/'Citation:'/'Received:' lines, Frontiers 'Edited by/Reviewed by/Specialty section', proof stamps, cover credits, publisher catalogue ads; and whole-book front matter before the first Introduction/Preface heading after checking the dropped text is non-prose.",
+   "rationale": "Boilerplate is in 44% of docs (99.8% of whole books); line classes reach 25/25 non-prose precision.",
+   "evidence": "line:boilerplate 2.18% chars, admin_statement 0.74%, front matter 2.3% of whole-book chars"
+  },
+  {
+   "step": "Remove reference/bibliography sections (from a References/Bibliography heading to the next non-reference heading), index tails (after the last Index heading in the final 25%) and TOC blocks; drop empty 'References' headings and orphan 'Table N.' captions.",
+   "rationale": "Reference lists are 4.6% of chars (9.8% in IntechOpen) and are often scrambled fragments; indexes are page-number lists.",
+   "evidence": "line:reference, index_tail 20.8M chars in 1,717 docs, 38,583 docs with empty reference headings, 469,525 orphan table captions"
+  },
+  {
+   "step": "Remove page furniture lines: bare page numbers, repeated book-title+page running heads (per-doc repeat detection), MDPI 'x FOR PEER REVIEW n of m' and Frontiers proof stamps; then join paragraphs that were split around the removed line when the first part ends without sentence punctuation and the next starts lowercase.",
+   "rationale": "Running heads and page numbers interrupt sentences; 836k paragraph pairs are joined directly and 48k are interrupted by a header/page number.",
+   "evidence": "line:running_header (19/25 precision: require repeat + number edge, exclude numeric lines), paragraph_flow"
+  },
+  {
+   "step": "Repair inline extraction artifacts: de-hyphenate 'word‐ word' when the joined form is a known word (dictionary or same-doc vocabulary); restore dropped fi/fl/ff ligatures and re-join space-split ligature words with the same dictionary test; map IntechOpen symbol-font characters (¼ -> =, þ -> +, � -> −, ð Þ -> ( )) only inside math-like spans; convert or strip Markdown markers and <sup>/<sub> footnote markers (keep chemical/units sub/superscripts as plain text, drop footnote numbers after words).",
+   "rationale": "These are deterministic and validated by dictionary lookups; Springer/OBP books carry ~400/~260 ligature drops per 1M chars.",
+   "evidence": "hyphen_break_validated 858,090 matches; ligature_drop 603,245; split_word 23,731; math_font_garble 590,556 matches in 9,052 docs"
+  },
+  {
+   "step": "Drop documents that are unreadable: font-garbled docs (Latin-Extended symbol text, Caesar shift with >=5 tokens after excluding Japanese romaji), and docs whose body-paragraph lowercase-start rate is very high (calibrate the threshold on read samples; older IntechOpen books).",
+   "rationale": "Repair is not possible for font garble; heavy reading-order damage cannot be fixed reliably.",
+   "evidence": "137 garbled docs (105 already dropped by CP), IntechOpen lowercase-start rate 24.7% vs Springer 6.5%"
+  },
+  {
+   "step": "English filter per document on English share of language-decided chunks (exclude 'uncertain' math/reference chunks): keep >=0.8, drop <0.5, decide 0.5-0.8 per open question; do NOT use doc-level fastText en>0.5 alone.",
+   "rationale": "Doc-level score drops English math sections; decided-chunk share separates foreign books from English books with quotes (read samples).",
+   "evidence": "language_mix.reading_results; 11,091 doc-level drops by CP; 49/55/205 whole books in <0.5/0.5-0.8/0.8-0.95"
+  },
+  {
+   "step": "Deduplicate in three levels after cleaning: exact (normalized text hash), document near-dup (MinHash J>=0.8), and containment (fraction of a doc's >=200-char paragraphs or 13/20-grams present in another doc; drop chapter-level PDFs contained in whole books, keep the larger/cleaner copy); run the same across sources later.",
+   "rationale": "Whole books exist twice under different ids; 1,487 books are >=95% contained in other books; Jaccard alone misses chapters inside books.",
+   "evidence": "exact_dup 275.4M chars in docs >=1000 chars; paragraph_dup books_with_cross_book_shared_paragraph_share; 9,650 CP drops with exact twin"
+  },
+  {
+   "step": "Do not reuse the Common Pile toxicity span deletion; if PII handling is needed, remove the correspondence/address lines as boilerplate instead of inserting placeholders.",
+   "rationale": "Read deleted sentences were benign scientific text and deletion leaves broken paragraphs; placeholders add tokens that do not occur in natural text.",
+   "evidence": "filtered_comparison.observations"
+  },
+  {
+   "step": "Before the full in-place rewrite, run the cleaner on 5 real shards' worth of samples (shortest, longest, each publisher, each English band) and read removed text per rule.",
+   "rationale": "Line classes have 76-100% precision; thresholds (running header, lowercase-start rate, glued words) need calibration on removed text.",
+   "evidence": "precision sample /home/vihaa/CinnamonLM/raw/common_pile_processed/doab/analysis/precision.txt"
+  }
+ ],
+ "open_questions": [
+  "Licence: are compilation-level notices (IntechOpen 'book as a whole all rights reserved', MDPI/Bentham 'book as a whole CC BY-NC-ND', Frontiers e-book 'All rights reserved') a restriction of the whole work (drop) or of the compilation only (keep the CC BY chapters, remove the notice)? 11,725 + 1,755 docs; IntechOpen and MDPI are 64% of doab chars.",
+  "Language: multilingual whole books with 0.5-0.8 English share (55 whole books, 409 sections, 35.5M chars; e.g. 63232ac3-b236-42a8-99d0-907c32451f38, 1a8e9108-5463-49e0-ae0e-9e255389b016) contain whole foreign-language chapters. Keep whole, drop whole, or remove the non-English chapters (this changes a document, not only decides it)?",
+  "Section docs: rebuild books from sections before cleaning and dedup, or keep the Common Pile section split?",
+  "Why half of the 'References' headings have no entries (MDPI/Frontiers/Springer) is unknown; it does not change the cleaning rule but means reference removal affects mainly IntechOpen.",
+  "7,473 docs dropped by the Common Pile filter (42.1M chars) are not explained by length, language, exact or near duplication; 27% of a sample also lack paragraph containment. Cause unknown.",
+  "Threshold for dropping reading-order-damaged docs (lowercase-start rate) is not yet calibrated on read samples.",
+  "Metrics come from the original raw shards; 395 licence-dropped docs and 4,292 stripped docs differ from the current shards (0.08% of docs, 1.9% of chars)."
+ ],
+ "script_path": "/home/vihaa/CinnamonLM/raw/common_pile/analysis/doab/analyze.py",
+ "script_commands": {
+  "filtered-index": "python -I analyze.py filtered-index WORK_DIR <doab_filtered shards>",
+  "raw": "python -I analyze.py raw WORK_DIR <raw shards>  (2 processes; 474,445 docs in ~90 min)",
+  "report": "python -I analyze.py report WORK_DIR REPORT_DIR  (~2.5 min, 7.1 GB peak RSS)",
+  "sample": "python -I analyze.py sample WORK_DIR REPORT_DIR",
+  "extra": "python -I analyze.py extra WORK_DIR <raw shards>",
+  "extra-report": "python -I analyze.py extra-report WORK_DIR REPORT_DIR",
+  "interpreter": "/home/vihaa/CinnamonLM/data_pipeline/.venv/bin/python"
+ },
+ "outputs": {
+  "analysis_dir": "/home/vihaa/CinnamonLM/raw/common_pile_processed/doab/analysis/ (report.json, examples.json, extra_report.json, extra_examples.json, reading_samples.json, precision.txt, whole_lowen.txt)",
+  "per_doc_metrics_work_dir (1.2 GB, scratch, not kept by default)": "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/doab/work (metrics_*.jsonl per doc, sketch_*.npz, paras_*.npz, filtered_index.pkl, near_dup_redundant_ids.json) and .../doab/extra"
+ },
+ "script_fixes_this_run": [
+  "near_duplicates(): batch size was recomputed with sum() over the growing batch list on every posting run (quadratic, report stalled >45 min); replaced the Python Counter of ~25M pair keys (MemoryError at 9 GB limit) with one numpy unique over all pair keys and a vectorized 25%-shared prefilter. Test on 2 small shards reproduced the previous near-dup numbers exactly (690 pairs J>=0.5, 15 pairs J>=0.8).",
+  "Added the 'extra' pass (empty reference headings, orphan table captions, compilation notices, symbol-font math garble, catalogue ads, cover credits, glued function words)."
+ ]
+}

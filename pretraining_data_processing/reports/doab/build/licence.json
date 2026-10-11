@@ -1,0 +1,59 @@
+{
+ "stage": "licence",
+ "started_at_ist": "2026-10-11T19:21:55+05:30",
+ "finished_at_ist": "2026-10-11T19:30:23+05:30",
+ "totals": {
+  "docs_before": 474445,
+  "chars_before": 12454913258,
+  "docs_after": 474102,
+  "chars_after": 12245848060,
+  "drops": 343,
+  "drop_chars": 206431659,
+  "strips": 4371,
+  "strip_chars_removed": 2633539
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ },
+ "code_sha256": {
+  "licence/licence_filter.py": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+  "licence/apply_licence.py": "f9723e1c02e4d108bccc1f9f37d1128912b79aff3d8a5b7a0816f4c6523d001d",
+  "workflow/build_corpus.py": "fd82ce166cc205e79722e5a3c3fef74541f34badcb90947d3691c4d53029e811"
+ },
+ "actions_sha256": "8913b35438aa1caed62f9b2fe046bdd9769eee13ad48fabf5f542ce296326378",
+ "input_sha256": {
+  "00000_doab.json.gz": "38da5ce390a8c21f4b2fb5ba2bd30d87adafae93fd186c1af04a298a7320a9d3",
+  "00001_doab.json.gz": "7bc7cc973c9da65ae0b53162d6ddaff9817c86da76ffd08d749f9098ef27485f",
+  "00002_doab.json.gz": "d6375a2c8e241af46fafb5d9cb36a66b805d63d679c5fbc41444a6f61e0c230f",
+  "00003_doab.json.gz": "4ce9bac3ad91f0609e7b368a2e54c527f6ae43a9599648fb6bb0472066b46cc0",
+  "00004_doab.json.gz": "e0bee66e1f571f3644c236daa7460af6796cbe07866acba6667e5d513ba08ec7",
+  "00005_doab.json.gz": "3a970d5428e7d4f6f49215e1835ecd8fa6861d428b131af7a83b352d6cb1bd8f",
+  "00006_doab.json.gz": "fc05bacf23cdde1cc43e2605b51e76584bd02a67e9dc8d4e53425a7b8f6e911e",
+  "00007_doab.json.gz": "d535fa3873cca51bb00d04d31b404840f8bb64660b66b6ee7e85b47574369263",
+  "00008_doab.json.gz": "14576e179e9ec476a03d584bcd62fcca83693742e1edb51f3af92432aaa7fc59",
+  "00009_doab.json.gz": "0d3827feae1978bb6acfaf91c3da186b73f66ecfef2e3884a18e6c58ff2f11c4",
+  "00010_doab.json.gz": "9d40a46f92f6bfbab2d7ea3df58a1082a03563f47086e3613a4bf01355253686",
+  "00011_doab.json.gz": "43e90d00103b797ab2a34c116e1e254fa70086dfeda5bfbd26031f622ae3788e",
+  "00012_doab.json.gz": "ce36071b6e82586c2e2bfec741b82f6e0a1d26ce9e63ff1cc6119345f3dccfbc"
+ },
+ "output_sha256": {
+  "00000_doab.json.gz": "f68e7aa0cd6f58203f5ec579ab470014dcb98e7335f4b52fbec1bfc07caf7c83",
+  "00001_doab.json.gz": "84cc4f6430ffc5a1f4aad52a9fcb02923d5096034e80e933417624ba28a61310",
+  "00002_doab.json.gz": "47f6f93e022f7e727ddd223eb87c7658e240887bfb8adce2c87e8133c562598f",
+  "00003_doab.json.gz": "d9843eeafe0ea1059ac18fe0162ce714b1cf82440ecca687147516fb4a130227",
+  "00004_doab.json.gz": "dd0544083ac9c61d2aca80ee505dda9d7f763f7b63a341c372fe0e4544f78a66",
+  "00005_doab.json.gz": "57c228b9ad7d2fb16d95702cc8625b311142eff5701f0e0b4630d00d84ec1bf0",
+  "00006_doab.json.gz": "36b40f9b3c15d165b47953fa81c3955ec4a911de7b68340e6d939501f490b132",
+  "00007_doab.json.gz": "812ec7f5db2bbd6e7a5cbb6eae66d8e06bb9780bb1d70f5727993e7d315b5dda",
+  "00008_doab.json.gz": "b6592ceeb73815e067c6426382c68cf674e74adf35ccb395fe1a0c3ca037ce5f",
+  "00009_doab.json.gz": "b1241ab769257e4f2bf3db5c2edd7d5fd2b5acedc7a8bee43ebbfc3623b4023d",
+  "00010_doab.json.gz": "522fb1998222de17d6332056ead3eb96ae0cf69293a7e4733e65dab4e5c9c5a1",
+  "00011_doab.json.gz": "ae25a88ceb811ab5bf36657ab5aee64fc8eab9a771e6288c6dd9099f90bc8ffc",
+  "00012_doab.json.gz": "71bfe2ce12632fec4544ceb465e7b6e7948349c9357368190577d2013f660f80"
+ }
+}

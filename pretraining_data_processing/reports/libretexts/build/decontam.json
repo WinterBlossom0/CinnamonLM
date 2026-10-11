@@ -1,0 +1,42 @@
+{
+ "stage": "decontam",
+ "started_at_ist": "2026-10-11T20:50:24+05:30",
+ "finished_at_ist": "2026-10-11T20:50:41+05:30",
+ "rule": {
+  "ngram": 8,
+  "min_shared": 8,
+  "match_fraction": 0.7,
+  "drop_share": 0.5
+ },
+ "index_sha256": {
+  "eval_ngrams.npy": "2b36012429b0832852e7e427f2b8a137bdb90fa35a65ab274f9b098732ae9f9d",
+  "eval_ngram_items.npy": "629245f2e36a65b61f6d935c97ac5923788196827fbdce95af6c1718f35f9422",
+  "eval_items.json": "6024b316d3a532a0088fb9a21db3308493e533f658e1fe51c9e2c0bf049e0cdd"
+ },
+ "code_sha256": {
+  "workflow/decontam.py": "56501d17138937d0d8ba81925d07ed31d481545b0fa1391a8d7026e78e3a4dfb",
+  "workflow/decontam_index.py": "52685b0c26cb3cfbd63121da9e70a9efe080f77825cbc65711c93f1c76fd0aed",
+  "workflow/corpus.py": "d33f65f057bc36b42c9910ec27c124956fe6a3c87e989f3ccdae3b91352a8687",
+  "data_pipeline/common/dedup.py": "70b218abf0831861c3919b1b3bccf3e75411899381437321e1a1d2474b696660"
+ },
+ "matched_docs": 8,
+ "matched_pairs_per_benchmark": {
+  "mmlu": 21
+ },
+ "totals": {
+  "docs_in": 39624,
+  "docs_out": 39623,
+  "chars_in": 332416878,
+  "chars_out": 332406152,
+  "dropped": 1,
+  "edited": 7,
+  "lines_removed": 14,
+  "chars_removed": 10339
+ },
+ "input_sha256": {
+  "00000_libretext.json.gz": "7c6014e51c5595d030c5c2fd41c7522b5ec0fcdbaa322d87ed77964908c6a848"
+ },
+ "output_sha256": {
+  "00000_libretext.json.gz": "73e54fb2d4da10bfbc57880e8a4a40302f0b7e3a77b3ffdd9417ff383f004fa0"
+ }
+}

@@ -1,0 +1,228 @@
+{
+ "data": "dev set: first 20,260-30,000 docs of 17 Hugging Face raw shards (wikibooks 00000-00001, wikinews 00000, wikipedia 00000/00050/00093/00140/00186, wikiquote, wikisource 00000/00007/00013, wikiversity, wikivoyage, wiktionary 00000/00005/00010); 500,260 docs; 151,003 survive cleaning and quality filters (no book assembly) and were scored",
+ "english_share": {
+  "method": "letter-weighted share of body lines whose lid.176 top label is en; LaTeX math removed; each line is a segment; docs with < 100 letters are kept unscored",
+  "per_wiki_bands_line_segments": {
+   "wikibooks.com": {
+    "0.00-0.10": 257,
+    "0.10-0.20": 33,
+    "0.20-0.30": 29,
+    "0.30-0.40": 47,
+    "0.40-0.50": 55,
+    "0.50-0.60": 79,
+    "0.60-0.70": 166,
+    "0.70-0.80": 326,
+    "0.80-0.90": 820,
+    "0.90-1.00": 25330,
+    "none": 75
+   },
+   "wikinews.com": {
+    "0.00-0.10": 2,
+    "0.30-0.40": 1,
+    "0.50-0.60": 2,
+    "0.60-0.70": 4,
+    "0.70-0.80": 10,
+    "0.80-0.90": 52,
+    "0.90-1.00": 6420
+   },
+   "wikipedia.com": {
+    "0.10-0.20": 1,
+    "0.20-0.30": 4,
+    "0.30-0.40": 8,
+    "0.40-0.50": 20,
+    "0.50-0.60": 45,
+    "0.60-0.70": 67,
+    "0.70-0.80": 136,
+    "0.80-0.90": 363,
+    "0.90-1.00": 27275,
+    "none": 7
+   },
+   "wikiquote.com": {
+    "0.10-0.20": 1,
+    "0.40-0.50": 3,
+    "0.50-0.60": 36,
+    "0.60-0.70": 41,
+    "0.70-0.80": 55,
+    "0.80-0.90": 114,
+    "0.90-1.00": 7364
+   },
+   "wikisource.com": {
+    "0.00-0.10": 198,
+    "0.10-0.20": 21,
+    "0.20-0.30": 48,
+    "0.30-0.40": 41,
+    "0.40-0.50": 34,
+    "0.50-0.60": 69,
+    "0.60-0.70": 86,
+    "0.70-0.80": 152,
+    "0.80-0.90": 372,
+    "0.90-1.00": 43753,
+    "none": 43
+   },
+   "wikiversity.com": {
+    "0.00-0.10": 18,
+    "0.10-0.20": 4,
+    "0.20-0.30": 3,
+    "0.30-0.40": 18,
+    "0.40-0.50": 7,
+    "0.50-0.60": 17,
+    "0.60-0.70": 26,
+    "0.70-0.80": 43,
+    "0.80-0.90": 94,
+    "0.90-1.00": 5474,
+    "none": 15
+   },
+   "wikivoyage.com": {
+    "0.00-0.10": 1,
+    "0.20-0.30": 3,
+    "0.30-0.40": 7,
+    "0.40-0.50": 15,
+    "0.50-0.60": 27,
+    "0.60-0.70": 61,
+    "0.70-0.80": 103,
+    "0.80-0.90": 260,
+    "0.90-1.00": 19336,
+    "none": 9
+   },
+   "wiktionary.com": {
+    "0.00-0.10": 3,
+    "0.10-0.20": 6,
+    "0.20-0.30": 10,
+    "0.30-0.40": 6,
+    "0.40-0.50": 21,
+    "0.50-0.60": 45,
+    "0.60-0.70": 129,
+    "0.70-0.80": 425,
+    "0.80-0.90": 1500,
+    "0.90-1.00": 8645,
+    "none": 607
+   }
+  },
+  "per_wiki_bands_paragraph_segments": {
+   "wikibooks.com": {
+    "0.00-0.10": 275,
+    "0.10-0.20": 42,
+    "0.20-0.30": 40,
+    "0.30-0.40": 39,
+    "0.40-0.50": 48,
+    "0.50-0.60": 76,
+    "0.60-0.70": 119,
+    "0.70-0.80": 229,
+    "0.80-0.90": 451,
+    "0.90-1.00": 25823,
+    "none": 75
+   },
+   "wikinews.com": {
+    "0.00-0.10": 2,
+    "0.30-0.40": 1,
+    "0.50-0.60": 1,
+    "0.60-0.70": 3,
+    "0.70-0.80": 7,
+    "0.80-0.90": 18,
+    "0.90-1.00": 6459
+   },
+   "wikipedia.com": {
+    "0.00-0.10": 2,
+    "0.10-0.20": 3,
+    "0.20-0.30": 11,
+    "0.30-0.40": 13,
+    "0.40-0.50": 30,
+    "0.50-0.60": 40,
+    "0.60-0.70": 57,
+    "0.70-0.80": 82,
+    "0.80-0.90": 195,
+    "0.90-1.00": 27486,
+    "none": 7
+   },
+   "wikiquote.com": {
+    "0.00-0.10": 1,
+    "0.10-0.20": 8,
+    "0.20-0.30": 6,
+    "0.30-0.40": 16,
+    "0.40-0.50": 27,
+    "0.50-0.60": 13,
+    "0.60-0.70": 21,
+    "0.70-0.80": 25,
+    "0.80-0.90": 63,
+    "0.90-1.00": 7434
+   },
+   "wikisource.com": {
+    "0.00-0.10": 214,
+    "0.10-0.20": 19,
+    "0.20-0.30": 43,
+    "0.30-0.40": 30,
+    "0.40-0.50": 28,
+    "0.50-0.60": 59,
+    "0.60-0.70": 80,
+    "0.70-0.80": 134,
+    "0.80-0.90": 314,
+    "0.90-1.00": 43853,
+    "none": 43
+   },
+   "wikiversity.com": {
+    "0.00-0.10": 21,
+    "0.10-0.20": 4,
+    "0.20-0.30": 3,
+    "0.30-0.40": 16,
+    "0.40-0.50": 12,
+    "0.50-0.60": 11,
+    "0.60-0.70": 24,
+    "0.70-0.80": 27,
+    "0.80-0.90": 53,
+    "0.90-1.00": 5533,
+    "none": 15
+   },
+   "wikivoyage.com": {
+    "0.00-0.10": 1,
+    "0.10-0.20": 1,
+    "0.20-0.30": 6,
+    "0.30-0.40": 9,
+    "0.40-0.50": 15,
+    "0.50-0.60": 27,
+    "0.60-0.70": 35,
+    "0.70-0.80": 72,
+    "0.80-0.90": 178,
+    "0.90-1.00": 19469,
+    "none": 9
+   },
+   "wiktionary.com": {
+    "0.00-0.10": 14,
+    "0.10-0.20": 4,
+    "0.20-0.30": 10,
+    "0.30-0.40": 7,
+    "0.40-0.50": 11,
+    "0.50-0.60": 29,
+    "0.60-0.70": 65,
+    "0.70-0.80": 159,
+    "0.80-0.90": 398,
+    "0.90-1.00": 10093,
+    "none": 607
+   }
+  },
+  "readings": {
+   "0.00-0.10": "read ~45: almost all non-English (Interlingue/Interlingua/Occidental/Esperanto/Malay/French texts, interwiki-title residue pages); a few language-teaching pages written almost wholly in the target language (Spanish exercise answer keys, Vietnamese numbers)",
+   "0.10-0.20": "read all 66: 41 English-intended (language lessons for English speakers, Wiktionary glosses with foreign citations, English articles with title lists), 14 non-English (conlang direct-method chapters, Esperanto reader pages, a German lab page, a Spanish quiz), 11 junk lists (Bengali book catalogue, bibliographies)",
+   "0.10-0.30": "read 30 more: majority English language-teaching pages",
+   "0.30-0.50": "read 30: mostly English (language lessons, Wikipedia genus articles with species lists, a Shulchan Aruch translation, Harveian oration, Elasticity with math); 0.5 would drop them"
+  },
+  "chosen_threshold": 0.1,
+  "segmentation_choice": "line segments instead of blank-line paragraphs: Wikiquote pages with original-language quotes moved from 0.1-0.5 to >= 0.5 (wikiquote docs below 0.5: 58 with paragraph segments, 4 with line segments)"
+ },
+ "stopword_fraction": {
+  "method": "fraction of whitespace words (math removed) in {the be to of and that have with a in is it for on as was by are this at from}",
+  "bands_kept_after_english_0.1": {
+   "0.00-0.03": 1177,
+   "0.03-0.06": 1002,
+   "0.06-0.10": 1907,
+   "0.10-0.15": 4695,
+   "0.15-0.20": 10015,
+   "0.20-1.00": 131728
+  },
+  "readings": {
+   "0.00-0.03": "read 22: Pokedex move lists, Han-character gloss entries, index pages, code specifications, subscriber lists, romanized Hakka drills",
+   "0.03-0.06": "read 25: mostly code, TOCs, constants lists, but also a kickboxer biography with a fight table and an electoral-history article",
+   "0.06-0.10": "read 22: Han-character entries, math-heavy proofs, catalogues, recipes"
+  },
+  "chosen_threshold": 0.03
+ }
+}

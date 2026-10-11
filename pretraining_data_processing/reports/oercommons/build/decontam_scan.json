@@ -1,0 +1,22 @@
+{
+ "stage": "decontam_scan",
+ "started_at_ist": "2026-10-11T20:51:14+05:30",
+ "finished_at_ist": "2026-10-11T20:51:18+05:30",
+ "index_sha256": {
+  "eval_ngrams.npy": "2b36012429b0832852e7e427f2b8a137bdb90fa35a65ab274f9b098732ae9f9d",
+  "eval_ngram_items.npy": "629245f2e36a65b61f6d935c97ac5923788196827fbdce95af6c1718f35f9422",
+  "eval_items.json": "6024b316d3a532a0088fb9a21db3308493e533f658e1fe51c9e2c0bf049e0cdd"
+ },
+ "code_sha256": {
+  "workflow/decontam.py": "56501d17138937d0d8ba81925d07ed31d481545b0fa1391a8d7026e78e3a4dfb",
+  "workflow/decontam_index.py": "52685b0c26cb3cfbd63121da9e70a9efe080f77825cbc65711c93f1c76fd0aed",
+  "workflow/corpus.py": "d33f65f057bc36b42c9910ec27c124956fe6a3c87e989f3ccdae3b91352a8687",
+  "data_pipeline/common/dedup.py": "70b218abf0831861c3919b1b3bccf3e75411899381437321e1a1d2474b696660"
+ },
+ "min_row_shared": 3,
+ "rows": 153,
+ "matches_sha256": "be1a0de9df04608ba759bddc484b6478fa4556d42611947804960c1580031ec1",
+ "input_sha256": {
+  "00000_oercommons.json.gz": "e817372e3cbf9e7f7d93ce12487c2f7ad9da53bb4bacd9b29ca2dbafec4e2809"
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "stage": "download",
+ "started_at_ist": "2026-10-11T18:45:01+05:30",
+ "finished_at_ist": "2026-10-11T18:45:03+05:30",
+ "repo": "common-pile/public_domain_review",
+ "revision": "e9c7669206b95871601fe4672a484d8215e6fe6f",
+ "code_sha256": {
+  "workflow/build_corpus.py": "7b96be89a6af443dac89f19c2948ee47a6842f3187b1be3da6557dd009dc8bd6",
+  "workflow/raw_manifest.json": "6b3ae62c7c697be3dbfc2516d31f8eddfbd8d66eb4485ff90f4fcdf40f3f7292"
+ },
+ "output_sha256": {
+  "v0/00000_collections.jsonl.gz": "0a5cbe305d7f468aad95a8cfc4d5fae14132bc359ccf92fc3705072db33a46fd",
+  "v0/00000_conjectures.jsonl.gz": "df36cf8f1d922a86bcc381806ad3adf2f21ad9f923a2fcb73aa7c518b871ce79",
+  "v0/00000_essays.jsonl.gz": "825aed6a66ab14f89e1fe3110f67265d511994c52e5aed48b866a9e8a1bdeb4d"
+ }
+}

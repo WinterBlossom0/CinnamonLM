@@ -1,0 +1,151 @@
+{
+  "pipeline": "oercommons",
+  "seed": 0,
+  "input": {
+    "docs": 9036,
+    "chars": 83064795,
+    "shards": 1
+  },
+  "output": {
+    "docs": 4912,
+    "chars": 44241164
+  },
+  "steps": [
+    {
+      "name": "normalize",
+      "docs_in": 9036,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 63,
+      "chars_before_modified": 1003393,
+      "chars_after_modified": 1003214
+    },
+    {
+      "name": "login_chrome",
+      "docs_in": 9036,
+      "docs_removed": 92,
+      "chars_removed": 22585,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "spam_pages",
+      "docs_in": 8944,
+      "docs_removed": 1,
+      "chars_removed": 1332,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "vendor_promo",
+      "docs_in": 8943,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 107,
+      "chars_before_modified": 127953,
+      "chars_after_modified": 96865
+    },
+    {
+      "name": "page_scaffold",
+      "docs_in": 8943,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 8362,
+      "chars_before_modified": 68469872,
+      "chars_after_modified": 66917599
+    },
+    {
+      "name": "boilerplate_lines",
+      "docs_in": 8943,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 2870,
+      "chars_before_modified": 44529668,
+      "chars_after_modified": 43512297
+    },
+    {
+      "name": "repeated_blocks",
+      "docs_in": 8943,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 1882,
+      "chars_before_modified": 31315610,
+      "chars_after_modified": 29010634
+    },
+    {
+      "name": "min_words",
+      "docs_in": 8943,
+      "docs_removed": 1204,
+      "chars_removed": 212671,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "short_lines",
+      "docs_in": 7739,
+      "docs_removed": 20,
+      "chars_removed": 12832,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "english",
+      "docs_in": 7719,
+      "docs_removed": 93,
+      "chars_removed": 937977,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "function_words",
+      "docs_in": 7626,
+      "docs_removed": 9,
+      "chars_removed": 5061,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "exact_dedup",
+      "docs_in": 7617,
+      "docs_removed": 2579,
+      "chars_removed": 31557286,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 2579
+      }
+    },
+    {
+      "name": "near_dedup",
+      "docs_in": 5038,
+      "docs_removed": 126,
+      "chars_removed": 1166754,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 126,
+        "candidate_pairs": 285,
+        "verified_pairs": 202
+      }
+    },
+    {
+      "name": "pii",
+      "docs_in": 4912,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 141,
+      "chars_before_modified": 2292677,
+      "chars_after_modified": 2291431
+    }
+  ],
+  "data_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/oercommons",
+  "meta_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/oercommons/build/clean"
+}

@@ -1,0 +1,37 @@
+{
+ "stage": "licence",
+ "started_at_ist": "2026-10-11T20:19:50+05:30",
+ "finished_at_ist": "2026-10-11T20:22:36+05:30",
+ "totals": {
+  "docs_before": 106881,
+  "chars_before": 1467598452,
+  "docs_after": 103850,
+  "chars_after": 1409539031,
+  "drops": 3031,
+  "drop_chars": 56777592,
+  "strips": 2444,
+  "strip_chars_removed": 1281829
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ },
+ "code_sha256": {
+  "licence/licence_filter.py": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+  "licence/apply_licence.py": "f9723e1c02e4d108bccc1f9f37d1128912b79aff3d8a5b7a0816f4c6523d001d",
+  "workflow/build_corpus.py": "0608030cd6903e4baa9db71b0499d6e42619450623765a6283c8fd65a5d6fb21"
+ },
+ "actions_sha256": "8ecfa3489a182b1d18ea780d1b735012ff6cd41f6f9568ddd2d20cb408f0b89e",
+ "input_sha256": {
+  "00000_pressbooks.json.gz": "67d1135ad65d3c1f2f4d88d44ad35d37a4e381cb518c1bd878e4d2c350c9ff21",
+  "00001_pressbooks.json.gz": "cd3a484605b52654a3a1b022bd125091fa15739b243d8b9967c97454e1227c41"
+ },
+ "output_sha256": {
+  "00000_pressbooks.json.gz": "847a053ac9ad2d010cb23f3b9cf5224c948e2f3fb18c4b1bc6f6907dfd9b5658",
+  "00001_pressbooks.json.gz": "a607e32aecdcd042d2d66555659e3d1a3bac40fbed7e1054c47f3e04aeefd2fe"
+ }
+}

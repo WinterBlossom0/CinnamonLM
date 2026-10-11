@@ -1,0 +1,44 @@
+{
+ "stage": "decontam",
+ "started_at_ist": "2026-10-11T20:51:14+05:30",
+ "finished_at_ist": "2026-10-11T20:51:14+05:30",
+ "rule": {
+  "ngram": 8,
+  "min_shared": 8,
+  "match_fraction": 0.7,
+  "drop_share": 0.5
+ },
+ "index_sha256": {
+  "eval_ngrams.npy": "2b36012429b0832852e7e427f2b8a137bdb90fa35a65ab274f9b098732ae9f9d",
+  "eval_ngram_items.npy": "629245f2e36a65b61f6d935c97ac5923788196827fbdce95af6c1718f35f9422",
+  "eval_items.json": "6024b316d3a532a0088fb9a21db3308493e533f658e1fe51c9e2c0bf049e0cdd"
+ },
+ "code_sha256": {
+  "workflow/decontam.py": "56501d17138937d0d8ba81925d07ed31d481545b0fa1391a8d7026e78e3a4dfb",
+  "workflow/decontam_index.py": "52685b0c26cb3cfbd63121da9e70a9efe080f77825cbc65711c93f1c76fd0aed",
+  "workflow/corpus.py": "d33f65f057bc36b42c9910ec27c124956fe6a3c87e989f3ccdae3b91352a8687",
+  "data_pipeline/common/dedup.py": "70b218abf0831861c3919b1b3bccf3e75411899381437321e1a1d2474b696660"
+ },
+ "matched_docs": 0,
+ "matched_pairs_per_benchmark": {},
+ "totals": {
+  "docs_in": 1358,
+  "docs_out": 1358,
+  "chars_in": 6901126,
+  "chars_out": 6901126,
+  "dropped": 0,
+  "edited": 0,
+  "lines_removed": 0,
+  "chars_removed": 0
+ },
+ "input_sha256": {
+  "v0/00000_collections.jsonl.gz": "59d89f68628f1ba23eda724c36c9cd88475060afa3393626f6102efe9c610057",
+  "v0/00000_conjectures.jsonl.gz": "9f8548a73d52df13f38a6fb26459ada8b956630b379c77ddb551d77e534651b5",
+  "v0/00000_essays.jsonl.gz": "7ae3e7b13b1df035fee41bf50340942ea3d23f565ea83057491d6b21193c1cf5"
+ },
+ "output_sha256": {
+  "v0/00000_collections.jsonl.gz": "66574dc291dc724218f98927112e613c1af7c500398d7fccfa2ac2819370aa7c",
+  "v0/00000_conjectures.jsonl.gz": "8dbd9d741ca89f0bf3d3406333c5cf1c831b5b02d872e3e4bcdcaae91a032a48",
+  "v0/00000_essays.jsonl.gz": "70d081f4ed8a15139a498b63445a1fc91e48137d498ca20a9ab9e579ce614083"
+ }
+}

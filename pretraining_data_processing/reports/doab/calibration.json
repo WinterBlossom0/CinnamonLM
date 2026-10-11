@@ -1,0 +1,53 @@
+{
+ "source": "doab",
+ "data": "licence-filtered shards (licence_applied.json filter_sha256 4c6acc6b...), 474,110 docs",
+ "profile_pass": "read-only pass over all 13 shards (53 min, 8 procs) that applied the cleaning steps of data_pipeline/sources/doab.py as of 2026-10-10 19:40 IST and stored per-doc language, prose and paragraph-hash metrics; later rule changes (credit lines, author-date references, garbled paragraphs) are not in these numbers",
+ "english": {
+  "measure": "lid.176 on language_segments (paragraphs, 768-char chunks); english_share = English letters / letters of segments with top probability >= 0.5; foreign_block_share = letters in runs of consecutive non-English decided segments of >= 5000 letters / decided letters; decided_letter_share = decided letters / all segment letters",
+  "rule": "keep if english_share >= 0.65 and foreign_block_share < 0.10; if decided_letter_share < 0.10 the floor is 0.90",
+  "full_corpus_bands_docs_words_ge_50_[docs, chars, docs_with_block_ge_0.1, their_chars]": {
+   "0-0.3": [366, 9615655, 36, 9313050],
+   "0.3-0.5": [88, 7948469, 11, 7808968],
+   "0.5-0.65": [93, 11065881, 15, 10138312],
+   "0.65-0.8": [227, 19093988, 15, 9122989],
+   "0.8-0.9": [685, 39356005, 6, 1937821],
+   "0.9-0.95": [1489, 79189497, 0, 0],
+   ">=0.95": [375389, 10800605226, 0, 0]
+  },
+  "floor_sweep_[floor, docs_dropped, chars_dropped, whole_books_dropped]": [[0.5, 497, 38853615, 82], [0.6, 543, 39711992, 83], [0.65, 573, 39753276, 83], [0.7, 603, 41225695, 85], [0.8, 780, 49661814, 101]],
+  "read_kept": [
+   ["8a9fc9db-12b2-42ab-8025-dbe044af0267", "Dante and Aquinas (Ubiquity)", 0.679, "English monograph with long Italian/Latin quotations"],
+   ["14c49676-d8b6-4032-9da7-2525d103ec50", "Encyclopaedia of German diatheses (LSP)", 0.739, "English grammar of German with German examples"],
+   ["40b79c79-188e-4ff6-9bf8-47ca4d7f1dcb", "Annotated catalogue of fungal biota (Polish Botanical Society)", 0.751, "English catalogue with Polish place names"],
+   ["26b6644d-1013-485c-aa78-276c2d8a92b4", "Conversations with Kenelm (Ubiquity)", 0.708, "English with Latin/Italian quotes"],
+   ["19bd841e-a1fb-452f-8422-db29ff22c964", "Tiberian Pronunciation Tradition (OBP)", 0.775, "English with Hebrew"],
+   ["28b5e8e6-ec69-4d62-ba79-60f78b73513b.83", "IntechOpen section on French gratitude expressions", 0.769, "English linguistics with French examples"],
+   ["8ca91e5c-b084-4293-92b2-81badba15e7d", "Performance Practice of Electroacoustic Music (Peter Lang)", 0.86, "French primary-source quotes, block share 0.084"]
+  ],
+  "read_dropped": [
+   ["8a2802ae-126a-43ef-9a7a-daa8477495bc", "René de Saussure and the theory of word formation (LSP)", 0.59, "bilingual edition, French original alternating with English translation"],
+   ["2c21e56e-6ed1-4942-98ae-59d906ef8c40.22", "MDPI section", 0.53, "English abstract followed by a French article"],
+   ["07201906-1b76-4910-9442-9d7246651e5f.95", "IntechOpen section", 0.55, "English text plus an unremoved Portuguese reference list (author-date references are now removed as lines)"],
+   ["63232ac3-b236-42a8-99d0-907c32451f38", "Yearbook Migration (transcript)", 0.444, "German and English chapters"],
+   ["2b96b571-2808-452b-9aae-f85d7c325314", "Pandemic Protagonists (transcript)", 0.745, "whole Italian, French and Spanish chapters, block share 0.239"],
+   ["155c6f39-dcdc-433f-942e-be7392572edd", "Masculinities Ageing between Cultures (transcript)", 0.872, "one German chapter, block share 0.114"],
+   ["b3a7bcce-cac4-4ff1-958e-22add3b0627b", "Concept and Analysis (Logos)", 0.835, "one German chapter, block share 0.162"],
+   ["7fdabc03-b586-4e29-a41b-d4dba1b75706", "Dynamics of Rotors on Gas Foil Bearings (KIT)", 0.81, "English thesis with German and French extended summaries, block share 0.174"],
+   ["615e9255-e758-4925-89df-084396c86485.40", "The Ocean of Heroes (MDPI)", 0.537, "Tibetan Wylie transliteration, 3.5% of letters decided"],
+   ["2325a8be-89a0-4907-a8dc-2f16afc90a07.18", "The Ocean of Heroes (MDPI)", 0.662, "Tibetan Wylie transliteration, 2.7% of letters decided"],
+   ["51d857eb-00d7-4541-a503-5a49525bad24", "Firenze University Press volume", 0.388, "Italian and English chapters"]
+  ],
+  "known_limit": "a document is kept or dropped whole; English books whose foreign summary or chapter reaches 10% of decided letters are dropped, and English books with scattered foreign passages below that keep them"
+ },
+ "content": {
+  "measure": "share of chars in paragraphs with LaTeX math, or >= 25 words with function-word share >= 0.12 and >= 50% lowercase word initials",
+  "rule": "drop if share < 0.10",
+  "reading": "docs below 0.10 read: reference debris, title pages, bylines and affiliations, taxon lists, compound characterisation data; 0.1-0.3: real sections with reference remnants; methods prose with function-word share 0.12-0.2 is kept"
+ },
+ "containment": {
+  "measure": "chars of >= 200-char paragraphs (CCNet key) that occur in longer kept documents / document chars",
+  "threshold_sweep_8_of_13_shards_[threshold, docs, chars]": [[0.5, 8843, 123417908], [0.6, 8112, 117210572], [0.7, 7539, 113633445], [0.8, 6729, 105680961], [0.9, 4749, 87151248]],
+  "rule": "drop at >= 0.8 after exact and near dedup",
+  "reading": "0.8-0.9 band: IntechOpen back-cover blurbs inside the preface section, chapter PDFs inside the whole book, sections copied inside a longer section of the same split book"
+ }
+}

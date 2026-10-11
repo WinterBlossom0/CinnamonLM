@@ -1,0 +1,285 @@
+{
+ "dataset": "common-pile/wikimedia (raw), compared with common-pile/wikimedia_filtered",
+ "files_examined": [
+  "/home/vihaa/CinnamonLM/raw/common_pile/wikimedia/ does not exist yet (the running download has not reached wikimedia), so all shards below were fetched into the scratch dir",
+  "scratch/raw/00000_wikibooks.com.jsonl.gz (226,917 docs)",
+  "scratch/raw/00000_wikinews.com.jsonl.gz (1,303,468 docs)",
+  "scratch/raw/00000_wikipedia.com.jsonl.gz (20,260 docs, page ids 12-35,109: oldest/longest articles)",
+  "scratch/raw/00093_wikipedia.com.jsonl.gz (274,353 docs, page ids 37.78M-38.22M)",
+  "scratch/raw/00186_wikipedia.com.jsonl.gz (203,772 docs, page ids 77.10M-77.40M, last shard)",
+  "scratch/raw/00000_wikiquote.com.jsonl.gz (170,397 docs, the only wikiquote shard)",
+  "scratch/raw/00000_wikisource.com.jsonl.gz (116,598 docs)",
+  "scratch/raw/00007_wikisource.com.jsonl.gz (368,453 docs)",
+  "scratch/raw/00000_wikiversity.com.jsonl.gz (200,700 docs, the only shard)",
+  "scratch/raw/00000_wikivoyage.com.jsonl.gz (134,008 docs, the only shard)",
+  "scratch/raw/00000_wiktionary.com.jsonl.gz (575,766 docs)",
+  "scratch/filtered/wikimedia-0000.json.gz (298,282 docs: wikibooks, wikinews, wikipedia, wikiquote, wikisource)",
+  "scratch/filtered/wikimedia-0001.json.gz (496,869 docs: wikiversity, wikivoyage, wiktionary, ...)",
+  "scratch/filtered/wikimedia-0005.json.gz (639,808 docs; covers wikisource ids 2,060,685-2,828,946)",
+  "scratch/filtered/wikimedia-0022.json.gz (429,732 docs; covers wikipedia 00093)",
+  "scratch/filtered/wikimedia-0034.json.gz (384,839 docs; covers wikipedia 00186)",
+  "README.md of both repos",
+  "scratch = /tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/wikimedia/",
+  "outputs: scratch/out/report.json, scratch/out/report_extra.json, scratch/out/summary.txt, scratch/out/examples.txt, scratch/out/placeholders.txt, scratch/out/filtered_ns_chars.txt, scratch/out/dropped_main_*.txt"
+ ],
+ "docs_sampled": 3594692,
+ "total_docs_estimate": "63,969,938 docs / 90.5 GB UTF-8 in the raw repo (README figure), in 219 data shards: wikipedia 187, wikisource 14, wiktionary 11, wikibooks 2, wikinews 2, wikiquote 1, wikiversity 1, wikivoyage 1 (from HfApi file listing). The filtered repo reports 16,311,574 docs / 57.4 GB. My sample has 3,594,692 docs and 5,096,005,038 chars, which is 5.6% of the README doc count. The sample covers all of wikiquote, wikiversity and wikivoyage. Doc density per shard varies a lot (wikipedia 00000 has 20,260 docs, 00093 has 274,353), so I did not extrapolate per-project totals.",
+ "schema_fields": [
+  "id: '<namespace>-<page_id>' (e.g. '0-1', '3-1141770'). It is NOT unique across wikis (every wiki has '0-1'), so the unique key is (source, id). Raw shards are sorted by page id (0 order inversions in the 5 shards I checked).",
+  "text: plain text from wtf_wikipedia. The first line is the page title, then a blank line, then the body.",
+  "source: 'wiki/dump/<project>.com'",
+  "added: ingestion timestamp (2024-07-27...)",
+  "created: behaves like the last-revision timestamp, not page creation. Every one of the 24,762 main-namespace docs in wikipedia 00186 has 2024, and 15,999 of 17,327 in wikipedia 00000 have 2024.",
+  "metadata (raw: a JSON object, not a string): license, authors [[name, user_id]], url, wiki, namespace (string), title",
+  "metadata (filtered: a Python-dict STRING, parse with ast.literal_eval): same keys plus 'provenance'"
+ ],
+ "length_stats": "Whole sample (3,594,692 docs, 5,096,005,038 chars). Chars: p1=6, p5=11, p25=50, p50=78, p75=806, p95=4,699, p99=23,762, max=1,611,532 (wikiquote 0-240699 'Roe v. Wade'). Whitespace words: p1=1, p5=1, p25=7, p50=11, p75=134, p95=782, p99=3,969, max=263,711. The distribution is bimodal: 1.2M near-empty wikinews user-talk pages and 540k mostly title-only Wiktionary entries pull the median down. Main namespace only (984,673 docs, 2.77B chars): chars p1=3, p5=7, p25=13, p50=150, p75=1,374, p95=13,677, p99=43,829. Body words (title line removed): p50=23, p75=223, p95=2,296, p99=7,350. Median chars of main-namespace docs per shard: wikipedia00000 15,355 | wikipedia00093 786 | wikipedia00186 931 | wikinews 1,529 | wikibooks 1,509 | wikiquote 2,612 | wikisource00000 2,461 | wikisource00007 53 (transclusion stubs) | wikiversity 1,164 | wikivoyage 2,338 | wiktionary 17. Longest docs are generated or archive pages: wikiversity 0-249815 'QB/f cp1-chap05-14 Mechanics ALL' (1,315,635 chars of LaTeX quiz source), wikivoyage 3-114051 'User talk:Ikan Kekek/archive' (1,321,597), wikipedia 1-5381 'Talk:Creationism/Archive 1' (930,197), wikibooks 0-399714 (1,308,420).",
+ "language_mix": "There is no language-ID library (fasttext, langdetect, lingua, langid, cld are not installed), so I used a documented heuristic on the body. A doc is non-English if more than 50% of its letters are non-Latin (code point > U+024F), or if it has at least 5 French/German/Spanish/Italian/Portuguese/Dutch/Latin function words and more of those than English stopwords (the word lists are in analyze.py: ENGLISH_STOPWORDS, FOREIGN_STOPWORDS). Docs with fewer than 20 body words count as undetermined. Results: 63.4% of sampled docs are undetermined (3.0% of chars), almost all title-only or near-empty. Of the determinable docs, 0.66% are non-English (0.86% of their chars). Fraction of all docs flagged non-English, per shard: wikisource00007 1.09%, wikiversity 0.45%, wikibooks 0.36%, wikipedia00186 0.32%, wikiquote 0.22%, wikipedia00093 0.19%, wikivoyage 0.18%, wikisource00000 0.17%, wiktionary 0.12%, wikipedia00000 0.03%, wikinews 0.02%. Reading the hits showed real whole-doc foreign text: Spanish drafts (118-77139665 'Draft:Selecci\u00f3n de un Sistema ERP'), a Punjabi dictionary (wikibooks 0-182660), Finnish pages, Latin descriptions. The larger problem is mixed text inside English pages: Wiktionary translation blocks, phrasebooks, and leftover interwiki titles in Wikisource (0-64041). The earlier English-stopword-ratio test (<0.10, flagged in 1.17% of docs) proved to catch English list and TOC pages, not foreign text. I kept it only as a 'low_stopword' list-likeness flag. The Common Pile filter dropped 97.5% of docs my heuristic flags as non-English (213 kept, 8,446 dropped).",
+ "issues": [
+  {
+   "name": "Non-article namespaces dominate the raw dump (user talk, talk, user, project, template, category, file)",
+   "description": "The raw dump includes every namespace. Only 27.4% of sampled docs (984,673 of 3,594,692) and 54.4% of chars are main namespace (ns 0). User-talk pages (ns 3) are mostly bot welcome messages, block notices, or empty pages titled with an IP address. Project pages are deletion debates and similar. The Common Pile filter removes ns 3 completely but keeps talk, user, project, template and draft pages. In the 5 filtered shards I measured (8.43B chars), only 50.6% of chars are main namespace. The rest: talk 14.35%, Wikisource Page 16.2%, project ns4 8.67%, user ns2 7.34%, Draft ns118 0.98%, Template 0.74%. 211,143 kept talk docs and 69,389 kept project docs contain '(UTC)' editor signatures.",
+   "prevalence": "Share of docs (chars) per raw shard. ns3: wikinews 93.3% (56.2%), wikipedia00093 45.1% (35.3%), wikibooks 38.1% (22.4%), wikiquote 39.9% (11.6%), wikipedia00186 33.7% (32.3%), wikivoyage 26.5% (13.7%), wikiversity 24.8% (17.3%). All non-main namespaces: wikinews 98.5% (83.0%), wikipedia00186 87.9% (82.1%), wikipedia00093 85.7% (78.2%), wikisource00007 86.4% (87.2%, mostly ns104 Page), wikiversity 76.8% (51.6%), wikivoyage 75.7% (51.5%). Filter keep rate for ns3 across the sample: 0 of 1,656,773.",
+   "measurement_method": "Count metadata['namespace'] per doc (nscount.py, analyze.py ns_docs/ns_chars). Filtered composition comes from filtered_ns_chars.py over the 5 filtered shards: group by the id prefix, signature regex r'\\d{1,2}:\\d{2}, \\d{1,2} [A-Z][a-z]+ \\d{4} \\(UTC\\)'.",
+   "evidence_examples": [
+    "wikinews 3-1141770: 'User talk:Tenugu001\\n\\n-- Wikinews Welcome (talk) 06:00, 6 February 2014 (UTC)'",
+    "wikipedia00093 3-38076529: 'User talk:106.217.247.216' (whole doc, 25 chars, IP address as title)",
+    "wikipedia00093 4-38006721: 'Wikipedia:Articles for deletion/Colorado Translators Association ... The result was   redirect to American Translators Association. Mark Arsten (talk) 17:11, 14 January 2013 (UTC)'",
+    "wikipedia00093 10-38051008: 'Template:Attached KML/All American Freeway ... ff0000ff 5  normal #sn_ylw-pushpin</Pair><Pair> highlight <styleUrl>#sh_ylw-pushpin</styleUrl>'",
+    "wikipedia00093 3-37785475 (welcome template, 1,537 exact body copies): 'Welcome!\\n '''Welcome, !\\n\\nI'm, and I noticed that you haven't been welcomed yet'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Title-only, empty and stub documents",
+   "description": "Many docs are only the title line, because the converter dropped template-only content or the page only transcludes text. Wiktionary inflection entries, Wikisource main-namespace transclusion pages (the text lives in Page:), empty user talk pages, and empty 'Comments:' pages in wikinews all fall here. Very short Wikipedia stubs are also common in the newer shards.",
+   "prevalence": "title_only, main namespace: wiktionary 50.3% of docs, wikisource00007 89.4%, wikisource00000 15.3%, wikiversity 11.5%, wikibooks 5.3%. Title-only, all namespaces: wikipedia00093 54.8%, wikiversity 30.0%, wikivoyage 27.9%. Body under 50 words, main namespace: wiktionary 84.0% of docs (18.6% of chars), wikipedia00093 27.9% (2.5%), wikipedia00186 20.3% (2.1%), wikiversity 31.4% (0.84%), wikibooks 23.3% (0.70%). The filter keeps 0.63% of docs with 10 or fewer body words (13,558 of 2,159,701), so it removes these almost completely.",
+   "measurement_method": "body = text minus the leading title line, then strip(). title_only: body == ''. body_lt50w / body_lt20w: len(body.split()) < 50 / < 20 (analyze.py analyze_doc).",
+   "evidence_examples": [
+    "wiktionary 0-605627: 'migli' (entire doc, 5 chars)",
+    "wiktionary 0-422894: 'idiocies' (entire doc)",
+    "wikisource00007 0-2269669: 'The Book of Scottish Song/The Harper of Mull\\n\\n' (transclusion page with no text)",
+    "wikinews 102-396214: 'Comments:Roman coins hoard found in Somerset, England' (entire doc)",
+    "wikipedia00093 0-38128551: 'Darius Msagha Mbela\\n\\nDarius Msagha Mbela was a Kenyan politician. He was a minister for agriculture and a former member of parliament for the Wundanyi Constituency.'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Holes where wtf_wikipedia dropped templates and link labels",
+   "description": "wtf_wikipedia drops templates it does not render. Examples are {{w|...}} links in Wikinews, {{lang}}/{{IPA}} pronunciation templates, {{convert}}, Wiktionary etymology templates ({{inh}}, {{der}}, {{bor}}) and translation templates ({{t+}}), and Wikivoyage {{marker}}/{{listing}}. The result is sentences with missing words, empty parentheses, dangling commas, and 'From, from , from.' chains. This defect is in the conversion, so the filter cannot fix it by dropping docs, and it keeps most affected docs.",
+   "prevalence": "The precise sub-patterns, as share of main-namespace docs. function-word then punctuation: wiktionary 6.6%, wikinews 2.75%, wikipedia00000 2.74%, wikibooks 2.5%. Empty or comma-only parentheses: wikipedia00093 5.0% (Iranian village stubs '(, also Romanized as'), wikipedia00000 3.5%, wikivoyage 0.9%. Double comma: wiktionary 6.9%, wikinews 5.1%, wikipedia00000 4.5%. Any of the 5 hole patterns (upper bound): main docs wikipedia00000 26.4%, wikinews 17.7%, wikiquote 16.5%, wikibooks 15.0%, wikivoyage 13.3%, wiktionary 12.3%. Lines containing a hole hold 1.0-7.7% of main chars (wiktionary 7.7%, wikinews 5.9%, wikibooks 4.4%). In a manual check of 50 random hole-flagged lines (shown truncated to 200 chars), 13 showed a visible dropped-token hole. The rest were truncated or false positives such as '. . .' ellipses, ' : ' dialogue or phrasebook formatting, and double spaces after sentences. So the 'any' figure overstates the true rate. Filter keep rate for hole-dense docs (at least 1 hole per 100 words): 77.6% (64,413 kept, 18,616 dropped).",
+   "measurement_method": "Per line of body: function_word_then_punct r'(?i)\\b(?:the|an|of|from|with|between|into|than)\\s+[,.;:)]'; empty_or_comma_paren r'\\(\\s*[,;](?:[\\s,;]*)|\\(\\s*\\)'; double_comma r',[ \\t]*,'; double_space_in_sentence r'(?<=[a-z,])[ \\t]{2,}(?=[a-z])'; space_before_punct r'(?<=[a-z]) [,.;:](?=[ \\t\\n]|$)'. holes_dense = holes*100/body_words >= 1. Manual precision: 50-line reservoir sample in report_extra.json hole_line_sample.",
+   "evidence_examples": [
+    "wikinews 0-892: 'Russia's highest court has judged that living in the federal state of  may not apply the  to their language without permission from the federal government in Moscow.'",
+    "wikipedia00000 0-2023: 'Aeschylus (, ; \u0391\u1f30\u03c3\u03c7\u03cd\u03bb\u03bf\u03c2 ; c. 525/524 \u2013 c. 456/455 BC) was an ancient Greek tragedian'",
+    "wikipedia00093 0-37901116: 'Dargelu (, also Romanized as Dargel\u016b; also known as Darg\u012bl\u016b) is a village in Senderk Rural District'",
+    "wiktionary 0-205: 'eagle\\n\\nEtymology\\nFrom, from , from , from. Displaced native \ud83c\udde8\ud83c\uddec, from \ud83c\udde8\ud83c\uddec. More at.'",
+    "wikinews 0-426094: 'The newly-released document states as present Libya's head of African investment, ; Sarkozy ally ; Libyan intelligence chief ; and arms dealer.'",
+    "wikivoyage 0-49: 'Towns\\n\\n * &mdash; island with small population\\n * &mdash; island with small population'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Wikisource Page: namespace stores books as per-page OCR fragments; main pages are empty transclusions",
+   "description": "Proofread Wikisource text sits in the Page: namespace (ns 104) as one doc per scanned page. Many pages start mid-sentence, carry page numbers and running headers ('Rh', '419]'), have OCR errors, and are cut at the page break. The matching main-namespace pages hold only <pages/> transclusions, so after conversion they are title-only. The filter keeps most Page docs, so books enter training as shuffled page fragments.",
+   "prevalence": "wikisource00007: ns104 is 81.9% of docs and 85.0% of chars. Of its 301,850 Page docs, 17.3% start with a lower-case letter (mid-sentence), 63.5% do not end in sentence punctuation, and 11.6% are empty. Main-namespace docs in the same shard are 89.4% title-only. Filter keeps 203,857 of 301,850 Page docs (67.5%). In the 5 filtered shards, Wikisource Page docs are 25.0% of docs and 16.2% of chars.",
+   "measurement_method": "report_extra.json page_docs_*: body[:1].islower(); body.rstrip()[-1:] not in sentence-final characters; empty body. Page-number lines r'(?m)^[ \\t]*\\[?\\d{1,4}[\\].]?[ \\t]*$' (flagged in 3.0% of shard docs).",
+   "evidence_examples": [
+    "wikisource00007 104-2081576: 'Page:The works of the late Edgar Allan Poe volumes 1-2.djvu/49\\n\\n fire. I had indeed made a narrow escape. Had the balloon remained a very short while longer within the cloud'",
+    "wikisource00007 104-2356556: 'Page:George Eliot (Blind 1883).djvu/17\\n\\nRh starry heavens or of Alpine solitudes, on the insurrection and tumult of human passion'",
+    "wikisource00007 104-2085523: '...djvu/132\\n\\n100\\n\\nThis genus contains a group of small birds ... no green on the upper plumage... aud have no green ... rather rare winter visitors ... migratory in their liabits'",
+    "wikisource00000 0-123262: 'Basic Law of the Hong Kong Special Administrative Region/Annex I\\n\\n' (empty transclusion)"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Wiktionary entries are skeletons: empty translation slots, emptied etymologies, flag-emoji residue, duplicated sense lists",
+   "description": "Wiktionary is built almost entirely from templates. After conversion, most entries are title-only or very short. Longer entries are dominated by translation lists with empty slots ('* French:'), emptied etymologies ('From, from , from.'), regional-indicator flag pairs that were left where language templates used to be, and sense lists repeated 2-4 times.",
+   "prevalence": "Wiktionary main namespace: 50.3% title-only, 84.0% under 50 body words. Empty label slots (lines like '* French:'): 11.3% of docs and 9.6% of main chars (1,006,004 lines). Flag emoji: 6.8% of docs. Duplicate lines over 20% of chars: 7.3% of docs (36.6% of chars). Filter keep rate for main namespace: 26.4% (142,546 of 540,042), essentially only the entries with 20 or more words. It keeps 77.5% of docs with empty items and 79.5% of docs with flag emoji.",
+   "measurement_method": "EMPTY_LANG_SLOT_RE r\"(?m)^ ?\\* [A-Z][A-Za-z' ()-]{1,30}:[ \\t,;]*$\" (report_extra). FLAG_EMOJI_RE r'[\\U0001F1E6-\\U0001F1FF]{2}'. dup_lines_gt20pct = chars of repeated stripped lines of at least 10 chars divided by all chars of such lines > 0.2 (Gopher-style).",
+   "evidence_examples": [
+    "wiktionary 0-39755: ' * Dutch:\\n * Finnish: n\u00e4kemyksellinen, vision\u00e4\u00e4rinen\\n * French:\\n * Galician: visionario\\n * German:\\n * Irish: aislingeach\\n * Italian: ,'",
+    "wiktionary 0-1568: 'wolf\\n\\nEtymology\\nFrom, from , , from , from , from. See also \ud83c\udde8\ud83c\uddec, West Frisian and \ud83c\udde8\ud83c\uddec, \ud83c\udde8\ud83c\uddec, \ud83c\udde8\ud83c\uddec and \ud83c\udde8\ud83c\uddec'",
+    "wiktionary 0-39755: ' * 1) Prophetic or revelatory.\\n * 2) Idealistic or utopian.\\n * 1) Prophetic or revelatory.\\n * 2) Idealistic or utopian.\\n * 1) Idealistic or utopian.'",
+    "wiktionary 0-35210: 'Cape of Good Hope\\n\\nEtymology\\n.\\n\\nProper noun\\n\\n * , near Cape Town.'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Residual wikitext and HTML markup",
+   "description": "Some pages still contain unconverted markup: [[File:...|thumb|...]] lines, {{...}} templates, {| wikitable rows and style= attributes, '''bold''' quotes, HTML entities (&mdash;, &#91;), <hr>/<li>/<span> tags, and magic words (__DISAMBIG__, __NOINDEX__). Many docs are touched, but the debris is a small share of characters. Note: the bare template-brace pattern also matches LaTeX '}}' inside $$...$$ math, which is intentional content (math is present in 7.1% of wikibooks and 6.9% of wikipedia00000 main docs).",
+   "prevalence": "Main-namespace docs with any markup pattern (debris share of main chars): wikisource00000 25.4% (0.56%, mostly HTML entities, 20.6% of docs), wikiquote 17.3% (0.53%), wikibooks 14.2% (0.56%), wikipedia00000 12.8% (0.056%), wikiversity 11.5% (0.90%), wikivoyage 8.2% (0.12%), wikinews 8.1% (0.16%), wikipedia00093 2.0% (0.14%), wikipedia00186 2.2% (0.15%). Template braces outside $$math$$: wikipedia00000 2.0% of main docs, wikiversity 1.24%, wikibooks 0.85%. Table syntax: wikiquote 4.0%, wikiversity 1.9%, wikipedia00000 1.3%. Filter keeps 34% of docs with markup (103,967 kept docs still contain it).",
+   "measurement_method": "Union of match spans for the MARKUP_PATTERNS in analyze.py: template r'\\{\\{[^{}\\n]{0,300}\\}\\}|\\{\\{|\\}\\}'; wikilink r'\\[\\[[^\\[\\]\\n]{0,300}\\]\\]|\\[\\[|\\]\\]'; file r'(?i)\\[\\[(?:File|Image|Media):[^\\n]*|\\|\\s*(?:thumb|...|\\d+(?:x\\d+)?px)\\s*(?=\\||\\]\\])'; entity r'&(?:[a-zA-Z]{2,8}|#\\d{2,6}|#x[0-9a-fA-F]{2,5});'; table r'(?m)^[ \\t]*(?:\\{\\||\\|\\}|\\|-|\\|\\+|! ).*$' plus attribute=\"...\"; html tag whitelist; quotes r\"'{2,}\"; magic words; Category lines. Template braces outside math: same regex after replacing r'\\$\\$.+?\\$\\$' with a space (report_extra).",
+   "evidence_examples": [
+    "wikipedia00000 0-303: 'Demographics\\n\\n\\n[[File:Alabama counties by race.svg|thumb|280x280px|Map of counties in Alabama by racial plurality, per the 2020 censusLegend\\n\\nNon-Hispanic White\\n\\n{{legend|#dd7e6b|40\u201350%}}'",
+    "wikinews 0-779: 'Iran and the European Union's big three powers &mdash; Britain, Germany, and France &mdash; have been negotiating a deal'",
+    "wikipedia00000 0-1028: ' * {| class=\"wikitable\" style=\"margin: 1em auto 1em auto; background-color: #ffffff\"\\n\\n! Elements in The Wasps ! 1st'",
+    "wikinews 0-11464: 'New York\\n\\n__DISAMBIG__'",
+    "wikiquote 0-1942: '* Rick: What of it? I'm gonna die in Casablanca. It's a good spot for it.\\n\\n<hr width=\"50%\"/>'",
+    "wikipedia00000 0-586: 'I have also approved recommendations of the Secretary of Commerce &#91;Luther H. Hodges&#93; regarding standards'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Disambiguation pages",
+   "description": "Pages that are only lists of links ('X may refer to:'). Wikivoyage uses 'There is more than one place called X:'. Redirects are not present in the raw dump (only 5 docs match a redirect pattern).",
+   "prevalence": "Main-namespace docs (chars): wikipedia00000 6.5% (0.56%), wikipedia00093 5.4% (0.81%), wikipedia00186 4.85% (0.69%), wikivoyage 5.3% (0.40%), wikiquote 0.45%. Filter keeps 89.5% of them (6,351 kept, 746 dropped).",
+   "measurement_method": "Title ends with '(disambiguation)', or the text matches r'__DISAMBIG__|\\b(?:may|can|might|could) (?:also )?(?:refer|stand) (?:to|for):|There (?:is|are) more than one (?:place|article|page|person)s? (?:called|named|titled)'.",
+   "evidence_examples": [
+    "wikipedia00000 0-7079: 'CID\\n\\nCID may refer to:\\n\\nFilm\\n\\n * C.I.D. (1955 film), an Indian Malayalam film\\n * C.I.D. (1956 film), an Indian Hindi film'",
+    "wikivoyage 0-27787: 'Plainfield\\n\\nThere is more than one place called Plainfield:\\n\\nUnited States of America\\n\\n * Plainfield (Connecticut)\\n * Plainfield (Illinois)'",
+    "wikipedia00093 0-37782675: 'Aleksey Mishin\\n\\nAleksey Mishin may refer to:\\n\\n\\n * Aleksey Mishin (rower) (born 1941)'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Templated or generated near-duplicate page series and repetitive pages",
+   "description": "Families of pages generated from one template with few changed fields: per-department French 2024 election results, the EuroHiT 'Annotations\\n...' skeletons, Ba Zi tables in wikibooks, versions of the Laws of the Game in Wikisource, and Wikiversity Quizbank LaTeX dumps of up to 1.3M chars with randomized numbers. There are also pages whose lines repeat (Wiktionary sense lists, Wikivoyage listings).",
+   "prevalence": "Main-namespace docs where duplicate lines exceed 20% of chars: wiktionary 7.3% (36.6% of chars), wikivoyage 7.8% (8.4%), wikiversity 2.5% (13.9%), wikiquote 1.7%, wikibooks 1.2%. MinHash near-duplicate clusters (Jaccard >= 0.8) in a sample of main-namespace docs with at least 50 words: redundant docs beyond the first per cluster were wikiversity 95 of 8,000 (1.2%), wikibooks 77 of 8,000 (1.0%), wikisource 76 of 12,154 (0.6%), wikipedia 47 of 24,000 (0.2%), wikivoyage 2 of 8,000, wikinews and wiktionary 0. Filter keeps 75.6% of high-repetition docs.",
+   "measurement_method": "duplicate_line_char_fraction > 0.2 (analyze.py). Near-duplicates: MinHash with 128 permutations (multiply-add mod 2^64 over xxh64 of lowercased word 5-shingles), LSH 16 bands x 8 rows, pairs kept at estimated Jaccard >= 0.8, union-find clusters (near_duplicates()).",
+   "evidence_examples": [
+    "wikipedia00186 0-77326419 vs 0-77291804 (est. Jaccard 0.92): 'Results of the 2024 French legislative election in Nord\\n\\nFollowing the first round of the 2024 French legislative election on 30 June 2024, runoff elections in'",
+    "wikiversity 0-109622: 'EuroHiT/sample\\n\\nDefinition of the Concept: ....\\n\\nAnnotations\\n...\\n\\nAnnotations\\n...\\n\\nAnnotations\\n...'",
+    "wikiversity 0-249815: '\\question A skater of mass 32-kg is carrying a box of mass 7-kg ... \\begin{choices} \\choice 2.06E+01kg*m/s \\choice 2.22E+01kg*m/s'",
+    "wikisource00007 0-2361312 vs 0-2364318 (0.94): 'Laws of the Game (1891)\\n\\nThe Laws of the Game\\n1. The limits of the ground shall be:\u2014 maximum length, 200 yards'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "List-only and low-prose pages",
+   "description": "Pages where at least 80% of non-empty lines are list or table lines: species lists, 'List of people by name', year and date pages, TOCs of Wikisource and Wikibooks books ('* ../Chapter 1/'), Wikivoyage phrasebooks with emptied translations ('* Hello. (informal) : . ( )'). On Wikiquote, list form is the normal quote layout, so the flag there does not mean low value.",
+   "prevalence": "Main-namespace docs (chars): wikiquote 51.1% (83.6%), wikipedia00000 10.0% (6.6%), wikiversity 9.0% (18.7%), wikibooks 9.3% (8.8%), wiktionary 7.5% (49.2%), wikipedia00093 6.9% (13.9%), wikisource00000 5.0%. Low English-stopword ratio (<0.10 with at least 20 words): main docs 0.1-2.9% per shard. Wikivoyage phrasebook lines with emptied translations: 17,438 lines in 109 docs. Filter keeps 67.6% of list-only docs. It also DROPS some legitimate English list articles that its language ID scores low: 429 dropped wikipedia00093 main docs with at least 60 words were mostly taxon and name lists.",
+   "measurement_method": "list_only: at least 3 non-empty body lines and at least 80% matching r'^\\s*(?:\\*|#|\\d+[.)]\\s|\\|)'. low_stopword: English stopword ratio < 0.10. Empty phrasebook line: r'(?m)^ ?\\* [^\\n:]{1,80} : [.?!]? ?\\( ?[?.!]? ?\\)\\s*$'. Dropped-doc inspection: dropped_main.py.",
+   "evidence_examples": [
+    "wikiquote 0-268456: 'List of women born in the 1970s\\n\\nA\\n\\n * Betty Abah\\n * Huma Abedin\\n * Abiola Abrams\\n * Stacey Abrams'",
+    "wikisource00000 0-124402: 'Henry Ford\u2019s Own Story ... * /Foreword/ |  * /Chapter 1/ |  * /Chapter 2/'",
+    "wikivoyage 0-9103: ' * Hello. (informal) : . ( )\\n * How are you? : Saro deite? (\u1233\u122e \u12f0\u12a2\u1274 ?)\\n * Fine, thank you. : . ( )'",
+    "wikipedia00093 0-37786525 (dropped by filter): 'Lepidosaphidini is a tribe of armored scale insects. |  | Genera |  |  * Acanthomytilus |  * Adiscodiaspis'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "PII redaction in the filtered version inserts placeholder tokens and has false positives",
+   "description": "The only text edit the Common Pile filter makes is replacing IP addresses, emails and phone-like numbers with <IP_ADDRESS>, <EMAIL_ADDRESS> and <PHONE_NUMBER>. In Wikipedia it also removes some talk-page boilerplate lines. The placeholders are frequent in Wikivoyage, where they replace business phone numbers in listings, which is useful content and not personal data. The replacement also catches ISBNs, documentation example IPs and octal dumps.",
+   "prevalence": "5.33% of kept docs have changed text (48,678 of 912,791). In 100+ sampled diffs per project, almost every replacement inserted a placeholder. Filtered shard 0001: wikivoyage has 20,658 <PHONE_NUMBER> tokens, and 6.1% of its main docs contain a placeholder. Filtered shards 0000+0001: main-namespace docs with placeholders are wikivoyage 6.1%, wikiquote 3.0%, wikiversity 2.7%, wikibooks 2.3%, wikipedia 1.6-2.3%. Non-main docs: wikipedia 55-64%, wiktionary 23%. Wikipedia diffs: 122 of the sampled removed lines were the InternetArchiveBot message 'When you have finished reviewing my chan...'.",
+   "measurement_method": "Kept docs compared by blake2b digest of whitespace-normalized lowercase text. Changed docs (up to 300 per project) diffed line-level, then char-level, with difflib (diff_changed()). Placeholder counts: placeholders.py, regex r'<(?:IP_ADDRESS|EMAIL_ADDRESS|PHONE_NUMBER)>'.",
+   "evidence_examples": [
+    "wikibooks 0-18481: raw 'and a value similar to this format 192.168.1.2.' -> '<IP_ADDRESS>' in filtered",
+    "wikiquote: removed ', 9780789719126' (an ISBN) and replaced it with <PHONE_NUMBER>",
+    "wikibooks 4-214: raw 'Please comment on these proposals. 82.43.185.179 11:44, 27 Aug 2004 (UTC)' -> '<IP_ADDRESS>'",
+    "wikibooks 0-22745: an octal dump '060 062554 005015 072522 061155 ...' was partly replaced by placeholders"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Talk-page discussion and signatures inside kept content",
+   "description": "Discussion text with signatures and timestamps. Most of it sits in talk and project namespaces, which the filter keeps. It also leaks into main namespace on Wikiversity.",
+   "prevalence": "Main-namespace docs containing a signature: wikiversity 4.3%, wikiquote 0.7%, wikibooks 0.65%, others under 0.1%. In the 5 filtered shards: 211,143 talk docs and 69,389 project docs with signatures; talk docs are 14.35% of filtered chars. Filter keeps 6.5% of all signature-bearing docs, because most of those are user talk.",
+   "measurement_method": "SIGNATURE_RE r'\\d{1,2}:\\d{2}, \\d{1,2} [A-Z][a-z]+ \\d{4} \\(UTC\\)'",
+   "evidence_examples": [
+    "wikinews 1-37880: 'If this article contains original reporting, there should be a note here on the talk page ... - Borofkin 04:13, 4 April 2006 (UTC)'",
+    "wikiversity 0-58343: 'BCP/Polygala paucifolia/Logs |  | 2008 Logs |  |  * --Jomegat 00:19, 14 May 2008 (UTC)'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Code, CSS/JS, KML and LaTeX-source pages",
+   "description": "User .js/.css pages, Lua modules (ns 828), MediaWiki messages, KML data stored as templates, and full LaTeX documents (Quizbank).",
+   "prevalence": "code_page (ns 8/828 or title ending .js/.css/.json/.lua/.py), all docs: wikibooks 0.97%, wikiversity 0.73%, wikivoyage 0.58%, wikipedia00186 0.49%. latex_source (\\documentclass|\\begin{document}|\\usepackage): wikiversity 0.20% of docs and 0.91% of chars. Filter keeps 10.2% of code pages and 86% of LaTeX-source docs (wikiversity).",
+   "measurement_method": "As stated in the description; analyze.py flags code_page and latex_source.",
+   "evidence_examples": [
+    "wikibooks 2-175829: 'User:HYanWong/monobook.css\\n\\npre {padding:0; border: none; margin:0; line-height: 1.5em; } .code .input ol {list-style: none;'",
+    "wikiversity 0-249815: '%PREAMBLE \\newcommand{\\quiztype}{mixed} \\newif\\ifkey\\documentclass[11pt,twoside]{exam} \\RequirePackage{amssymb, amsfonts'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Unreviewed Draft namespace kept",
+   "description": "Draft: pages (ns 118) are unreviewed article drafts. Some are not in English, and some read like promotional text. I did not measure whether any are machine-generated.",
+   "prevalence": "wikipedia00186: ns118 is 4.1% of docs and 6.2% of chars. Filter keeps 7,101 of 8,329. In the 5 filtered shards, Draft is 1.79% of docs and 0.98% of chars.",
+   "measurement_method": "Namespace count; filter keep rate by namespace.",
+   "evidence_examples": [
+    "wikipedia00186 118-77139665: 'Draft:Selecci\u00f3n de un Sistema ERP\\n\\n'''Selecci\u00f3n de un Sistema ERP: Una Gu\u00eda Enciclop\u00e9dica '''\\n\\nLa elecci\u00f3n de un sistema de planificaci\u00f3n'",
+    "wikipedia00186 118-77111640: 'Draft:Jeff Draco ... On May 31, 2024, Draco announced the upcoming release of his third EP'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Boilerplate exact duplicates (bodies identical apart from the title)",
+   "description": "Whole-text exact duplicates are rare. Bodies that are identical once the title line is removed are common: welcome templates, empty-infobox stubs, language-template help text, per-user CSS.",
+   "prevalence": "Exact duplicates beyond the first, on full normalized text, per shard: 0-2.05% of docs, at most 0.16% of chars. On normalized body (body of at least 30 chars): wikinews 36.9% of docs (14.5% of chars), wikiquote 8.9%, wikiversity 3.7%, wikibooks 2.4%, wikipedia00093 2.2% (1.9% of chars), wikipedia00186 1.6%. Largest group: the wikipedia00093 welcome template, 1,537 copies. Cross-project exact body duplicates: 5,086 docs, mostly shared bot or user messages.",
+   "measurement_method": "blake2b-64 of ' '.join(text.lower().split()), and of the body after removing the title line. Sort by digest; count every non-first occurrence (exact_duplicates()).",
+   "evidence_examples": [
+    "wikinews top body groups: 58 x 'an infobox for and its news. ''are newer articles not showing? [ refresh]'' customize this infobox .'",
+    "wikinews: 24 x '-- wikinews welcome (talk) 10:05, 18 march 2014 (utc)'",
+    "wikiversity 0-216645 (208 copies): 'Try It\\nCopy and paste the code above into one of the following free online development environments or use your own compiler / interpreter / IDE.'"
+   ],
+   "severity": "low"
+  }
+ ],
+ "duplication": "Full-text exact duplicates (blake2b-64 of lowercased, whitespace-collapsed text), counting copies beyond the first, within the 3,594,692-doc sample: wikisource00000 2.05%, wikiversity 1.93%, wikiquote 1.20%, wikivoyage 0.95%, wiktionary 0.25%, wikinews 0.09%, wikibooks 0.06%, wikipedia 0.00-0.06%, wikisource00007 0.04%. These copies hold at most 0.16% of each shard's chars. Body-only exact duplicates (title line removed, body of at least 30 chars) are much higher where boilerplate dominates: wikinews 36.9% of docs (14.5% of chars, bot welcome messages), wikiquote 8.9%, wikiversity 3.7%, wikibooks 2.4%, wikipedia00093 2.2%, wikipedia00186 1.6%; largest group 1,537 copies of one welcome template. Near duplicates: MinHash with 128 permutations over lowercased word 5-shingles, LSH 16x8, estimated Jaccard >= 0.8, on a reservoir of up to 8,000 main-namespace docs with at least 50 words per shard (84,154 docs). That found 2,068 pairs. Redundant docs beyond the first per cluster: wikiversity 1.2%, wikibooks 1.0%, wikisource 0.6%, wikipedia 0.2%, wikivoyage 0.03%, wikinews/wiktionary/wikiquote ~0. These are templated series such as French election results, EuroHiT, Ba Zi and Laws of the Game. Only 2 of the 2,068 pairs crossed projects, so near-duplication between wikis is low in this sample. Near-duplication against other Common Pile sources was not measured (Wikisource vs project_gutenberg is the likely overlap).",
+ "filtered_comparison": "Every filtered doc was matched to a raw doc by (project, namespace, page id). Filtered shards keep the raw page-id order within each project (0 inversions). A raw doc counts as dropped if its page id lies inside a page-id range that a downloaded filtered shard covers for that project, and the doc is absent. All 3,593,541 raw docs in covered ranges were classified. Kept: 912,791 (25.4% of docs, which matches the README's 16.31M/63.97M = 25.5%) and 73.5% of raw chars. Kept rate by shard: wikipedia00000 99.1%, wikisource00007 58.3%, wikisource00000 57.9%, wikibooks 40.9%, wikivoyage 40.2%, wikiquote 39.1%, wikiversity 34.8%, wiktionary 27.2%, wikipedia00093 25.2%, wikipedia00186 24.5%, wikinews 3.9%. The keep patterns show what the filter does. (1) It drops User talk (ns 3) completely: 0 of 1,656,773 kept. (2) It drops almost everything with 10 or fewer body words: 0.63% kept. With 11-20 words, roughly half are kept, and a minimum length of about 20 words is consistent with the data. (3) It drops non-English docs, a language-ID effect: 2.5% of heuristic-flagged non-English docs kept. This also removed English taxon and name lists, e.g. wikipedia00093 0-38017428 'List of Sargassum species'. (4) It keeps 96-98% of main-namespace Wikipedia, Wikinews and Wikivoyage articles that have at least 20 words. (5) It keeps talk (ns1), user (ns2), project (ns4), template, Draft (ns118, 85% kept) and Wikisource Page (ns104, 67.5% kept). Text changes: 5.33% of kept docs differ from raw. Sampled diffs are almost all PII substitutions (<IP_ADDRESS>, <PHONE_NUMBER>, <EMAIL_ADDRESS>), plus removal of a few talk-page boilerplate lines in Wikipedia (e.g. the InternetArchiveBot 'When you have finished reviewing my changes' notice). No markup cleanup, no hole repair and no deduplication edits were seen. Filtered char total for kept docs is 3,737,840,068 vs 3,744,937,747 raw (-0.19%). What the filter still lets through, measured: in the 5 filtered shards, only 50.6% of chars are main namespace (talk 14.4%, Wikisource Page fragments 16.2%, project 8.7%, user 7.3%, Draft 1.0%). Among kept docs: 103,967 contain residual markup, 64,413 are hole-dense, 6,351 are disambiguation pages (89.5% kept), 100,405 are list-only (67.6% kept), 41,683 are repetitive (75.6% kept), and 101,825 contain editor signatures. Phone-number placeholders replace Wikivoyage business phones (20,658 in one shard), and ISBNs and example IPs get replaced too.",
+ "license_notes": "Raw metadata: all 3,594,692 sampled docs have license 'Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/4.0/' (1 distinct value). Every raw doc has the metadata keys license, authors, url, wiki, namespace, title. Filtered: all 912,791 matched docs carry the same CC BY-SA 4.0 string and also a 'provenance' key. The metadata does not distinguish these cases: (a) Wikisource texts are mostly public-domain source works, not CC BY-SA authored text; (b) Wikiquote pages are made of quotations from third-party, often copyrighted, works (e.g. wikiquote 0-158881 quotes newspaper interviews); (c) Wikivoyage pages imported from Wikitravel ('(WT-en)' user pages). The authors field carries usernames for attribution. Under CC BY-SA the corpus needs attribution and share-alike handling.",
+ "recommended_steps": [
+  {
+   "step": "Keep only article content namespaces, and key every doc by (source, id). Keep ns 0 in all wikis, plus wikibooks ns 102 (Cookbook) and ns 110 (Wikijunior). Drop User talk, Talk, User, project (4), File, MediaWiki, Template, Help, Category, Module, Draft (118), Wikinews Comments (102), Index (106) and all other odd namespaces. If dialogue data is wanted, build a separate talk subset with signatures and timestamps removed, instead of mixing it into encyclopedic text.",
+   "rationale": "Non-article namespaces are most of the raw docs and nearly half of the filtered chars. They are boilerplate, debates, user CSS/JS and bot messages, not prose. The (source, id) key is required because ids like '0-1' repeat in every wiki.",
+   "evidence": "Main namespace is 27.4% of raw docs and 54.4% of chars. ns3 is 93.3% of wikinews docs and 45.1% of wikipedia00093 docs. In the filtered output only 50.6% of chars are main namespace (talk 14.4%, project 8.7%, user 7.3%, Draft 1.0%). 211,143 kept talk docs contain signatures. Template 10-38051008 is KML XML."
+  },
+  {
+   "step": "Re-extract the text with template expansion rather than patching wtf_wikipedia output. Options: Wikimedia Enterprise HTML dumps, Parsoid HTML, or mwparserfromhell with a template-expansion pass for {{w}}, {{lang}}, {{IPA}}, {{convert}}, Wikivoyage {{listing}}/{{see}}/{{marker}}, and Wiktionary {{inh}}/{{der}}/{{bor}}/{{t+}}. If re-extraction is not possible, run the cheap fixes in the next step and drop docs whose hole density is at least 1 per 100 words.",
+   "rationale": "Missing words and emptied phrases come from dropped templates. The filter cannot repair them and keeps 77.6% of hole-dense docs.",
+   "evidence": "Precise hole patterns in main docs: empty or comma-only parentheses 5.0% (wikipedia00093) and 3.5% (wikipedia00000); double comma up to 6.9%; function-word-then-punctuation up to 6.6%. Lines with holes hold 1.0-7.7% of main chars. Examples: 0-892 'state of  may not apply the  to', 0-2023 'Aeschylus (, ; \u0391\u1f30\u03c3\u03c7\u03cd\u03bb\u03bf\u03c2 ;', wiktionary 0-205 'From, from , from , from.', 1,648 empty standard Wikivoyage sections in 1,465 docs."
+  },
+  {
+   "step": "Run deterministic cleanup on the text: html.unescape() for entities; delete lines that start with '{|', '|-', '|}', '! ' and strip style=/class=/cellpadding= attributes; delete [[File:/Image: lines and |thumb|NNNpx| fragments; remove {{...}} outside $$...$$ math; strip '''/'' quotes; remove __MAGIC__ words and stray HTML tags (<hr>, <li>, <span>, <sup>); remove empty parentheses r'\\(\\s*[,;][\\s,;]*' and r'\\(\\s*\\)'; collapse ',\\s*,' to ','; delete empty list items r'^ ?\\*[ \\t]*(?:[^\\n]{1,60}?:[ \\t,;]*)?$' where no nested item follows; delete regional-indicator flag pairs that stand alone; collapse three or more blank lines. Keep $$...$$ LaTeX math.",
+   "rationale": "The debris is a small share of characters but touches many docs, and the filtered version contains it unchanged.",
+   "evidence": "Main docs with markup: wikisource00000 25.4%, wikiquote 17.3%, wikibooks 14.2%, wikipedia00000 12.8%. Debris is under 1% of chars in every shard. 103,967 kept filtered docs contain markup. Math appears in 6.9-7.1% of wikipedia00000 and wikibooks main docs and must not be stripped."
+  },
+  {
+   "step": "Rebuild Wikisource books from Page: (ns 104). Order Page:<Index>/N by page number (Index ns 106 gives the order), join pages, remove running headers and page-number lines, rejoin words hyphenated across page breaks, and emit one doc per work or chapter. Drop main-namespace pages that only transclude. Alternatively, take Wikisource from rendered HTML, where transclusion is already expanded.",
+   "rationale": "Without reassembly, books enter training as unordered page fragments that start mid-sentence, while the main-namespace pages are empty.",
+   "evidence": "wikisource00007: Page docs are 81.9% of docs and 85.0% of chars. 17.3% start lower-case, 63.5% end without punctuation, 11.6% are empty. Main docs in that shard are 89.4% title-only. Wikisource Page is 16.2% of filtered chars. Example 104-2356556 begins 'Rh starry heavens'."
+  },
+  {
+   "step": "Treat Wiktionary separately: drop entries with fewer than 20 body words; remove Translations sections and empty 'Language:' slots; remove emptied Etymology lines (e.g. lines matching r'^(From|Borrowed from)[ ,.]*(from[ ,.]*)*$'); remove duplicated sense lines. Or downweight Wiktionary heavily, or exclude it.",
+   "rationale": "After conversion most Wiktionary entries are skeletons, and even the kept long entries are mostly empty translation slots.",
+   "evidence": "Wiktionary main: 50.3% title-only, 84.0% under 50 words, empty label slots in 11.3% of docs (9.6% of chars, 1,006,004 lines), flag emoji in 6.8%, duplicate lines over 20% in 7.3% of docs (36.6% of chars). The filter keeps 77.5% of docs with empty items."
+  },
+  {
+   "step": "Apply page-type filters to main namespace: drop disambiguation pages (regex in the issues list); drop docs where duplicate lines exceed 20% of chars, and known generated series (Quizbank LaTeX sources, EuroHiT skeletons, Ba Zi tables); drop list-only pages with a low stopword ratio, except on Wikiquote, where list form is the content; drop Wikibooks and Wikisource TOC-only pages ('* ../Chapter/').",
+   "rationale": "These pages have little running prose and are mostly kept by the existing filter.",
+   "evidence": "Disambiguation is 4.85-6.5% of Wikipedia main docs and 5.3% of Wikivoyage, with 89.5% kept by the filter. Duplicate lines over 20%: wikiversity 2.5% of main docs (13.9% of chars), wikivoyage 7.8%; 75.6% kept by the filter. List-only: wikiversity 9.0%, wikipedia00093 6.9% of main docs; 67.6% kept."
+  },
+  {
+   "step": "Deduplicate: exact dedup on the normalized body (title line removed); MinHash near-dedup (5-shingles, Jaccard >= 0.8) within each wiki; then cross-source near-dedup against the other Common Pile sources being downloaded, especially Wikisource vs project_gutenberg.",
+   "rationale": "Full-text hashing misses boilerplate pages that differ only by title. Templated series form near-duplicate clusters.",
+   "evidence": "Body-level exact duplicates: wikinews 36.9% of docs, wikiquote 8.9%, wikiversity 3.7%, wikipedia00093 2.2% (largest group 1,537 copies). Full-text exact duplicates are 0-2.05%. MinHash: 1.0-1.2% redundant docs in wikibooks and wikiversity samples; cross-project pairs 2 of 2,068."
+  },
+  {
+   "step": "Use a real language-ID model (e.g. fastText lid.176) at paragraph level, and keep whole English docs with mixed-script lists rather than dropping them. Remove non-English paragraphs, such as Wiktionary translation blocks and interwiki title residue in Wikisource, instead of dropping the whole doc.",
+   "rationale": "Whole-doc non-English content is rare. The Common Pile document-level LID also removed legitimate English list articles.",
+   "evidence": "Heuristic non-English rate: 0.66% of determinable docs (0.86% of chars). The filter drops 97.5% of those, but also dropped wikipedia00093 0-38017428 'List of Sargassum species' and 0-37786525 'Lepidosaphidini'. Wikisource 0-64041 begins with 'Entstehung der Arten/Drittes Kapitel L\u2019Origine des esp\u00e8ces'."
+  },
+  {
+   "step": "Narrow the PII redaction. If raw is processed with steps 1-8, the IP and email cases concentrate in talk and user namespaces, which step 1 already drops. In main namespace, redact emails and IPs only, keep phone numbers in Wikivoyage listings and ISBNs, and do not insert placeholder tokens; if a placeholder is needed, use one neutral token.",
+   "rationale": "The filtered version's regex replaces useful non-personal numbers with placeholder tokens that the model will learn as text.",
+   "evidence": "Filtered shard 0001: 20,658 <PHONE_NUMBER> tokens in wikivoyage. Main docs with placeholders: wikivoyage 6.1%, wikiquote 3.0%. ISBN ', 9780789719126' was replaced. wikibooks 0-18481 had example IP '192.168.1.2' replaced."
+  },
+  {
+   "step": "Parse metadata defensively: raw metadata is a JSON object, filtered metadata is a Python-dict string (ast.literal_eval). Treat 'created' as the last-revision time.",
+   "rationale": "This avoids schema errors and wrong recency filters.",
+   "evidence": "json.loads gives a dict for raw metadata; the filtered value is \"{'authors': [...]...}\". Every one of the 24,762 main docs in wikipedia00186 has created year 2024."
+  }
+ ],
+ "script_path": "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/wikimedia/analyze.py (run: python3 -I analyze.py WORKDIR for the main pass; python3 -I analyze.py WORKDIR extra for the supplementary pass). Helper scripts in the same dir produced some of the numbers: placeholders.py (PII placeholder counts), filtered_ns_chars.py (filtered composition by namespace), dropped_main.py (dropped-article inspection), profile_filtered.py (filtered shard coverage). summarize.py prints the tables; peek.py, extremes.py, getdoc.py, nscount.py and explore.py were used for reading docs.",
+ "open_questions": [
+  "The local download /home/vihaa/CinnamonLM/raw/common_pile/wikimedia/ did not exist at analysis time (download.py lists wikimedia last). Every shard was fetched separately into the scratch dir.",
+  "Wikipedia is 187 of 219 shards, and I sampled 3 of them (00000 = oldest and longest articles, 00093, 00186). Namespace mix differs a lot between them (main namespace 85.5% of docs in 00000 vs 12-14% in the later two), so I did not compute corpus-wide namespace or char shares.",
+  "The hole heuristics are imprecise. In a manual check of 50 random hole-flagged lines, 13 showed a visible dropped-token hole. The 'any hole' rates are upper bounds; the function-word, empty-paren and double-comma sub-patterns are more specific.",
+  "Language figures come from a stopword and script heuristic, not a trained language-ID model (none is installed).",
+  "Cross-source overlap with project_gutenberg (Wikisource) and other Common Pile sources was not measured, because those downloads were not available.",
+  "Whether talk pages should be kept as a separate dialogue subset is a decision for you.",
+  "I did not measure how much machine-generated text is in recent articles or drafts. 'created' is a last-revision timestamp, so it cannot be used to date when text was written."
+ ]
+}

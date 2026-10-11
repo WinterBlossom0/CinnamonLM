@@ -1,0 +1,172 @@
+{
+ "stage": "clean",
+ "started_at_ist": "2026-10-11T20:49:46+05:30",
+ "finished_at_ist": "2026-10-11T20:50:52+05:30",
+ "steps": [
+  {
+   "name": "normalize",
+   "docs_in": 9036,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 63,
+   "chars_before_modified": 1003393,
+   "chars_after_modified": 1003214
+  },
+  {
+   "name": "login_chrome",
+   "docs_in": 9036,
+   "docs_removed": 92,
+   "chars_removed": 22585,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "spam_pages",
+   "docs_in": 8944,
+   "docs_removed": 1,
+   "chars_removed": 1332,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "vendor_promo",
+   "docs_in": 8943,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 107,
+   "chars_before_modified": 127953,
+   "chars_after_modified": 96865
+  },
+  {
+   "name": "page_scaffold",
+   "docs_in": 8943,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 8362,
+   "chars_before_modified": 68469872,
+   "chars_after_modified": 66917599
+  },
+  {
+   "name": "boilerplate_lines",
+   "docs_in": 8943,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 2870,
+   "chars_before_modified": 44529668,
+   "chars_after_modified": 43512297
+  },
+  {
+   "name": "repeated_blocks",
+   "docs_in": 8943,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 1882,
+   "chars_before_modified": 31315610,
+   "chars_after_modified": 29010634
+  },
+  {
+   "name": "min_words",
+   "docs_in": 8943,
+   "docs_removed": 1204,
+   "chars_removed": 212671,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "short_lines",
+   "docs_in": 7739,
+   "docs_removed": 20,
+   "chars_removed": 12832,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "english",
+   "docs_in": 7719,
+   "docs_removed": 93,
+   "chars_removed": 937977,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "function_words",
+   "docs_in": 7626,
+   "docs_removed": 9,
+   "chars_removed": 5061,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0
+  },
+  {
+   "name": "exact_dedup",
+   "docs_in": 7617,
+   "docs_removed": 2579,
+   "chars_removed": 31557286,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0,
+   "build": {
+    "duplicates": 2579
+   }
+  },
+  {
+   "name": "near_dedup",
+   "docs_in": 5038,
+   "docs_removed": 126,
+   "chars_removed": 1166754,
+   "docs_modified": 0,
+   "chars_before_modified": 0,
+   "chars_after_modified": 0,
+   "build": {
+    "duplicates": 126,
+    "candidate_pairs": 285,
+    "verified_pairs": 202
+   }
+  },
+  {
+   "name": "pii",
+   "docs_in": 4912,
+   "docs_removed": 0,
+   "chars_removed": 0,
+   "docs_modified": 141,
+   "chars_before_modified": 2292677,
+   "chars_after_modified": 2291431
+  }
+ ],
+ "input": {
+  "docs": 9036,
+  "chars": 83064795,
+  "shards": 1
+ },
+ "output": {
+  "docs": 4912,
+  "chars": 44241164
+ },
+ "code_sha256": {
+  "data_pipeline/sources/oercommons.py": "dcb25a6c4c9d19381cb8d32606e8d3ad850453b81947564d97928db68f04e1cb",
+  "data_pipeline/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "data_pipeline/common/cli.py": "ab42a74d4f70fd74839bf3edd62cbd75329601a44b1bdd60d870808a17a8f4dd",
+  "data_pipeline/common/dedup.py": "70b218abf0831861c3919b1b3bccf3e75411899381437321e1a1d2474b696660",
+  "data_pipeline/common/io.py": "361c0ce5b5dac1e6440a3709ab407f13a7991eb5e2e135fc621a3749163e76cc",
+  "data_pipeline/common/langid.py": "8450e730268fa781b1d6d0f8d4568955ef4638b0a459a5fdeb90251468581555",
+  "data_pipeline/common/licence.py": "fa67526ba987693b7d56c54d580c63d290717cde304ee832f74ff6d983d73ade",
+  "data_pipeline/common/pii.py": "8ecba1b1cabe64a3a18b158c0446d5d7727c4a7d83e73b58bdd77e713c237989",
+  "data_pipeline/common/pipeline.py": "8de145ee9a80d9213984a06821dd114330f6f0f6b68acd69185001df989a4962",
+  "data_pipeline/common/text.py": "d6d06db9bf5aaffb5c085b5d8c5809080da5bebef48539937d8c9abd00cd5bdf",
+  "licence/licence_filter.py": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+  "data_pipeline/uv.lock": "18d03e9361b9c8bc5f44f68aaf726ca6b82dd4ea6d0bd960ac7c2262ae54771e",
+  "workflow/build_corpus.py": "0608030cd6903e4baa9db71b0499d6e42619450623765a6283c8fd65a5d6fb21"
+ },
+ "language_model_sha256": "7e69ec5451bc261cc7844e49e4792a85d7f09c06789ec800fc4a44aec362764e",
+ "input_sha256": {
+  "00000_oercommons.json.gz": "77d2ce6b7d668fc4dcb9c072383690cb70fa3cc212213ce2ef6b0481159439ad"
+ },
+ "output_sha256": {
+  "00000_oercommons.json.gz": "e817372e3cbf9e7f7d93ce12487c2f7ad9da53bb4bacd9b29ca2dbafec4e2809"
+ }
+}

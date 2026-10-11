@@ -1,0 +1,3972 @@
+{
+ "source": "wikimedia",
+ "source_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/wikimedia",
+ "in_place": true,
+ "filter_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/licence/licence_filter.py",
+ "filter_sha256": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+ "actions_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/wikimedia/build/licence/wikimedia_actions.jsonl",
+ "actions_sha256": "23c03ff8773accce1ea99cf85162af75af7b6ce46f958f46b501cbec150cc9cc",
+ "summary_strip_span_chars": 42360,
+ "per_shard": {
+  "00000_wikibooks.com.jsonl.gz": {
+   "docs_before": 226917,
+   "chars_before": 580164580,
+   "docs_after": 226875,
+   "chars_after": 579121641,
+   "drops": 42,
+   "drop_chars": 1040534,
+   "strips": 18,
+   "strip_chars_removed": 2405,
+   "verify": {
+    "dropped_ids": 42,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 42
+   },
+   "recount_docs": 226875,
+   "recount_chars": 579121641,
+   "recount_matches": true
+  },
+  "00000_wikinews.com.jsonl.gz": {
+   "docs_before": 1303468,
+   "chars_before": 242029485,
+   "docs_after": 1303458,
+   "chars_after": 241971931,
+   "drops": 10,
+   "drop_chars": 57256,
+   "strips": 1,
+   "strip_chars_removed": 298,
+   "verify": {
+    "dropped_ids": 10,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 10
+   },
+   "recount_docs": 1303458,
+   "recount_chars": 241971931,
+   "recount_matches": true
+  },
+  "00000_wikipedia.com.jsonl.gz": {
+   "docs_before": 20260,
+   "chars_before": 446414774,
+   "docs_after": 20256,
+   "chars_after": 446278254,
+   "drops": 4,
+   "drop_chars": 136520,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 20256,
+   "recount_chars": 446278254,
+   "recount_matches": true
+  },
+  "00000_wikiquote.com.jsonl.gz": {
+   "docs_before": 170397,
+   "chars_before": 609423804,
+   "docs_after": 159538,
+   "chars_after": 449184599,
+   "drops": 10859,
+   "drop_chars": 160239205,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 10859,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 10859
+   },
+   "recount_docs": 159538,
+   "recount_chars": 449184599,
+   "recount_matches": true
+  },
+  "00000_wikisource.com.jsonl.gz": {
+   "docs_before": 116598,
+   "chars_before": 819934408,
+   "docs_after": 116592,
+   "chars_after": 819766714,
+   "drops": 6,
+   "drop_chars": 167424,
+   "strips": 2,
+   "strip_chars_removed": 270,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 116592,
+   "recount_chars": 819766714,
+   "recount_matches": true
+  },
+  "00000_wikiversity.com.jsonl.gz": {
+   "docs_before": 200700,
+   "chars_before": 485880042,
+   "docs_after": 200619,
+   "chars_after": 485036385,
+   "drops": 81,
+   "drop_chars": 843241,
+   "strips": 5,
+   "strip_chars_removed": 416,
+   "verify": {
+    "dropped_ids": 81,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 81
+   },
+   "recount_docs": 200619,
+   "recount_chars": 485036385,
+   "recount_matches": true
+  },
+  "00000_wikivoyage.com.jsonl.gz": {
+   "docs_before": 134008,
+   "chars_before": 347394827,
+   "docs_after": 134007,
+   "chars_after": 347296003,
+   "drops": 1,
+   "drop_chars": 98824,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 134007,
+   "recount_chars": 347296003,
+   "recount_matches": true
+  },
+  "00000_wiktionary.com.jsonl.gz": {
+   "docs_before": 575766,
+   "chars_before": 209510243,
+   "docs_after": 575765,
+   "chars_after": 209508743,
+   "drops": 1,
+   "drop_chars": 1480,
+   "strips": 1,
+   "strip_chars_removed": 20,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 575765,
+   "recount_chars": 209508743,
+   "recount_matches": true
+  },
+  "00001_wikibooks.com.jsonl.gz": {
+   "docs_before": 34671,
+   "chars_before": 113768555,
+   "docs_after": 34624,
+   "chars_after": 113104356,
+   "drops": 47,
+   "drop_chars": 664098,
+   "strips": 1,
+   "strip_chars_removed": 101,
+   "verify": {
+    "dropped_ids": 47,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 47
+   },
+   "recount_docs": 34624,
+   "recount_chars": 113104356,
+   "recount_matches": true
+  },
+  "00001_wikinews.com.jsonl.gz": {
+   "docs_before": 1538754,
+   "chars_before": 151632657,
+   "docs_after": 1538754,
+   "chars_after": 151632657,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 1538754,
+   "recount_chars": 151632657,
+   "recount_matches": true
+  },
+  "00001_wikipedia.com.jsonl.gz": {
+   "docs_before": 33453,
+   "chars_before": 459341314,
+   "docs_after": 33448,
+   "chars_after": 459199529,
+   "drops": 5,
+   "drop_chars": 141586,
+   "strips": 1,
+   "strip_chars_removed": 199,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 33448,
+   "recount_chars": 459199529,
+   "recount_matches": true
+  },
+  "00001_wikisource.com.jsonl.gz": {
+   "docs_before": 215613,
+   "chars_before": 730102226,
+   "docs_after": 215565,
+   "chars_after": 729819958,
+   "drops": 48,
+   "drop_chars": 282098,
+   "strips": 3,
+   "strip_chars_removed": 170,
+   "verify": {
+    "dropped_ids": 48,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 48
+   },
+   "recount_docs": 215565,
+   "recount_chars": 729819958,
+   "recount_matches": true
+  },
+  "00001_wiktionary.com.jsonl.gz": {
+   "docs_before": 1100473,
+   "chars_before": 160232028,
+   "docs_after": 1100471,
+   "chars_after": 160226726,
+   "drops": 2,
+   "drop_chars": 5302,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 1100471,
+   "recount_chars": 160226726,
+   "recount_matches": true
+  },
+  "00002_wikipedia.com.jsonl.gz": {
+   "docs_before": 53044,
+   "chars_before": 400656399,
+   "docs_after": 53039,
+   "chars_after": 400618880,
+   "drops": 5,
+   "drop_chars": 37519,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 53039,
+   "recount_chars": 400618880,
+   "recount_matches": true
+  },
+  "00002_wikisource.com.jsonl.gz": {
+   "docs_before": 255237,
+   "chars_before": 714880286,
+   "docs_after": 255222,
+   "chars_after": 714456346,
+   "drops": 15,
+   "drop_chars": 423549,
+   "strips": 4,
+   "strip_chars_removed": 391,
+   "verify": {
+    "dropped_ids": 15,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 15
+   },
+   "recount_docs": 255222,
+   "recount_chars": 714456346,
+   "recount_matches": true
+  },
+  "00002_wiktionary.com.jsonl.gz": {
+   "docs_before": 1236858,
+   "chars_before": 92602448,
+   "docs_after": 1236850,
+   "chars_after": 92602131,
+   "drops": 8,
+   "drop_chars": 317,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 1236850,
+   "recount_chars": 92602131,
+   "recount_matches": true
+  },
+  "00003_wikipedia.com.jsonl.gz": {
+   "docs_before": 40849,
+   "chars_before": 476534091,
+   "docs_after": 40846,
+   "chars_after": 476473592,
+   "drops": 3,
+   "drop_chars": 60340,
+   "strips": 1,
+   "strip_chars_removed": 159,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 40846,
+   "recount_chars": 476473592,
+   "recount_matches": true
+  },
+  "00003_wikisource.com.jsonl.gz": {
+   "docs_before": 226349,
+   "chars_before": 691014511,
+   "docs_after": 226338,
+   "chars_after": 691011687,
+   "drops": 11,
+   "drop_chars": 2824,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 11,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 11
+   },
+   "recount_docs": 226338,
+   "recount_chars": 691011687,
+   "recount_matches": true
+  },
+  "00003_wiktionary.com.jsonl.gz": {
+   "docs_before": 1100264,
+   "chars_before": 134342916,
+   "docs_after": 1100258,
+   "chars_after": 134256289,
+   "drops": 6,
+   "drop_chars": 86627,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 1100258,
+   "recount_chars": 134256289,
+   "recount_matches": true
+  },
+  "00004_wikipedia.com.jsonl.gz": {
+   "docs_before": 48896,
+   "chars_before": 472635214,
+   "docs_after": 48893,
+   "chars_after": 472583378,
+   "drops": 3,
+   "drop_chars": 51836,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 48893,
+   "recount_chars": 472583378,
+   "recount_matches": true
+  },
+  "00004_wikisource.com.jsonl.gz": {
+   "docs_before": 288292,
+   "chars_before": 738849598,
+   "docs_after": 288282,
+   "chars_after": 738846362,
+   "drops": 10,
+   "drop_chars": 2950,
+   "strips": 3,
+   "strip_chars_removed": 286,
+   "verify": {
+    "dropped_ids": 10,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 10
+   },
+   "recount_docs": 288282,
+   "recount_chars": 738846362,
+   "recount_matches": true
+  },
+  "00004_wiktionary.com.jsonl.gz": {
+   "docs_before": 1051578,
+   "chars_before": 157468529,
+   "docs_after": 1051577,
+   "chars_after": 157468489,
+   "drops": 1,
+   "drop_chars": 40,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 1051577,
+   "recount_chars": 157468489,
+   "recount_matches": true
+  },
+  "00005_wikipedia.com.jsonl.gz": {
+   "docs_before": 50910,
+   "chars_before": 468088657,
+   "docs_after": 50909,
+   "chars_after": 468084869,
+   "drops": 1,
+   "drop_chars": 3275,
+   "strips": 3,
+   "strip_chars_removed": 513,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 50909,
+   "recount_chars": 468084869,
+   "recount_matches": true
+  },
+  "00005_wikisource.com.jsonl.gz": {
+   "docs_before": 384897,
+   "chars_before": 622277374,
+   "docs_after": 384881,
+   "chars_after": 621966379,
+   "drops": 16,
+   "drop_chars": 310156,
+   "strips": 9,
+   "strip_chars_removed": 839,
+   "verify": {
+    "dropped_ids": 16,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 16
+   },
+   "recount_docs": 384881,
+   "recount_chars": 621966379,
+   "recount_matches": true
+  },
+  "00005_wiktionary.com.jsonl.gz": {
+   "docs_before": 891399,
+   "chars_before": 180820943,
+   "docs_after": 891398,
+   "chars_after": 180819819,
+   "drops": 1,
+   "drop_chars": 1124,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 891398,
+   "recount_chars": 180819819,
+   "recount_matches": true
+  },
+  "00006_wikipedia.com.jsonl.gz": {
+   "docs_before": 60441,
+   "chars_before": 466233888,
+   "docs_after": 60434,
+   "chars_after": 466181588,
+   "drops": 7,
+   "drop_chars": 51761,
+   "strips": 3,
+   "strip_chars_removed": 539,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 60434,
+   "recount_chars": 466181588,
+   "recount_matches": true
+  },
+  "00006_wikisource.com.jsonl.gz": {
+   "docs_before": 311447,
+   "chars_before": 698021227,
+   "docs_after": 311426,
+   "chars_after": 698009053,
+   "drops": 21,
+   "drop_chars": 7687,
+   "strips": 25,
+   "strip_chars_removed": 4487,
+   "verify": {
+    "dropped_ids": 21,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 21
+   },
+   "recount_docs": 311426,
+   "recount_chars": 698009053,
+   "recount_matches": true
+  },
+  "00006_wiktionary.com.jsonl.gz": {
+   "docs_before": 971430,
+   "chars_before": 161870503,
+   "docs_after": 971429,
+   "chars_after": 161870448,
+   "drops": 1,
+   "drop_chars": 55,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 971429,
+   "recount_chars": 161870448,
+   "recount_matches": true
+  },
+  "00007_wikipedia.com.jsonl.gz": {
+   "docs_before": 69531,
+   "chars_before": 461014631,
+   "docs_after": 69521,
+   "chars_after": 460915797,
+   "drops": 10,
+   "drop_chars": 98834,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 10,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 10
+   },
+   "recount_docs": 69521,
+   "recount_chars": 460915797,
+   "recount_matches": true
+  },
+  "00007_wikisource.com.jsonl.gz": {
+   "docs_before": 368453,
+   "chars_before": 655991044,
+   "docs_after": 368432,
+   "chars_after": 655978908,
+   "drops": 21,
+   "drop_chars": 10639,
+   "strips": 7,
+   "strip_chars_removed": 1497,
+   "verify": {
+    "dropped_ids": 21,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 21
+   },
+   "recount_docs": 368432,
+   "recount_chars": 655978908,
+   "recount_matches": true
+  },
+  "00007_wiktionary.com.jsonl.gz": {
+   "docs_before": 950283,
+   "chars_before": 200813737,
+   "docs_after": 950281,
+   "chars_after": 200566309,
+   "drops": 2,
+   "drop_chars": 247428,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 950281,
+   "recount_chars": 200566309,
+   "recount_matches": true
+  },
+  "00008_wikipedia.com.jsonl.gz": {
+   "docs_before": 79638,
+   "chars_before": 467106727,
+   "docs_after": 79634,
+   "chars_after": 467079707,
+   "drops": 4,
+   "drop_chars": 27020,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 79634,
+   "recount_chars": 467079707,
+   "recount_matches": true
+  },
+  "00008_wikisource.com.jsonl.gz": {
+   "docs_before": 363106,
+   "chars_before": 689939834,
+   "docs_after": 363091,
+   "chars_after": 689910397,
+   "drops": 15,
+   "drop_chars": 28854,
+   "strips": 5,
+   "strip_chars_removed": 583,
+   "verify": {
+    "dropped_ids": 15,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 15
+   },
+   "recount_docs": 363091,
+   "recount_chars": 689910397,
+   "recount_matches": true
+  },
+  "00008_wiktionary.com.jsonl.gz": {
+   "docs_before": 620905,
+   "chars_before": 243783853,
+   "docs_after": 620901,
+   "chars_after": 243783569,
+   "drops": 4,
+   "drop_chars": 284,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 620901,
+   "recount_chars": 243783569,
+   "recount_matches": true
+  },
+  "00009_wikipedia.com.jsonl.gz": {
+   "docs_before": 87521,
+   "chars_before": 477720446,
+   "docs_after": 87514,
+   "chars_after": 477616537,
+   "drops": 7,
+   "drop_chars": 103909,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 87514,
+   "recount_chars": 477616537,
+   "recount_matches": true
+  },
+  "00009_wikisource.com.jsonl.gz": {
+   "docs_before": 260679,
+   "chars_before": 775048377,
+   "docs_after": 260670,
+   "chars_after": 775039056,
+   "drops": 9,
+   "drop_chars": 7930,
+   "strips": 6,
+   "strip_chars_removed": 1391,
+   "verify": {
+    "dropped_ids": 9,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 9
+   },
+   "recount_docs": 260670,
+   "recount_chars": 775039056,
+   "recount_matches": true
+  },
+  "00009_wiktionary.com.jsonl.gz": {
+   "docs_before": 341787,
+   "chars_before": 207841224,
+   "docs_after": 341783,
+   "chars_after": 207804425,
+   "drops": 4,
+   "drop_chars": 36799,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 341783,
+   "recount_chars": 207804425,
+   "recount_matches": true
+  },
+  "00010_wikipedia.com.jsonl.gz": {
+   "docs_before": 88809,
+   "chars_before": 476223365,
+   "docs_after": 88797,
+   "chars_after": 476006439,
+   "drops": 12,
+   "drop_chars": 216926,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 12,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 12
+   },
+   "recount_docs": 88797,
+   "recount_chars": 476006439,
+   "recount_matches": true
+  },
+  "00010_wikisource.com.jsonl.gz": {
+   "docs_before": 337162,
+   "chars_before": 702529954,
+   "docs_after": 337149,
+   "chars_after": 702362043,
+   "drops": 13,
+   "drop_chars": 165794,
+   "strips": 8,
+   "strip_chars_removed": 2117,
+   "verify": {
+    "dropped_ids": 13,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 13
+   },
+   "recount_docs": 337149,
+   "recount_chars": 702362043,
+   "recount_matches": true
+  },
+  "00010_wiktionary.com.jsonl.gz": {
+   "docs_before": 666125,
+   "chars_before": 95987575,
+   "docs_after": 666125,
+   "chars_after": 95987575,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 666125,
+   "recount_chars": 95987575,
+   "recount_matches": true
+  },
+  "00011_wikipedia.com.jsonl.gz": {
+   "docs_before": 93310,
+   "chars_before": 489519443,
+   "docs_after": 93304,
+   "chars_after": 489426668,
+   "drops": 6,
+   "drop_chars": 92425,
+   "strips": 1,
+   "strip_chars_removed": 350,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 93304,
+   "recount_chars": 489426668,
+   "recount_matches": true
+  },
+  "00011_wikisource.com.jsonl.gz": {
+   "docs_before": 384878,
+   "chars_before": 631447282,
+   "docs_after": 384853,
+   "chars_after": 631439609,
+   "drops": 25,
+   "drop_chars": 7572,
+   "strips": 1,
+   "strip_chars_removed": 101,
+   "verify": {
+    "dropped_ids": 25,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 25
+   },
+   "recount_docs": 384853,
+   "recount_chars": 631439609,
+   "recount_matches": true
+  },
+  "00012_wikipedia.com.jsonl.gz": {
+   "docs_before": 94408,
+   "chars_before": 470635936,
+   "docs_after": 94395,
+   "chars_after": 470508929,
+   "drops": 13,
+   "drop_chars": 127007,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 13,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 13
+   },
+   "recount_docs": 94395,
+   "recount_chars": 470508929,
+   "recount_matches": true
+  },
+  "00012_wikisource.com.jsonl.gz": {
+   "docs_before": 407375,
+   "chars_before": 614878718,
+   "docs_after": 407349,
+   "chars_after": 614860240,
+   "drops": 26,
+   "drop_chars": 17324,
+   "strips": 10,
+   "strip_chars_removed": 1154,
+   "verify": {
+    "dropped_ids": 26,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 26
+   },
+   "recount_docs": 407349,
+   "recount_chars": 614860240,
+   "recount_matches": true
+  },
+  "00013_wikipedia.com.jsonl.gz": {
+   "docs_before": 94462,
+   "chars_before": 478433534,
+   "docs_after": 94458,
+   "chars_after": 478391377,
+   "drops": 4,
+   "drop_chars": 42157,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 94458,
+   "recount_chars": 478391377,
+   "recount_matches": true
+  },
+  "00013_wikisource.com.jsonl.gz": {
+   "docs_before": 242855,
+   "chars_before": 322186210,
+   "docs_after": 242841,
+   "chars_after": 322178098,
+   "drops": 14,
+   "drop_chars": 7469,
+   "strips": 2,
+   "strip_chars_removed": 643,
+   "verify": {
+    "dropped_ids": 14,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 14
+   },
+   "recount_docs": 242841,
+   "recount_chars": 322178098,
+   "recount_matches": true
+  },
+  "00014_wikipedia.com.jsonl.gz": {
+   "docs_before": 104021,
+   "chars_before": 482441494,
+   "docs_after": 104016,
+   "chars_after": 482396259,
+   "drops": 5,
+   "drop_chars": 45084,
+   "strips": 1,
+   "strip_chars_removed": 151,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 104016,
+   "recount_chars": 482396259,
+   "recount_matches": true
+  },
+  "00015_wikipedia.com.jsonl.gz": {
+   "docs_before": 111647,
+   "chars_before": 484378427,
+   "docs_after": 111642,
+   "chars_after": 484347434,
+   "drops": 5,
+   "drop_chars": 30456,
+   "strips": 3,
+   "strip_chars_removed": 537,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 111642,
+   "recount_chars": 484347434,
+   "recount_matches": true
+  },
+  "00016_wikipedia.com.jsonl.gz": {
+   "docs_before": 125594,
+   "chars_before": 488831859,
+   "docs_after": 125586,
+   "chars_after": 488679641,
+   "drops": 8,
+   "drop_chars": 151436,
+   "strips": 5,
+   "strip_chars_removed": 782,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 125586,
+   "recount_chars": 488679641,
+   "recount_matches": true
+  },
+  "00017_wikipedia.com.jsonl.gz": {
+   "docs_before": 131625,
+   "chars_before": 495258230,
+   "docs_after": 131618,
+   "chars_after": 495183507,
+   "drops": 7,
+   "drop_chars": 74553,
+   "strips": 1,
+   "strip_chars_removed": 170,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 131618,
+   "recount_chars": 495183507,
+   "recount_matches": true
+  },
+  "00018_wikipedia.com.jsonl.gz": {
+   "docs_before": 133939,
+   "chars_before": 492134281,
+   "docs_after": 133936,
+   "chars_after": 492113046,
+   "drops": 3,
+   "drop_chars": 21235,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 133936,
+   "recount_chars": 492113046,
+   "recount_matches": true
+  },
+  "00019_wikipedia.com.jsonl.gz": {
+   "docs_before": 148716,
+   "chars_before": 500844190,
+   "docs_after": 148712,
+   "chars_after": 500821893,
+   "drops": 4,
+   "drop_chars": 21715,
+   "strips": 2,
+   "strip_chars_removed": 582,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 148712,
+   "recount_chars": 500821893,
+   "recount_matches": true
+  },
+  "00020_wikipedia.com.jsonl.gz": {
+   "docs_before": 149847,
+   "chars_before": 492629047,
+   "docs_after": 149841,
+   "chars_after": 492575526,
+   "drops": 6,
+   "drop_chars": 53088,
+   "strips": 3,
+   "strip_chars_removed": 433,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 149841,
+   "recount_chars": 492575526,
+   "recount_matches": true
+  },
+  "00021_wikipedia.com.jsonl.gz": {
+   "docs_before": 160074,
+   "chars_before": 490800629,
+   "docs_after": 160054,
+   "chars_after": 490666262,
+   "drops": 20,
+   "drop_chars": 133862,
+   "strips": 2,
+   "strip_chars_removed": 505,
+   "verify": {
+    "dropped_ids": 20,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 20
+   },
+   "recount_docs": 160054,
+   "recount_chars": 490666262,
+   "recount_matches": true
+  },
+  "00022_wikipedia.com.jsonl.gz": {
+   "docs_before": 165877,
+   "chars_before": 483302554,
+   "docs_after": 165870,
+   "chars_after": 483168752,
+   "drops": 7,
+   "drop_chars": 133484,
+   "strips": 2,
+   "strip_chars_removed": 318,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 165870,
+   "recount_chars": 483168752,
+   "recount_matches": true
+  },
+  "00023_wikipedia.com.jsonl.gz": {
+   "docs_before": 168554,
+   "chars_before": 489361445,
+   "docs_after": 168550,
+   "chars_after": 489341784,
+   "drops": 4,
+   "drop_chars": 19022,
+   "strips": 2,
+   "strip_chars_removed": 639,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 168550,
+   "recount_chars": 489341784,
+   "recount_matches": true
+  },
+  "00024_wikipedia.com.jsonl.gz": {
+   "docs_before": 162611,
+   "chars_before": 478709351,
+   "docs_after": 162607,
+   "chars_after": 478614078,
+   "drops": 4,
+   "drop_chars": 94977,
+   "strips": 3,
+   "strip_chars_removed": 296,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 162607,
+   "recount_chars": 478614078,
+   "recount_matches": true
+  },
+  "00025_wikipedia.com.jsonl.gz": {
+   "docs_before": 181716,
+   "chars_before": 488469409,
+   "docs_after": 181712,
+   "chars_after": 488348963,
+   "drops": 4,
+   "drop_chars": 120232,
+   "strips": 1,
+   "strip_chars_removed": 214,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 181712,
+   "recount_chars": 488348963,
+   "recount_matches": true
+  },
+  "00026_wikipedia.com.jsonl.gz": {
+   "docs_before": 228577,
+   "chars_before": 481104567,
+   "docs_after": 228569,
+   "chars_after": 481062373,
+   "drops": 8,
+   "drop_chars": 42194,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 228569,
+   "recount_chars": 481062373,
+   "recount_matches": true
+  },
+  "00027_wikipedia.com.jsonl.gz": {
+   "docs_before": 196724,
+   "chars_before": 482771544,
+   "docs_after": 196722,
+   "chars_after": 482755569,
+   "drops": 2,
+   "drop_chars": 15832,
+   "strips": 1,
+   "strip_chars_removed": 143,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 196722,
+   "recount_chars": 482755569,
+   "recount_matches": true
+  },
+  "00028_wikipedia.com.jsonl.gz": {
+   "docs_before": 211575,
+   "chars_before": 475154349,
+   "docs_after": 211569,
+   "chars_after": 475116203,
+   "drops": 6,
+   "drop_chars": 38108,
+   "strips": 1,
+   "strip_chars_removed": 38,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 211569,
+   "recount_chars": 475116203,
+   "recount_matches": true
+  },
+  "00029_wikipedia.com.jsonl.gz": {
+   "docs_before": 207545,
+   "chars_before": 474509857,
+   "docs_after": 207544,
+   "chars_after": 474473961,
+   "drops": 1,
+   "drop_chars": 35687,
+   "strips": 1,
+   "strip_chars_removed": 209,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 207544,
+   "recount_chars": 474473961,
+   "recount_matches": true
+  },
+  "00030_wikipedia.com.jsonl.gz": {
+   "docs_before": 207949,
+   "chars_before": 474276401,
+   "docs_after": 207944,
+   "chars_after": 474253860,
+   "drops": 5,
+   "drop_chars": 22541,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 207944,
+   "recount_chars": 474253860,
+   "recount_matches": true
+  },
+  "00031_wikipedia.com.jsonl.gz": {
+   "docs_before": 210444,
+   "chars_before": 471011850,
+   "docs_after": 210439,
+   "chars_after": 470987294,
+   "drops": 5,
+   "drop_chars": 24082,
+   "strips": 3,
+   "strip_chars_removed": 474,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 210439,
+   "recount_chars": 470987294,
+   "recount_matches": true
+  },
+  "00032_wikipedia.com.jsonl.gz": {
+   "docs_before": 235793,
+   "chars_before": 467953107,
+   "docs_after": 235788,
+   "chars_after": 467935398,
+   "drops": 5,
+   "drop_chars": 17142,
+   "strips": 3,
+   "strip_chars_removed": 567,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 235788,
+   "recount_chars": 467935398,
+   "recount_matches": true
+  },
+  "00033_wikipedia.com.jsonl.gz": {
+   "docs_before": 241721,
+   "chars_before": 463911251,
+   "docs_after": 241716,
+   "chars_after": 463791087,
+   "drops": 5,
+   "drop_chars": 120164,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 241716,
+   "recount_chars": 463791087,
+   "recount_matches": true
+  },
+  "00034_wikipedia.com.jsonl.gz": {
+   "docs_before": 251909,
+   "chars_before": 460395136,
+   "docs_after": 251903,
+   "chars_after": 460312696,
+   "drops": 6,
+   "drop_chars": 82127,
+   "strips": 2,
+   "strip_chars_removed": 313,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 251903,
+   "recount_chars": 460312696,
+   "recount_matches": true
+  },
+  "00035_wikipedia.com.jsonl.gz": {
+   "docs_before": 248500,
+   "chars_before": 465708875,
+   "docs_after": 248495,
+   "chars_after": 465531019,
+   "drops": 5,
+   "drop_chars": 177856,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 248495,
+   "recount_chars": 465531019,
+   "recount_matches": true
+  },
+  "00036_wikipedia.com.jsonl.gz": {
+   "docs_before": 231993,
+   "chars_before": 460327579,
+   "docs_after": 231984,
+   "chars_after": 460129554,
+   "drops": 9,
+   "drop_chars": 197595,
+   "strips": 2,
+   "strip_chars_removed": 430,
+   "verify": {
+    "dropped_ids": 9,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 9
+   },
+   "recount_docs": 231984,
+   "recount_chars": 460129554,
+   "recount_matches": true
+  },
+  "00037_wikipedia.com.jsonl.gz": {
+   "docs_before": 231850,
+   "chars_before": 464316393,
+   "docs_after": 231843,
+   "chars_after": 464181371,
+   "drops": 7,
+   "drop_chars": 134718,
+   "strips": 2,
+   "strip_chars_removed": 304,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 231843,
+   "recount_chars": 464181371,
+   "recount_matches": true
+  },
+  "00038_wikipedia.com.jsonl.gz": {
+   "docs_before": 216916,
+   "chars_before": 475711913,
+   "docs_after": 216909,
+   "chars_after": 475509725,
+   "drops": 7,
+   "drop_chars": 201836,
+   "strips": 2,
+   "strip_chars_removed": 352,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 216909,
+   "recount_chars": 475509725,
+   "recount_matches": true
+  },
+  "00039_wikipedia.com.jsonl.gz": {
+   "docs_before": 237091,
+   "chars_before": 447887950,
+   "docs_after": 237085,
+   "chars_after": 447834780,
+   "drops": 6,
+   "drop_chars": 52988,
+   "strips": 1,
+   "strip_chars_removed": 182,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 237085,
+   "recount_chars": 447834780,
+   "recount_matches": true
+  },
+  "00040_wikipedia.com.jsonl.gz": {
+   "docs_before": 221049,
+   "chars_before": 466462007,
+   "docs_after": 221045,
+   "chars_after": 466374738,
+   "drops": 4,
+   "drop_chars": 87090,
+   "strips": 1,
+   "strip_chars_removed": 179,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 221045,
+   "recount_chars": 466374738,
+   "recount_matches": true
+  },
+  "00041_wikipedia.com.jsonl.gz": {
+   "docs_before": 243058,
+   "chars_before": 453349524,
+   "docs_after": 243050,
+   "chars_after": 453288163,
+   "drops": 8,
+   "drop_chars": 61151,
+   "strips": 1,
+   "strip_chars_removed": 210,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 243050,
+   "recount_chars": 453288163,
+   "recount_matches": true
+  },
+  "00042_wikipedia.com.jsonl.gz": {
+   "docs_before": 247563,
+   "chars_before": 454431007,
+   "docs_after": 247559,
+   "chars_after": 454310699,
+   "drops": 4,
+   "drop_chars": 120084,
+   "strips": 1,
+   "strip_chars_removed": 224,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 247559,
+   "recount_chars": 454310699,
+   "recount_matches": true
+  },
+  "00043_wikipedia.com.jsonl.gz": {
+   "docs_before": 240612,
+   "chars_before": 442442805,
+   "docs_after": 240609,
+   "chars_after": 442410822,
+   "drops": 3,
+   "drop_chars": 31983,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 240609,
+   "recount_chars": 442410822,
+   "recount_matches": true
+  },
+  "00044_wikipedia.com.jsonl.gz": {
+   "docs_before": 262649,
+   "chars_before": 436588017,
+   "docs_after": 262648,
+   "chars_after": 436391791,
+   "drops": 1,
+   "drop_chars": 196226,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 262648,
+   "recount_chars": 436391791,
+   "recount_matches": true
+  },
+  "00045_wikipedia.com.jsonl.gz": {
+   "docs_before": 280102,
+   "chars_before": 432130925,
+   "docs_after": 280100,
+   "chars_after": 432069972,
+   "drops": 2,
+   "drop_chars": 60497,
+   "strips": 3,
+   "strip_chars_removed": 456,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 280100,
+   "recount_chars": 432069972,
+   "recount_matches": true
+  },
+  "00046_wikipedia.com.jsonl.gz": {
+   "docs_before": 305400,
+   "chars_before": 435648551,
+   "docs_after": 305398,
+   "chars_after": 435613049,
+   "drops": 2,
+   "drop_chars": 34822,
+   "strips": 3,
+   "strip_chars_removed": 680,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 305398,
+   "recount_chars": 435613049,
+   "recount_matches": true
+  },
+  "00047_wikipedia.com.jsonl.gz": {
+   "docs_before": 281069,
+   "chars_before": 437656027,
+   "docs_after": 281065,
+   "chars_after": 437603847,
+   "drops": 4,
+   "drop_chars": 52180,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 281065,
+   "recount_chars": 437603847,
+   "recount_matches": true
+  },
+  "00048_wikipedia.com.jsonl.gz": {
+   "docs_before": 286351,
+   "chars_before": 440907321,
+   "docs_after": 286347,
+   "chars_after": 440850127,
+   "drops": 4,
+   "drop_chars": 57194,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 286347,
+   "recount_chars": 440850127,
+   "recount_matches": true
+  },
+  "00049_wikipedia.com.jsonl.gz": {
+   "docs_before": 303032,
+   "chars_before": 430568006,
+   "docs_after": 303029,
+   "chars_after": 430322176,
+   "drops": 3,
+   "drop_chars": 245830,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 303029,
+   "recount_chars": 430322176,
+   "recount_matches": true
+  },
+  "00050_wikipedia.com.jsonl.gz": {
+   "docs_before": 300633,
+   "chars_before": 428988624,
+   "docs_after": 300625,
+   "chars_after": 428711178,
+   "drops": 8,
+   "drop_chars": 277446,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 300625,
+   "recount_chars": 428711178,
+   "recount_matches": true
+  },
+  "00051_wikipedia.com.jsonl.gz": {
+   "docs_before": 266369,
+   "chars_before": 423810598,
+   "docs_after": 266367,
+   "chars_after": 423770295,
+   "drops": 2,
+   "drop_chars": 40263,
+   "strips": 1,
+   "strip_chars_removed": 40,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 266367,
+   "recount_chars": 423770295,
+   "recount_matches": true
+  },
+  "00052_wikipedia.com.jsonl.gz": {
+   "docs_before": 296412,
+   "chars_before": 429947486,
+   "docs_after": 296406,
+   "chars_after": 429913751,
+   "drops": 6,
+   "drop_chars": 33382,
+   "strips": 3,
+   "strip_chars_removed": 353,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 296406,
+   "recount_chars": 429913751,
+   "recount_matches": true
+  },
+  "00053_wikipedia.com.jsonl.gz": {
+   "docs_before": 300495,
+   "chars_before": 440132364,
+   "docs_after": 300492,
+   "chars_after": 440055533,
+   "drops": 3,
+   "drop_chars": 76831,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 300492,
+   "recount_chars": 440055533,
+   "recount_matches": true
+  },
+  "00054_wikipedia.com.jsonl.gz": {
+   "docs_before": 342108,
+   "chars_before": 427864104,
+   "docs_after": 342105,
+   "chars_after": 427764531,
+   "drops": 3,
+   "drop_chars": 99573,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 342105,
+   "recount_chars": 427764531,
+   "recount_matches": true
+  },
+  "00055_wikipedia.com.jsonl.gz": {
+   "docs_before": 316031,
+   "chars_before": 423838801,
+   "docs_after": 316025,
+   "chars_after": 423768701,
+   "drops": 6,
+   "drop_chars": 70100,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 316025,
+   "recount_chars": 423768701,
+   "recount_matches": true
+  },
+  "00056_wikipedia.com.jsonl.gz": {
+   "docs_before": 275199,
+   "chars_before": 442840079,
+   "docs_after": 275194,
+   "chars_after": 442611503,
+   "drops": 5,
+   "drop_chars": 228324,
+   "strips": 2,
+   "strip_chars_removed": 252,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 275194,
+   "recount_chars": 442611503,
+   "recount_matches": true
+  },
+  "00057_wikipedia.com.jsonl.gz": {
+   "docs_before": 277726,
+   "chars_before": 437709596,
+   "docs_after": 277725,
+   "chars_after": 437690223,
+   "drops": 1,
+   "drop_chars": 19373,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 277725,
+   "recount_chars": 437690223,
+   "recount_matches": true
+  },
+  "00058_wikipedia.com.jsonl.gz": {
+   "docs_before": 294250,
+   "chars_before": 423178099,
+   "docs_after": 294244,
+   "chars_after": 421764309,
+   "drops": 6,
+   "drop_chars": 1413628,
+   "strips": 2,
+   "strip_chars_removed": 162,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 294244,
+   "recount_chars": 421764309,
+   "recount_matches": true
+  },
+  "00059_wikipedia.com.jsonl.gz": {
+   "docs_before": 271002,
+   "chars_before": 419291206,
+   "docs_after": 270997,
+   "chars_after": 419159579,
+   "drops": 5,
+   "drop_chars": 130530,
+   "strips": 3,
+   "strip_chars_removed": 1097,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 270997,
+   "recount_chars": 419159579,
+   "recount_matches": true
+  },
+  "00060_wikipedia.com.jsonl.gz": {
+   "docs_before": 279614,
+   "chars_before": 412719952,
+   "docs_after": 279610,
+   "chars_after": 412659306,
+   "drops": 4,
+   "drop_chars": 60376,
+   "strips": 1,
+   "strip_chars_removed": 270,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 279610,
+   "recount_chars": 412659306,
+   "recount_matches": true
+  },
+  "00061_wikipedia.com.jsonl.gz": {
+   "docs_before": 224407,
+   "chars_before": 425307963,
+   "docs_after": 224398,
+   "chars_after": 424937236,
+   "drops": 9,
+   "drop_chars": 370205,
+   "strips": 3,
+   "strip_chars_removed": 522,
+   "verify": {
+    "dropped_ids": 9,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 9
+   },
+   "recount_docs": 224398,
+   "recount_chars": 424937236,
+   "recount_matches": true
+  },
+  "00062_wikipedia.com.jsonl.gz": {
+   "docs_before": 239674,
+   "chars_before": 444310322,
+   "docs_after": 239665,
+   "chars_after": 443871223,
+   "drops": 9,
+   "drop_chars": 438829,
+   "strips": 1,
+   "strip_chars_removed": 270,
+   "verify": {
+    "dropped_ids": 9,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 9
+   },
+   "recount_docs": 239665,
+   "recount_chars": 443871223,
+   "recount_matches": true
+  },
+  "00063_wikipedia.com.jsonl.gz": {
+   "docs_before": 254604,
+   "chars_before": 436352052,
+   "docs_after": 254594,
+   "chars_after": 436157944,
+   "drops": 10,
+   "drop_chars": 194108,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 10,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 10
+   },
+   "recount_docs": 254594,
+   "recount_chars": 436157944,
+   "recount_matches": true
+  },
+  "00064_wikipedia.com.jsonl.gz": {
+   "docs_before": 272501,
+   "chars_before": 436360894,
+   "docs_after": 272496,
+   "chars_after": 436308398,
+   "drops": 5,
+   "drop_chars": 52140,
+   "strips": 2,
+   "strip_chars_removed": 356,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 272496,
+   "recount_chars": 436308398,
+   "recount_matches": true
+  },
+  "00065_wikipedia.com.jsonl.gz": {
+   "docs_before": 254109,
+   "chars_before": 423975743,
+   "docs_after": 254100,
+   "chars_after": 423286104,
+   "drops": 9,
+   "drop_chars": 689432,
+   "strips": 1,
+   "strip_chars_removed": 207,
+   "verify": {
+    "dropped_ids": 9,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 9
+   },
+   "recount_docs": 254100,
+   "recount_chars": 423286104,
+   "recount_matches": true
+  },
+  "00066_wikipedia.com.jsonl.gz": {
+   "docs_before": 260070,
+   "chars_before": 433501234,
+   "docs_after": 260070,
+   "chars_after": 433501234,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 260070,
+   "recount_chars": 433501234,
+   "recount_matches": true
+  },
+  "00067_wikipedia.com.jsonl.gz": {
+   "docs_before": 269785,
+   "chars_before": 449043980,
+   "docs_after": 269781,
+   "chars_after": 448947170,
+   "drops": 4,
+   "drop_chars": 96810,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 269781,
+   "recount_chars": 448947170,
+   "recount_matches": true
+  },
+  "00068_wikipedia.com.jsonl.gz": {
+   "docs_before": 274843,
+   "chars_before": 452414279,
+   "docs_after": 274842,
+   "chars_after": 452300709,
+   "drops": 1,
+   "drop_chars": 113020,
+   "strips": 2,
+   "strip_chars_removed": 550,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 274842,
+   "recount_chars": 452300709,
+   "recount_matches": true
+  },
+  "00069_wikipedia.com.jsonl.gz": {
+   "docs_before": 308401,
+   "chars_before": 425472883,
+   "docs_after": 308398,
+   "chars_after": 425462793,
+   "drops": 3,
+   "drop_chars": 10090,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 308398,
+   "recount_chars": 425462793,
+   "recount_matches": true
+  },
+  "00070_wikipedia.com.jsonl.gz": {
+   "docs_before": 293046,
+   "chars_before": 415033742,
+   "docs_after": 293043,
+   "chars_after": 415025393,
+   "drops": 3,
+   "drop_chars": 8282,
+   "strips": 1,
+   "strip_chars_removed": 67,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 293043,
+   "recount_chars": 415025393,
+   "recount_matches": true
+  },
+  "00071_wikipedia.com.jsonl.gz": {
+   "docs_before": 259811,
+   "chars_before": 443501865,
+   "docs_after": 259807,
+   "chars_after": 443431011,
+   "drops": 4,
+   "drop_chars": 70616,
+   "strips": 1,
+   "strip_chars_removed": 238,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 259807,
+   "recount_chars": 443431011,
+   "recount_matches": true
+  },
+  "00072_wikipedia.com.jsonl.gz": {
+   "docs_before": 263942,
+   "chars_before": 439183374,
+   "docs_after": 263937,
+   "chars_after": 439155315,
+   "drops": 5,
+   "drop_chars": 27689,
+   "strips": 1,
+   "strip_chars_removed": 370,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 263937,
+   "recount_chars": 439155315,
+   "recount_matches": true
+  },
+  "00073_wikipedia.com.jsonl.gz": {
+   "docs_before": 298690,
+   "chars_before": 433147169,
+   "docs_after": 298688,
+   "chars_after": 432923660,
+   "drops": 2,
+   "drop_chars": 223234,
+   "strips": 2,
+   "strip_chars_removed": 275,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 298688,
+   "recount_chars": 432923660,
+   "recount_matches": true
+  },
+  "00074_wikipedia.com.jsonl.gz": {
+   "docs_before": 353083,
+   "chars_before": 412748441,
+   "docs_after": 353074,
+   "chars_after": 412716677,
+   "drops": 9,
+   "drop_chars": 31477,
+   "strips": 2,
+   "strip_chars_removed": 287,
+   "verify": {
+    "dropped_ids": 9,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 9
+   },
+   "recount_docs": 353074,
+   "recount_chars": 412716677,
+   "recount_matches": true
+  },
+  "00075_wikipedia.com.jsonl.gz": {
+   "docs_before": 335258,
+   "chars_before": 405505702,
+   "docs_after": 335254,
+   "chars_after": 405386743,
+   "drops": 4,
+   "drop_chars": 118767,
+   "strips": 1,
+   "strip_chars_removed": 192,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 335254,
+   "recount_chars": 405386743,
+   "recount_matches": true
+  },
+  "00076_wikipedia.com.jsonl.gz": {
+   "docs_before": 328787,
+   "chars_before": 416353536,
+   "docs_after": 328783,
+   "chars_after": 415928509,
+   "drops": 4,
+   "drop_chars": 424143,
+   "strips": 1,
+   "strip_chars_removed": 884,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 328783,
+   "recount_chars": 415928509,
+   "recount_matches": true
+  },
+  "00077_wikipedia.com.jsonl.gz": {
+   "docs_before": 285774,
+   "chars_before": 420536015,
+   "docs_after": 285773,
+   "chars_after": 420535002,
+   "drops": 1,
+   "drop_chars": 831,
+   "strips": 2,
+   "strip_chars_removed": 182,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 285773,
+   "recount_chars": 420535002,
+   "recount_matches": true
+  },
+  "00078_wikipedia.com.jsonl.gz": {
+   "docs_before": 253115,
+   "chars_before": 435990049,
+   "docs_after": 253108,
+   "chars_after": 434366555,
+   "drops": 7,
+   "drop_chars": 1623494,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 253108,
+   "recount_chars": 434366555,
+   "recount_matches": true
+  },
+  "00079_wikipedia.com.jsonl.gz": {
+   "docs_before": 239754,
+   "chars_before": 420366996,
+   "docs_after": 239749,
+   "chars_after": 420254202,
+   "drops": 5,
+   "drop_chars": 112794,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 239749,
+   "recount_chars": 420254202,
+   "recount_matches": true
+  },
+  "00080_wikipedia.com.jsonl.gz": {
+   "docs_before": 256545,
+   "chars_before": 395454451,
+   "docs_after": 256539,
+   "chars_after": 395283900,
+   "drops": 6,
+   "drop_chars": 170121,
+   "strips": 2,
+   "strip_chars_removed": 430,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 256539,
+   "recount_chars": 395283900,
+   "recount_matches": true
+  },
+  "00081_wikipedia.com.jsonl.gz": {
+   "docs_before": 269044,
+   "chars_before": 402055551,
+   "docs_after": 269040,
+   "chars_after": 401300747,
+   "drops": 4,
+   "drop_chars": 754804,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 269040,
+   "recount_chars": 401300747,
+   "recount_matches": true
+  },
+  "00082_wikipedia.com.jsonl.gz": {
+   "docs_before": 286340,
+   "chars_before": 414447726,
+   "docs_after": 286336,
+   "chars_after": 414426704,
+   "drops": 4,
+   "drop_chars": 21022,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 286336,
+   "recount_chars": 414426704,
+   "recount_matches": true
+  },
+  "00083_wikipedia.com.jsonl.gz": {
+   "docs_before": 275013,
+   "chars_before": 388295772,
+   "docs_after": 275009,
+   "chars_after": 388245041,
+   "drops": 4,
+   "drop_chars": 50731,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 275009,
+   "recount_chars": 388245041,
+   "recount_matches": true
+  },
+  "00084_wikipedia.com.jsonl.gz": {
+   "docs_before": 283118,
+   "chars_before": 410242307,
+   "docs_after": 283115,
+   "chars_after": 409811264,
+   "drops": 3,
+   "drop_chars": 430601,
+   "strips": 2,
+   "strip_chars_removed": 442,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 283115,
+   "recount_chars": 409811264,
+   "recount_matches": true
+  },
+  "00085_wikipedia.com.jsonl.gz": {
+   "docs_before": 273444,
+   "chars_before": 409085519,
+   "docs_after": 273442,
+   "chars_after": 408974291,
+   "drops": 2,
+   "drop_chars": 111228,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 273442,
+   "recount_chars": 408974291,
+   "recount_matches": true
+  },
+  "00086_wikipedia.com.jsonl.gz": {
+   "docs_before": 268759,
+   "chars_before": 395279721,
+   "docs_after": 268751,
+   "chars_after": 394861834,
+   "drops": 8,
+   "drop_chars": 417887,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 268751,
+   "recount_chars": 394861834,
+   "recount_matches": true
+  },
+  "00087_wikipedia.com.jsonl.gz": {
+   "docs_before": 337061,
+   "chars_before": 365867734,
+   "docs_after": 337058,
+   "chars_after": 365835150,
+   "drops": 3,
+   "drop_chars": 32058,
+   "strips": 2,
+   "strip_chars_removed": 526,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 337058,
+   "recount_chars": 365835150,
+   "recount_matches": true
+  },
+  "00088_wikipedia.com.jsonl.gz": {
+   "docs_before": 301345,
+   "chars_before": 396617285,
+   "docs_after": 301340,
+   "chars_after": 396358917,
+   "drops": 5,
+   "drop_chars": 258368,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 301340,
+   "recount_chars": 396358917,
+   "recount_matches": true
+  },
+  "00089_wikipedia.com.jsonl.gz": {
+   "docs_before": 275859,
+   "chars_before": 399194719,
+   "docs_after": 275850,
+   "chars_after": 399002159,
+   "drops": 9,
+   "drop_chars": 192560,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 9,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 9
+   },
+   "recount_docs": 275850,
+   "recount_chars": 399002159,
+   "recount_matches": true
+  },
+  "00090_wikipedia.com.jsonl.gz": {
+   "docs_before": 282460,
+   "chars_before": 405505662,
+   "docs_after": 282455,
+   "chars_after": 404694595,
+   "drops": 5,
+   "drop_chars": 810520,
+   "strips": 3,
+   "strip_chars_removed": 547,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 282455,
+   "recount_chars": 404694595,
+   "recount_matches": true
+  },
+  "00091_wikipedia.com.jsonl.gz": {
+   "docs_before": 291296,
+   "chars_before": 403817075,
+   "docs_after": 291288,
+   "chars_after": 403733709,
+   "drops": 8,
+   "drop_chars": 83182,
+   "strips": 1,
+   "strip_chars_removed": 184,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 291288,
+   "recount_chars": 403733709,
+   "recount_matches": true
+  },
+  "00092_wikipedia.com.jsonl.gz": {
+   "docs_before": 307081,
+   "chars_before": 424220297,
+   "docs_after": 307078,
+   "chars_after": 424021032,
+   "drops": 3,
+   "drop_chars": 199157,
+   "strips": 1,
+   "strip_chars_removed": 108,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 307078,
+   "recount_chars": 424021032,
+   "recount_matches": true
+  },
+  "00093_wikipedia.com.jsonl.gz": {
+   "docs_before": 274353,
+   "chars_before": 406768766,
+   "docs_after": 274351,
+   "chars_after": 406764951,
+   "drops": 2,
+   "drop_chars": 3815,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 274351,
+   "recount_chars": 406764951,
+   "recount_matches": true
+  },
+  "00094_wikipedia.com.jsonl.gz": {
+   "docs_before": 293910,
+   "chars_before": 402415069,
+   "docs_after": 293904,
+   "chars_after": 402130937,
+   "drops": 6,
+   "drop_chars": 284132,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 293904,
+   "recount_chars": 402130937,
+   "recount_matches": true
+  },
+  "00095_wikipedia.com.jsonl.gz": {
+   "docs_before": 305781,
+   "chars_before": 412895072,
+   "docs_after": 305777,
+   "chars_after": 412779285,
+   "drops": 4,
+   "drop_chars": 115704,
+   "strips": 1,
+   "strip_chars_removed": 83,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 305777,
+   "recount_chars": 412779285,
+   "recount_matches": true
+  },
+  "00096_wikipedia.com.jsonl.gz": {
+   "docs_before": 282915,
+   "chars_before": 404846351,
+   "docs_after": 282911,
+   "chars_after": 404683889,
+   "drops": 4,
+   "drop_chars": 161989,
+   "strips": 2,
+   "strip_chars_removed": 473,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 282911,
+   "recount_chars": 404683889,
+   "recount_matches": true
+  },
+  "00097_wikipedia.com.jsonl.gz": {
+   "docs_before": 298851,
+   "chars_before": 385495107,
+   "docs_after": 298845,
+   "chars_after": 384365234,
+   "drops": 6,
+   "drop_chars": 1129873,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 298845,
+   "recount_chars": 384365234,
+   "recount_matches": true
+  },
+  "00098_wikipedia.com.jsonl.gz": {
+   "docs_before": 285071,
+   "chars_before": 396680132,
+   "docs_after": 285068,
+   "chars_after": 396570903,
+   "drops": 3,
+   "drop_chars": 109229,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 285068,
+   "recount_chars": 396570903,
+   "recount_matches": true
+  },
+  "00099_wikipedia.com.jsonl.gz": {
+   "docs_before": 287096,
+   "chars_before": 402660336,
+   "docs_after": 287089,
+   "chars_after": 402412795,
+   "drops": 7,
+   "drop_chars": 247541,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 287089,
+   "recount_chars": 402412795,
+   "recount_matches": true
+  },
+  "00100_wikipedia.com.jsonl.gz": {
+   "docs_before": 286405,
+   "chars_before": 389321651,
+   "docs_after": 286399,
+   "chars_after": 389090785,
+   "drops": 6,
+   "drop_chars": 230866,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 286399,
+   "recount_chars": 389090785,
+   "recount_matches": true
+  },
+  "00101_wikipedia.com.jsonl.gz": {
+   "docs_before": 264811,
+   "chars_before": 387906386,
+   "docs_after": 264808,
+   "chars_after": 387856399,
+   "drops": 3,
+   "drop_chars": 49682,
+   "strips": 2,
+   "strip_chars_removed": 305,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 264808,
+   "recount_chars": 387856399,
+   "recount_matches": true
+  },
+  "00102_wikipedia.com.jsonl.gz": {
+   "docs_before": 265699,
+   "chars_before": 389852286,
+   "docs_after": 265696,
+   "chars_after": 388824925,
+   "drops": 3,
+   "drop_chars": 1026709,
+   "strips": 2,
+   "strip_chars_removed": 652,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 265696,
+   "recount_chars": 388824925,
+   "recount_matches": true
+  },
+  "00103_wikipedia.com.jsonl.gz": {
+   "docs_before": 269707,
+   "chars_before": 376912809,
+   "docs_after": 269702,
+   "chars_after": 376660373,
+   "drops": 5,
+   "drop_chars": 252154,
+   "strips": 1,
+   "strip_chars_removed": 282,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 269702,
+   "recount_chars": 376660373,
+   "recount_matches": true
+  },
+  "00104_wikipedia.com.jsonl.gz": {
+   "docs_before": 276459,
+   "chars_before": 383855563,
+   "docs_after": 276457,
+   "chars_after": 383722803,
+   "drops": 2,
+   "drop_chars": 132658,
+   "strips": 1,
+   "strip_chars_removed": 102,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 276457,
+   "recount_chars": 383722803,
+   "recount_matches": true
+  },
+  "00105_wikipedia.com.jsonl.gz": {
+   "docs_before": 261069,
+   "chars_before": 390850617,
+   "docs_after": 261065,
+   "chars_after": 390705422,
+   "drops": 4,
+   "drop_chars": 145195,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 261065,
+   "recount_chars": 390705422,
+   "recount_matches": true
+  },
+  "00106_wikipedia.com.jsonl.gz": {
+   "docs_before": 267560,
+   "chars_before": 393062465,
+   "docs_after": 267536,
+   "chars_after": 392108272,
+   "drops": 24,
+   "drop_chars": 954193,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 24,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 24
+   },
+   "recount_docs": 267536,
+   "recount_chars": 392108272,
+   "recount_matches": true
+  },
+  "00107_wikipedia.com.jsonl.gz": {
+   "docs_before": 281494,
+   "chars_before": 371838767,
+   "docs_after": 281490,
+   "chars_after": 371805385,
+   "drops": 4,
+   "drop_chars": 33232,
+   "strips": 1,
+   "strip_chars_removed": 150,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 281490,
+   "recount_chars": 371805385,
+   "recount_matches": true
+  },
+  "00108_wikipedia.com.jsonl.gz": {
+   "docs_before": 335490,
+   "chars_before": 370047167,
+   "docs_after": 335481,
+   "chars_after": 369371289,
+   "drops": 9,
+   "drop_chars": 675664,
+   "strips": 2,
+   "strip_chars_removed": 214,
+   "verify": {
+    "dropped_ids": 9,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 9
+   },
+   "recount_docs": 335481,
+   "recount_chars": 369371289,
+   "recount_matches": true
+  },
+  "00109_wikipedia.com.jsonl.gz": {
+   "docs_before": 327617,
+   "chars_before": 371401635,
+   "docs_after": 327614,
+   "chars_after": 371390868,
+   "drops": 3,
+   "drop_chars": 10767,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 327614,
+   "recount_chars": 371390868,
+   "recount_matches": true
+  },
+  "00110_wikipedia.com.jsonl.gz": {
+   "docs_before": 277604,
+   "chars_before": 406374531,
+   "docs_after": 277590,
+   "chars_after": 406301608,
+   "drops": 14,
+   "drop_chars": 72923,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 14,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 14
+   },
+   "recount_docs": 277590,
+   "recount_chars": 406301608,
+   "recount_matches": true
+  },
+  "00111_wikipedia.com.jsonl.gz": {
+   "docs_before": 359572,
+   "chars_before": 631263363,
+   "docs_after": 359572,
+   "chars_after": 631263363,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 359572,
+   "recount_chars": 631263363,
+   "recount_matches": true
+  },
+  "00112_wikipedia.com.jsonl.gz": {
+   "docs_before": 280734,
+   "chars_before": 423989782,
+   "docs_after": 280727,
+   "chars_after": 423956759,
+   "drops": 7,
+   "drop_chars": 33023,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 280727,
+   "recount_chars": 423956759,
+   "recount_matches": true
+  },
+  "00113_wikipedia.com.jsonl.gz": {
+   "docs_before": 267516,
+   "chars_before": 345279253,
+   "docs_after": 267513,
+   "chars_after": 344835596,
+   "drops": 3,
+   "drop_chars": 443560,
+   "strips": 1,
+   "strip_chars_removed": 97,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 267513,
+   "recount_chars": 344835596,
+   "recount_matches": true
+  },
+  "00114_wikipedia.com.jsonl.gz": {
+   "docs_before": 263309,
+   "chars_before": 363250679,
+   "docs_after": 263307,
+   "chars_after": 363126642,
+   "drops": 2,
+   "drop_chars": 124037,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 263307,
+   "recount_chars": 363126642,
+   "recount_matches": true
+  },
+  "00115_wikipedia.com.jsonl.gz": {
+   "docs_before": 270917,
+   "chars_before": 372850107,
+   "docs_after": 270917,
+   "chars_after": 372850107,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 270917,
+   "recount_chars": 372850107,
+   "recount_matches": true
+  },
+  "00116_wikipedia.com.jsonl.gz": {
+   "docs_before": 387326,
+   "chars_before": 350311447,
+   "docs_after": 387319,
+   "chars_after": 350032896,
+   "drops": 7,
+   "drop_chars": 278551,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 387319,
+   "recount_chars": 350032896,
+   "recount_matches": true
+  },
+  "00117_wikipedia.com.jsonl.gz": {
+   "docs_before": 291940,
+   "chars_before": 377639752,
+   "docs_after": 291935,
+   "chars_after": 377316549,
+   "drops": 5,
+   "drop_chars": 323203,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 291935,
+   "recount_chars": 377316549,
+   "recount_matches": true
+  },
+  "00118_wikipedia.com.jsonl.gz": {
+   "docs_before": 293050,
+   "chars_before": 375649670,
+   "docs_after": 293018,
+   "chars_after": 373826768,
+   "drops": 32,
+   "drop_chars": 1822902,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 32,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 32
+   },
+   "recount_docs": 293018,
+   "recount_chars": 373826768,
+   "recount_matches": true
+  },
+  "00119_wikipedia.com.jsonl.gz": {
+   "docs_before": 296765,
+   "chars_before": 380362196,
+   "docs_after": 296761,
+   "chars_after": 380300024,
+   "drops": 4,
+   "drop_chars": 61809,
+   "strips": 2,
+   "strip_chars_removed": 363,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 296761,
+   "recount_chars": 380300024,
+   "recount_matches": true
+  },
+  "00120_wikipedia.com.jsonl.gz": {
+   "docs_before": 274990,
+   "chars_before": 359988159,
+   "docs_after": 274986,
+   "chars_after": 359609185,
+   "drops": 4,
+   "drop_chars": 378874,
+   "strips": 1,
+   "strip_chars_removed": 100,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 274986,
+   "recount_chars": 359609185,
+   "recount_matches": true
+  },
+  "00121_wikipedia.com.jsonl.gz": {
+   "docs_before": 288717,
+   "chars_before": 354134116,
+   "docs_after": 288711,
+   "chars_after": 353959355,
+   "drops": 6,
+   "drop_chars": 174761,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 288711,
+   "recount_chars": 353959355,
+   "recount_matches": true
+  },
+  "00122_wikipedia.com.jsonl.gz": {
+   "docs_before": 272141,
+   "chars_before": 352870855,
+   "docs_after": 272137,
+   "chars_after": 352587245,
+   "drops": 4,
+   "drop_chars": 283231,
+   "strips": 1,
+   "strip_chars_removed": 379,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 272137,
+   "recount_chars": 352587245,
+   "recount_matches": true
+  },
+  "00123_wikipedia.com.jsonl.gz": {
+   "docs_before": 283055,
+   "chars_before": 355462689,
+   "docs_after": 283048,
+   "chars_after": 355114645,
+   "drops": 7,
+   "drop_chars": 348044,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 283048,
+   "recount_chars": 355114645,
+   "recount_matches": true
+  },
+  "00124_wikipedia.com.jsonl.gz": {
+   "docs_before": 346985,
+   "chars_before": 328063867,
+   "docs_after": 346979,
+   "chars_after": 328023883,
+   "drops": 6,
+   "drop_chars": 39984,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 346979,
+   "recount_chars": 328023883,
+   "recount_matches": true
+  },
+  "00125_wikipedia.com.jsonl.gz": {
+   "docs_before": 305631,
+   "chars_before": 353415692,
+   "docs_after": 305605,
+   "chars_after": 353286591,
+   "drops": 26,
+   "drop_chars": 129101,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 26,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 26
+   },
+   "recount_docs": 305605,
+   "recount_chars": 353286591,
+   "recount_matches": true
+  },
+  "00126_wikipedia.com.jsonl.gz": {
+   "docs_before": 289105,
+   "chars_before": 368995611,
+   "docs_after": 289082,
+   "chars_after": 368820146,
+   "drops": 23,
+   "drop_chars": 175465,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 23,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 23
+   },
+   "recount_docs": 289082,
+   "recount_chars": 368820146,
+   "recount_matches": true
+  },
+  "00127_wikipedia.com.jsonl.gz": {
+   "docs_before": 300018,
+   "chars_before": 353942456,
+   "docs_after": 299983,
+   "chars_after": 353431086,
+   "drops": 35,
+   "drop_chars": 511370,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 35,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 35
+   },
+   "recount_docs": 299983,
+   "recount_chars": 353431086,
+   "recount_matches": true
+  },
+  "00128_wikipedia.com.jsonl.gz": {
+   "docs_before": 265661,
+   "chars_before": 327127088,
+   "docs_after": 265647,
+   "chars_after": 326787209,
+   "drops": 14,
+   "drop_chars": 339705,
+   "strips": 1,
+   "strip_chars_removed": 174,
+   "verify": {
+    "dropped_ids": 14,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 14
+   },
+   "recount_docs": 265647,
+   "recount_chars": 326787209,
+   "recount_matches": true
+  },
+  "00129_wikipedia.com.jsonl.gz": {
+   "docs_before": 270873,
+   "chars_before": 355702160,
+   "docs_after": 270857,
+   "chars_after": 355332955,
+   "drops": 16,
+   "drop_chars": 369205,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 16,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 16
+   },
+   "recount_docs": 270857,
+   "recount_chars": 355332955,
+   "recount_matches": true
+  },
+  "00130_wikipedia.com.jsonl.gz": {
+   "docs_before": 289608,
+   "chars_before": 353137323,
+   "docs_after": 289601,
+   "chars_after": 351127517,
+   "drops": 7,
+   "drop_chars": 2009608,
+   "strips": 1,
+   "strip_chars_removed": 198,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 289601,
+   "recount_chars": 351127517,
+   "recount_matches": true
+  },
+  "00131_wikipedia.com.jsonl.gz": {
+   "docs_before": 378075,
+   "chars_before": 343393550,
+   "docs_after": 378071,
+   "chars_after": 342726050,
+   "drops": 4,
+   "drop_chars": 667500,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 378071,
+   "recount_chars": 342726050,
+   "recount_matches": true
+  },
+  "00132_wikipedia.com.jsonl.gz": {
+   "docs_before": 289056,
+   "chars_before": 370559719,
+   "docs_after": 289052,
+   "chars_after": 370210351,
+   "drops": 4,
+   "drop_chars": 349178,
+   "strips": 1,
+   "strip_chars_removed": 190,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 289052,
+   "recount_chars": 370210351,
+   "recount_matches": true
+  },
+  "00133_wikipedia.com.jsonl.gz": {
+   "docs_before": 275756,
+   "chars_before": 351619618,
+   "docs_after": 275741,
+   "chars_after": 350910939,
+   "drops": 15,
+   "drop_chars": 708679,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 15,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 15
+   },
+   "recount_docs": 275741,
+   "recount_chars": 350910939,
+   "recount_matches": true
+  },
+  "00134_wikipedia.com.jsonl.gz": {
+   "docs_before": 273656,
+   "chars_before": 379265300,
+   "docs_after": 273641,
+   "chars_after": 378604008,
+   "drops": 15,
+   "drop_chars": 661292,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 15,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 15
+   },
+   "recount_docs": 273641,
+   "recount_chars": 378604008,
+   "recount_matches": true
+  },
+  "00135_wikipedia.com.jsonl.gz": {
+   "docs_before": 268858,
+   "chars_before": 345614117,
+   "docs_after": 268854,
+   "chars_after": 345015557,
+   "drops": 4,
+   "drop_chars": 598560,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 268854,
+   "recount_chars": 345015557,
+   "recount_matches": true
+  },
+  "00136_wikipedia.com.jsonl.gz": {
+   "docs_before": 290571,
+   "chars_before": 358246325,
+   "docs_after": 290569,
+   "chars_after": 358090381,
+   "drops": 2,
+   "drop_chars": 155944,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 290569,
+   "recount_chars": 358090381,
+   "recount_matches": true
+  },
+  "00137_wikipedia.com.jsonl.gz": {
+   "docs_before": 244186,
+   "chars_before": 315329242,
+   "docs_after": 244183,
+   "chars_after": 315167295,
+   "drops": 3,
+   "drop_chars": 161770,
+   "strips": 1,
+   "strip_chars_removed": 177,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 244183,
+   "recount_chars": 315167295,
+   "recount_matches": true
+  },
+  "00138_wikipedia.com.jsonl.gz": {
+   "docs_before": 245082,
+   "chars_before": 337000115,
+   "docs_after": 245073,
+   "chars_after": 336485839,
+   "drops": 9,
+   "drop_chars": 514122,
+   "strips": 1,
+   "strip_chars_removed": 154,
+   "verify": {
+    "dropped_ids": 9,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 9
+   },
+   "recount_docs": 245073,
+   "recount_chars": 336485839,
+   "recount_matches": true
+  },
+  "00139_wikipedia.com.jsonl.gz": {
+   "docs_before": 329606,
+   "chars_before": 357550891,
+   "docs_after": 329604,
+   "chars_after": 357544711,
+   "drops": 2,
+   "drop_chars": 6180,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 329604,
+   "recount_chars": 357544711,
+   "recount_matches": true
+  },
+  "00140_wikipedia.com.jsonl.gz": {
+   "docs_before": 287717,
+   "chars_before": 351452838,
+   "docs_after": 287714,
+   "chars_after": 351201150,
+   "drops": 3,
+   "drop_chars": 251688,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 287714,
+   "recount_chars": 351201150,
+   "recount_matches": true
+  },
+  "00141_wikipedia.com.jsonl.gz": {
+   "docs_before": 271652,
+   "chars_before": 341743068,
+   "docs_after": 271650,
+   "chars_after": 341699459,
+   "drops": 2,
+   "drop_chars": 43609,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 271650,
+   "recount_chars": 341699459,
+   "recount_matches": true
+  },
+  "00142_wikipedia.com.jsonl.gz": {
+   "docs_before": 249264,
+   "chars_before": 358486422,
+   "docs_after": 249260,
+   "chars_after": 358152625,
+   "drops": 4,
+   "drop_chars": 333797,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 249260,
+   "recount_chars": 358152625,
+   "recount_matches": true
+  },
+  "00143_wikipedia.com.jsonl.gz": {
+   "docs_before": 274298,
+   "chars_before": 381732037,
+   "docs_after": 274295,
+   "chars_after": 381717533,
+   "drops": 3,
+   "drop_chars": 14504,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 274295,
+   "recount_chars": 381717533,
+   "recount_matches": true
+  },
+  "00144_wikipedia.com.jsonl.gz": {
+   "docs_before": 252969,
+   "chars_before": 361006028,
+   "docs_after": 252967,
+   "chars_after": 360865426,
+   "drops": 2,
+   "drop_chars": 140602,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 252967,
+   "recount_chars": 360865426,
+   "recount_matches": true
+  },
+  "00145_wikipedia.com.jsonl.gz": {
+   "docs_before": 277225,
+   "chars_before": 346718601,
+   "docs_after": 277221,
+   "chars_after": 346283344,
+   "drops": 4,
+   "drop_chars": 435121,
+   "strips": 2,
+   "strip_chars_removed": 136,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 277221,
+   "recount_chars": 346283344,
+   "recount_matches": true
+  },
+  "00146_wikipedia.com.jsonl.gz": {
+   "docs_before": 254717,
+   "chars_before": 361637828,
+   "docs_after": 254714,
+   "chars_after": 361567949,
+   "drops": 3,
+   "drop_chars": 69649,
+   "strips": 1,
+   "strip_chars_removed": 230,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 254714,
+   "recount_chars": 361567949,
+   "recount_matches": true
+  },
+  "00147_wikipedia.com.jsonl.gz": {
+   "docs_before": 263988,
+   "chars_before": 342806017,
+   "docs_after": 263980,
+   "chars_after": 342755511,
+   "drops": 8,
+   "drop_chars": 50506,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 263980,
+   "recount_chars": 342755511,
+   "recount_matches": true
+  },
+  "00148_wikipedia.com.jsonl.gz": {
+   "docs_before": 280798,
+   "chars_before": 360770686,
+   "docs_after": 280791,
+   "chars_after": 360734857,
+   "drops": 7,
+   "drop_chars": 35829,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 280791,
+   "recount_chars": 360734857,
+   "recount_matches": true
+  },
+  "00149_wikipedia.com.jsonl.gz": {
+   "docs_before": 271705,
+   "chars_before": 379498265,
+   "docs_after": 271702,
+   "chars_after": 379474664,
+   "drops": 3,
+   "drop_chars": 23534,
+   "strips": 1,
+   "strip_chars_removed": 67,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 271702,
+   "recount_chars": 379474664,
+   "recount_matches": true
+  },
+  "00150_wikipedia.com.jsonl.gz": {
+   "docs_before": 240062,
+   "chars_before": 339925904,
+   "docs_after": 240057,
+   "chars_after": 339793035,
+   "drops": 5,
+   "drop_chars": 132869,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 240057,
+   "recount_chars": 339793035,
+   "recount_matches": true
+  },
+  "00151_wikipedia.com.jsonl.gz": {
+   "docs_before": 244128,
+   "chars_before": 355195008,
+   "docs_after": 244118,
+   "chars_after": 355037247,
+   "drops": 10,
+   "drop_chars": 157761,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 10,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 10
+   },
+   "recount_docs": 244118,
+   "recount_chars": 355037247,
+   "recount_matches": true
+  },
+  "00152_wikipedia.com.jsonl.gz": {
+   "docs_before": 250077,
+   "chars_before": 358471792,
+   "docs_after": 250067,
+   "chars_after": 358380159,
+   "drops": 10,
+   "drop_chars": 91633,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 10,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 10
+   },
+   "recount_docs": 250067,
+   "recount_chars": 358380159,
+   "recount_matches": true
+  },
+  "00153_wikipedia.com.jsonl.gz": {
+   "docs_before": 258393,
+   "chars_before": 364067563,
+   "docs_after": 258387,
+   "chars_after": 364007997,
+   "drops": 6,
+   "drop_chars": 59566,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 258387,
+   "recount_chars": 364007997,
+   "recount_matches": true
+  },
+  "00154_wikipedia.com.jsonl.gz": {
+   "docs_before": 245518,
+   "chars_before": 346619072,
+   "docs_after": 245514,
+   "chars_after": 346596033,
+   "drops": 4,
+   "drop_chars": 23039,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 245514,
+   "recount_chars": 346596033,
+   "recount_matches": true
+  },
+  "00155_wikipedia.com.jsonl.gz": {
+   "docs_before": 315938,
+   "chars_before": 345444094,
+   "docs_after": 315935,
+   "chars_after": 345399091,
+   "drops": 3,
+   "drop_chars": 45003,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 315935,
+   "recount_chars": 345399091,
+   "recount_matches": true
+  },
+  "00156_wikipedia.com.jsonl.gz": {
+   "docs_before": 319237,
+   "chars_before": 360494595,
+   "docs_after": 319232,
+   "chars_after": 360331827,
+   "drops": 5,
+   "drop_chars": 162668,
+   "strips": 1,
+   "strip_chars_removed": 100,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 319232,
+   "recount_chars": 360331827,
+   "recount_matches": true
+  },
+  "00157_wikipedia.com.jsonl.gz": {
+   "docs_before": 247264,
+   "chars_before": 381526079,
+   "docs_after": 247264,
+   "chars_after": 381526079,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 247264,
+   "recount_chars": 381526079,
+   "recount_matches": true
+  },
+  "00158_wikipedia.com.jsonl.gz": {
+   "docs_before": 238560,
+   "chars_before": 363187946,
+   "docs_after": 238557,
+   "chars_after": 362710802,
+   "drops": 3,
+   "drop_chars": 477144,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 238557,
+   "recount_chars": 362710802,
+   "recount_matches": true
+  },
+  "00159_wikipedia.com.jsonl.gz": {
+   "docs_before": 240588,
+   "chars_before": 364215424,
+   "docs_after": 240585,
+   "chars_after": 364054487,
+   "drops": 3,
+   "drop_chars": 160937,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 240585,
+   "recount_chars": 364054487,
+   "recount_matches": true
+  },
+  "00160_wikipedia.com.jsonl.gz": {
+   "docs_before": 318230,
+   "chars_before": 347939001,
+   "docs_after": 318226,
+   "chars_after": 347917236,
+   "drops": 4,
+   "drop_chars": 21765,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 318226,
+   "recount_chars": 347917236,
+   "recount_matches": true
+  },
+  "00161_wikipedia.com.jsonl.gz": {
+   "docs_before": 273706,
+   "chars_before": 370241917,
+   "docs_after": 273703,
+   "chars_after": 370183876,
+   "drops": 3,
+   "drop_chars": 58041,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 273703,
+   "recount_chars": 370183876,
+   "recount_matches": true
+  },
+  "00162_wikipedia.com.jsonl.gz": {
+   "docs_before": 237178,
+   "chars_before": 370463874,
+   "docs_after": 237177,
+   "chars_after": 370452953,
+   "drops": 1,
+   "drop_chars": 10921,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 237177,
+   "recount_chars": 370452953,
+   "recount_matches": true
+  },
+  "00163_wikipedia.com.jsonl.gz": {
+   "docs_before": 278026,
+   "chars_before": 360241983,
+   "docs_after": 278024,
+   "chars_after": 360234204,
+   "drops": 2,
+   "drop_chars": 7779,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 278024,
+   "recount_chars": 360234204,
+   "recount_matches": true
+  },
+  "00164_wikipedia.com.jsonl.gz": {
+   "docs_before": 230663,
+   "chars_before": 377878392,
+   "docs_after": 230663,
+   "chars_after": 377878203,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 1,
+   "strip_chars_removed": 189,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 230663,
+   "recount_chars": 377878203,
+   "recount_matches": true
+  },
+  "00165_wikipedia.com.jsonl.gz": {
+   "docs_before": 217108,
+   "chars_before": 310947421,
+   "docs_after": 217107,
+   "chars_after": 310947162,
+   "drops": 1,
+   "drop_chars": 259,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 217107,
+   "recount_chars": 310947162,
+   "recount_matches": true
+  },
+  "00166_wikipedia.com.jsonl.gz": {
+   "docs_before": 299017,
+   "chars_before": 361817399,
+   "docs_after": 299012,
+   "chars_after": 361745231,
+   "drops": 5,
+   "drop_chars": 72168,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 299012,
+   "recount_chars": 361745231,
+   "recount_matches": true
+  },
+  "00167_wikipedia.com.jsonl.gz": {
+   "docs_before": 209535,
+   "chars_before": 366477223,
+   "docs_after": 209532,
+   "chars_after": 366369701,
+   "drops": 3,
+   "drop_chars": 107522,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 209532,
+   "recount_chars": 366369701,
+   "recount_matches": true
+  },
+  "00168_wikipedia.com.jsonl.gz": {
+   "docs_before": 212026,
+   "chars_before": 371460595,
+   "docs_after": 212018,
+   "chars_after": 371379429,
+   "drops": 8,
+   "drop_chars": 81166,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 212018,
+   "recount_chars": 371379429,
+   "recount_matches": true
+  },
+  "00169_wikipedia.com.jsonl.gz": {
+   "docs_before": 245222,
+   "chars_before": 368207310,
+   "docs_after": 245217,
+   "chars_after": 368162793,
+   "drops": 5,
+   "drop_chars": 44517,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 245217,
+   "recount_chars": 368162793,
+   "recount_matches": true
+  },
+  "00170_wikipedia.com.jsonl.gz": {
+   "docs_before": 236268,
+   "chars_before": 376608960,
+   "docs_after": 236263,
+   "chars_after": 376576347,
+   "drops": 5,
+   "drop_chars": 32613,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 5,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 5
+   },
+   "recount_docs": 236263,
+   "recount_chars": 376576347,
+   "recount_matches": true
+  },
+  "00171_wikipedia.com.jsonl.gz": {
+   "docs_before": 276555,
+   "chars_before": 353180894,
+   "docs_after": 276538,
+   "chars_after": 352856996,
+   "drops": 17,
+   "drop_chars": 323898,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 17,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 17
+   },
+   "recount_docs": 276538,
+   "recount_chars": 352856996,
+   "recount_matches": true
+  },
+  "00172_wikipedia.com.jsonl.gz": {
+   "docs_before": 228681,
+   "chars_before": 342445813,
+   "docs_after": 228679,
+   "chars_after": 342332493,
+   "drops": 2,
+   "drop_chars": 113320,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 228679,
+   "recount_chars": 342332493,
+   "recount_matches": true
+  },
+  "00173_wikipedia.com.jsonl.gz": {
+   "docs_before": 257601,
+   "chars_before": 360644797,
+   "docs_after": 257591,
+   "chars_after": 360591654,
+   "drops": 10,
+   "drop_chars": 52810,
+   "strips": 1,
+   "strip_chars_removed": 333,
+   "verify": {
+    "dropped_ids": 10,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 10
+   },
+   "recount_docs": 257591,
+   "recount_chars": 360591654,
+   "recount_matches": true
+  },
+  "00174_wikipedia.com.jsonl.gz": {
+   "docs_before": 264446,
+   "chars_before": 365779220,
+   "docs_after": 264442,
+   "chars_after": 365767928,
+   "drops": 4,
+   "drop_chars": 11292,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 264442,
+   "recount_chars": 365767928,
+   "recount_matches": true
+  },
+  "00175_wikipedia.com.jsonl.gz": {
+   "docs_before": 267961,
+   "chars_before": 358914515,
+   "docs_after": 267959,
+   "chars_after": 358850604,
+   "drops": 2,
+   "drop_chars": 63911,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 267959,
+   "recount_chars": 358850604,
+   "recount_matches": true
+  },
+  "00176_wikipedia.com.jsonl.gz": {
+   "docs_before": 287226,
+   "chars_before": 385360069,
+   "docs_after": 287223,
+   "chars_after": 385304520,
+   "drops": 3,
+   "drop_chars": 55549,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 287223,
+   "recount_chars": 385304520,
+   "recount_matches": true
+  },
+  "00177_wikipedia.com.jsonl.gz": {
+   "docs_before": 263382,
+   "chars_before": 376600983,
+   "docs_after": 263379,
+   "chars_after": 376470023,
+   "drops": 3,
+   "drop_chars": 130960,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 263379,
+   "recount_chars": 376470023,
+   "recount_matches": true
+  },
+  "00178_wikipedia.com.jsonl.gz": {
+   "docs_before": 272315,
+   "chars_before": 366275050,
+   "docs_after": 272311,
+   "chars_after": 366172338,
+   "drops": 4,
+   "drop_chars": 102712,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 272311,
+   "recount_chars": 366172338,
+   "recount_matches": true
+  },
+  "00179_wikipedia.com.jsonl.gz": {
+   "docs_before": 309715,
+   "chars_before": 359733346,
+   "docs_after": 309715,
+   "chars_after": 359733346,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 309715,
+   "recount_chars": 359733346,
+   "recount_matches": true
+  },
+  "00180_wikipedia.com.jsonl.gz": {
+   "docs_before": 256099,
+   "chars_before": 364928201,
+   "docs_after": 256098,
+   "chars_after": 364919018,
+   "drops": 1,
+   "drop_chars": 9048,
+   "strips": 1,
+   "strip_chars_removed": 135,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 256098,
+   "recount_chars": 364919018,
+   "recount_matches": true
+  },
+  "00181_wikipedia.com.jsonl.gz": {
+   "docs_before": 268002,
+   "chars_before": 380924367,
+   "docs_after": 268001,
+   "chars_after": 380917641,
+   "drops": 1,
+   "drop_chars": 6726,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 268001,
+   "recount_chars": 380917641,
+   "recount_matches": true
+  },
+  "00182_wikipedia.com.jsonl.gz": {
+   "docs_before": 272574,
+   "chars_before": 364015532,
+   "docs_after": 272574,
+   "chars_after": 364015532,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 272574,
+   "recount_chars": 364015532,
+   "recount_matches": true
+  },
+  "00183_wikipedia.com.jsonl.gz": {
+   "docs_before": 277288,
+   "chars_before": 395046888,
+   "docs_after": 277286,
+   "chars_after": 395037193,
+   "drops": 2,
+   "drop_chars": 9695,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 2,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 2
+   },
+   "recount_docs": 277286,
+   "recount_chars": 395037193,
+   "recount_matches": true
+  },
+  "00184_wikipedia.com.jsonl.gz": {
+   "docs_before": 296605,
+   "chars_before": 387376579,
+   "docs_after": 296598,
+   "chars_after": 387281387,
+   "drops": 7,
+   "drop_chars": 95192,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 296598,
+   "recount_chars": 387281387,
+   "recount_matches": true
+  },
+  "00185_wikipedia.com.jsonl.gz": {
+   "docs_before": 327181,
+   "chars_before": 369864430,
+   "docs_after": 327177,
+   "chars_after": 369780126,
+   "drops": 4,
+   "drop_chars": 84304,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 327177,
+   "recount_chars": 369780126,
+   "recount_matches": true
+  },
+  "00186_wikipedia.com.jsonl.gz": {
+   "docs_before": 203772,
+   "chars_before": 292493065,
+   "docs_after": 203769,
+   "chars_after": 292491039,
+   "drops": 3,
+   "drop_chars": 2026,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 203769,
+   "recount_chars": 292491039,
+   "recount_matches": true
+  }
+ },
+ "totals": {
+  "docs_before": 63969938,
+  "chars_before": 89901191205,
+  "docs_after": 63957575,
+  "chars_after": 89700082061,
+  "drops": 12363,
+  "drop_chars": 201066733,
+  "strips": 245,
+  "strip_chars_removed": 42411
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ }
+}

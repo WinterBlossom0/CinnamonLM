@@ -1,0 +1,236 @@
+{
+ "dataset": "common-pile/public_domain_review (raw), compared with common-pile/public_domain_review_filtered",
+ "files_examined": [
+  "/home/vihaa/CinnamonLM/raw/common_pile/public_domain_review/v0/00000_essays.jsonl.gz (266 docs)",
+  "/home/vihaa/CinnamonLM/raw/common_pile/public_domain_review/v0/00000_conjectures.jsonl.gz (19 docs)",
+  "/home/vihaa/CinnamonLM/raw/common_pile/public_domain_review/v0/00000_collections.jsonl.gz (1127 docs)",
+  "/home/vihaa/CinnamonLM/raw/common_pile/public_domain_review/README.md",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/public_domain_review/filtered/public-domain-review-0000.json.gz (filtered, 1406 docs)",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/public_domain_review/filtered/README.md",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/public_domain_review/results.json (full output of analyze.py)"
+ ],
+ "docs_sampled": 1412,
+ "total_docs_estimate": "1412 docs, counted exactly: all 3 raw shards were read in full. No *.incomplete files exist under .cache. The raw README states 1,412. The filtered shard has 1406 docs (also counted).",
+ "schema_fields": [
+  "id (URL slug; unique, 0 duplicates)",
+  "text",
+  "source (always 'public-domain-review')",
+  "added (ISO timestamp, 2024-05-01)",
+  "date (web post date, e.g. 'Aug 9, 2011' or 'April 17, 2024')",
+  "author (empty in 760/1412 docs, mostly short collection posts)",
+  "type (collection 1127 / essay 266 / conjecture 19)",
+  "metadata (a real JSON dict, not a Python-dict string): license, url. The filtered version adds metadata.provenance. There is no 'created' field."
+ ],
+ "length_stats": "All 1412 docs. Chars: p1=163, p5=331, p25=932, p50=2508, p75=5626, p95=18358, p99=23096, min=27, max=49812, mean=4932. Whitespace words: p1=26, p5=54, p25=152, p50=406, p75=933, p95=2983, p99=3920, min=6, max=7809, mean=805. Total: 6,964,459 chars and 1,137,314 words. By type: collection 1127 docs, 2,700,174 chars, median 1572 chars (min 27, max 49812); essay 266 docs, 3,892,027 chars, median 13943 (min 4413, max 34129); conjecture 19 docs, 372,258 chars, median 18113 (min 6377, max 45860). Header (title / optional subtitle / byline / date line, detected in 1412/1412 docs) = 97,127 chars (1.39%). Body after the header: 4 docs empty, 12 under 100 chars, 43 under 200 chars (7,760 chars, 0.11%), 82 under 300, 178 under 500 (0.92% of chars), 411 under 1000 (3.58% of chars). The filtered set has 6,939,288 chars in total.",
+ "language_mix": "No language-ID library is installed (langdetect, fasttext, lingua and ftfy are all absent), so I used two documented heuristics. (1) ASCII-letter ratio = ASCII letters / all Unicode letters: min 0.978, p1 0.991, median 1.000; 0 docs fall below 0.97. (2) English stopword ratio, using a 75-word list over word tokens, for docs with at least 20 words: p1 0.260, p5 0.326, median 0.409, min 0.160. Only 11 docs score under 0.25. All of them are short (at most 81 words), and I read them: they are English captions heavy in proper nouns (e.g. buffalo-dance-1894, la-paloma-1903, 17th-century-heraldry-designs-1695). Measured non-English docs: 0/1412 (0%). At line level, 14 lines (in 13 docs, 1,690 chars, 0.024%) have 8 or more words and a stopword ratio under 0.1. These are foreign-language titles or bibliography entries inside English text (e.g. 'Denis Diderot, Oeuvres in\u00e9dites: Le neveu de Rameau...') plus a few joined-line artifacts. No language filter is needed.",
+ "issues": [
+  {
+   "name": "Site-wide license footer line on essays",
+   "description": "Every essay and conjecture page ends with the site boilerplate 'The text of this essay is published under a CC BY-SA license, see here for details.' The 'here' points to a link that is gone. The filtered version removes this line from all 285 docs.",
+   "prevalence": "285/1412 docs (20.2%); 23,655 chars (0.34%). In the filtered version: 0 docs.",
+   "measurement_method": "regex (?m)^The text of this essay is published under a CC BY-SA license, see here for details\\.$",
+   "evidence_examples": [
+    "[an-archaeology-of-surf] '...must be made by water, to England.\\nThe text of this essay is published under a CC BY-SA license, see here for details.'",
+    "[last-pole] 'Scroll through the whole page to download all images before printing.\\n\\nThe text of this essay is published under a CC BY-SA license, see here for details.'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Stub documents: title + date + 0-1 caption sentence",
+   "description": "Old (2011-2013) collection posts whose real content was an embedded film, audio file or image gallery. Only the title, the date and sometimes one caption sentence remain. The filtered version drops only 5 of these (the 4 empty ones plus the-heart-in-art) and keeps 38 of the 43 docs whose body is under 200 chars.",
+   "prevalence": "Body (text after the date line) empty: 4 docs. Under 100 chars: 12 docs (0.85%). Under 200 chars: 43 docs (3.05% of docs, 7,760 chars = 0.11%). Under 300 chars: 82 docs (5.8%, 0.28% of chars).",
+   "measurement_method": "split_header(): the header ends at the first line in the first 6 lines that matches ^(?:Jan|Feb|...|Dec)[a-z]*\\.? \\d{1,2}, \\d{4}$. Body length = len(text after header).strip().",
+   "evidence_examples": [
+    "[art-in-art] 'Art in Art\\n\\nAug 9, 2011\\n\\n\\n\\n' (27 chars total)",
+    "[trapeze-disrobing-act-1901] 'Trapeze Disrobing Act (1901)\\n\\nAug 21, 2011\\n\\n\\n\\nA naughty little skit from 1901 filmed by the Edison company.'",
+    "[the-unappreciated-joke-1903] '...A very short silent comedy from Edison's studios, directed by Edwin S. Porter'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Dangling footnote markers glued to words",
+   "description": "Essays keep the superscript footnote numbers as plain digits glued to the preceding word or punctuation (e.g. 'circulation.1', 'Giedion1'), but the notes themselves are absent from the text. The model learns to put random digits at sentence ends. The filtered version does not change these.",
+   "prevalence": "143/1412 docs (10.1%); 2,056 markers; 3,117 chars (0.045%). By type: essay 1976, conjecture 72, collection 8 matches. Precision: I read a seeded random sample of 40 matches and 40/40 were real footnote markers. During regex development, 1 earlier sampled match ('Fm7 arpeggios') was a false positive. Unchanged in the filtered version: 143 docs.",
+   "measurement_method": "regex (?<=[a-z\\.\u201d\"\u2019\\)\\?!])(?<!\\d\\.)(?<![A-Z]\\.)(?<!\\bNo\\.)(?<!\\bno\\.)(?<!\\bp\\.)(?<!\\bpp\\.)(?<!\\bvol\\.)\\d{1,3}(?=\\s|$). The precision sample is random.Random(7).sample of all matches, stored in results.json.",
+   "evidence_examples": [
+    "[pseudo-boccaccio-yiddish-pulp-fiction-and-the-man-who-ripped-off-joyce] 'New York, Biblion Soc., 1927; for private circulation.1\\nAnd beneath it'",
+    "[postures-of-transport] 'The difficulty lies rather in the psychological domain.\u2014Sigfried Giedion1'",
+    "[circassian-beauties] 'a \u201cvenal and corrupt master\u201d \u2014 entirely.24 That did not h'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Lost line breaks: verse and list lines run together",
+   "description": "When the HTML <br> tags were stripped, poems, song lyrics, lists and email headers lost their line separators. Lines are joined with no space ('sleepLike weary toilers', 'Who are you?What tribe'). This damages the quoted verse, which is a characteristic part of this source. The filtered version does not change it.",
+   "prevalence": "86/1412 docs (6.1%); 582 matches; 3,472 matched chars (0.05%). The affected passages are longer than the matched chars. By type: collection 267, essay 272, conjecture 43 matches. Precision: in a seeded random sample of 40 matches, 40/40 were formatting joins (37 verse or list joins, 2 email-header joins, 1 bibliography join).",
+   "measurement_method": "regex [a-z][.!?,;:][A-Z][a-z]|\\b[a-z]{3,}[A-Z][a-z]{2,} (sub-patterns joined_lines_punct: 48 docs; joined_lines_camel: 46 docs). Sample is random.Random(7).",
+   "evidence_examples": [
+    "[punctuation-personified] 'Ev\u2019ry lady in this landHas twenty nails upon each handFive & twenty on hands & feetAnd this is true without deceit.But when the stops'",
+    "[indian-sign-talk] 'This may mean: Who are you?What tribe do you belong to?What are you doing?Where are you g'",
+    "[ikkyu-in-hell] 'If a stoneCan be the mementoOf the dead,Then the tombstoneWould be better'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Paragraphs copied from Wikipedia",
+   "description": "Collection posts from 2011-2012 often paste a Wikipedia paragraph and tag it '(Wikipedia)'. This creates cross-source duplication with any Wikipedia corpus in the same mix. The filtered version keeps them.",
+   "prevalence": "54/1412 docs (3.8%); 55 lines; 51,186 chars (0.73%). In the filtered version: 54 docs, 0.74% of chars.",
+   "measurement_method": "regex (?m)^.*\\(Wikipedia\\)\\s*$ (the whole line counts as copied)",
+   "evidence_examples": [
+    "[the-first-six-books-of-the-elements-of-euclid-1847] '...In 2010 Taschen republished the work in a wonderful facsimile edition. (Wikipedia)'",
+    "[live-footage-of-king-alexander-s-assassination-1934] '...By the time he was removed from the scene, he was already dead. (Wikipedia)'",
+    "[hydriotaphia-urn-burial-and-the-garden-of-cyrus-1658] '(Note: this text taken from the excellent Wikipedia articles on the two books, see them here and here)'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Repeated site boilerplate lines (Okkult GIF credits, Class-of-YYYY templates)",
+   "description": "Template paragraphs repeat across posts: the Okkult Motion Pictures credit block, 'All Okkult animated GIFs published here under a CC-BY-SA license.', and Class-of-YYYY lines ('Wondering if \"bad things happen...\"', 'Some people you think we've missed? Please let us know in the comments!'). These boilerplate blocks are also what makes the Okkult posts near-duplicates of each other.",
+   "prevalence": "Any line of 40 chars or more that appears in 3 or more docs: 302 docs (21.4%), 31,831 chars (0.46%). Of these, 285 docs are the license footer. Excluding the footer, about 17 docs and about 8,176 chars, computed as 31,831 minus the footer total of 23,655 plus newlines (so not exact). Okkult lines alone: 8 docs, 19 lines, 6,023 chars (0.086%).",
+   "measurement_method": "repeated_paragraphs(): count stripped lines with len >= 40 by the number of distinct docs that contain them; flag lines with count >= 3. Okkult: (?m)^.*Okkult Motion Pictures.*$",
+   "evidence_examples": [
+    "[hands-1944] 'Okkult Motion Pictures is the brainchild of Marco Calabrese and Alessandro Scali from Turin, Italy. With the Excerpts project...'",
+    "[class-of-2018] 'Some people you think we've missed? Please let us know in the comments!'",
+    "(5 docs) '(Learn more about the situation in the U.S. and why the public domain is important in this article in Huff Post Books and this from the Duke Law School's Centre...'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Calls to action and references to links, the shop or comments that no longer exist",
+   "description": "Lines that only point to a hyperlink, an embed or the shop ('See more ... here', 'available in our online shop', 'let us know in the comments'). Without the links they carry no content.",
+   "prevalence": "Short lines (220 chars or less) that are wholly a call to action: 323 docs in raw, but 285 of these are the license footer. After footer removal (measured on the filtered set): 40/1406 docs (2.8%), 0.073% of chars. CTA phrases anywhere in a line, on the filtered set: 89 docs (6.3%), 0.05% of chars. Media-navigation lines ('MP3 Download / Internet Archive Link', 'Download from Internet Archive'): 9 docs, 952 chars. Web-page instructions ('scroll through', 'embedded reader', 'click on'): 9 docs, 180 chars.",
+   "measurement_method": "cta_line_short: (?im)^(?=.{0,220}$).*(?:\\b(?:see|click|read|find|view|watch|listen|browse|available|download)\\b[^.\\n]{0,80}\\bhere\\b|\\bour (?:online )?shop\\b|\\bin the comments\\b|\\blet us know\\b|\\bGIFs? Collection\\b|\\bpublished here under a CC\\b).*$ ; media_nav_line: (?im)^.*\\b(?:MP3 Download|Internet Archive Link|Download|Animated GIFs Collection)\\b.{0,80}$ ; webpage_instruction: (?i)\\bscroll (?:through|down)\\b|\\bclick (?:on|here|the)\\b|\\bembedded (?:reader|player|viewer)\\b|\\bzoom in\\b",
+   "evidence_examples": [
+    "[albert-robida-la-vie-electrique] 'See more past visions of the future here, including additional works by Robida.'",
+    "[james-joyce-reading-his-work-1924-1929] 'FROM THE \u201cAEOLUS\u201d EPISODE OF ULYSSES (1924)\\nMP3 Download / Internet Archive Link'",
+    "[rogues-a-study-of-characters-samuel-g-szabo] 'You can scroll through our highlights below.'",
+    "[odilon-redon-a-edgar-poe] '...Poe series below (and three of them for sale as prints in our shop here).'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Prose that refers to images or embeds not in the text",
+   "description": "Sentences such as 'collected below' or 'featured above' point to gallery images that were not scraped. These sentences are mostly real content, so a deletion rule would remove good text.",
+   "prevalence": "181/1412 docs (12.8%); 211 matches; 4,697 matched chars (0.067%).",
+   "measurement_method": "regex (?i)\\b(?:featured|shown|seen|pictured|gathered|collected|browse|embedded|gallery|selection|images?|photographs?|film|video|recording)\\b[^.\\n]{0,60}\\b(?:above|below)\\b",
+   "evidence_examples": [
+    "[wierix-flemish-proverbs] 'Seven of the scenes, collected below, were engraved by Wierix'",
+    "[weird-islands] 'You can browse a selection of Jean de Bossch\u00e8re\u2019s illustrations for Weird Islands below.'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Runs of 3 or more newlines after the header; NBSP used for verse indentation",
+   "description": "Almost every doc has '\\n\\n\\n\\n' between the date line and the body, where an image or embed was removed. 32 docs use runs of U+00A0 (or U+00AD soft hyphens) for verse or table indentation, and these runs sometimes sit where a line break used to be.",
+   "prevalence": "\\n{3,}: 1134/1412 docs (80.3%), 1,157 runs, 4,638 chars (0.067%). The filtered version keeps 1128 docs. NBSP / zero-width / soft hyphen: 32 docs (2.3%), 750 chars. Control chars: 0. Mojibake (\u00e2\u20ac, \u00c3., \u00c2., U+FFFD): 0.",
+   "measurement_method": "regex \\n{3,} ; [\u00a0\u200b\u200c\u200d\u2060\ufeff\u00ad] ; [\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f\\u007f] ; \u00e2\u20ac|\u00c3[\\u0080-\u00bf]|\u00c2[\u00a0-\u00bf]|\ufffd",
+   "evidence_examples": [
+    "[hippolyte-hodeau-trench-art] 'Text by Sasha Archibald and Hunter Dukes\\nMar 26, 2024\\n\\n\\n\\nThierry Dornberger\u2019s family keepsakes'",
+    "[william-james-stream-of-consciousness] 'lazily its plastered board.\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0Kino\u2019s\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0\\xa011/-\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0\\xa0TrousersGood idea that.'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Email header with masked addresses; partial redaction by the filtered pipeline",
+   "description": "A conjecture piece includes a forwarded email header whose addresses the author had already masked. The Common Pile PII step replaced only one of the two addresses, and it ate the preceding space ('Justin Smith<EMAIL_ADDRESS>>'). The other masked address stays. The result is a placeholder token plus residual masked PII.",
+   "prevalence": "1/1412 docs (the-primordial-gound). The filtered version contains 1 '<EMAIL_ADDRESS>' token, and a masked address remains in it.",
+   "measurement_method": "regex [\\w.*+-]+\\s?@[\\w*-]+\\.[\\w.]+ on raw; on filtered: count '<EMAIL_ADDRESS>' and regex \\*{3,}\\s?@",
+   "evidence_examples": [
+    "[the-primordial-gound] raw: '\u2014\u2014\u2014- Forwarded message \u2014\u2014\u2014-From: Ivars Skrastins <i****** @du.lv >To: Justin Smith <j*******@*mail.com >Cc:Bcc:Date: Fri, 6 Nov 2016 16:01:27 +0200Subject: KANT\u2019S SUMATRA VOYAGE'",
+    "[the-primordial-gound] filtered: 'From: Ivars Skrastins <i****** @du.lv >To: Justin Smith<EMAIL_ADDRESS>>Cc:Bcc:Date:'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Leftover raw HTML anchor, Markdown link and bare URLs",
+   "description": "Isolated markup that survived scraping.",
+   "prevalence": "HTML tag: 1 doc (142 chars). Markdown link: 1 doc (159 chars). Bare URL: 3 docs (230 chars). All of these remain in the filtered version.",
+   "measurement_method": "</?(?:a|p|div|span|img|br|em|strong|iframe|sup|blockquote|li|ul)\\b[^>\\n]*> ; \\[[^\\]\\n]+\\]\\(https?://[^)\\s]*[^)]*\\) ; https?://\\S+|www\\.\\S+",
+   "evidence_examples": [
+    "[a-meditation-upon-a-broomstick-1711] 'You can see the three subtly varying versions <a href=\"http://jonathanswiftarchive.org.uk/search/work.html#q=work-title:*&fq=...\" target=\"_blank\">here at the Jonathan Swift A'",
+    "[treatise-on-artificial-limbs] '[scholars of disability such as Katherine Ott](https://books.google.fi/books?id=cJm2qZw3CdAC&lpg=PP1...)'",
+    "[georges-melies-temptation-of-st-anthony-1898] 'Read it here: https://publicdomainreview.org/2013/03/07/the-redemption-of-saint-anthony/'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "List- or catalogue-style documents",
+   "description": "Docs in which most body lines are short: name lists (Class of YYYY), slang dictionaries, song lyrics, species lists. This is valid content but low in prose. It overlaps with the lost-line-break issue.",
+   "prevalence": "18/1412 docs (1.3%) with at least 10 body lines and more than 50% of lines under 60 chars; 81,511 chars (1.17%).",
+   "measurement_method": "per doc: body lines that are non-empty; share of lines with len(strip) < 60; flag if lines >= 10 and share > 0.5",
+   "evidence_examples": [
+    "[dictionary-of-modern-slang] short-line share 0.74: 'Ziph \u2014 a secret dialect spoken by students at Winchester College'",
+    "[ernst-haeckel-s-bats-1904] short-line share 0.93: '13: Greater Horseshoe Bat'",
+    "[class-of-2013] short-line share 0.57"
+   ],
+   "severity": "low"
+  }
+ ],
+ "duplication": "Exact duplicates: 0 groups. I hashed both the full text and the body (header removed) after NFKC normalization, lowercasing, quote normalization and whitespace collapse with SHA-1. Ids: 0 duplicate ids. Near duplicates: I used my own MinHash in numpy (datasketch is not installed): 128 multiply-add hashes mod 2^64 over blake2b-64 hashes of word 5-shingles of the body. All 996,166 pairs were compared. Pairs with estimated similarity of 0.3 or more were then verified with exact Jaccard. Results: 30 candidate pairs; 8 pairs with exact Jaccard of 0.5 or more; 0 pairs at 0.8 or more. The pairs fall into two kinds. (a) Re-posts of the same item: the-six-voyages-of-john-baptista-tavernier-1678 vs illustrations-from-the-six-voyages-of-john-baptista-tavernier-1678 (J=0.764, containment 0.954); cartoon-portraits-of-men-of-the-day-1873 vs cartoon-portraits-of-leading-19th-century-figures-1873 (J=0.69); phrenology-diagrams-from-vaught-s-practical-character-reader-1902 vs vaught-s-practical-character-reader-1902 (J=0.726); the-mechanism-of-human-physiognomy vs mecanisme-de-la-physionomie-humaine (J=0.416, containment 0.827); the-kiss-1896-film vs the-kiss-1896 (J=0.429, containment 1.0: the 2011 post is fully contained in the 2013 GIF post). (b) Similarity driven by boilerplate among the 8 Okkult GIF posts (e.g. hands-1944 vs the-knife-throwing-mother-1950, J=0.672). Rate: 8 of 1412 docs are in a pair with J of 0.5 or more after excluding the boilerplate-only cluster. I did not measure overlap with other sources (Wikipedia).",
+ "filtered_comparison": "The filtered shard public-domain-review-0000.json.gz has 1406 docs and 6,939,288 chars, against 1412 docs and 6,964,459 chars in raw. Matched by id: 6 docs dropped, 0 added. Dropped: art-in-art (27 chars), men-in-wigs (29), what-to-draw-and-how-to-draw-it-1913 (55), a-little-wander-down-the-catwalk-of-time (61). These 4 have empty bodies. Also dropped: the-heart-in-art (89 chars, 1 sentence) and salome-with-john-the-baptist-s-head-at-the-rijksmuseum (1249 chars, a King James Bible quote of Mark 6:21-29 about a beheading). The data does not say why the Salome post was dropped (possibly a toxicity or length classifier; not verified). Dropped total: 1,510 chars. Kept docs: 1121 have identical text, 285 are modified. 284 differ only by removal of the license footer line ('The text of this essay is published under a CC BY-SA license, see here for details.'). 1 (the-primordial-gound) has the footer removed and one email address replaced with '<EMAIL_ADDRESS>', which also ate the space before it. 23,661 chars were removed from kept docs. No other field changed (added, author, date, source, type, license and url are all identical). metadata.provenance was added. Still present in the filtered version: \\n{3,} runs (1128 docs), dangling footnote markers (143 docs), lost line breaks (86 docs), '(Wikipedia)' copied paragraphs (54 docs, 0.74% of chars), Okkult boilerplate (8 docs), short call-to-action lines (40 docs), media-navigation lines (9), the HTML anchor, Markdown link and URLs (1/1/3 docs), the residual masked email, 38 stub docs with a body under 200 chars, and the near-duplicate re-posts.",
+ "license_notes": "metadata.license is 'Creative Commons - Attribution Share-Alike - https://creativecommons.org/licenses/by-sa/4.0/' for 1412/1412 docs, with no other value. metadata.url prefixes: publicdomainreview.org/collection/ 1127, publicdomainreview.org/essay/ 285. Using this data means meeting CC BY-SA 4.0 attribution and share-alike terms. Three things in the text bear on licensing. (1) The essay footer line confirms CC BY-SA for essay text. (2) 54 docs contain paragraphs copied from Wikipedia, which is also CC BY-SA. (3) Some posts quote modern copyrighted works at length: texts-in-sebald-s-the-rings-of-saturn quotes Sebald's 1995 book with page references such as '(pg.200/1)'. I did not measure the license status of quoted third-party passages.",
+ "recommended_steps": [
+  {
+   "step": "Start from the filtered version, or reproduce what it does: drop docs with an empty body and remove the license footer line with an exact-line regex.",
+   "rationale": "The footer is site boilerplate, and the 'see here' points to a dead link.",
+   "evidence": "Footer in 285 docs (0.34% of chars); filtered removes it in 285/285. 4 empty-body docs are dropped."
+  },
+  {
+   "step": "Drop stub posts whose body (text after the date line) is under 200 chars, or under 300 for a stricter cut.",
+   "rationale": "These are title + date + one caption sentence of a film or image that is not in the text. Each is a whole document of almost no text with a repeated header pattern. The filtered pipeline keeps 38 of them.",
+   "evidence": "Body under 200 chars: 43 docs (3.05%) but only 0.11% of chars. Body under 300: 82 docs, 0.28% of chars. Example: trapeze-disrobing-act-1901."
+  },
+  {
+   "step": "Collapse \\n{3,} to \\n\\n. Replace runs of NBSP (U+00A0) with a single space, or with a newline where it separates verse lines. Remove soft hyphens (U+00AD).",
+   "rationale": "Whitespace left where images or embeds were removed. NBSP runs are layout residue.",
+   "evidence": "\\n{3,} in 1134 docs (80.3%). NBSP/soft hyphen in 32 docs (750 chars). Mojibake and control chars: 0."
+  },
+  {
+   "step": "In docs of type essay and conjecture, strip footnote markers with the dangling_footnote_marker regex (delete the 1-3 digits). Do not apply it to collections.",
+   "rationale": "The notes they refer to are absent, so the digits are noise glued to words and sentence ends.",
+   "evidence": "2,056 markers in 143 docs; 40/40 sampled matches were real markers; 2,048 of 2,056 matches are in essays or conjectures."
+  },
+  {
+   "step": "Restore lost line breaks: insert '\\n' at camel joins (\\b[a-z]{3,}(?=[A-Z][a-z]{2,})) and at [a-z][.!?,;:](?=[A-Z][a-z]). Alternatively, re-scrape the affected pages and map <br> to '\\n'.",
+   "rationale": "Verse, song lyrics and lists are run together without separators, which teaches the model to join words.",
+   "evidence": "86 docs (6.1%), 582 joins; 40/40 sampled matches were formatting joins (e.g. punctuation-personified, ikkyu-in-hell)."
+  },
+  {
+   "step": "Remove whole lines that are site boilerplate: the Okkult credit block and the 'All Okkult animated GIFs...' line, other lines of 40 chars or more that repeat in 3 or more docs, short call-to-action lines, media-navigation lines ('MP3 Download / Internet Archive Link') and web-page instructions ('You can scroll through our highlights below.').",
+   "rationale": "These lines are navigation, promotion or template text without content. They also cause the boilerplate-driven near-duplicate cluster.",
+   "evidence": "Okkult: 8 docs, 6,023 chars. Repeated lines excluding the footer: about 17 docs. Short CTA lines after footer removal: 40 docs (0.073% of chars). Media navigation: 9 docs. Web-page instructions: 9 docs."
+  },
+  {
+   "step": "Replace the HTML anchor and the Markdown link with their anchor text, and delete the 3 bare URLs.",
+   "rationale": "Markup that survived scraping.",
+   "evidence": "a-meditation-upon-a-broomstick-1711 (<a href=...>), treatise-on-artificial-limbs ([...](https://books.google.fi/...)), georges-melies-temptation-of-st-anthony-1898 (URL)."
+  },
+  {
+   "step": "In the-primordial-gound, delete the forwarded-email header line (From/To/Cc/Bcc/Date/Subject with masked addresses). Do not keep the '<EMAIL_ADDRESS>' placeholder.",
+   "rationale": "The upstream redaction is partial: it leaves one masked address and a placeholder token glued to a name.",
+   "evidence": "Filtered text: 'From: Ivars Skrastins <i****** @du.lv >To: Justin Smith<EMAIL_ADDRESS>>Cc:Bcc:Date:'."
+  },
+  {
+   "step": "After the boilerplate is removed, deduplicate near-duplicate re-posts. Keep the longer doc of each pair with Jaccard of 0.5 or more on body 5-shingles, or containment of 0.8 or more.",
+   "rationale": "The site re-posted the same items in 2011 and 2013.",
+   "evidence": "8 pairs with J of 0.5 or more; the-kiss-1896-film is 100% contained in the-kiss-1896; tavernier pair J=0.764 with containment 0.954; physiognomy pair containment 0.827."
+  },
+  {
+   "step": "Run cross-source dedup against the Wikipedia data in the mix, or remove lines that end in '(Wikipedia)'.",
+   "rationale": "Wikipedia text pasted into posts would be counted twice when trained alongside a Wikipedia source.",
+   "evidence": "54 docs, 51,186 chars (0.73%) in lines tagged '(Wikipedia)'."
+  },
+  {
+   "step": "Do not apply a language filter or a mojibake fixer. Keep the title/byline/date header, separated from the body by one blank line.",
+   "rationale": "The measurements show no need. The header is short and gives useful document structure.",
+   "evidence": "0 docs with an ASCII-letter ratio under 0.97; the 11 low-stopword docs are English captions; 0 mojibake hits; header = 1.39% of chars."
+  }
+ ],
+ "open_questions": [
+  "The filtered pipeline dropped salome-with-john-the-baptist-s-head-at-the-rijksmuseum (1249 chars, a KJV Bible passage). The reason is not recorded in the data. It could be a toxicity classifier, but that is not verified.",
+  "How large the overlap of the '(Wikipedia)' paragraphs (54 docs) with the Common Pile Wikimedia source is. I did not measure it, because no Wikipedia shard was compared.",
+  "Whether long quotations of modern copyrighted works inside posts (e.g. Sebald excerpts in texts-in-sebald-s-the-rings-of-saturn) are acceptable under the user's license policy. I did not measure how common they are.",
+  "Whether to re-scrape pages to recover line breaks and footnote texts instead of repairing them with heuristics. The raw HTML is not in this dataset."
+ ],
+ "script_path": "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/public_domain_review/analyze.py (run: python3 -I analyze.py > results.json; full output saved at /tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/public_domain_review/results.json; helper for reading docs: .../public_domain_review/scripts/show.py)"
+}

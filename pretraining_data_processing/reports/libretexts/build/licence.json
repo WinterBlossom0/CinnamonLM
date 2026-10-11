@@ -1,0 +1,35 @@
+{
+ "stage": "licence",
+ "started_at_ist": "2026-10-11T20:35:25+05:30",
+ "finished_at_ist": "2026-10-11T20:36:44+05:30",
+ "totals": {
+  "docs_before": 62269,
+  "chars_before": 523051203,
+  "docs_after": 61238,
+  "chars_after": 511197639,
+  "drops": 1031,
+  "drop_chars": 11591436,
+  "strips": 1001,
+  "strip_chars_removed": 262128
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ },
+ "code_sha256": {
+  "licence/licence_filter.py": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+  "licence/apply_licence.py": "f9723e1c02e4d108bccc1f9f37d1128912b79aff3d8a5b7a0816f4c6523d001d",
+  "workflow/build_corpus.py": "0608030cd6903e4baa9db71b0499d6e42619450623765a6283c8fd65a5d6fb21"
+ },
+ "actions_sha256": "5eac7b1fad645ced472f26e28f1bd68fdc922c6349e2e017aca9d80d00e9443c",
+ "input_sha256": {
+  "00000_libretext.json.gz": "eee45504dab26b692653943a8528ead0d0361bce3b5255ed07b69da3fbd3c984"
+ },
+ "output_sha256": {
+  "00000_libretext.json.gz": "a8610ccdd98af5fcb18ffbfd9e0fadcd270e8b3e8f4cef3826d405757aa0dc7b"
+ }
+}

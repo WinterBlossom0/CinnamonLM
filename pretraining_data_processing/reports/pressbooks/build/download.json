@@ -1,0 +1,15 @@
+{
+ "stage": "download",
+ "started_at_ist": "2026-10-11T18:44:24+05:30",
+ "finished_at_ist": "2026-10-11T18:44:47+05:30",
+ "repo": "common-pile/pressbooks",
+ "revision": "29fa162fc78277b160a7010f18086b5189ffb761",
+ "code_sha256": {
+  "workflow/build_corpus.py": "7b96be89a6af443dac89f19c2948ee47a6842f3187b1be3da6557dd009dc8bd6",
+  "workflow/raw_manifest.json": "6b3ae62c7c697be3dbfc2516d31f8eddfbd8d66eb4485ff90f4fcdf40f3f7292"
+ },
+ "output_sha256": {
+  "00000_pressbooks.json.gz": "67d1135ad65d3c1f2f4d88d44ad35d37a4e381cb518c1bd878e4d2c350c9ff21",
+  "00001_pressbooks.json.gz": "cd3a484605b52654a3a1b022bd125091fa15739b243d8b9967c97454e1227c41"
+ }
+}

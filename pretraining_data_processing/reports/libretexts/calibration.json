@@ -1,0 +1,54 @@
+{
+ "source": "libretexts",
+ "input": "/home/vihaa/CinnamonLM/raw/common_pile/libretexts/00000_libretext.json.gz after the licence pass (filter_sha256 4c6acc6b...), 61,283 docs",
+ "scored_docs": 54683,
+ "scored_docs_note": "docs that pass all cleaning steps, min_words and short_lines; the English filter runs on exactly these",
+ "method": "fastText lid.176 English share = fraction of letters in 768-char segments whose top label is en (data_pipeline/common/langid.py), computed on the text without LaTeX math and without lines that hold no 2-letter word; docs with < 100 prose letters are kept without a score (tables, formulas)",
+ "no_score_docs": 36,
+ "histogram": {
+  "[0,0.02)": 1442,
+  "[0.02,0.1)": 55,
+  "[0.1,0.2)": 39,
+  "[0.2,0.3)": 46,
+  "[0.3,0.4)": 45,
+  "[0.4,0.5)": 55,
+  "[0.5,0.6)": 45,
+  "[0.6,0.7)": 50,
+  "[0.7,0.8)": 60,
+  "[0.8,0.9)": 58,
+  "[0.9,0.98)": 74,
+  "[0.98,1.0]": 52678
+ },
+ "drops_by_threshold": {
+  "0.1": 1497,
+  "0.2": 1536,
+  "0.25": 1553,
+  "0.3": 1582,
+  "0.4": 1627,
+  "0.5": 1682,
+  "0.65": 1753
+ },
+ "chosen_threshold": 0.3,
+ "drops_at_threshold_by_host": {
+  "human": 522,
+  "espanol": 894,
+  "socialsci": 1,
+  "eng": 1,
+  "math": 164
+ },
+ "reading": {
+  "read": "all 50 sample removals by the english step; 9 random docs in each share bin from 0.02 to 0.9; every doc in 0.25-0.42 (79 docs); every espanol-host doc with share >= 0.1",
+  "below_0.1": "Spanish, Italian, Arabic and Hindi pages: espanol host, Spanish-language course pages, the Santiago Canyon HiSet Mathematica course; English appears only in objective lines",
+  "0.1-0.3": "language-course pages where the foreign language dominates: vocabulary lists with English glosses, Spanish dialogues and drills, Arabic and Hindi reading passages with English instructions; one English page (Butte College 18.07 Loop Examples, pseudocode, 0.28)",
+  "0.3-0.5": "mostly English lessons about Spanish, Italian, French, Arabic and Hindi grammar with example sentences, bilingual tables and programming example pages; also 2 partly translated espanol-host pages (0.33, 0.37) and Spanish drill pages",
+  "0.5-0.9": "English language lessons with foreign examples, code pages, reference lists, an untranslated espanol-host exercise page (0.87)"
+ },
+ "decision": "0.3 keeps English-language textbooks that teach another language (user requirement) and drops pages whose text is mostly the foreign language; 0.5 (Dolma) would drop about 100 more pages that are mostly English grammar explanations",
+ "known_errors_at_0.3": [
+  "Butte College 18.07 Loop Examples (English pseudocode, 0.28) is dropped",
+  "2 Spanish espanol-host pages with untranslated English parts are kept (0.33, 0.37)",
+  "bilingual vocabulary lists with share < 0.3 are dropped"
+ ],
+ "rejected_variant": "removing code-like lines before language ID moved English code pages to share 0.0 when only identifiers remained and removed English glosses written as 'tener calor = to be hot'; not used",
+ "tool": "scratchpad calib.py applied the pipeline's own steps from data_pipeline/sources/libretexts.py to every doc, read-only"
+}

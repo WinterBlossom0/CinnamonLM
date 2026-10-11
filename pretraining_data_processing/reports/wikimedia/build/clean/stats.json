@@ -1,0 +1,223 @@
+{
+  "pipeline": "wikimedia",
+  "seed": 0,
+  "input": {
+    "docs": 63957575,
+    "chars": 89700082061,
+    "shards": 219
+  },
+  "output": {
+    "docs": 6758048,
+    "chars": 28539808306
+  },
+  "steps": [
+    {
+      "name": "content_namespace",
+      "docs_in": 63957575,
+      "docs_removed": 44872104,
+      "chars_removed": 58526337042,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "raw_ocr_page",
+      "docs_in": 19085471,
+      "docs_removed": 261831,
+      "chars_removed": 748738664,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "assemble_wikisource_books",
+      "docs_in": 18823640,
+      "docs_removed": 2569636,
+      "chars_removed": 5867445006,
+      "docs_modified": 441687,
+      "chars_before_modified": 75141133,
+      "chars_after_modified": 5795812340
+    },
+    {
+      "name": "normalize",
+      "docs_in": 16254004,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 1853854,
+      "chars_before_modified": 14021000476,
+      "chars_after_modified": 14008249969
+    },
+    {
+      "name": "strip_markup",
+      "docs_in": 16254004,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 156464,
+      "chars_before_modified": 5791055532,
+      "chars_after_modified": 5726279036
+    },
+    {
+      "name": "markup_residue",
+      "docs_in": 16254004,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 16273,
+      "chars_before_modified": 2679135520,
+      "chars_after_modified": 2678972090
+    },
+    {
+      "name": "file_ref_residue",
+      "docs_in": 16254004,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 1590,
+      "chars_before_modified": 56666434,
+      "chars_after_modified": 56400980
+    },
+    {
+      "name": "damaged_ocr",
+      "docs_in": 16254004,
+      "docs_removed": 403,
+      "chars_removed": 478326887,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "clean_wiktionary",
+      "docs_in": 16253601,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 2757998,
+      "chars_before_modified": 373291014,
+      "chars_after_modified": 293730733
+    },
+    {
+      "name": "repair_holes",
+      "docs_in": 16253601,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 1981963,
+      "chars_before_modified": 12253061921,
+      "chars_after_modified": 12132948143
+    },
+    {
+      "name": "strip_interwiki_residue",
+      "docs_in": 16253601,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 7330,
+      "chars_before_modified": 75677529,
+      "chars_after_modified": 75109994
+    },
+    {
+      "name": "min_words",
+      "docs_in": 16253601,
+      "docs_removed": 9126050,
+      "chars_removed": 317149259,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "disambiguation",
+      "docs_in": 7127551,
+      "docs_removed": 276319,
+      "chars_removed": 167111754,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "generated_pages",
+      "docs_in": 6851232,
+      "docs_removed": 72,
+      "chars_removed": 2366034,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "bullet_list_prose",
+      "docs_in": 6851160,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 5584,
+      "chars_before_modified": 88507257,
+      "chars_after_modified": 3512779
+    },
+    {
+      "name": "bullet_lists",
+      "docs_in": 6851160,
+      "docs_removed": 39118,
+      "chars_removed": 203482592,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "repetition",
+      "docs_in": 6812042,
+      "docs_removed": 7590,
+      "chars_removed": 36696046,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "low_prose",
+      "docs_in": 6804452,
+      "docs_removed": 21256,
+      "chars_removed": 95720990,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "english",
+      "docs_in": 6783196,
+      "docs_removed": 1508,
+      "chars_removed": 8240899,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "exact_dedup",
+      "docs_in": 6781688,
+      "docs_removed": 6646,
+      "chars_removed": 8303415,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 6646
+      }
+    },
+    {
+      "name": "near_dedup",
+      "docs_in": 6775042,
+      "docs_removed": 16994,
+      "chars_removed": 57812532,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 16994,
+        "candidate_pairs": 205004,
+        "verified_pairs": 79012
+      }
+    },
+    {
+      "name": "mask_pii",
+      "docs_in": 6758048,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 4728,
+      "chars_before_modified": 320770839,
+      "chars_after_modified": 320748956
+    }
+  ],
+  "data_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/wikimedia",
+  "meta_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/wikimedia/build/clean"
+}

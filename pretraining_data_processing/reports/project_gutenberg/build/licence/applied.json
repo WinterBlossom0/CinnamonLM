@@ -1,0 +1,570 @@
+{
+ "source": "project_gutenberg",
+ "source_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/project_gutenberg",
+ "in_place": true,
+ "filter_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/licence/licence_filter.py",
+ "filter_sha256": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+ "actions_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/project_gutenberg/build/licence/project_gutenberg_actions.jsonl",
+ "actions_sha256": "c0548de94b53b1a2ecddcceae4aaca9f3416816e308fdba07ff95c6497551f8e",
+ "summary_strip_span_chars": 0,
+ "per_shard": {
+  "00000_pg.jsonl.gz": {
+   "docs_before": 2407,
+   "chars_before": 913367623,
+   "docs_after": 2404,
+   "chars_after": 880763006,
+   "drops": 3,
+   "drop_chars": 32604617,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 3,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 3
+   },
+   "recount_docs": 2404,
+   "recount_chars": 880763006,
+   "recount_matches": true
+  },
+  "00001_pg.jsonl.gz": {
+   "docs_before": 2415,
+   "chars_before": 905798463,
+   "docs_after": 2414,
+   "chars_after": 905677477,
+   "drops": 1,
+   "drop_chars": 120986,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 2414,
+   "recount_chars": 905677477,
+   "recount_matches": true
+  },
+  "00002_pg.jsonl.gz": {
+   "docs_before": 2585,
+   "chars_before": 901224572,
+   "docs_after": 2581,
+   "chars_after": 899875091,
+   "drops": 4,
+   "drop_chars": 1349481,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 2581,
+   "recount_chars": 899875091,
+   "recount_matches": true
+  },
+  "00003_pg.jsonl.gz": {
+   "docs_before": 2601,
+   "chars_before": 896314608,
+   "docs_after": 2557,
+   "chars_after": 888249581,
+   "drops": 44,
+   "drop_chars": 8065027,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 44,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 44
+   },
+   "recount_docs": 2557,
+   "recount_chars": 888249581,
+   "recount_matches": true
+  },
+  "00004_pg.jsonl.gz": {
+   "docs_before": 2563,
+   "chars_before": 908696044,
+   "docs_after": 2549,
+   "chars_after": 904534309,
+   "drops": 14,
+   "drop_chars": 4161735,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 14,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 14
+   },
+   "recount_docs": 2549,
+   "recount_chars": 904534309,
+   "recount_matches": true
+  },
+  "00005_pg.jsonl.gz": {
+   "docs_before": 2825,
+   "chars_before": 789335313,
+   "docs_after": 2817,
+   "chars_after": 787672728,
+   "drops": 8,
+   "drop_chars": 1662585,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 8,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 8
+   },
+   "recount_docs": 2817,
+   "recount_chars": 787672728,
+   "recount_matches": true
+  },
+  "00006_pg.jsonl.gz": {
+   "docs_before": 2581,
+   "chars_before": 810098115,
+   "docs_after": 2574,
+   "chars_after": 808049103,
+   "drops": 7,
+   "drop_chars": 2049012,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 2574,
+   "recount_chars": 808049103,
+   "recount_matches": true
+  },
+  "00007_pg.jsonl.gz": {
+   "docs_before": 2746,
+   "chars_before": 855505687,
+   "docs_after": 2740,
+   "chars_after": 854224237,
+   "drops": 6,
+   "drop_chars": 1281450,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 2740,
+   "recount_chars": 854224237,
+   "recount_matches": true
+  },
+  "00008_pg.jsonl.gz": {
+   "docs_before": 2609,
+   "chars_before": 874816301,
+   "docs_after": 2603,
+   "chars_after": 871902904,
+   "drops": 6,
+   "drop_chars": 2913397,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 6,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 6
+   },
+   "recount_docs": 2603,
+   "recount_chars": 871902904,
+   "recount_matches": true
+  },
+  "00009_pg.jsonl.gz": {
+   "docs_before": 2663,
+   "chars_before": 874555057,
+   "docs_after": 2649,
+   "chars_after": 871261138,
+   "drops": 14,
+   "drop_chars": 3293919,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 14,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 14
+   },
+   "recount_docs": 2649,
+   "recount_chars": 871261138,
+   "recount_matches": true
+  },
+  "00010_pg.jsonl.gz": {
+   "docs_before": 2027,
+   "chars_before": 894178178,
+   "docs_after": 2005,
+   "chars_after": 886903486,
+   "drops": 22,
+   "drop_chars": 7274692,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 22,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 22
+   },
+   "recount_docs": 2005,
+   "recount_chars": 886903486,
+   "recount_matches": true
+  },
+  "00011_pg.jsonl.gz": {
+   "docs_before": 2426,
+   "chars_before": 875945306,
+   "docs_after": 2422,
+   "chars_after": 874578354,
+   "drops": 4,
+   "drop_chars": 1366952,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 4,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 4
+   },
+   "recount_docs": 2422,
+   "recount_chars": 874578354,
+   "recount_matches": true
+  },
+  "00012_pg.jsonl.gz": {
+   "docs_before": 2158,
+   "chars_before": 881367598,
+   "docs_after": 2151,
+   "chars_after": 878728345,
+   "drops": 7,
+   "drop_chars": 2639253,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 7,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 7
+   },
+   "recount_docs": 2151,
+   "recount_chars": 878728345,
+   "recount_matches": true
+  },
+  "00013_pg.jsonl.gz": {
+   "docs_before": 2173,
+   "chars_before": 895755639,
+   "docs_after": 2151,
+   "chars_after": 890961680,
+   "drops": 22,
+   "drop_chars": 4793959,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 22,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 22
+   },
+   "recount_docs": 2151,
+   "recount_chars": 890961680,
+   "recount_matches": true
+  },
+  "00014_pg.jsonl.gz": {
+   "docs_before": 2093,
+   "chars_before": 898192167,
+   "docs_after": 2076,
+   "chars_after": 893554044,
+   "drops": 17,
+   "drop_chars": 4638123,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 17,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 17
+   },
+   "recount_docs": 2076,
+   "recount_chars": 893554044,
+   "recount_matches": true
+  },
+  "00015_pg.jsonl.gz": {
+   "docs_before": 2246,
+   "chars_before": 900627605,
+   "docs_after": 2221,
+   "chars_after": 894744596,
+   "drops": 25,
+   "drop_chars": 5883009,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 25,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 25
+   },
+   "recount_docs": 2221,
+   "recount_chars": 894744596,
+   "recount_matches": true
+  },
+  "00016_pg.jsonl.gz": {
+   "docs_before": 2176,
+   "chars_before": 898754615,
+   "docs_after": 2151,
+   "chars_after": 892899083,
+   "drops": 25,
+   "drop_chars": 5855532,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 25,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 25
+   },
+   "recount_docs": 2151,
+   "recount_chars": 892899083,
+   "recount_matches": true
+  },
+  "00017_pg.jsonl.gz": {
+   "docs_before": 2275,
+   "chars_before": 888552130,
+   "docs_after": 2261,
+   "chars_after": 885116951,
+   "drops": 14,
+   "drop_chars": 3435179,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 14,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 14
+   },
+   "recount_docs": 2261,
+   "recount_chars": 885116951,
+   "recount_matches": true
+  },
+  "00018_pg.jsonl.gz": {
+   "docs_before": 2372,
+   "chars_before": 878780320,
+   "docs_after": 2345,
+   "chars_after": 872524732,
+   "drops": 27,
+   "drop_chars": 6255588,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 27,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 27
+   },
+   "recount_docs": 2345,
+   "recount_chars": 872524732,
+   "recount_matches": true
+  },
+  "00019_pg.jsonl.gz": {
+   "docs_before": 2391,
+   "chars_before": 885411761,
+   "docs_after": 2356,
+   "chars_after": 877966721,
+   "drops": 35,
+   "drop_chars": 7445040,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 35,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 35
+   },
+   "recount_docs": 2356,
+   "recount_chars": 877966721,
+   "recount_matches": true
+  },
+  "00020_pg.jsonl.gz": {
+   "docs_before": 2205,
+   "chars_before": 882805792,
+   "docs_after": 2165,
+   "chars_after": 871376573,
+   "drops": 40,
+   "drop_chars": 11429219,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 40,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 40
+   },
+   "recount_docs": 2165,
+   "recount_chars": 871376573,
+   "recount_matches": true
+  },
+  "00021_pg.jsonl.gz": {
+   "docs_before": 2278,
+   "chars_before": 882246175,
+   "docs_after": 2238,
+   "chars_after": 871376933,
+   "drops": 40,
+   "drop_chars": 10869242,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 40,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 40
+   },
+   "recount_docs": 2238,
+   "recount_chars": 871376933,
+   "recount_matches": true
+  },
+  "00022_pg.jsonl.gz": {
+   "docs_before": 2502,
+   "chars_before": 892614759,
+   "docs_after": 2475,
+   "chars_after": 884140789,
+   "drops": 27,
+   "drop_chars": 8473970,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 27,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 27
+   },
+   "recount_docs": 2475,
+   "recount_chars": 884140789,
+   "recount_matches": true
+  },
+  "00023_pg.jsonl.gz": {
+   "docs_before": 2700,
+   "chars_before": 867443744,
+   "docs_after": 2656,
+   "chars_after": 860940500,
+   "drops": 44,
+   "drop_chars": 6503244,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 44,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 44
+   },
+   "recount_docs": 2656,
+   "recount_chars": 860940500,
+   "recount_matches": true
+  },
+  "00024_pg.jsonl.gz": {
+   "docs_before": 2828,
+   "chars_before": 869566046,
+   "docs_after": 2783,
+   "chars_after": 861463951,
+   "drops": 45,
+   "drop_chars": 8102095,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 45,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 45
+   },
+   "recount_docs": 2783,
+   "recount_chars": 861463951,
+   "recount_matches": true
+  },
+  "00025_pg.jsonl.gz": {
+   "docs_before": 2651,
+   "chars_before": 870838746,
+   "docs_after": 2615,
+   "chars_after": 860247883,
+   "drops": 36,
+   "drop_chars": 10590863,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 36,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 36
+   },
+   "recount_docs": 2615,
+   "recount_chars": 860247883,
+   "recount_matches": true
+  },
+  "00026_pg.jsonl.gz": {
+   "docs_before": 2459,
+   "chars_before": 881352334,
+   "docs_after": 2433,
+   "chars_after": 871530127,
+   "drops": 26,
+   "drop_chars": 9822207,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 26,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 26
+   },
+   "recount_docs": 2433,
+   "recount_chars": 871530127,
+   "recount_matches": true
+  },
+  "00027_pg.jsonl.gz": {
+   "docs_before": 2431,
+   "chars_before": 880163094,
+   "docs_after": 2407,
+   "chars_after": 872298080,
+   "drops": 24,
+   "drop_chars": 7865014,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 24,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 24
+   },
+   "recount_docs": 2407,
+   "recount_chars": 872298080,
+   "recount_matches": true
+  },
+  "00028_pg.jsonl.gz": {
+   "docs_before": 2613,
+   "chars_before": 899869748,
+   "docs_after": 2613,
+   "chars_after": 899869748,
+   "drops": 0,
+   "drop_chars": 0,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 0,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 0
+   },
+   "recount_docs": 2613,
+   "recount_chars": 899869748,
+   "recount_matches": true
+  },
+  "00029_pg.jsonl.gz": {
+   "docs_before": 811,
+   "chars_before": 285191199,
+   "docs_after": 810,
+   "chars_after": 284662133,
+   "drops": 1,
+   "drop_chars": 529066,
+   "strips": 0,
+   "strip_chars_removed": 0,
+   "verify": {
+    "dropped_ids": 1,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 1
+   },
+   "recount_docs": 810,
+   "recount_chars": 284662133,
+   "recount_matches": true
+  }
+ },
+ "totals": {
+  "docs_before": 71810,
+  "chars_before": 25839368739,
+  "docs_after": 71222,
+  "chars_after": 25658094283,
+  "drops": 588,
+  "drop_chars": 181274456,
+  "strips": 0,
+  "strip_chars_removed": 0
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ }
+}

@@ -1,0 +1,132 @@
+{
+  "pipeline": "public_domain_review",
+  "seed": 0,
+  "input": {
+    "docs": 1412,
+    "chars": 6964459,
+    "shards": 3
+  },
+  "output": {
+    "docs": 1358,
+    "chars": 6901126
+  },
+  "steps": [
+    {
+      "name": "nbsp_line_breaks",
+      "docs_in": 1412,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 12,
+      "chars_before_modified": 138289,
+      "chars_after_modified": 138031
+    },
+    {
+      "name": "normalize",
+      "docs_in": 1412,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 1153,
+      "chars_before_modified": 3082653,
+      "chars_after_modified": 3080254
+    },
+    {
+      "name": "header",
+      "docs_in": 1412,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 911,
+      "chars_before_modified": 3292973,
+      "chars_after_modified": 3292062
+    },
+    {
+      "name": "markup",
+      "docs_in": 1412,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 3,
+      "chars_before_modified": 9831,
+      "chars_after_modified": 9499
+    },
+    {
+      "name": "boilerplate",
+      "docs_in": 1412,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 393,
+      "chars_before_modified": 4750260,
+      "chars_after_modified": 4706591
+    },
+    {
+      "name": "footnote_markers",
+      "docs_in": 1412,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 140,
+      "chars_before_modified": 2436933,
+      "chars_after_modified": 2433756
+    },
+    {
+      "name": "joined_lines",
+      "docs_in": 1412,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 89,
+      "chars_before_modified": 954251,
+      "chars_after_modified": 954953
+    },
+    {
+      "name": "stub",
+      "docs_in": 1412,
+      "docs_removed": 48,
+      "chars_removed": 8458,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "english",
+      "docs_in": 1364,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "exact_dedup",
+      "docs_in": 1364,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 0
+      }
+    },
+    {
+      "name": "near_dedup",
+      "docs_in": 1364,
+      "docs_removed": 6,
+      "chars_removed": 4831,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 6,
+        "contained_pairs": 6
+      }
+    },
+    {
+      "name": "pii",
+      "docs_in": 1358,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    }
+  ],
+  "data_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/public_domain_review",
+  "meta_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/public_domain_review/build/clean"
+}

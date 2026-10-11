@@ -1,0 +1,114 @@
+{
+  "pipeline": "project_gutenberg",
+  "seed": 0,
+  "input": {
+    "docs": 71222,
+    "chars": 25658094283,
+    "shards": 30
+  },
+  "output": {
+    "docs": 52124,
+    "chars": 19196275237
+  },
+  "steps": [
+    {
+      "name": "pg_apparatus",
+      "docs_in": 71222,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 67665,
+      "chars_before_modified": 24390733234,
+      "chars_after_modified": 24095525861
+    },
+    {
+      "name": "normalize",
+      "docs_in": 71222,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 71100,
+      "chars_before_modified": 25206442056,
+      "chars_after_modified": 25195291835
+    },
+    {
+      "name": "page_markers",
+      "docs_in": 71222,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 2464,
+      "chars_before_modified": 1302951557,
+      "chars_after_modified": 1301131530
+    },
+    {
+      "name": "unwrap",
+      "docs_in": 71222,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 69112,
+      "chars_before_modified": 24968155557,
+      "chars_after_modified": 24905463894
+    },
+    {
+      "name": "markup",
+      "docs_in": 71222,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 64187,
+      "chars_before_modified": 23238582793,
+      "chars_after_modified": 23161939056
+    },
+    {
+      "name": "book_text",
+      "docs_in": 71222,
+      "docs_removed": 707,
+      "chars_removed": 174785672,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "english",
+      "docs_in": 70515,
+      "docs_removed": 14123,
+      "chars_removed": 4800281043,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0
+    },
+    {
+      "name": "exact_dedup",
+      "docs_in": 56392,
+      "docs_removed": 9,
+      "chars_removed": 1089779,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 9
+      }
+    },
+    {
+      "name": "near_dedup",
+      "docs_in": 56383,
+      "docs_removed": 4259,
+      "chars_removed": 1038149005,
+      "docs_modified": 0,
+      "chars_before_modified": 0,
+      "chars_after_modified": 0,
+      "build": {
+        "duplicates": 4259,
+        "contained_pairs": 6616
+      }
+    },
+    {
+      "name": "pii",
+      "docs_in": 52124,
+      "docs_removed": 0,
+      "chars_removed": 0,
+      "docs_modified": 141,
+      "chars_before_modified": 91129263,
+      "chars_after_modified": 91128737
+    }
+  ],
+  "data_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/project_gutenberg",
+  "meta_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/project_gutenberg/build/clean"
+}

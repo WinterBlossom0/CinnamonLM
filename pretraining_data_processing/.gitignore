@@ -1,0 +1,10 @@
+/data/
+/build/
+data_pipeline/.venv/
+data_pipeline/models/
+analysis/papers/
+licence/test_docs.jsonl.gz
+.ruff_cache/
+STATUS.md
+reports/*/build/licence/*_actions.jsonl
+reports/*/build/licence/*_summary.json

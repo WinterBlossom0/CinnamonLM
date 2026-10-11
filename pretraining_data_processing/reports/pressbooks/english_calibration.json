@@ -1,0 +1,1734 @@
+{
+ "source": "pressbooks",
+ "chosen_threshold": 0.2,
+ "feature": "LanguageIdentifier.english_share (lid.176 on paragraphs cut to 768-char chunks, letter-weighted) on the cleaned text, after the Gopher quality filter",
+ "population": "all 103,781 docs in raw/common_pile/pressbooks (licence-filtered shards, 2026-10-10)",
+ "docs_scored": 97998,
+ "docs_per_share_decile": {
+  "0.0": 338,
+  "0.1": 133,
+  "0.2": 32,
+  "0.3": 37,
+  "0.4": 61,
+  "0.5": 41,
+  "0.6": 41,
+  "0.7": 55,
+  "0.8": 87,
+  "0.9": 97173
+ },
+ "labelled_set": "328 distinct texts with share 0.05-0.75; labelled by book after reading: KEEP = English-taught language lessons and other English pages, DROP = pages whose running text is not English (Slovenian/German translations, Spanish papers, Portuguese/Spanish/Chinese-taught course pages, Swahili course pages, Dutch-English parallel essays, German/Swahili museum lessons); ? = templates and other unlabelled",
+ "threshold_table": [
+  {
+   "threshold": 0.15,
+   "kept_keep_label": 149,
+   "kept_drop_label": 83,
+   "removed_keep_label": 8,
+   "removed_drop_label": 61
+  },
+  {
+   "threshold": 0.2,
+   "kept_keep_label": 144,
+   "kept_drop_label": 64,
+   "removed_keep_label": 13,
+   "removed_drop_label": 80
+  },
+  {
+   "threshold": 0.25,
+   "kept_keep_label": 134,
+   "kept_drop_label": 61,
+   "removed_keep_label": 23,
+   "removed_drop_label": 83
+  },
+  {
+   "threshold": 0.3,
+   "kept_keep_label": 122,
+   "kept_drop_label": 58,
+   "removed_keep_label": 35,
+   "removed_drop_label": 86
+  },
+  {
+   "threshold": 0.35,
+   "kept_keep_label": 111,
+   "kept_drop_label": 49,
+   "removed_keep_label": 46,
+   "removed_drop_label": 95
+  },
+  {
+   "threshold": 0.4,
+   "kept_keep_label": 104,
+   "kept_drop_label": 41,
+   "removed_keep_label": 53,
+   "removed_drop_label": 103
+  },
+  {
+   "threshold": 0.45,
+   "kept_keep_label": 90,
+   "kept_drop_label": 30,
+   "removed_keep_label": 67,
+   "removed_drop_label": 114
+  },
+  {
+   "threshold": 0.5,
+   "kept_keep_label": 71,
+   "kept_drop_label": 19,
+   "removed_keep_label": 86,
+   "removed_drop_label": 125
+  },
+  {
+   "threshold": 0.55,
+   "kept_keep_label": 53,
+   "kept_drop_label": 14,
+   "removed_keep_label": 104,
+   "removed_drop_label": 130
+  },
+  {
+   "threshold": 0.6,
+   "kept_keep_label": 44,
+   "kept_drop_label": 9,
+   "removed_keep_label": 113,
+   "removed_drop_label": 135
+  }
+ ],
+ "labelled_docs": [
+  {
+   "label": "?",
+   "english_share": 0.07,
+   "id": "https://pressbooks.pub/cm38/chapter/eine-antwort-auf-unsichere-zeiten/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.06,
+   "id": "https://uw.pressbooks.pub/proseando/chapter/unidade-1-apresentacoes/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.62,
+   "id": "https://pressbooks.library.torontomu.ca/authorsguide/chapter/chapter-protot"
+  },
+  {
+   "label": "?",
+   "english_share": 0.19,
+   "id": "https://ecampusontario.pressbooks.pub/cctemplatedraft2024/chapter/1-2-topic"
+  },
+  {
+   "label": "?",
+   "english_share": 0.25,
+   "id": "https://ecampusontario.pressbooks.pub/clonecctemplatedraft2024/chapter/1-1-"
+  },
+  {
+   "label": "?",
+   "english_share": 0.43,
+   "id": "https://ecampusontario.pressbooks.pub/clonecctemplatedraft2024/chapter/1-1-"
+  },
+  {
+   "label": "?",
+   "english_share": 0.08,
+   "id": "https://pressbooks.pub/myfirstmasterpiece/chapter/chapter-1/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.65,
+   "id": "https://openbooks.macewan.ca/authorsguide/chapter/chapter-prototype/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.39,
+   "id": "https://ecampusontario.pressbooks.pub/cctemplatedraft2024/chapter/1-1-begin"
+  },
+  {
+   "label": "?",
+   "english_share": 0.57,
+   "id": "https://ecampusontario.pressbooks.pub/cctemplatedraft2024/chapter/1-1-topic"
+  },
+  {
+   "label": "?",
+   "english_share": 0.45,
+   "id": "https://pressbooks.openedmb.ca/cmbpressbookstemplate/chapter/1-2-chapter-ti"
+  },
+  {
+   "label": "?",
+   "english_share": 0.51,
+   "id": "https://pressbooks.openedmb.ca/cmbpressbookstemplate/chapter/chapter-1/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.51,
+   "id": "https://pressbooks.openedmb.ca/cmbpressbookstemplate/chapter/2-1-chapter-ti"
+  },
+  {
+   "label": "?",
+   "english_share": 0.51,
+   "id": "https://pressbooks.openedmb.ca/cmbpressbookstemplate/chapter/3-1-chapter-ti"
+  },
+  {
+   "label": "?",
+   "english_share": 0.51,
+   "id": "https://pressbooks.openedmb.ca/cmbpressbookstemplate/chapter/4-1-chapter-ti"
+  },
+  {
+   "label": "?",
+   "english_share": 0.51,
+   "id": "https://pressbooks.openedmb.ca/cmbpressbookstemplate/chapter/5-1-chapter-ti"
+  },
+  {
+   "label": "?",
+   "english_share": 0.51,
+   "id": "https://pressbooks.openedmb.ca/cmbpressbookstemplate/chapter/6-1-chapter-ti"
+  },
+  {
+   "label": "?",
+   "english_share": 0.39,
+   "id": "https://pressbooks.utrgv.edu/riograndesourcebook/chapter/baptismal-records-"
+  },
+  {
+   "label": "?",
+   "english_share": 0.67,
+   "id": "https://uen.pressbooks.pub/introneuro/chapter/organelles/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.74,
+   "id": "https://pressbooks.utrgv.edu/riograndesourcebook/chapter/indigenous-languag"
+  },
+  {
+   "label": "?",
+   "english_share": 0.75,
+   "id": "https://pressbooks.pub/mybavarianrelatives/chapter/kraus-hutschdorf-letter/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.72,
+   "id": "https://pressbooks.claremont.edu/outofthecave2021/chapter/workshop-on-repub"
+  },
+  {
+   "label": "?",
+   "english_share": 0.75,
+   "id": "https://opentextbooks.concordia.ca/oerbydiscipline2/chapter/french/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.72,
+   "id": "https://uq.pressbooks.pub/tourismknowledge/chapter/horses-tourism-and-leisu"
+  },
+  {
+   "label": "?",
+   "english_share": 0.73,
+   "id": "https://pressbooks.pub/ancientgreek/chapter/33/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.67,
+   "id": "https://pressbooks.pub/ancientgreek/chapter/29/"
+  },
+  {
+   "label": "?",
+   "english_share": 0.69,
+   "id": "https://pressbooks.pub/ancientgreekatduke/chapter/22/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.14,
+   "id": "https://pressbooks.uiowa.edu/maletinmedico/chapter/vocabulario-modulo-3/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.07,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/individual-or-collective-ai/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.05,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/generative-ais-where-shoul"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://pressbooks.pub/pedagogikk/chapter/selvbestemmelsesteorien/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.09,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/individual-or-collective-a"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.06,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/behind-the-search-lens-effects-o"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.06,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/translators/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.14,
+   "id": "https://uen.pressbooks.pub/span3060/chapter/1-5-los-adjetivos-descriptivos/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.08,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/translators/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.06,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/behind-the-search-lens-eff"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.08,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/what-not-to-do-with-data-issues-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/how-ai-can-help-you/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.09,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/ai-speak-data-based-systems-part"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.06,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/the-flip-side-of-als-some-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.07,
+   "id": "https://pressbooks.pub/cioxxv/chapter/herramienta-docente-en-netlogo-para-i"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.07,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/why-not-just-do-ai-part-2/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.08,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/search-engines-part-1/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.11,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/235/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.07,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/ai-speak-data-based-system"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://pressbooks.pub/cioxxv/chapter/seguridad-laboral-e-industrial-nuevas"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.09,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/generative-for-the-classroom/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.12,
+   "id": "https://pressbooks.pub/cioxxv/chapter/avanzando-hacia-la-internet-fisica-un"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.16,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/235/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.11,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/what-not-to-do-with-data-i"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.08,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/ai-speak-data-based-systems-part"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/ai-speak-how-adaptive-syst"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.05,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/behind-the-search-lens-effects-o"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.18,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/technology-change-and-you/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.09,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/search-engines-part-1/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.08,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/ai-speak-data-based-system"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.11,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/ai-speak-how-youtube-learns-you-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/ai-speak-how-youtube-learn"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.09,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-6-parte-a/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.07,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/a-note-on-personalisation/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.17,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/generative-for-the-classro"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://pressbooks.pub/cioxxv/chapter/modelos-lineales-mixtos-para-la-progr"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.11,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/homogenisation-invisibility-and-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.11,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/teaching-ai/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.06,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/behind-the-search-lens-eff"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.13,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/the-degenerative/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.14,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/search-engines-part-2/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-3-parte-b/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.09,
+   "id": "https://pressbooks.pub/cioxxv/chapter/impacto-economico-de-la-supresion-de-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.07,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/ai-speak-how-adaptive-systems-le"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.12,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/the-degenerative-part-2/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.05,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/ai-speak-how-youtube-learns-you-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.14,
+   "id": "https://pressbooks.pub/cioxxv/chapter/aspectos-medioambientales-en-el-value"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.12,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/smart-lms/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.19,
+   "id": "https://pressbooks.pub/cioxxv/chapter/impulsando-la-transformacion-digital-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/adaptive-learning-systems/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.09,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/search-engines-part-2/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.13,
+   "id": "https://pressbooks.pub/cioxxv/chapter/optimizacion-del-problema-de-reposici"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.17,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/cookies-and-fingerprinting/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/ai-speak-how-adaptive-syst"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.15,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/homogenisation-invisibilit"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.16,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/the-degenerative/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.15,
+   "id": "https://pressbooks.pub/cioxxv/chapter/protocolo-evaluar-la-competencia-tran"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.16,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/the-degenerative-part-2/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.08,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/ai-speak-how-youtube-learn"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.09,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/cookies-and-fingerprinting"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.12,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/adaptive-learning-systems/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.12,
+   "id": "https://uen.pressbooks.pub/span3060/chapter/4-1-el-texto-argumentativo/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.07,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/other-terms-related-to-personali"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.15,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/smart-lms/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.11,
+   "id": "https://pressbooks.pub/navigatingdml/chapter/prises-de-vue-angle-et-distanc"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.11,
+   "id": "https://pressbooks.pub/cioxxv/chapter/prediccion-del-uso-de-bicicletas-comp"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.07,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-4-parte-b/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.16,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/other-terms-related-to-per"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.16,
+   "id": "https://pressbooks.pub/cioxxv/chapter/teoria-de-juegos-evolutiva-para-el-di"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.2,
+   "id": "https://pressbooks.pub/navigatingdml/chapter/507/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.28,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/teaching-ai/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.16,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/generative-ai-for-the-clas"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.24,
+   "id": "https://pressbooks.pub/umetnainteligenca/chapter/more-on-big-data/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.15,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-5-parte-a/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.29,
+   "id": "https://iopn.library.illinois.edu/pressbooks/testingsite/chapter/french-lan"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.15,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-2-parte-a/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.39,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.25,
+   "id": "https://pressbooks.pub/aifurlehrer/chapter/generative-ai-for-the-classroom-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.3,
+   "id": "https://pressbooks.pub/cioxxv/chapter/analizando-la-aplicabilidad-de-machin"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.56,
+   "id": "https://pressbooks.pub/tuunganeunmafst/chapter/familia/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.46,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.18,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-4-parte-a/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.4,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.5,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.49,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.12,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-1-parte-b/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.13,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/fresh-import-5a/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.36,
+   "id": "https://pressbooks.pub/tuunganeunmafst/chapter/shuleni/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.35,
+   "id": "https://pressbooks.pub/tuunganeunmafst/chapter/1-1-salamu-greetings/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.41,
+   "id": "https://pressbooks.pub/tuunganeunmafst/chapter/chakula/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.36,
+   "id": "https://pressbooks.pub/cioxxv/chapter/integracion-aprendizaje-y-gestion-del"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.34,
+   "id": "https://pressbooks.pub/tuunganeunmafst/chapter/kununua-na-kuuza/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.59,
+   "id": "https://pressbooks.uiowa.edu/maletinmedico/chapter/vocabuario-modulo-4/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.57,
+   "id": "https://pressbooks.pub/tuunganeunmafst/chapter/wakati/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.16,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.3,
+   "id": "https://pressbooks.pub/tuunganeunmafst/chapter/the-everyday-maisha-ya-kila-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.37,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/chapter-1/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.7,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.47,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/north-america/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.42,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/turkey/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.38,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/honduras/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.39,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/caribbean/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.4,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/peru/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.1,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-2-parte-b/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.44,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/guyanas/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.3,
+   "id": "https://pressbooks.pub/tuunganeunmafst/chapter/mbuga-la-wanyama/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.5,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/congo/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.47,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/brazil/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.45,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/venezuela/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.49,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/central-asia/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.4,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/chapter-1-3/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.43,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/west-africa/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.47,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/florida/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.69,
+   "id": "https://pressbooks.pub/tuunganeunmafst/chapter/kuishi-mjini/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.44,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/arabian-peninsula/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.43,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/pernambuco-and-paraiba/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.46,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/chapter-1-2/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.47,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/madagascar/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.44,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.5,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/163/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.31,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.11,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-1-parte-a/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.22,
+   "id": "https://eaglepubs.erau.edu/cyberchinese/chapter/unit-5-2-task-arrangement-%"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.34,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.46,
+   "id": "https://opentextbooks.rug.nl/beyondthemap/chapter/canary-islands/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.66,
+   "id": "https://opentextbooks.library.arizona.edu/multiliteraciesatthemuseum/chapte"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.15,
+   "id": "https://uw.pressbooks.pub/batepapo/chapter/unidade-3-parte-a/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.56,
+   "id": "https://pressbooks.library.virginia.edu/explore-chinas-traditions-and-moder"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.15,
+   "id": "https://pressbooks.uiowa.edu/maletinmedico/chapter/vocabulario-modulo-1/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.5,
+   "id": "https://pressbooks.library.virginia.edu/nehcourse/chapter/course-e-flyer/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.37,
+   "id": "https://eaglepubs.erau.edu/cyberchinese/chapter/unit-3-3-brainstorming-for-"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.33,
+   "id": "https://pressbooks.library.virginia.edu/nehcourse/chapter/users-guide/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.3,
+   "id": "https://eaglepubs.erau.edu/cyberchinese/chapter/unit-3-2-employee-id-card/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.55,
+   "id": "https://pressbooks.library.virginia.edu/nehcourse/chapter/day-1/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.6,
+   "id": "https://pressbooks.library.virginia.edu/nehcourse/chapter/acknowledgment/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.7,
+   "id": "https://pressbooks.library.virginia.edu/explore-chinas-traditions-and-moder"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.63,
+   "id": "https://pressbooks.library.virginia.edu/explore-chinas-traditions-and-moder"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.41,
+   "id": "https://pressbooks.library.virginia.edu/nehcourse/chapter/day-3/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.45,
+   "id": "https://pressbooks.library.virginia.edu/explore-chinas-traditions-and-moder"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.66,
+   "id": "https://pressbooks.library.virginia.edu/nehcourse/chapter/day-5/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.31,
+   "id": "https://pressbooks.library.virginia.edu/explore-chinas-traditions-and-moder"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.52,
+   "id": "https://pressbooks.library.virginia.edu/nehcourse/chapter/chapter-1/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.61,
+   "id": "https://pressbooks.library.virginia.edu/nehcourse/chapter/opening-ceremony/"
+  },
+  {
+   "label": "DROP",
+   "english_share": 0.6,
+   "id": "https://pressbooks.library.virginia.edu/nehcourse/chapter/day-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.17,
+   "id": "https://library.achievingthedream.org/bhccspanish2/chapter/vocabulary-the-c"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.5,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/vocabulario-capitulo-5/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.51,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/01-vocabulary/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.14,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/04-cd-vocabulary-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.53,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/06cd-vocabulary-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.3,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/07cd-vocabulary-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.66,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/02ab-vocabulary-l"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.32,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/03-cb-vocabulary-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.6,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/04-ab-vocabulary-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.38,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/chapter-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.65,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/05cd-vocabulary-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.43,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/06ab-vocabulary-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.64,
+   "id": "https://harpercollege.pressbooks.pub/programmingfundamentals/chapter/swift-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.05,
+   "id": "https://una.pressbooks.pub/gr-350/chapter/kapitel-4-reisen-und-hobbys/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.28,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/03-contenus-dapprentissage"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.34,
+   "id": "https://pressbooks.saskpolytech.ca/oerdiscipline/chapter/french/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.11,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-3d/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.07,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-1a/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.22,
+   "id": "https://library.achievingthedream.org/bhccspanish2/chapter/lesson-2-days-mo"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.16,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-6-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.66,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/por-and-para/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.3,
+   "id": "https://una.pressbooks.pub/gr-202/chapter/kapitel-12-3-past-subjunctive/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.09,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-4d/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.09,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-5b-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.5,
+   "id": "https://library.achievingthedream.org/bhccfrench101/chapter/culture-the-fra"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.23,
+   "id": "https://library.achievingthedream.org/baycollegespanish1/chapter/days-of-th"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.27,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-6-5/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.06,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-6-6/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.45,
+   "id": "https://harpercollege.pressbooks.pub/programmingfundamentals/chapter/functi"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.2,
+   "id": "https://library.achievingthedream.org/bhccspanish1/chapter/lesson-5-numbers"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.21,
+   "id": "https://library.achievingthedream.org/bhccspanish1/chapter/supplemental-con"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.21,
+   "id": "https://library.achievingthedream.org/bhccspanish1/chapter/lesson-12-expres"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.39,
+   "id": "https://una.pressbooks.pub/gr-202/chapter/chapter-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.41,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-5d/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.15,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-2c/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.5,
+   "id": "https://uq.pressbooks.pub/open-textbooks-author-guide/chapter/chapter-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.49,
+   "id": "https://pressbooks.uwf.edu/opentextbooksguide/chapter/chapter-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.2,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/00-faisons-connaissance/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.5,
+   "id": "https://uen.pressbooks.pub/2023range/chapter/whiting/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.27,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-6-4/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.31,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-2-5/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.25,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-5c/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.43,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-6-3/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.44,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-3-7/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.08,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-6d/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.45,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/00-contenus-dapprentissage"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.21,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-6a/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.29,
+   "id": "https://library.achievingthedream.org/bhccspanish1/chapter/supplementary-co"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.26,
+   "id": "https://library.achievingthedream.org/baycollegespanish1/chapter/ser-vs-est"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.27,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/02-comprehension-orale/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.46,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-2a/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.33,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-5-proficiency-intervi"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.37,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-2b/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.39,
+   "id": "https://una.pressbooks.pub/gr-202/chapter/kapitel-12-1-passive/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.18,
+   "id": "https://library.achievingthedream.org/bhccspanish1/chapter/lesson-10-adject"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.48,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-2d/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.24,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-5b/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.21,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-6b/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.3,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-4c/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.3,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-5a/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.48,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-3-4/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.59,
+   "id": "https://una.pressbooks.pub/gr-202/chapter/kapitel-11-3-indirect-speech-subj"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.24,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-1-4/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.41,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-1-13/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.42,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-5-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.49,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-3-6/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.65,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-5-proficiency-intervi"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.59,
+   "id": "https://library.achievingthedream.org/bhccspanish2/chapter/lesson-5-direct-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.4,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/lesson-6c/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.6,
+   "id": "https://pressbooks.pub/introductiontofrench1/chapter/it-is-vs-he-she-is-ces"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.49,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-3-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.47,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-3c/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.69,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-5-4/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.63,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-4-7/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.68,
+   "id": "https://una.pressbooks.pub/gr-202/chapter/kapitel-10-2-directional-prefixes"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.54,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-2-4/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.52,
+   "id": "https://pdx.pressbooks.pub/serestar/chapter/ser-estar-with-past-participles"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.66,
+   "id": "https://una.pressbooks.pub/german-102/chapter/chapter-4-3/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.38,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-3b/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.5,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-3-5/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.61,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-4a/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.43,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/05-entrainement/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.27,
+   "id": "https://una.pressbooks.pub/gr-202/chapter/kapitel-12-2-adjective-endings-wi"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.67,
+   "id": "https://ecampusontario.pressbooks.pub/mcmasteroerdiscipline/chapter/french/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.63,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-5-3/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.52,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/indefinite-and-negative-words/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.52,
+   "id": "https://idaho.pressbooks.pub/espanolporelmundorevised/chapter/indefinite-an"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.43,
+   "id": "https://pdx.pressbooks.pub/serestar/chapter/ser-estar-with-adjectives/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.53,
+   "id": "https://mhcc.pressbooks.pub/spa101/chapter/vocabulario-la-familia/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.45,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-4b/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.65,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/01-grammar/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.49,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-5-proficiency-intervi"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.41,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/04-entrainement/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.49,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-4-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.58,
+   "id": "https://mhcc.pressbooks.pub/spa101/chapter/los-numeros-100/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.54,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-1-9/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.52,
+   "id": "https://pressbooks.pub/introductiontofrench1/chapter/9-dates/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.54,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-3-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.75,
+   "id": "https://harpercollege.pressbooks.pub/programmingfundamentals/chapter/call-b"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.19,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-4-6/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.48,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-2-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.59,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-2-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.54,
+   "id": "https://una.pressbooks.pub/german-102/chapter/section-4-4/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.73,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-1-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.74,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/03-comprehension-orale/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.6,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/03-vocabulaire/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.37,
+   "id": "https://pressbooks.pub/introductiontofrench1/chapter/past-tense-with-etre/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.5,
+   "id": "https://library.achievingthedream.org/bhccspanish2/chapter/practice/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.49,
+   "id": "https://library.achievingthedream.org/bhccspanish2/chapter/lesson-11-past-t"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.62,
+   "id": "https://library.achievingthedream.org/bhccspanish1/chapter/supplementary-co"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.48,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/166/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.73,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/project-3/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.36,
+   "id": "https://mhcc.pressbooks.pub/spa101/chapter/vocabulario-en-la-clase/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.74,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/project-2-un-dia"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.67,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/05-vocabulaire/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.65,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/05-auto-evaluation/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.26,
+   "id": "https://mhcc.pressbooks.pub/spa101/chapter/vocabulario-el-ano-dias-meses-es"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.58,
+   "id": "https://ecampusontario.pressbooks.pub/mohawklanguageresource/chapter/people"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.46,
+   "id": "https://pdx.pressbooks.pub/serestar/chapter/other-equivalents-of-to-be-besi"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.71,
+   "id": "https://pdx.pressbooks.pub/serestar/chapter/chapter-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.31,
+   "id": "https://caul-cbua.pressbooks.pub/isaiahincodexmarchalianus/chapter/indexes/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.73,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/subject-pronouns/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.73,
+   "id": "https://idaho.pressbooks.pub/espanolporelmundorevised/chapter/subject-prono"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.55,
+   "id": "https://pressbooks.pub/introductiontofrench1/chapter/prepositions-with-coun"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.45,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/vocabulario-saludos-y-despedid"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.45,
+   "id": "https://idaho.pressbooks.pub/espanolporelmundorevised/chapter/vocabulario-s"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.74,
+   "id": "https://pressbooks.pub/introductiontofrench1/chapter/imperative/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.28,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-1c/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.66,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/chapter-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.64,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/02-entrainement/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.42,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/number-0-and-higher/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.72,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/lesson-1a/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.69,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-3-3/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.42,
+   "id": "https://harpercollege.pressbooks.pub/programmingfundamentals/chapter/python"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.28,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/project-1-organi"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.7,
+   "id": "https://harpercollege.pressbooks.pub/programmingfundamentals/chapter/csharp"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.71,
+   "id": "https://harpercollege.pressbooks.pub/programmingfundamentals/chapter/swift-"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.71,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-1-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.63,
+   "id": "https://mhcc.pressbooks.pub/spa101/chapter/stem-changing-verbs-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.71,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/proyecto-1/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.74,
+   "id": "https://una.pressbooks.pub/gr101/chapter/section-1-7/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.64,
+   "id": "https://pressbooks.pub/biologicalanthropologylabbasicworkbook/chapter/labor"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.62,
+   "id": "https://pressbooks.pub/introductiontofrench1/chapter/past-tense-with-avoir/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.61,
+   "id": "https://library.achievingthedream.org/bhccspanish2/chapter/lesson-7-numbers"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.57,
+   "id": "https://opentextbc.ca/francaisinteractif/chapter/03-entrainement/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.57,
+   "id": "https://mhcc.pressbooks.pub/spa101/chapter/vocabulario-los-deportes-y-pasat"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.28,
+   "id": "https://library.achievingthedream.org/baycollegespanish1/chapter/mod-12-int"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.68,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/descriptive-adjectives/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.58,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/stem-changing-verbs/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.44,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/irregular-in-the-preterite/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.67,
+   "id": "https://idaho.pressbooks.pub/spanish/chapter/imperfect-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.67,
+   "id": "https://idaho.pressbooks.pub/espanolporelmundorevised/chapter/imperfect-2/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.31,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-i/chapter/02cd-vocabulary-l"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.41,
+   "id": "https://eaglepubs.erau.edu/cyberchinese/chapter/dialogue-1-on-board-meeting"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.49,
+   "id": "https://pressbooks.uiowa.edu/elementary-spanish-ii/chapter/05ab-vocabulary/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.33,
+   "id": "https://viva.pressbooks.pub/openmusictheory/chapter/anthology-harmony/"
+  },
+  {
+   "label": "KEEP",
+   "english_share": 0.53,
+   "id": "https://caul-cbua.pressbooks.pub/cbuacademiccal2425/chapter/french/"
+  }
+ ]
+}

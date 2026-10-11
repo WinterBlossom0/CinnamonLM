@@ -1,0 +1,24 @@
+{
+ "stage": "publish",
+ "finished_at_ist": "2026-10-11T22:19:41+05:30",
+ "path": "data/common_pile/pressbooks",
+ "output_sha256": {
+  "00000_pressbooks.json.gz": "4a13770f46e5d0cd3d7f3ce7fa6020bbf6f56e2074eb44e7e6ac3f77e79882c2",
+  "00001_pressbooks.json.gz": "3106e882996a07d90fb9f84d06af5a6bccddfea5e1f549c87ea78d2bb00ea6dc"
+ },
+ "output_sha256_before_gzip_header_fix": {
+  "00000_pressbooks.json.gz": "626416d02593f301773d0c9d4389b7f67cc329b3179ece185da9dfa1f8d683c7",
+  "00001_pressbooks.json.gz": "a5e85b9f890f3db43c63b6447786c9dd59dd8194930899f10da58ad37f4c588d"
+ },
+ "output_content_sha256": {
+  "00000_pressbooks.json.gz": "946e0430f5aabf217de5a4146b6da37dbcf676688b0af11aa7191bd2c671daca",
+  "00001_pressbooks.json.gz": "a120f27a8c0b09a09a95fa9a7206d42eef02279880a41e7ef798d696f5841cda"
+ },
+ "gzip_header_fix": {
+  "at_ist": "2026-10-11T23:30:26+05:30",
+  "code_sha256": {
+   "workflow/corpus.py": "2929999c2736dffc608ed187077f20c718e9f66607edb450f59ba7e52e1246dc"
+  },
+  "note": "The decontam and dedup rewriter wrote the current time into each gzip header. The shards were rewritten with the fixed rewriter (mtime=0, no file name): decompressed content unchanged (output_content_sha256)."
+ }
+}

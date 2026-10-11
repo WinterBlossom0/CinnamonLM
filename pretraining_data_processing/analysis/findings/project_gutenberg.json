@@ -1,0 +1,281 @@
+{
+ "dataset": "common-pile/project_gutenberg (raw), compared with common-pile/project_gutenberg_filtered",
+ "files_examined": [
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/project_gutenberg/data/raw/v0/documents/00000_pg.jsonl.gz (2,407 docs, ids '1'..'12371')",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/project_gutenberg/data/raw/v0/documents/00014_pg.jsonl.gz (2,093 docs, ids '42399'..'44292')",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/project_gutenberg/data/raw/v0/documents/00029_pg.jsonl.gz (811 docs, ids '9060'..'9999')",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/project_gutenberg/data/filtered/project_gutenberg-dolma-0000.json.gz (4,025 docs, ids '1'..'14590'; covers the whole id range of raw 00000)",
+  "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/project_gutenberg/data/filtered/project_gutenberg-dolma-0014.json.gz (2,575 docs, ids '7281'..'9999'; covers the whole id range of raw 00029)",
+  "raw and filtered README.md (both in data/raw and data/filtered)",
+  "The local folder /home/vihaa/CinnamonLM/raw/common_pile/project_gutenberg/ did not exist yet. The running download was still on doab, and download.log showed 10/15 files. Nothing was read from or written to that path. All shards were fetched into scratch with hf_hub_download."
+ ],
+ "docs_sampled": 5311,
+ "total_docs_estimate": "71,810 docs and 26.2 UTF-8 GB for the raw set, from the raw README table. The filtered README gives 55,454 docs and 20.1 GB, so the filter keeps 77.2% of docs. The sample size agrees with this: 5,311 docs in 3 of the 30 raw shards, shards 00000-00028 are about 326-351 MB gzipped each, and 00029 is 111 MB. The sample holds 2.10e9 chars and 3.57e8 whitespace words, about 8% of the raw chars.",
+ "schema_fields": [
+  "id (string, the Gutenberg ebook number; both raw and filtered shards are sorted by id as a string)",
+  "text",
+  "source ('project gutenberg')",
+  "added (ISO timestamp)",
+  "metadata: a real JSON dict in these shards, not a Python-dict string. Keys: license, language, url, title. The filtered version adds metadata.provenance (e.g. 'project_gutenberg-dolma-0000.json.gz:1')",
+  "There is no 'created' field in either version. url form: /ebooks/N.txt.utf-8 in 4,628 docs, /files/N/N-0.txt in 683 docs"
+ ],
+ "length_stats": "Over all 5,311 raw sample docs.\nChars: p1=10,797; p5=27,366; p25=125,771; p50=293,327; p75=525,576; p95=1,037,403; p99=1,782,339; max=31,104,626 (id 11800, 'U.S. Copyright Renewals 1950 - 1977').\nWhitespace words: p1=1,889; p5=4,614; p25=21,214; p50=50,844; p75=89,168; p95=177,166; p99=305,429; max=4,230,695.\nTotal sample: 2,096,750,989 chars and 357,279,308 words.\nShort docs: 9 docs (0.17%) are under 1,000 chars and 23 docs (0.43%) are under 5,000 chars. The shortest are 23 chars (id 9320, '9320: EXTRA directories'), 126 chars (11755) and 140 chars (12237).",
+ "language_mix": "The metadata.language field says 4,582 of 5,311 docs (86.3%) are 'en'. The other 729 docs (13.7% of docs, 12.2% of chars) are: fr 250, de 118, it 103, fi 75, nl 63, es 39, da 18, hu 18, el 9, eo 6, sv 5, pt 5, no 4, la 3, zh 3, sr 2, tl 2, and 1 each of ca, ar, te, he, et, cy. So the README claim 'English only' is false for the raw set.\n\nMethod: no language-ID library is installed (no fasttext, langid, langdetect, lingua or cld). I used a documented stopword heuristic. Words are tokenized with [^\\W\\d_]+, and the first 200k chars are scored against stopword lists for en, fr, de, es, it, nl, pt, la, fi and Scandinavian. The doc gets the argmax language if that ratio is at least 0.15, else 'unknown'. If more than 30% of letters are non-Latin, the doc is 'nonlatin'.\n\nAgreement with metadata: en->en 4,573 of 4,582. The 9 en-labelled docs the heuristic calls non-English include 11748 'French Conversation and Composition' (fr), 12137 'La L\u00e9gende des Si\u00e8cles' (fr), 12368 'Contigo Pan y Cebolla' (es), 44112 'Argentina, Legend and History' (es), plus directory/table docs that score 'unknown'.\n\nMixed-language docs: each doc was split into 4,000-char chunks (at most 60 chunks, evenly spaced) and each chunk was scored. 15 en-labelled docs (0.33%) have 10% or more chunks in a foreign language, which is about 0.21% of English chars. Examples: 43289 H\u00e4nsel and Gretel (German libretto followed by English), 11948 Hakluyt's Principal Navigations (41/84 chunks foreign), 43383 Galen (27/74), 9090 Germania and Agricola.\n\nFiltered version: all 2,735 matched kept docs have metadata en, except 1 'cy' doc (Welsh-labelled) that the filter kept. The heuristic calls 2,734 of them en and 1 unknown.",
+ "issues": [
+  {
+   "name": "Non-English books in the raw set",
+   "description": "13.7% of raw docs are labelled non-English in metadata, contradicting the README. The Common Pile filter removes every one of them (kept docs are all metadata 'en', plus 1 'cy'). Use the filtered set, or drop on metadata.language != 'en'.",
+   "prevalence": "729/5311 docs (13.7%), 12.2% of chars (metadata.language).",
+   "measurement_method": "Counted metadata.language. Cross-checked with the stopword heuristic in analyze.py classify_language (confusion matrix in work/report.json, key lang_confusion_meta_vs_heuristic).",
+   "evidence_examples": [
+    "10507 (lang=de) 'MARY, ERZ\u00c4HLUNG von BJORNSTJERNE BJORNSON ... Die K\u00fcstenlinie des s\u00fcdlichen Norwegen ist h\u00e4ufig unterbrochen.'",
+    "43009 (lang=zh) '\u53e4\u8a69\u5341\u4e5d\u9996\u4e4b\u4e00\u300a\u884c\u884c\u91cd\u884c\u884c\u300b \u884c\u884c\u91cd\u884c\u884c\uff0c\u8207\u541b\u751f\u5225\u96e2\u3002'",
+    "9654 (lang=pt) 'Lendas e Narrativas (Tomo I) ... A Advert\u00eancia que precedia a anterior edi\u00e7\u00e3o'"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Duplicate editions: part volumes and 'Complete'/omnibus compilations",
+   "description": "Gutenberg often holds the same text both as separate parts and as a combined 'Complete' file, as re-releases, or as translations of the same work. Exact duplicates are rare. The common case is containment: one doc is almost entirely inside another doc.",
+   "prevalence": "Exact duplicates: 1 group (10802 = 11220, both PG 'Best Of' CD readmes). Near duplicates with Jaccard >= 0.8: 10 pairs (20 docs). Containment: 330/5311 docs (6.2% of docs, 4.1% of chars) have at least 80% of their sampled 5-shingles inside another sample doc. These counts are within the 3-shard sample only, so the corpus-wide rate is higher. After the CP filter, 206 kept English docs (132 in shard 0, 74 in shard 29) are still at least 80% contained in another sample doc.",
+   "measurement_method": "Exact: md5 of the lowercased text with punctuation removed and whitespace collapsed. Near: words are [a-z0-9]+ on the lowercased text, word 5-shingles are hashed with xxh64 plus a polynomial combine, and 1/64 of the shingle hashes are kept (mod-p sampling). Shared hashes go through an inverted index; hashes posted by more than 50 docs are skipped (409 skipped). Jaccard and containment are computed on these samples. Only docs with at least 20 sampled shingles are used (5,262 docs). Code: analyze.py run_dedup.",
+   "evidence_examples": [
+    "10 'The King James Version of the Bible' vs 10900 'The King James Bible': Jaccard 0.993",
+    "9560 'The Vaudois Teacher, and other poems Part 1 From Volume I' is 0.986 contained in 9567 'Narrative and Legendary Poems, Complete', and 9567 is 0.994 contained in 9600 'The Works of John Greenleaf Whittier, Complete'",
+    "11818 'U.S. Copyright Renewals, 1958 July - December' is 0.999 contained in 11800 'U.S. Copyright Renewals 1950 - 1977'",
+    "1000 'La Divina Commedia di Dante: Complete' vs 1012 'La Divina Commedia di Dante': Jaccard 0.998"
+   ],
+   "severity": "high"
+  },
+  {
+   "name": "Producer/volunteer credit preamble",
+   "description": "Nearly every book opens with a credit paragraph. The CP pipeline removes the *** START/END *** license blocks but not this paragraph, and the filter leaves it untouched.",
+   "prevalence": "4,882/5,311 docs (91.9%), 0.026% of chars. In filtered matched docs: 89.5%, unchanged from raw on the same ids.",
+   "measurement_method": "CREDIT_RE = (?im)^[ \\t]*(?:Produced by|E-?text prepared by|Etext prepared by|This e-?(?:Book|text) (?:was|is|has been) (?:produced|prepared|created|made|transcribed)|Transcribed (?:from .{0,80} )?by|Digiti[sz]ation by|Scanned (?:and proofed )?by|Prepared by|E-book prepared by)\\b, searched in the first 3,000 chars. The chars counted are the blank-line-delimited paragraph that contains the match.",
+   "evidence_examples": [
+    "10001: 'Produced by Ted Garvin, Ben Courtney and PG Distributed Proofreaders'",
+    "42400: 'Produced by Neville Allen, Chris Curnow and the Online\\nDistributed Proofreading Team at http://www.pgdp.net (This\\nfile was produced from images generously made available\\nby The Internet Archive)'",
+    "9217: 'Produced by David Widger.  HTML version by Al Haines.'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Residual Project Gutenberg trailers, mentions and old-style legal headers",
+   "description": "The final line 'End of Project Gutenberg's <title>, by <author>' (and German/French variants) is still present. Other lines mention Project Gutenberg, pgdp.net, ibiblio or 'etext'. A few docs keep the full 1990s-era header or legal text, sometimes in the middle of the text. Some docs start with a broken header fragment ending in '***'.",
+   "prevalence": "Trailer in the last 3,000 chars: 1,074 docs (20.2%), 0.004% of chars; filtered same ids 18.9% (unchanged). Lines matching PG/pgdp/ibiblio/'distributed proofread': 3,661 docs (68.9%), 0.017% of chars. Lines matching etext/ebook: 987 docs (18.6%). Old legal/header text: 12 docs (0.23%). Header fragment ending in '***' on the first line: 1.32% of docs. 'Note: Project Gutenberg also has an HTML version' blocks: 239 docs (4.5%); the filter removes the first two lines of that block, leaving the 'See NNNN-h.htm' URL lines.",
+   "measurement_method": "TRAILER_RE = (?im)^[ \\t]*(?:\\*+[ \\t]*)?(?:The )?(?:End of (?:the |this )?(?:Project Gutenberg|P\\.? ?G\\.?\\b|e-?text\\b)|Ende dieses Projekt Gutenberg|Fin (?:du|de ce|de la) (?:Projet|Project) Gutenberg|...), searched only in the last 3,000 chars. 4 extra docs match only in mid-text, e.g. '** End of PG Preface **'. PG_LINE_RE = (?i)project gutenberg|gutenberg\\.org|ibiblio\\.org|pgdp\\.net|distributed proofread|gutenberg-tm|\\bPGLAF\\b. LEGAL_RE = legal small print|This header should be the first thing seen|Project Gutenberg-tm|Gutenberg Literary Archive Foundation|We are releasing two versions of this Etext. HEADER_FRAG_RE = \\A[^\\n]{0,120}\\*\\*\\*[ \\t]*\\n.",
+   "evidence_examples": [
+    "10004: \"THE END\\n\\n\\n\\n\\n\\nEnd of Project Gutenberg's The Warriors, by Lindsay, Anna Robertson Brown\"",
+    "9064: 'Ende dieses Projekt Gutenberg Etextes Gedichte, von Paul Heyse.'",
+    "1 (at 89% of the doc): 'This header should be the first thing seen when viewing this Project\\nGutenberg file.  Please do not remove it.  Do not change or edit the\\nheader without written permission.'",
+    "10310: 'LITTLE MENLO***\\n\\n\\nTaken from the Edison National Historic Site\\n\\nThis eBook is available as a series of mp3 files.'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Transcriber's notes and errata lists",
+   "description": "Notes by the digitizer describe markup conventions, list corrections ('the first line is the original, the second the corrected one'), and explain notations. They are not part of the book.",
+   "prevalence": "1,090 docs (20.5%), 0.032% of chars. Any mention of 'transcriber's note': 21.6% of docs. The rate is higher in newer ebooks (shard 00014). For the same ids, the filtered and raw counts are identical (5.85% of matched docs, 0.009% of chars): the filter does not touch these notes.",
+   "measurement_method": "Bracketed form TN_BRACKET_RE = (?is)\\[(?:Transcriber|Transcriber['\u2019]s|Transcription note|End transcriber)[^\\]]{0,6000}\\]. Paragraph form TN_PARA_RE = (?im)^[ \\t]*(?:Transcriber['\u2019]?s?['\u2019]? ?(?:notes?|remarks?)|TRANSCRIBER['\u2019]?S? NOTES?)\\b; the chars counted run up to the next run of 2 blank lines, capped at 6,000.",
+   "evidence_examples": [
+    "10062: \"[Transcriber's Note: The spelling inconsistencies of the original have\\nbeen retained in this etext.]\"",
+    "42403: \"Transcriber's note:\\n\\n      Text enclosed by underscores is in italics (_italics_).\\n\\n      Text enclosed by equal signs is in bold face (=bold=).\\n\\n      [oe] represents the oe-ligature.\"",
+    "43289: 'The following is a list of other changes made to the original. The\\nfirst line is the original line, the second the corrected one.\\n\\n  R\u00fchr dich, und dich deisst der Fluss!\\n  R\u00fchr dich, und dich beisst der Fluss!'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Hard-wrapped prose lines",
+   "description": "Prose is hard-wrapped at about 70 columns. If left as is, a model learns to emit a newline every 65-72 characters, and paragraph structure becomes hard to tell from line breaks.",
+   "prevalence": "90.9% of docs have at least 50% of their non-final paragraph lines between 50 and 80 chars. The median wrap width per doc is p25=67, p50=69, p75=70, p95=71. There are 13.4 intra-paragraph newlines per 1,000 chars, i.e. 1.3% of chars are wrap newlines. The filtered set does not change this.",
+   "measurement_method": "Split paragraphs on \\n[ \\t]*\\n. For paragraphs with 2 or more lines, collect the lengths of all lines except the last. A doc counts as hard-wrapped if wrap_band_frac (lines with length 50-80) is at least 0.5. Wrap newlines are the sum of (lines-1) over multi-line paragraphs.",
+   "evidence_examples": [
+    "9060: wrap_band_frac 0.986, median line 69, 6,601 wrap newlines in 465,452 chars",
+    "9217: 'Two lovers, once upon a time, had planned a little summer-house, in\\nthe form of an antique temple, which it was their purpose to\\nconsecrate to all manner of refined and innocent enjoyments.'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Verse and play layout (must be kept apart from prose unwrapping)",
+   "description": "Poetry and drama depend on line breaks, indentation, speaker labels, stage directions in [_..._], and line numbers on the right margin. Naive unwrapping would destroy them.",
+   "prevalence": "9.3% of docs have at least 30% of non-empty lines in verse-like paragraphs (6.4% have at least 60%). Docs with 50 or more speaker-label lines: 9.1%. This is an upper bound, because ALL-CAPS headings that end in '.' also match. Docs with 5 or more stage directions: 1.1%. Docs with lines ending in whitespace + number (verse line numbers or TOC page numbers): 27.1%, 0.19% of chars.",
+   "measurement_method": "Verse paragraph: 3 or more lines, with at least 80% of body lines under 50 stripped chars. SPEAKER_RE = (?m)^[ \\t]*[A-Z][A-Z'\\-]{1,20}(?: [A-Z][A-Z'\\-]{1,20}){0,2}\\.[ \\t]*$. STAGE_RE = \\[_?(?:Exit|Exeunt|Enter|Aside|Re-enter|Curtain|Exeunt omnes)\\b. Trailing number line: (?m)\\S[ \\t]{3,}\\d{1,4}[ \\t]*$.",
+   "evidence_examples": [
+    "9162: 'FITZURSE.\\nHere, here, King\\'s men!\\n    [Catches hold of the last flying MONK.\\n                        Where is the traitor Becket?'",
+    "9413: 'Where flames refined in breasts seraphic glow:          320'",
+    "100: 'Hunting he lov\u2019d, but love he laugh\u2019d to scorn;        4'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Tables of contents, lists of illustrations, back-of-book indexes",
+   "description": "Navigation material: page-numbered contents, illustration lists, and long alphabetical indexes such as 'Witches, cat forms of, 196.'.",
+   "prevalence": "Docs with a CONTENTS/INDEX/LIST OF ILLUSTRATIONS heading followed by a block: 2,726 (51.3%), 0.53% of chars. Lines of 100 chars or less ending in page references: 3,602 docs (67.8%), 0.96% of chars. Same ids, filtered vs raw: block chars 0.297% vs 0.306%, index lines 0.321% vs 0.320%. These are not removed.",
+   "measurement_method": "CONTENTS_HEAD_RE = (?m)^[ \\t]*(?:TABLE OF CONTENTS|CONTENTS|Contents|INDEX|Index|LIST OF ILLUSTRATIONS|List of Illustrations|ILLUSTRATIONS|LIST OF PLATES|INDEX OF FIRST LINES)\\.?:?[ \\t]*$. After the heading, lines are consumed until 2 consecutive prose lines of 60+ chars without page references, or 3 blank lines after content, or more than 400 lines with fewer than 50% page-reference lines. Blocks do not overlap. INDEX_LINE_RE = (?:,|\\.{3,}|\\s{3,})\\s*(?:\\d{1,4}|[ivxlc]{1,7})(?:\\s*[-\u2013,]\\s*\\d{1,4})*\\.?\\s*$.",
+   "evidence_examples": [
+    "43750 (index at end): '    Witches, cat forms of, 196.\\n\\n    -- priestesses and, 147.\\n\\n    -- were-animals and, 191.'",
+    "44082: 'CONTENTS\\n                                                                    PAGE\\nLIST OF ILLUSTRATIONS                                                 ix'",
+    "43032: 'CONTENTS\\n\\n  A\u00ebrolites, 536.\\n  Andorra, The Republic of, 561.'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Illustration placeholders and inline footnote blocks",
+   "description": "[Illustration: caption] tags in the middle of the text, and [Footnote N: ...] blocks placed inline or collected at the end. Captions and footnotes are real text but they break the flow of sentences. The filter removes only bare '[Illustration]' lines and '[Illustration:' first lines, so a caption can be left without its opening bracket.",
+   "prevalence": "[Illustration...] tags: 2,161 docs (40.7%), 0.19% of chars; same ids, raw 0.120% vs filtered 0.114%. [Footnote...] blocks: 859 docs (16.2%), 0.42% of chars, unchanged by the filter. 28.1% of docs have 5 or more [n]/[A] footnote markers.",
+   "measurement_method": "ILLUS_RE = \\[(?:Illustration|Frontispiece|Image|Plate|Portrait)[^\\]]{0,3000}\\]. FOOTNOTE_BLOCK_RE = \\[Footnote[^\\]]{0,6000}\\]. FN_MARK_RE = \\[(?:\\d{1,3}|[A-Z])\\].",
+   "evidence_examples": [
+    "10003: '[Illustration: Madame Waddington.\\nFrom a photograph taken in the year of the Exposition, 1878.]'",
+    "10001: 'Nobody ever believed he was really quite born. [Footnote: A proverb for a\\nnobody, as Petron, 58 _qui te natum non putat._] Do what has to be done:'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Typographic markup conventions (_italics_, =bold=, [Greek: ...], [=a] macrons, {page} markers, HTML tags)",
+   "description": "Plain-text conventions from Gutenberg/DP: underscores for italics, equals signs for bold, transliterated Greek in brackets, ASCII codes for diacritics, page numbers in braces, <pb> tags, and some leftover HTML.",
+   "prevalence": "_italic_ spans: 83.6% of docs, underscore chars 0.14% of all chars. =bold= (3 or more spans): 7.4% of docs. Diacritic/Greek bracket notation: 412 docs (7.8%), 0.009% of chars. Page markers {n} / [Pg n] / <pb>: 249 docs (4.7%), 0.034% of chars. HTML tags: 43 docs (0.81%). None are changed by the filter.",
+   "measurement_method": "ITALIC_RE = (?<![\\w_])_[^_\\n]{1,200}_(?![\\w_]). BOLD_RE = (?<![\\w=])=[^=\\n]{1,100}=(?![\\w=]). DIACRITIC_NOTE_RE = \\[[=)~^'`:,.]{1,2}[A-Za-z]{1,2}\\]|\\[(?:Greek|Hebrew|Arabic|Sanskrit|Syriac|Coptic|Gothic):[^\\]]{0,500}\\]. PAGE_RE = \\{\\d{1,4}\\}|\\[(?:Pg|pg|Page|p\\.)\\s?[\\dixvlc]+\\]|<pb\\b[^>]*>. HTML_TAG_RE = </?(?:i|b|em|strong|sup|sub|sc|br|p|span|div|u|tt|small|big|font|a)\\b[^>\\n]{0,200}>.",
+   "evidence_examples": [
+    "9061: \"[3] [Greek: est_o d_e.]\"",
+    "42427: '_Ry[=u]gyo Shokinan_\\n        _Nembi Kwan-on riki_'",
+    "11800: \"<pb id='001.png' n='1950_h1/A/0001' />\"",
+    "10569: '\"If she\\'s been up \\'ere once in the last week to, know whether the\\n<i>Silvia</i> is up she\\'s been four or five times,\"'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Scene-break asterisms and ASCII box/table art",
+   "description": "Lines such as '       *       *       *       *       *', and box-drawn tables or frames made of | + - = characters. The CP filter removes most asterism lines and some box lines, which shows it also edits text.",
+   "prevalence": "Asterism lines: 2,766 docs (52.1%), 0.088% of chars; same ids, raw 51.7% vs filtered 7.6% of docs. ASCII art/table lines: 1,207 docs (22.7%), 0.245% of chars; same ids, raw 0.189% vs filtered 0.137% of chars.",
+   "measurement_method": "ASTERISM_RE = (?m)^[ \\t]*(?:\\*[ \\t]*){3,}$. Box line: stripped length 5 or more, not an asterism, and either at least 60% of chars in '|+-=_~#:.' or at least 2 '|' characters.",
+   "evidence_examples": [
+    "11540: '_Printed and Published by J. LIMBIRD, 143, Strand ...\\n\\n       *       *       *       *       *'",
+    "removed by the filter in 24 docs: '  |                                                              |' (6,327 lines)"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Non-prose and stub documents (catalogs, census tables, renewal registers, media placeholders)",
+   "description": "Some docs are reference data (copyright renewal registers, census tables, dictionaries, technical catalogs). Others are placeholders for audio, music-score or video ebooks with no text. In shard 0 the CP filter drops most of the digit-heavy English docs, but it keeps some stubs.",
+   "prevalence": "Digit fraction above 0.10: 1.21% of docs but 3.18% of chars. Digit fraction above 0.05: 1.64% of docs. Stubs under 5,000 chars that mention media formats: 7 docs (0.13%). Under 1,000 chars: 9 docs (0.17%). Shard 0, English docs with digit fraction above 0.05: 61 of 95 dropped vs 5 of 2,079 kept.",
+   "measurement_method": "digit_frac = count of digit chars / chars. stub_media = chars < 5000 and STUB_MEDIA_RE (?i)\\.(?:mus|mp3|midi?|avi|mpg|mpeg|ly|wav|ogg|pdf|tex)\\b|musical score|no text version|audio book|sheet music.",
+   "evidence_examples": [
+    "115 (digit_frac 0.577): 'United States Census Figures Back to 1630'",
+    "11800: 'A. E. UHE, by Frederick H. Martens.\\n  (Little biographies: series 1, Musicians)\\n  \u00a9 30Dec22, A695089. R59809,'",
+    "9392: 'This musical score (located in the /music folder) was\\nproduced by Daniel Grady ... saved\\nin that program\\'s proprietary .MUS format.'",
+    "9454: 'Because of its heavy dependence on diagrams and other graphics,\\nthere is no text version of this etext.'"
+   ],
+   "severity": "medium"
+  },
+  {
+   "name": "Front and back matter: title pages, publisher imprints, advertisements",
+   "description": "Title pages with imprint and copyright-entry text, and publisher catalogs or advertisements at the end of the book.",
+   "prevalence": "Docs with 5 or more price/format ad lines in the last 15%: 7.0%. Docs with a 'BY THE SAME AUTHOR'/'ADVERTISEMENTS'-style heading: 3.05%. ALL-CAPS lines (mostly title pages and headings): 97.2% of docs, 0.84% of chars. These are heuristic counts; I did not measure char spans for ads.",
+   "measurement_method": "AD_RE = (?i)\\b(?:price|cloth|post free|crown 8vo|8vo|12mo|16mo|net|gilt|boards)\\b.{0,80}(?:\\d|\\$|\u00a3)|\\b\\d+s\\. ?\\d*d\\., applied to the last 15% of the text. AD_HEAD_RE = (?m)^[ \\t]*(?:BY THE SAME AUTHOR|BOOKS BY|ALSO BY|NEW BOOKS|NEW NOVELS|CATALOGUE OF|ADVERTISEMENTS?|PUBLISHERS['\u2019] ANNOUNCEMENT). All-caps line: 4 or more letters, all uppercase.",
+   "evidence_examples": [
+    "11308: \"DARTON'S HOLIDAY LIBRARY.\\n\\nA SERIES OF SHILLING VOLUMES FOR THE YOUNG, BY APPROVED AUTHORS.\\n\\nNo. 1. MARY LEESON, by MARY HOWITT.\"",
+    "43289: 'The Weber Piano Company\\n Aeolian Hall, 362 Fifth Ave., near 34th St., New York\\n Catalog upon request'",
+    "43032: 'From D. & J. SADLIER & Co., New-York. Life of Catherine McAuley ... 1 vol. 12mo, pp. 500. Price\\n$2 50.'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Archaic and dialect spelling, Middle English",
+   "description": "Archaic forms (thee, thou, hath, -eth, lov'd), heavy dialect, and Middle English with \u00fe/\u021d. This is genuine historical language, not noise, but it shifts the distribution away from modern English.",
+   "prevalence": "Among English docs, archaic tokens per 1,000 words: p50=0.65, p75=1.86, p95=14.9, p99=33.1, max=62.6. 12.0% of English docs exceed 5 per 1k and 3.5% exceed 20 per 1k. 0.52% of English docs contain 10 or more \u017f/\u00fe/\u021d characters.",
+   "measurement_method": "Rate per 1,000 words of: tokens in {thee, thou, thy, thine, hath, doth, dost, hast, shalt, wilt, ye, thyself, wherefore, whence, hither, thither, whither, betwixt, twas, tis, ere, oft, nay, saith, spake}; plus words ending in -eth (excluding -ieth and teeth/beneath/seth/elizabeth/macbeth/nazareth/japheth/kenneth/gareth/sheth); plus the elision pattern \\b[a-z]{2,}'d\\b.",
+   "evidence_examples": [
+    "42713: 'Alle beon he bli\u00fee\\n  \u00deat to my song ly\u00fee,\\n  A sang ihc schal \u021dou singe\\n  Of Murry \u00fee kinge.'",
+    "11540: \"an' play treeks, till collie gerns at him; an' then beway\\no' makin friens again\""
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Mojibake (double-encoded UTF-8)",
+   "description": "UTF-8 text decoded as Latin-1, e.g. 'B\u00c3\u00b6hmen', 'Biblioth\u00c3\u00a8que'.",
+   "prevalence": "19 docs (0.36%), under 0.001% of chars. 3 of the filtered matched docs still contain it.",
+   "measurement_method": "MOJIBAKE_RE = \u00c3[\\u0080-\u00bf]|\u00e2\u20ac[\\u0080-\u00bf\u2018-\u201e\u2122\u0153\u02dc]|\u00c2[\u00a0-\u00bf]|\ufffd.",
+   "evidence_examples": [
+    "10223: 'im innern\\nB\u00c3\u00b6hmen, in M\u00c3\u00a4hren, um Troppau und in\\nOberungarn von ungef\u00c3\u00a4hr 6\u00c2\u00bd Mill.'",
+    "43289: 'Produced by Colin Bell, Marc-Andr\u00c3\u00a9 Seekamp, Joseph Cooper,'",
+    "11584: '\"_\u00c3\\x8b bient\u00c2\\x99t_,\" she cried.'"
+   ],
+   "severity": "low"
+  },
+  {
+   "name": "Defect added by the CP filter: deletion of the line strings 'CHAPTER III', 'III' and 'I'",
+   "description": "The filter deletes every occurrence of a fixed set of 199 line strings in shard 0 (83 in shard 29). Most are asterisms and box lines, but the set also includes the heading lines 'CHAPTER III', 'III', 'I' and indented variants. 'CHAPTER I', 'CHAPTER II', 'CHAPTER IV' and 'CHAPTER V' are never removed. As a result, the filtered books have chapter sequences like II, IV, and lose poem/section numerals I and III. I did not find the cause of this in the data.",
+   "prevalence": "Shard 0: of 532 kept docs with a 'CHAPTER III' line, 350 lose it, and 345 of these still have CHAPTER II and CHAPTER IV. Shard 29: 117 of 175 lose it (116 keep II and IV). Lines removed: 'CHAPTER III' 455 lines in 358 docs, 'III' 440 in 210 docs, 'I' 516 in 235 docs (shard 0). 0 docs lost 'CHAPTER I/II/IV/V'.",
+   "measurement_method": "Streaming merge join of raw and filtered by id. For each modified doc, compare multisets of lines: Counter(raw.split('\\n')) - Counter(filt.split('\\n')). The heading check uses re.search(r'(?m)^[ \\t]*CHAPTER III\\.?[ \\t]*$') on raw vs filtered (analyze.py run_filtdiff, chapter_heading_check).",
+   "evidence_examples": [
+    "11352 diff: '-CHAPTER III' at raw line 100 and at raw line 1970; nothing else changed in that region",
+    "10795 diff: 'CHAPTER II\\n  ALONG THE ESK VALLEY\\n\\nCHAPTER III\\n  THE COAST FROM WHITBY TO REDCAR' -> the 'CHAPTER III' line is deleted from both the TOC and the body",
+    "11896 diff: removed 'Note: Project Gutenberg also has an HTML version of this' / '      file which includes the original illustrations.' / '  CHAPTER III' / 'CHAPTER III'"
+   ],
+   "severity": "medium"
+  }
+ ],
+ "duplication": "Within the 5,311-doc raw sample (3 shards):\n\nExact duplicates: 1 group of 2 docs (10802 and 11220, both PG 'Best Of' CD/DVD readmes), so 1 redundant doc (0.02%). Method: md5 of the text after lowercasing, removing [^\\w\\s] and collapsing whitespace.\n\nNear duplicates: method is word 5-shingles over [a-z0-9]+ tokens, hashed with xxh64 plus a polynomial combine and a splitmix finalizer. 1/64 of the shingle hashes are kept by mod-64 sampling (about 6.6M hashes). An inverted index finds shared hashes; 409 hashes posted by more than 50 docs (stock phrases) are skipped, so pair counts are lower bounds. Docs with fewer than 20 sampled shingles (49 docs) are left out as unreliable.\n- 10 pairs (20 docs) have Jaccard >= 0.8 and 23 pairs have Jaccard >= 0.5. Examples: KJV 10 vs 10900 (0.993); the Divina Commedia Italian files 997-1000 vs 1009-1012 (0.994-0.998); Robin Hood 964 vs 10148 (0.988).\n- The larger effect is containment, from part volumes vs 'Complete' editions and series compilations. 330 docs (6.2% of docs, 4.1% of chars) have at least 80% of their sampled shingles inside another doc in the sample. Examples: Whittier parts 9560-9566 inside 9567 'Complete', which is inside 9600 'Works ... Complete'; all 56 half-year copyright renewal files 11801-11856 inside 11800.\n- In the titles, 61 contain Complete/Omnibus/Entire collection/Collected works and 1,103 contain Part/Volume/Book/No. N.\n\nBecause the sample is 3 of 30 shards, cross-shard duplicates (e.g. a 'Complete' file in another shard) are not seen, so the corpus-wide rate is higher.",
+ "filtered_comparison": "Raw shard 00000 was compared with filtered shard 0000, and raw 00029 with filtered 0014. Both versions are sorted by id string, and each filtered shard spans the full id range of its raw shard. The comparison is a streaming merge join on id. The filtered shards contain no ids that are absent from raw.\n\n(1) Documents dropped\n- Shard 0: 328 of 2,407 dropped (13.6% of docs, 18.7% of chars); 2,079 kept, all metadata 'en'. Dropped by metadata language: fr 101, en 95, nl 35, de 23, fi 22, es 18, it 15, da 9, plus others. Every non-English doc is dropped.\n- Shard 29: 155 of 811 dropped (19.1% of docs, 16.9% of chars); 656 kept (655 en, 1 cy). Dropped: en 79, de 41, fr 18, others.\n\n(2) The dropped English docs (174 in total). Their measured traits:\n- Shard 0, 95 docs: 61 have digit fraction > 0.05 (vs 5 of 2,079 kept). These include the copyright renewal registers 11800-11856 and 115 census figures. 59 are at least 80% contained in another sample doc (vs 132 of 2,079 kept). Median length is 542k chars (vs 270k kept). Some are omnibus/duplicate editions, e.g. 10706 History of Rome (Volumes 1-5), 10900 King James Bible (a duplicate of 10, which is kept), 1004 Divine Comedy Longfellow Complete, 10573 Ship's Company Entire Collection. Some are short classics, such as 1063 The Cask of Amontillado, 1080 A Modest Proposal and 1045 Venus and Adonis.\n- Shard 29, 79 docs: 15 have Complete/Omnibus in the title (vs 2 kept), e.g. 9567, 9574, 9580 (Whittier 'Complete') and 9170 (Three Cities Trilogy, Complete). The individual parts of these are kept. Many single Hawthorne tales '(From \"Twice Told Tales\")' / '(From \"Mosses from an Old Manse\")' are also dropped.\n- The data matches document-level dedup plus a filter on numeric/table-heavy docs, but I have not verified what rule produced the drops.\n\n(3) Changes to the kept docs\n- Shard 0: 585 kept docs are byte-identical and 1,494 are modified. Shard 29: 247 identical, 409 modified.\n- The changes only delete whole lines. No line was added (0 non-empty added lines). When a line string is removed, every copy of it in that doc is removed (0 removed strings survive elsewhere in the doc).\n- Chars removed: 0.189% of kept-doc chars in shard 0 and 0.099% in shard 29. Per modified doc, the removed fraction is p50=0.056% and p95=3.1% (max 29%) in shard 0.\n- The removed strings come from a small fixed set: 199 distinct line strings in shard 0 and 83 in shard 29. The top ones (shard 0 lines/docs) are:\n  - '       *       *       *       *       *' 19,923/985\n  - a box-drawing line '  |   ...   |' 6,327/24\n  - '[Illustration]' 1,505/241\n  - '  +---...---+' 654/24\n  - 'I' 516/235\n  - 'CHAPTER III' 455/358\n  - 'III' 440/210\n  - 'Note: Project Gutenberg also has an HTML version of this' 120/120\n  - '      file which includes the original illustrations.' 92/92\n  - '[Illustration:' 91/30\n- The deletion of 'CHAPTER III', 'III' and 'I' is a defect: 345 of 532 shard-0 kept docs with 'CHAPTER III' now go from CHAPTER II to CHAPTER IV, while 'CHAPTER I', 'II', 'IV' and 'V' are never deleted.\n\n(4) What the filter still misses. Detectors run on identical ids, raw vs filtered:\n- Unchanged by the filter: credit preamble 89.5% of docs; PG trailer 18.9%; PG/pgdp mention lines 63.3%; transcriber notes 5.85%; [Footnote] blocks 24.9% of docs and 0.63% of chars; diacritic/Greek notation 10.1%; page markers 2.7%; HTML tags 0.69%; mojibake 0.11%; TOC/index blocks 56.6% of docs (0.30% of chars) and index lines 0.32% of chars; hard wrapping; the 1 Welsh-labelled doc.\n- Partly removed: asterism docs 51.7% -> 7.6%; illustration-tag chars 0.120% -> 0.114%; box/table chars 0.189% -> 0.137%; HTML-version notes 4.4% -> 0.26% of docs (the URL lines remain).\n- Duplication remains: 206 kept English docs are still at least 80% contained in another doc of the sample.",
+ "license_notes": "metadata.license is 'Public Domain' for all 5,311 sampled raw docs and for all filtered docs read. No other license value appears. The README says the selection uses Gutenberg's own public-domain metadata plus PG19 books, and it warns that the metadata may be wrong. Some docs are 20th-century US government works or registers, for example 11800-11856 U.S. Copyright Renewals, which the filter drops.",
+ "recommended_steps": [
+  {
+   "step": "Start from the filtered version, or at minimum drop docs with metadata.language != 'en'. Then add a chunk-level language check, and either cut non-English sections out of mixed English docs (parallel-text libretti, Latin/Greek source texts) or tag them.",
+   "rationale": "The raw set is not English-only. The filter handles whole-doc language but keeps mixed docs and 1 'cy' doc.",
+   "evidence": "Raw: 729/5,311 docs (13.7%, 12.2% of chars) are non-English. The filter drops all of them. 15 kept-type English docs have 10% or more foreign chunks (e.g. 43289 H\u00e4nsel and Gretel, 11948 Hakluyt 41/84 chunks)."
+  },
+  {
+   "step": "Do NOT use the filtered text as is for heading-sensitive training. Either restore the deleted lines from raw (the filter only deletes lines, so this is a line-level re-insertion of 'CHAPTER III', 'III', 'I'), or apply your own line cleaning to the raw text of the kept ids.",
+   "rationale": "The filter's fixed line-deletion set includes chapter and section headings, which breaks document structure.",
+   "evidence": "345 of 532 shard-0 kept docs that had 'CHAPTER III' now go CHAPTER II -> CHAPTER IV. 'III' was deleted in 210 docs and 'I' in 235 docs. CHAPTER I/II/IV/V were never deleted."
+  },
+  {
+   "step": "Run corpus-wide (all 30 shards) near-duplicate and containment dedup with MinHash-LSH over word 5-shingles. For pairs with containment >= 0.8, keep one copy: prefer the separate parts or the complete edition, consistently, and drop the other. Use the title patterns (Complete|Omnibus|Entire Collection|Part N|Volume N|'From \"...\"') to prioritize review.",
+   "rationale": "Gutenberg publishes the same work as parts and as a 'Complete' file, and re-releases editions. A model trained on both sees those works 2-3 times.",
+   "evidence": "In the sample, 330 docs (6.2%, 4.1% of chars) are at least 80% contained in another doc, and only 1 exact-duplicate pair exists. After the CP filter, 206 kept English docs are still at least 80% contained in another sample doc. The sample covers only 3 of 30 shards, so cross-shard duplicates are missed."
+  },
+  {
+   "step": "Strip Gutenberg production boilerplate: the opening credit paragraph (CREDIT_RE in the first 3 KB); 'End of (the) Project Gutenberg ...' / 'Ende dieses Projekt Gutenberg ...' trailers in the last 3 KB; HTML-version notes with their URL lines; old 7-bit/8-bit release preambles; and the header fragments ending in '***'. Also drop paragraphs that consist only of pgdp/ibiblio/archive.org provenance lines.",
+   "rationale": "These are metadata about digitization, not book text. They repeat across tens of thousands of docs, so a model would memorize them.",
+   "evidence": "Credits: 91.9% of docs. Trailer: 20.2%. PG/pgdp lines: 68.9%. HTML note: 4.5%. Header fragments: 1.32%. Old legal headers: 12 docs, including id 1 with a full header at 89% of the doc. All except the HTML note are unchanged in the filtered version."
+  },
+  {
+   "step": "Remove transcriber's notes, both the bracketed form and the paragraph form, including errata/correction lists. Strip [Illustration] tags with empty captions. Either keep captions as their own paragraph without the bracket wrapper, or drop them.",
+   "rationale": "Transcriber notes describe the e-text, not the book. Errata lists show pairs of misspelled and corrected lines.",
+   "evidence": "Transcriber notes are in 20.5% of docs (0.032% of chars), unchanged by the filter. Illustration tags: 40.7% of docs, 0.19% of chars. Example: 43289 errata list 'R\u00fchr dich, und dich deisst der Fluss!' / '... beisst ...'."
+  },
+  {
+   "step": "Unwrap hard-wrapped prose: join single newlines inside blank-line-delimited paragraphs when most lines in the paragraph are 50-80 chars. Keep the line breaks of verse paragraphs (80% or more of body lines under 50 chars, or lines with right-margin line numbers), play speaker/stage-direction lines, indented block quotes, and tables. Fix hyphenation only for line-final '-' where the joined word appears elsewhere in the doc. Collapse runs of 3 or more blank lines to 1.",
+   "rationale": "About 70-column wrapping teaches spurious newlines, and unwrapping that ignores verse would ruin poetry and plays.",
+   "evidence": "90.9% of docs are hard-wrapped (median wrap width 69, p95 71), with 13.4 wrap newlines per 1k chars. 9.3% of docs are verse-heavy, at most 9.1% have play speaker labels, and 0.73% are both verse-heavy and wrapped. Blank-line excess appears in 99.9% of docs."
+  },
+  {
+   "step": "Normalize Gutenberg markup: turn _italic_ and =bold= into plain text (or one consistent markdown style); remove {n}, [Pg n] and <pb .../> page markers and stray HTML tags; turn [=a]/[)e] diacritic codes into Unicode (\u0101, \u0115); keep [Greek: ...] transliterations only if you want them, otherwise drop them. Fix mojibake with a Latin-1-to-UTF-8 round-trip on docs that match MOJIBAKE_RE. ftfy is not installed here, so this is a simple heuristic.",
+   "rationale": "These are encoding conventions of the e-text, not language. They are cheap to normalize and they occur in most docs.",
+   "evidence": "_italic_ in 83.6% of docs. =bold= (3 or more) in 7.4%. Diacritic/Greek notation in 7.8%. Page markers in 4.7%. HTML tags in 0.81%. Mojibake in 0.36%, e.g. 10223 'B\u00c3\u00b6hmen'."
+  },
+  {
+   "step": "Remove or down-weight navigation apparatus: TOC/list-of-illustrations blocks after their headings, and back-of-book indexes (runs of 5 or more consecutive lines matching INDEX_LINE_RE). Footnotes are content and can be kept, but convert inline [Footnote N: ...] blocks to end-of-paragraph notes, or keep them as is consistently.",
+   "rationale": "Page-numbered lists are low-value tokens, and their page numbers point to pages that no longer exist.",
+   "evidence": "TOC/index blocks: 51.3% of docs, 0.53% of chars. Page-reference lines: 67.8% of docs, 0.96% of chars. The filter leaves both unchanged (0.30%/0.32% of chars on matched ids)."
+  },
+  {
+   "step": "Drop stub and non-prose docs. Drop texts under about 2,000 chars that mention media files (.mus/.mp3/.midi/.avi) or say 'no text version'. Route docs with digit fraction > 0.10 (registers, census tables, catalogs) to a separate data mixture or drop them. Optionally strip trailing publisher advertisement sections (AD_HEAD_RE headings, or 5 or more price/format lines in the last 15%).",
+   "rationale": "Placeholders hold no book text, and register/table dumps are a large share of chars in a few docs.",
+   "evidence": "9 docs under 1,000 chars (e.g. 11755 'This eBook is a musical score...', 9320 '9320: EXTRA directories'). Docs with digit fraction > 0.10 are 1.21% of docs but 3.18% of chars (11800 alone is 31.1M chars). Ad tails appear in 7.0% of docs."
+  },
+  {
+   "step": "Keep archaic and dialect text, but track it: compute archaic-token rate and \u017f/\u00fe/\u021d counts per doc as metadata, and cap or down-weight the top tail (e.g. more than 20 per 1k words, or Middle English) if modern-English fluency is the goal. Do not 'modernize' spelling.",
+   "rationale": "Historical language is a legitimate part of this source. Spelling modernization would invent text that is not in the source.",
+   "evidence": "Archaic rate in English docs: p50 0.65 per 1k, p95 14.9, p99 33.1. 3.5% of English docs exceed 20 per 1k, and 0.52% contain Middle English letters (e.g. 42713 King Horn)."
+  }
+ ],
+ "script_path": "/tmp/claude-1000/-home-vihaa-CinnamonLM/613996b4-284e-41da-b92e-c61d5552ebe8/scratchpad/common_pile_samples/project_gutenberg/analyze.py (steps: index|stats|dedup|filtdiff|report; results are in work/report.json, work/dedup.json, work/filtdiff.json and work/stats_*.jsonl in the same directory)",
+ "open_questions": [
+  "The id-level drop rule of the CP filter is not documented in the dataset cards. The dropped English docs match document-level duplicate removal and numeric-heavy filtering, but some short classics (1063 Cask of Amontillado, 1080 A Modest Proposal) are also dropped. Their duplicates are probably in shards I did not sample. I did not verify the cause.",
+  "The cause of the fixed line-deletion set (199 strings, including 'CHAPTER III', 'III', 'I' but not 'CHAPTER II') is unknown. It may be a frequency or bloom-filter paragraph dedup with an artifact. I have not verified this, and the Common Pile code was not read.",
+  "The near-duplicate and containment figures cover 3 of 30 shards. The corpus-wide duplicate-edition rate needs a full-corpus MinHash run.",
+  "The speaker-label count for plays (9.1% of docs with 50 or more) includes ALL-CAPS headings that end in a period, so it is an upper bound. A play classifier would need a better rule, e.g. a label followed by an indented speech line.",
+  "The local download of project_gutenberg had not started when this analysis ran. A later local copy should be checked against the same shard checksums."
+ ]
+}

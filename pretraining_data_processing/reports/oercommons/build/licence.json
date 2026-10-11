@@ -1,0 +1,35 @@
+{
+ "stage": "licence",
+ "started_at_ist": "2026-10-11T20:49:27+05:30",
+ "finished_at_ist": "2026-10-11T20:49:46+05:30",
+ "totals": {
+  "docs_before": 9339,
+  "chars_before": 94359491,
+  "docs_after": 9036,
+  "chars_after": 83064795,
+  "drops": 303,
+  "drop_chars": 11250124,
+  "strips": 148,
+  "strip_chars_removed": 44572
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ },
+ "code_sha256": {
+  "licence/licence_filter.py": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+  "licence/apply_licence.py": "f9723e1c02e4d108bccc1f9f37d1128912b79aff3d8a5b7a0816f4c6523d001d",
+  "workflow/build_corpus.py": "0608030cd6903e4baa9db71b0499d6e42619450623765a6283c8fd65a5d6fb21"
+ },
+ "actions_sha256": "7a40d64924b3ffe9b96aa616214581dd7a83e7c5bfe316fa8cb512b9551fb024",
+ "input_sha256": {
+  "00000_oercommons.json.gz": "6582d00a93ffcddad76beace4866e42ff9f1c5bc1f3985cc8f117d51271027b8"
+ },
+ "output_sha256": {
+  "00000_oercommons.json.gz": "77d2ce6b7d668fc4dcb9c072383690cb70fa3cc212213ce2ef6b0481159439ad"
+ }
+}

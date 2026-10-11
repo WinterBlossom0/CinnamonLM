@@ -1,0 +1,264 @@
+{
+ "source": "doab",
+ "source_dir": "/home/vihaa/CinnamonLM/pretraining_data_processing/build/doab",
+ "in_place": true,
+ "filter_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/licence/licence_filter.py",
+ "filter_sha256": "c00d5d952a87601505c2aceed410b068c9bfa696ffbf5c98a258297e726f2ae9",
+ "actions_path": "/home/vihaa/CinnamonLM/pretraining_data_processing/reports/doab/build/licence/doab_actions.jsonl",
+ "actions_sha256": "8913b35438aa1caed62f9b2fe046bdd9769eee13ad48fabf5f542ce296326378",
+ "summary_strip_span_chars": 2632826,
+ "per_shard": {
+  "00000_doab.json.gz": {
+   "docs_before": 33979,
+   "chars_before": 958661520,
+   "docs_after": 33946,
+   "chars_after": 936799182,
+   "drops": 33,
+   "drop_chars": 21624703,
+   "strips": 314,
+   "strip_chars_removed": 237635,
+   "verify": {
+    "dropped_ids": 33,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 33
+   },
+   "recount_docs": 33946,
+   "recount_chars": 936799182,
+   "recount_matches": true
+  },
+  "00001_doab.json.gz": {
+   "docs_before": 37881,
+   "chars_before": 958118453,
+   "docs_after": 37858,
+   "chars_after": 941674362,
+   "drops": 23,
+   "drop_chars": 16221098,
+   "strips": 362,
+   "strip_chars_removed": 222993,
+   "verify": {
+    "dropped_ids": 23,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 23
+   },
+   "recount_docs": 37858,
+   "recount_chars": 941674362,
+   "recount_matches": true
+  },
+  "00002_doab.json.gz": {
+   "docs_before": 40049,
+   "chars_before": 960051619,
+   "docs_after": 40019,
+   "chars_after": 941688813,
+   "drops": 30,
+   "drop_chars": 18141591,
+   "strips": 312,
+   "strip_chars_removed": 221215,
+   "verify": {
+    "dropped_ids": 30,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 30
+   },
+   "recount_docs": 40019,
+   "recount_chars": 941688813,
+   "recount_matches": true
+  },
+  "00003_doab.json.gz": {
+   "docs_before": 37234,
+   "chars_before": 958684465,
+   "docs_after": 37209,
+   "chars_after": 943441640,
+   "drops": 25,
+   "drop_chars": 15052630,
+   "strips": 355,
+   "strip_chars_removed": 190195,
+   "verify": {
+    "dropped_ids": 25,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 25
+   },
+   "recount_docs": 37209,
+   "recount_chars": 943441640,
+   "recount_matches": true
+  },
+  "00004_doab.json.gz": {
+   "docs_before": 34570,
+   "chars_before": 961828427,
+   "docs_after": 34549,
+   "chars_after": 944857106,
+   "drops": 21,
+   "drop_chars": 16791411,
+   "strips": 319,
+   "strip_chars_removed": 179910,
+   "verify": {
+    "dropped_ids": 21,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 21
+   },
+   "recount_docs": 34549,
+   "recount_chars": 944857106,
+   "recount_matches": true
+  },
+  "00005_doab.json.gz": {
+   "docs_before": 35615,
+   "chars_before": 962881838,
+   "docs_after": 35595,
+   "chars_after": 952462165,
+   "drops": 20,
+   "drop_chars": 10223868,
+   "strips": 346,
+   "strip_chars_removed": 195805,
+   "verify": {
+    "dropped_ids": 20,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 20
+   },
+   "recount_docs": 35595,
+   "recount_chars": 952462165,
+   "recount_matches": true
+  },
+  "00006_doab.json.gz": {
+   "docs_before": 38027,
+   "chars_before": 956766244,
+   "docs_after": 38000,
+   "chars_after": 936683197,
+   "drops": 27,
+   "drop_chars": 19874017,
+   "strips": 396,
+   "strip_chars_removed": 209030,
+   "verify": {
+    "dropped_ids": 27,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 27
+   },
+   "recount_docs": 38000,
+   "recount_chars": 936683197,
+   "recount_matches": true
+  },
+  "00007_doab.json.gz": {
+   "docs_before": 34639,
+   "chars_before": 959776720,
+   "docs_after": 34614,
+   "chars_after": 943504142,
+   "drops": 25,
+   "drop_chars": 16098243,
+   "strips": 285,
+   "strip_chars_removed": 174335,
+   "verify": {
+    "dropped_ids": 25,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 25
+   },
+   "recount_docs": 34614,
+   "recount_chars": 943504142,
+   "recount_matches": true
+  },
+  "00008_doab.json.gz": {
+   "docs_before": 33517,
+   "chars_before": 961752906,
+   "docs_after": 33495,
+   "chars_after": 949052706,
+   "drops": 22,
+   "drop_chars": 12491971,
+   "strips": 341,
+   "strip_chars_removed": 208229,
+   "verify": {
+    "dropped_ids": 22,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 22
+   },
+   "recount_docs": 33495,
+   "recount_chars": 949052706,
+   "recount_matches": true
+  },
+  "00009_doab.json.gz": {
+   "docs_before": 38674,
+   "chars_before": 958285704,
+   "docs_after": 38645,
+   "chars_after": 939389042,
+   "drops": 29,
+   "drop_chars": 18708310,
+   "strips": 347,
+   "strip_chars_removed": 188352,
+   "verify": {
+    "dropped_ids": 29,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 29
+   },
+   "recount_docs": 38645,
+   "recount_chars": 939389042,
+   "recount_matches": true
+  },
+  "00010_doab.json.gz": {
+   "docs_before": 33638,
+   "chars_before": 963344438,
+   "docs_after": 33609,
+   "chars_after": 946267731,
+   "drops": 29,
+   "drop_chars": 16882788,
+   "strips": 308,
+   "strip_chars_removed": 193919,
+   "verify": {
+    "dropped_ids": 29,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 29
+   },
+   "recount_docs": 33609,
+   "recount_chars": 946267731,
+   "recount_matches": true
+  },
+  "00011_doab.json.gz": {
+   "docs_before": 40785,
+   "chars_before": 958027712,
+   "docs_after": 40739,
+   "chars_after": 938273027,
+   "drops": 46,
+   "drop_chars": 19599559,
+   "strips": 338,
+   "strip_chars_removed": 155126,
+   "verify": {
+    "dropped_ids": 46,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 46
+   },
+   "recount_docs": 40739,
+   "recount_chars": 938273027,
+   "recount_matches": true
+  },
+  "00012_doab.json.gz": {
+   "docs_before": 35837,
+   "chars_before": 936733212,
+   "docs_after": 35824,
+   "chars_after": 931754947,
+   "drops": 13,
+   "drop_chars": 4721470,
+   "strips": 348,
+   "strip_chars_removed": 256795,
+   "verify": {
+    "dropped_ids": 13,
+    "dropped_ids_shared_with_retained_records": 0,
+    "dropped_ids_absent": 13
+   },
+   "recount_docs": 35824,
+   "recount_chars": 931754947,
+   "recount_matches": true
+  }
+ },
+ "totals": {
+  "docs_before": 474445,
+  "chars_before": 12454913258,
+  "docs_after": 474102,
+  "chars_after": 12245848060,
+  "drops": 343,
+  "drop_chars": 206431659,
+  "strips": 4371,
+  "strip_chars_removed": 2633539
+ },
+ "summary_checks": {
+  "docs_before": true,
+  "chars_before": true,
+  "drops": true,
+  "drop_chars": true,
+  "strips": true,
+  "docs_after": true
+ }
+}

@@ -1,0 +1,67 @@
+{
+ "stage": "decontam",
+ "started_at_ist": "2026-10-11T20:54:06+05:30",
+ "finished_at_ist": "2026-10-11T20:55:10+05:30",
+ "rule": {
+  "ngram": 8,
+  "min_shared": 8,
+  "match_fraction": 0.7,
+  "drop_share": 0.5
+ },
+ "index_sha256": {
+  "eval_ngrams.npy": "2b36012429b0832852e7e427f2b8a137bdb90fa35a65ab274f9b098732ae9f9d",
+  "eval_ngram_items.npy": "629245f2e36a65b61f6d935c97ac5923788196827fbdce95af6c1718f35f9422",
+  "eval_items.json": "6024b316d3a532a0088fb9a21db3308493e533f658e1fe51c9e2c0bf049e0cdd"
+ },
+ "code_sha256": {
+  "workflow/decontam.py": "56501d17138937d0d8ba81925d07ed31d481545b0fa1391a8d7026e78e3a4dfb",
+  "workflow/decontam_index.py": "52685b0c26cb3cfbd63121da9e70a9efe080f77825cbc65711c93f1c76fd0aed",
+  "workflow/corpus.py": "d33f65f057bc36b42c9910ec27c124956fe6a3c87e989f3ccdae3b91352a8687",
+  "data_pipeline/common/dedup.py": "70b218abf0831861c3919b1b3bccf3e75411899381437321e1a1d2474b696660"
+ },
+ "matched_docs": 11,
+ "matched_pairs_per_benchmark": {
+  "mmlu": 10,
+  "lambada": 1
+ },
+ "totals": {
+  "docs_in": 358349,
+  "docs_out": 358349,
+  "chars_in": 10323357571,
+  "chars_out": 10323344417,
+  "dropped": 0,
+  "edited": 11,
+  "lines_removed": 13,
+  "chars_removed": 13154
+ },
+ "input_sha256": {
+  "00000_doab.json.gz": "b30b51089b7c130a07e8b7537441ca3a23c4b117036aa93219da599dce6a08cb",
+  "00001_doab.json.gz": "edf9ce8ae6dcd18218496e2b42b46312fe9162d8d4de6f7f3804076e9739299e",
+  "00002_doab.json.gz": "91cc909389b94c71c880c1f0319a9d8d3257e38af17842588047835d8d50eb13",
+  "00003_doab.json.gz": "0a989d03fd00543f3f9245c430b8e96ca3f9e58fd833ed14023413d994022fc0",
+  "00004_doab.json.gz": "085c690c52b68a13312c46da6a8e0e8f91006f9039bab9c4fbf632b569da065a",
+  "00005_doab.json.gz": "6505dc5f5b8c9b79bc516185bd72a1a762f73c97dc44a82482e2a36c91a9731a",
+  "00006_doab.json.gz": "175aa866de259707039479bae67309903710fc04abb8694b92845e512fbf6c24",
+  "00007_doab.json.gz": "044a2f96f39fd9f738f015879a125544c73f34d94d9edb4164830e028f7af021",
+  "00008_doab.json.gz": "131210103f4319f9abbca59cb7eeb38f8a28788308b087d68d77f5a0db1721c7",
+  "00009_doab.json.gz": "51f5a20790120abe68c09d17e3fc7914e5636098d7d8e80288176b500a4c5086",
+  "00010_doab.json.gz": "381fffc17453246d0ba8878b84dff2ddfd265a059c7b08e75d7748c77a2042e5",
+  "00011_doab.json.gz": "adfba9b9371d998a66e742476f246eea2ea03afd15eb7c3cc261951e43256989",
+  "00012_doab.json.gz": "a2faf92965b1a86dec155bcba29f7a55eb4d4fc35c3820506be8cdaacad65fce"
+ },
+ "output_sha256": {
+  "00000_doab.json.gz": "25bcd5b3d082682d855b34077080453535970416b1887a6d73e8958f376f38e7",
+  "00001_doab.json.gz": "ef6827d9e2454c72061744fa30b31aabaf158b7c0ff5bd8bb90727a31a002309",
+  "00002_doab.json.gz": "78d8f9c1a3fec9cb2af1785357f9e3388268e1f47f8d883d3b1a754e36942f3d",
+  "00003_doab.json.gz": "f0c805a30c4432b20e134feef9ea9c9b6e600cb77bcff653aa6d52671838ded7",
+  "00004_doab.json.gz": "b73b3bef032f337a7fe60bddf4dd3d5ee64b2f31c191527d0067223d25dd97f8",
+  "00005_doab.json.gz": "8538b070988f45629f85350c55c2c5393d0c502df70bdbbc567a3f8c731a71ac",
+  "00006_doab.json.gz": "fb32be2593d8954b5a890b1f0406896a63a4227899e4db939418601e7c1c87d9",
+  "00007_doab.json.gz": "0ae26458a8c9cccf815c91c2327e559f1e47a591198984435f525ef2a58ce6b4",
+  "00008_doab.json.gz": "81ae11dcfe531baa41f52b2416c7449f42080705b6540ef4b12f5d2cbf5fc222",
+  "00009_doab.json.gz": "3945795e218cf53547eef9db7def6e436adb078d9cd83978e279e1c39daec7bd",
+  "00010_doab.json.gz": "b7625b3cffb4fc732d5cab7701f308715ecf6258a191d2e1d7039ef1e9839209",
+  "00011_doab.json.gz": "50177a727a32577620f7aee5667b5d23fa462e35aca699c3c0cb8a7407ec9329",
+  "00012_doab.json.gz": "983eacfeec2d9fd41f16a35dbd5bf588a6db8728e8e23a1a9063b1072c837e5c"
+ }
+}
