@@ -17,7 +17,7 @@ TinyStories-1M, but a smaller configuration:
 | vocab | 50257 | 512 (BPE, trained on TinyStories) |
 | hidden_size | 64 | 16 |
 | num_layers | 8 | 4 |
-| num_heads | 16 | 16 |
+| num_heads | 16 | 4 (matches TinyStories-1M's head_dim=4, not its raw head count) |
 | context_length | 2048 | 128 |
 
 ## Results
@@ -26,11 +26,11 @@ Eval loss (nats), 3 seeds, mean ± sample-stdev:
 
 | activation | seed 0 | seed 1 | seed 2 | mean ± std | params |
 |---|---|---|---|---|---|
-| gelu_new | 3.2324 | 3.2504 | 3.2509 | 3.2446 ± 0.0105 | 23200 |
-| xielu | 3.2050 | 3.2141 | 3.2224 | 3.2138 ± 0.0087 | 23208 |
-| polyrelu | 3.1946 | 3.2053 | 3.2167 | 3.2055 ± 0.0110 | 23216 |
-| swiglu | 3.2303 | 3.2365 | 3.2296 | 3.2321 ± 0.0038 | 23152 |
-| powlu | 3.2428 | 3.2512 | 3.2426 | 3.2456 ± 0.0049 | 23152 |
+| gelu_new | 3.1630 | 3.1622 | 3.1684 | 3.1645 ± 0.0034 | 23200 |
+| xielu | 3.1291 | 3.1223 | 3.1396 | 3.1303 ± 0.0087 | 23208 |
+| polyrelu | 3.1371 | 3.1299 | 3.1329 | 3.1333 ± 0.0036 | 23216 |
+| swiglu | 3.1567 | 3.1669 | 3.1720 | 3.1652 ± 0.0078 | 23152 |
+| powlu | 3.1749 | 3.1844 | 3.1702 | 3.1765 ± 0.0072 | 23152 |
 
 - **gelu_new** — GPT-Neo's default.
 - **xielu** — Huang & Schlag, [arXiv:2411.13010](https://arxiv.org/abs/2411.13010).

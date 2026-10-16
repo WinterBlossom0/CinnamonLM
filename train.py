@@ -32,16 +32,17 @@ def apply_vram_cap(device: torch.device, gb: float = VRAM_CAP_GB) -> None:
         return
     idx = device.index if device.index is not None else torch.cuda.current_device()
     total = torch.cuda.get_device_properties(idx).total_memory
-    torch.cuda.set_per_process_memory_fraction(gb * (1 << 30) / total, idx)
+    fraction = min(1.0, gb * (1 << 30) / total)  # smaller GPUs: use it all instead of crashing
+    torch.cuda.set_per_process_memory_fraction(fraction, idx)
 
 
 CONTEXT_LENGTH = 128
 HIDDEN_SIZE = 16
 NUM_LAYERS = 4
-NUM_HEADS = 16
-WINDOW_SIZE = 256
-BATCH_SIZE = 1024
-LR = 5e-4
+NUM_HEADS = 4    # TinyStories-1M's head_dim=4 (64/16), not its raw head count (would give head_dim=1 here)
+WINDOW_SIZE = 16  # TinyStories-1M's window/context ratio (256/2048), scaled to this context_length
+BATCH_SIZE = 640
+LR = 1e-2
 WARMUP_STEPS = 500
 EPOCHS = 3
 
@@ -83,7 +84,7 @@ class PackedBlocks(Dataset):
         return self.blocks[idx]
 
 
-def _pack(split_rows, tokenizer: GPT2TokenizerFast, cache_path: Path) -> torch.Tensor:
+def _pack(split_rows, tokenizer: PreTrainedTokenizerFast, cache_path: Path) -> torch.Tensor:
     if cache_path.exists():
         return torch.load(cache_path)
     eos = tokenizer.eos_token_id
@@ -121,15 +122,20 @@ def run_seed(activation: str, seed: int, epochs: int, device: torch.device,
     scheduler = get_cosine_schedule_with_warmup(optimizer, WARMUP_STEPS, total_steps)
 
     def run_eval() -> float:
+        # token-weighted mean, not mean-of-batch-means: the last eval batch
+        # is ragged (not drop_last), so equal-weighting it with full batches
+        # biases the result toward its tokens by ~2x per token
         model.eval()
-        losses = []
+        total_loss, total_tokens = 0.0, 0
         with torch.no_grad():
             for batch in eval_loader:
                 batch = batch.to(device).long()
                 out = model(input_ids=batch, labels=batch)
-                losses.append(out.loss.item())
+                n_tokens = batch.shape[0] * (batch.shape[1] - 1)  # shifted labels
+                total_loss += out.loss.item() * n_tokens
+                total_tokens += n_tokens
         model.train()
-        return sum(losses) / len(losses)
+        return total_loss / total_tokens
 
     history = []
     step = 0

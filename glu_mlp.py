@@ -27,8 +27,8 @@ class GatedMLP(nn.Module):
 
 
 def param_matched_intermediate_size(config) -> int:
-    # exact search, not round(8/3*hidden) -- naive rounding can land further
-    # from the plain-MLP param target than the true closest integer does
+    # exact search beats Shazeer's fixed 2/3 ratio (round(8/3*16)=43) at this
+    # scale: d_ff=42 is 48 params from target, d_ff=43 is 152
     hidden = config.hidden_size
     plain_d_ff = 4 * hidden
     plain_params = 2 * hidden * plain_d_ff + plain_d_ff + hidden
@@ -50,3 +50,4 @@ def apply_gated_mlp(
         intermediate_size = param_matched_intermediate_size(model.config)
     for block in model.transformer.h:
         block.mlp = GatedMLP(intermediate_size, model.config, gate_fn)
+        block.mlp.apply(model._init_weights)
