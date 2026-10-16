@@ -1,18 +1,10 @@
-"""Muon: momentum orthogonalised by Newton-Schulz (Jordan et al.).
-
-Ported from ../cinnamon/muon.py -- same optimizer, no _TABLES exclusion (this
-project has no recurrence-indexed lookup tables to protect from
-orthogonalisation, unlike cinnamon's phi/err_slot).
+"""Muon: momentum orthogonalised by Newton-Schulz (Jordan et al., https://kellerjordan.github.io/posts/muon/).
 
 The update is the momentum buffer with its singular values flattened to 1 --
 whatever direction the gradient points, every direction is stepped equally.
 That is only meaningful for a matrix that acts as a linear map, so Muon
 covers matmul weights ONLY. Everything else (embeddings, RMSNorm weights,
 biases) stays on AdamW.
-
-Used for the Parallax arm specifically: its paper (arXiv:2605.29157) reports
-the covariance-correction gate collapses under AdamW (stable rank of W_R:
-134 under Muon, ~9 under AdamW) -- see parallax/attention.py's docstring.
 """
 import torch
 
@@ -48,20 +40,25 @@ class Muon(torch.optim.Optimizer):
     def step(self, closure=None):
         loss = closure() if closure is not None else None
         for g in self.param_groups:
-            for p in g["params"]:
-                if p.grad is None:
-                    continue
-                st = self.state[p]
-                if "buf" not in st:
-                    st["buf"] = torch.zeros_like(p.grad)
-                buf = st["buf"]
-                buf.lerp_(p.grad, 1.0 - g["momentum"])
-                d = p.grad.lerp(buf, g["momentum"]) if g["nesterov"] else buf
-                d = _orthogonalise(d, g["ns_steps"])
-                d = d * max(1.0, p.size(-2) / p.size(-1)) ** 0.5
+            params = [p for p in g["params"] if p.grad is not None]
+            for p in params:
+                if "buf" not in self.state[p]:
+                    self.state[p]["buf"] = torch.zeros_like(p.grad)
+            grads = [p.grad for p in params]
+            bufs = [self.state[p]["buf"] for p in params]
+            torch._foreach_lerp_(bufs, grads, 1.0 - g["momentum"])
+            directions = [grad.lerp(buf, g["momentum"]) for grad, buf in zip(grads, bufs)] if g["nesterov"] else bufs
+            # One batched Newton-Schulz per weight shape instead of one per matrix: optimizer step 11.4 -> 2.6 ms (softmax arm).
+            by_shape = {}
+            for p, direction in zip(params, directions):
+                by_shape.setdefault(p.shape, []).append((p, direction))
+            for shape, pairs in by_shape.items():
+                update = _orthogonalise(torch.stack([direction for _, direction in pairs]), g["ns_steps"])
+                update *= max(1.0, shape[-2] / shape[-1]) ** 0.5
+                shape_params = [p for p, _ in pairs]
                 if g["weight_decay"]:
-                    p.mul_(1.0 - g["lr"] * g["weight_decay"])
-                p.add_(d, alpha=-g["lr"])
+                    torch._foreach_mul_(shape_params, 1.0 - g["lr"] * g["weight_decay"])
+                torch._foreach_add_(shape_params, list(update.unbind(0)), alpha=-g["lr"])
         return loss
 
 

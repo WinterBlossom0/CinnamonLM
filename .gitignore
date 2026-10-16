@@ -9,3 +9,6 @@ packed_cache/
 
 __pycache__/
 *.py[cod]
+
+.kaggle_stage/
+.ruff_cache/

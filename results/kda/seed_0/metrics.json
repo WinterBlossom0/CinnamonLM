@@ -1,0 +1,21 @@
+{
+  "attention": "kda",
+  "seed": 0,
+  "n_params": 23088,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 2.7985255927202193
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 2.6625333433745357
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 2.6374284731142117
+    }
+  ],
+  "final_eval_loss": 2.6374284731142117,
+  "wall_time_s": 6333.483263492584
+}

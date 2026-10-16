@@ -1,25 +1,23 @@
-"""Triton kernel for KDA's sequential per-chunk state scan -- the one part of
-attention.py's _chunk_scan that cannot be parallelized across chunks (state S_n
-feeds S_{n+1}). Everything else (gate/key preprocessing, the UT-transform
-matrix inverse) stays in plain PyTorch: those are already embarrassingly
-parallel across chunks, so fusing them into this kernel wouldn't remove any
-sequential dependency, only add kernel-writing risk for no structural gain.
+"""Triton kernel for the sequential per-chunk state scan of the chunked delta
+rule -- the one part that cannot be parallelized across chunks (state S_n feeds
+S_{n+1}). Everything that is parallel across chunks (decay factors, the UT
+transform inverse Tm) is computed before this kernel.
 
-Forward, per (batch, head), for n = 0..N-1 (S_0 = 0), matching attention.py's
-_chunk_scan loop exactly:
+Forward, per (batch, head), for n = 0..N-1 (S_0 = 0):
 
     w_n = v_n - ka_n @ S_n
     r_n = bt_n * w_n
     u_n = T_n @ r_n
-    A_n = tril(qc_n @ kt_n^T, 0)
     out_n = qa_n @ S_n + A_n @ u_n
     S_{n+1} = eg_last_n[:,None] * S_n + ke_n^T @ u_n
 
-Backward derived by hand (reverse-mode adjoint, n = N-1 down to 0), not
-copied from a reference -- verified below against autograd on the existing,
-already-correctness-checked PyTorch implementation before this is trusted for
-anything. Forward saves S_n (state entering each chunk) so backward can
-recompute w_n/r_n/u_n/A_n cheaply instead of saving every intermediate.
+A_n is the intra-chunk matrix. kda_scan builds it inside the kernel as
+tril(qc_n @ kt_n^T) (OSDN uses this path). kda_scan_given_a takes it as an
+input, for KDA, whose exact A needs the decay inside the exp (intra_triton.py).
+
+Backward derived by hand (reverse-mode adjoint, n = N-1 down to 0). Forward
+saves S_n (state entering each chunk) so backward recomputes w_n/r_n/u_n/A_n
+instead of saving every intermediate.
 """
 from __future__ import annotations
 
@@ -32,19 +30,17 @@ def _next_pow2(n: int) -> int:
     p = 1
     while p < n:
         p *= 2
-    return max(p, 16)  # tl.dot requires the contraction dim >= 16; extra rows/cols stay exactly
-                        # zero throughout (proven by induction: zero-padded inputs + S_0=0 keep
-                        # every intermediate zero outside the real (D,D)/(C,D) block), verified
-                        # numerically below rather than trusted on the proof alone
+    return max(p, 16)  # tl.dot requires the contraction dim >= 16; zero-padded inputs and S_0=0 keep
+                        # every intermediate zero outside the real (D,D)/(C,D) block
 
 
 @triton.jit
 def _kda_fwd_kernel(
-    ka_ptr, ke_ptr, qa_ptr, qc_ptr, kt_ptr, bt_ptr, vt_ptr, T_ptr, egl_ptr,
+    ka_ptr, ke_ptr, qa_ptr, qc_ptr, kt_ptr, A_ptr, bt_ptr, vt_ptr, T_ptr, egl_ptr,
     out_ptr, S_save_ptr,
-    N, C: tl.constexpr, D: tl.constexpr, BD: tl.constexpr,
+    N, C: tl.constexpr, D: tl.constexpr, BD: tl.constexpr, A_GIVEN: tl.constexpr,
     stride_bh_cd, stride_n_cd, stride_c_cd,   # strides for (BH,N,C,D)-shaped tensors
-    stride_bh_cc, stride_n_cc, stride_c_cc,   # strides for (BH,N,C,C)-shaped tensors (T)
+    stride_bh_cc, stride_n_cc, stride_c_cc,   # strides for (BH,N,C,C)-shaped tensors (T, A)
     stride_bh_d, stride_n_d,                  # strides for (BH,N,D)-shaped tensors (egl)
     stride_bh_s, stride_n_s, stride_d_s,      # strides for S_save (BH,N,D,D)
     stride_bh_bt, stride_n_bt,                # strides for beta (BH,N,C)
@@ -62,7 +58,7 @@ def _kda_fwd_kernel(
     s_base = bh * stride_bh_s
     bt_base = bh * stride_bh_bt
 
-    for n in range(0, N):
+    for n in range(N):
         cd_off = cd_base + n * stride_n_cd
         cc_off = cc_base + n * stride_n_cc
         d_off = d_base + n * stride_n_d
@@ -74,8 +70,6 @@ def _kda_fwd_kernel(
         ka = tl.load(ka_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
         ke = tl.load(ke_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
         qa = tl.load(qa_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
-        qc = tl.load(qc_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
-        kt = tl.load(kt_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
         vt = tl.load(vt_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
         bt = tl.load(bt_ptr + bt_off + c_idx)  # (C,)
 
@@ -90,9 +84,14 @@ def _kda_fwd_kernel(
         r = w * bt[:, None]
         u = tl.dot(Tn, r, input_precision="ieee")                             # (C,BD)
 
-        M = tl.dot(qc, tl.trans(kt), input_precision="ieee")                  # (C,C)
-        tril_mask = c_idx[:, None] >= c_idx[None, :]
-        A = tl.where(tril_mask, M, 0.0)
+        if A_GIVEN:
+            A = tl.load(A_ptr + cc_off + T_ptrs)
+        else:
+            qc = tl.load(qc_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
+            kt = tl.load(kt_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
+            M = tl.dot(qc, tl.trans(kt), input_precision="ieee")              # (C,C)
+            tril_mask = c_idx[:, None] >= c_idx[None, :]
+            A = tl.where(tril_mask, M, 0.0)
 
         out = tl.dot(qa, S, input_precision="ieee") + tl.dot(A, u, input_precision="ieee")             # (C,BD)
         out_ptrs = c_idx[:, None] * stride_c_cd + d_idx[None, :]
@@ -104,10 +103,10 @@ def _kda_fwd_kernel(
 
 @triton.jit
 def _kda_bwd_kernel(
-    ka_ptr, ke_ptr, qa_ptr, qc_ptr, kt_ptr, bt_ptr, vt_ptr, T_ptr, egl_ptr,
+    ka_ptr, ke_ptr, qa_ptr, qc_ptr, kt_ptr, A_ptr, bt_ptr, vt_ptr, T_ptr, egl_ptr,
     S_save_ptr, dout_ptr,
-    dka_ptr, dke_ptr, dqa_ptr, dqc_ptr, dkt_ptr, dbt_ptr, dvt_ptr, dT_ptr, degl_ptr,
-    N, C: tl.constexpr, D: tl.constexpr, BD: tl.constexpr,
+    dka_ptr, dke_ptr, dqa_ptr, dqc_ptr, dkt_ptr, dA_ptr, dbt_ptr, dvt_ptr, dT_ptr, degl_ptr,
+    N, C: tl.constexpr, D: tl.constexpr, BD: tl.constexpr, A_GIVEN: tl.constexpr,
     stride_bh_cd, stride_n_cd, stride_c_cd,
     stride_bh_cc, stride_n_cc, stride_c_cc,
     stride_bh_d, stride_n_d,
@@ -128,7 +127,7 @@ def _kda_bwd_kernel(
 
     dS = tl.zeros((BD, BD), dtype=tl.float32)  # dL/dS_{n+1}, starts at 0 (no external use of S_N)
 
-    for step in range(0, N):
+    for step in range(N):
         n = N - 1 - step
         cd_off = cd_base + n * stride_n_cd
         cc_off = cc_base + n * stride_n_cc
@@ -140,8 +139,6 @@ def _kda_bwd_kernel(
         ka = tl.load(ka_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
         ke = tl.load(ke_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
         qa = tl.load(qa_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
-        qc = tl.load(qc_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
-        kt = tl.load(kt_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
         vt = tl.load(vt_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
         bt = tl.load(bt_ptr + bt_off + c_idx)
         dout = tl.load(dout_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
@@ -158,9 +155,14 @@ def _kda_bwd_kernel(
         w = vt - tl.dot(ka, S, input_precision="ieee")
         r = w * bt[:, None]
         u = tl.dot(Tn, r, input_precision="ieee")
-        M = tl.dot(qc, tl.trans(kt), input_precision="ieee")
-        tril_mask = c_idx[:, None] >= c_idx[None, :]
-        A = tl.where(tril_mask, M, 0.0)
+        if A_GIVEN:
+            A = tl.load(A_ptr + cc_off + T_ptrs)
+        else:
+            qc = tl.load(qc_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
+            kt = tl.load(kt_ptr + cd_off + cd_ptrs, mask=mask_cd, other=0.0)
+            M = tl.dot(qc, tl.trans(kt), input_precision="ieee")
+            tril_mask = c_idx[:, None] >= c_idx[None, :]
+            A = tl.where(tril_mask, M, 0.0)
 
         # ---- adjoint ----
         dqa = tl.dot(dout, tl.trans(S), input_precision="ieee")
@@ -183,18 +185,20 @@ def _kda_bwd_kernel(
         dS_from_w = -tl.dot(tl.trans(ka), dw, input_precision="ieee")
         dka = -tl.dot(dw, tl.trans(S), input_precision="ieee")
 
-        dM = tl.where(tril_mask, dA, 0.0)
-        dqc = tl.dot(dM, kt, input_precision="ieee")
-        dkt = tl.dot(tl.trans(dM), qc, input_precision="ieee")
-
         dS_n = dS_from_out + dS_from_next + dS_from_w
 
         out_ptrs = c_idx[:, None] * stride_c_cd + d_idx[None, :]
+        if A_GIVEN:
+            tl.store(dA_ptr + cc_off + T_ptrs, dA)
+        else:
+            dM = tl.where(tril_mask, dA, 0.0)
+            dqc = tl.dot(dM, kt, input_precision="ieee")
+            dkt = tl.dot(tl.trans(dM), qc, input_precision="ieee")
+            tl.store(dqc_ptr + cd_off + out_ptrs, dqc, mask=mask_cd)
+            tl.store(dkt_ptr + cd_off + out_ptrs, dkt, mask=mask_cd)
         tl.store(dka_ptr + cd_off + out_ptrs, dka, mask=mask_cd)
         tl.store(dke_ptr + cd_off + out_ptrs, dke, mask=mask_cd)
         tl.store(dqa_ptr + cd_off + out_ptrs, dqa, mask=mask_cd)
-        tl.store(dqc_ptr + cd_off + out_ptrs, dqc, mask=mask_cd)
-        tl.store(dkt_ptr + cd_off + out_ptrs, dkt, mask=mask_cd)
         tl.store(dvt_ptr + cd_off + out_ptrs, dvt, mask=mask_cd)
         tl.store(dbt_ptr + bt_off + c_idx, dbt)
         tl.store(dT_ptr + cc_off + T_ptrs, dT)
@@ -204,26 +208,32 @@ def _kda_bwd_kernel(
 
 
 class _KDAScan(torch.autograd.Function):
+    """Exactly one of (q_c, k_til_c) and A is given; the other is None."""
+
     @staticmethod
-    def forward(ctx, k_abs, k_end, q_abs, q_c, k_til_c, beta, v, Tm, eg_last):
+    def forward(ctx, k_abs, k_end, q_abs, q_c, k_til_c, A, beta, v, Tm, eg_last):
         B, H, N, C, D = k_abs.shape
         BH = B * H
         BD = _next_pow2(D)
+        a_given = A is not None
         dev, dt = k_abs.device, k_abs.dtype
 
         flat = lambda t: t.reshape(BH, N, *t.shape[3:]).contiguous()
-        ka, ke, qa, qc, kt, vt = (flat(t) for t in (k_abs, k_end, q_abs, q_c, k_til_c, v))
+        ka, ke, qa, vt = (flat(t) for t in (k_abs, k_end, q_abs, v))
         bt = flat(beta.squeeze(-1))          # (BH,N,C)
         Tn = flat(Tm)                        # (BH,N,C,C)
         egl = flat(eg_last)                  # (BH,N,D)
+        # A path unused by the kernel gets a placeholder of the right dtype.
+        qc, kt = (ka, ka) if a_given else (flat(q_c), flat(k_til_c))
+        An = flat(A) if a_given else Tn
 
         out = torch.zeros(BH, N, C, D, device=dev, dtype=torch.float32)
         S_save = torch.zeros(BH, N, D, D, device=dev, dtype=torch.float32)
 
         grid = (BH,)
         _kda_fwd_kernel[grid](
-            ka, ke, qa, qc, kt, bt, vt, Tn, egl, out, S_save,
-            N, C, D, BD,
+            ka, ke, qa, qc, kt, An, bt, vt, Tn, egl, out, S_save,
+            N, C, D, BD, a_given,
             ka.stride(0), ka.stride(1), ka.stride(2),
             Tn.stride(0), Tn.stride(1), Tn.stride(2),
             egl.stride(0), egl.stride(1),
@@ -231,27 +241,29 @@ class _KDAScan(torch.autograd.Function):
             bt.stride(0), bt.stride(1),
             num_stages=1,
         )
-        ctx.save_for_backward(ka, ke, qa, qc, kt, bt, vt, Tn, egl, S_save)
-        ctx.dims = (B, H, N, C, D, BD)
+        ctx.save_for_backward(ka, ke, qa, qc, kt, An, bt, vt, Tn, egl, S_save)
+        ctx.dims = (B, H, N, C, D, BD, a_given)
         return out.reshape(B, H, N, C, D).to(dt)
 
     @staticmethod
     def backward(ctx, dout):
-        ka, ke, qa, qc, kt, bt, vt, Tn, egl, S_save = ctx.saved_tensors
-        B, H, N, C, D, BD = ctx.dims
+        ka, ke, qa, qc, kt, An, bt, vt, Tn, egl, S_save = ctx.saved_tensors
+        B, H, N, C, D, BD, a_given = ctx.dims
         BH = B * H
         dout_f = dout.reshape(BH, N, C, D).contiguous().float()
 
-        dka, dke, dqa, dqc, dkt, dvt = (torch.zeros_like(ka) for _ in range(6))
+        dka, dke, dqa, dvt = (torch.zeros_like(ka) for _ in range(4))
+        dqc, dkt = (ka, ka) if a_given else (torch.zeros_like(ka), torch.zeros_like(ka))
+        dA = torch.zeros_like(Tn) if a_given else Tn
         dbt = torch.zeros_like(bt)
         dT = torch.zeros_like(Tn)
         degl = torch.zeros_like(egl)
 
         grid = (BH,)
         _kda_bwd_kernel[grid](
-            ka, ke, qa, qc, kt, bt, vt, Tn, egl, S_save, dout_f,
-            dka, dke, dqa, dqc, dkt, dbt, dvt, dT, degl,
-            N, C, D, BD,
+            ka, ke, qa, qc, kt, An, bt, vt, Tn, egl, S_save, dout_f,
+            dka, dke, dqa, dqc, dkt, dA, dbt, dvt, dT, degl,
+            N, C, D, BD, a_given,
             ka.stride(0), ka.stride(1), ka.stride(2),
             Tn.stride(0), Tn.stride(1), Tn.stride(2),
             egl.stride(0), egl.stride(1),
@@ -260,25 +272,24 @@ class _KDAScan(torch.autograd.Function):
             num_stages=1,
         )
         unflat = lambda t: t.reshape(B, H, N, C, D).to(ka.dtype)
+        unflat_cc = lambda t: t.reshape(B, H, N, C, C).to(ka.dtype)
+        d_qc, d_kt = (None, None) if a_given else (unflat(dqc), unflat(dkt))
+        d_A = unflat_cc(dA) if a_given else None
         d_beta = dbt.reshape(B, H, N, C, 1).to(ka.dtype)
-        d_Tm = dT.reshape(B, H, N, C, C).to(ka.dtype)
         d_eg_last = degl.reshape(B, H, N, D).to(ka.dtype)
-        return (unflat(dka), unflat(dke), unflat(dqa), unflat(dqc), unflat(dkt),
-                d_beta, unflat(dvt), d_Tm, d_eg_last)
+        return (unflat(dka), unflat(dke), unflat(dqa), d_qc, d_kt, d_A,
+                d_beta, unflat(dvt), unflat_cc(dT), d_eg_last)
 
 
-def _scan_torch(ka, ke, qa, qc, kt, bt, vt, Tn, egl):
-    """The same recurrence in plain PyTorch, autograd for backward -- the loop
-    _kda_bwd_kernel replaced, restored as a fallback.  _kda_bwd_kernel needs
-    65 KB of shared memory at C=64 ("Required: 66560, Hardware limit: 65536");
+def _scan_torch(ka, ke, qa, A, bt, vt, Tn, egl):
+    """The same recurrence in plain PyTorch, autograd for backward.  _kda_bwd_kernel
+    needs 65 KB of shared memory at C=64 ("Required: 66560, Hardware limit: 65536");
     sm_75 and older cap a block at 64 KB, so a T4 can run the forward kernel but
     not the backward.  N is seq/chunk (2 at the trained 128/64), so the Python
     loop costs almost nothing here."""
-    ka, ke, qa, qc, kt, bt, vt, Tn, egl = (
-        t.float() for t in (ka, ke, qa, qc, kt, bt, vt, Tn, egl))
-    B, H, N, C, D = ka.shape
+    ka, ke, qa, A, bt, vt, Tn, egl = (t.float() for t in (ka, ke, qa, A, bt, vt, Tn, egl))
+    B, H, N, _, D = ka.shape
     S = ka.new_zeros(B, H, D, D)
-    A = (qc @ kt.transpose(-1, -2)).tril(0)
     outs = []
     for n in range(N):
         u = Tn[:, :, n] @ (bt[:, :, n] * (vt[:, :, n] - ka[:, :, n] @ S))
@@ -287,27 +298,20 @@ def _scan_torch(ka, ke, qa, qc, kt, bt, vt, Tn, egl):
     return torch.stack(outs, 2)
 
 
+def _use_kernel(t: torch.Tensor) -> bool:
+    return t.is_cuda and torch.cuda.get_device_capability(t.device)[0] >= 8
+
+
 def kda_scan(k_abs, k_end, q_abs, q_c, k_til_c, beta, v, Tm, eg_last):
-    """Drop-in replacement for attention.py's per-chunk Python loop in _chunk_scan."""
-    args = (k_abs, k_end, q_abs, q_c, k_til_c, beta, v, Tm, eg_last)
-    if not k_abs.is_cuda or torch.cuda.get_device_capability(k_abs.device)[0] < 8:
-        return _scan_torch(*args).to(k_abs.dtype)
-    return _KDAScan.apply(*args)
+    """Chunk scan with A = tril(q_c @ k_til_c^T) built inside the kernel."""
+    if not _use_kernel(k_abs):
+        A = (q_c.float() @ k_til_c.float().transpose(-1, -2)).tril(0)
+        return _scan_torch(k_abs, k_end, q_abs, A, beta, v, Tm, eg_last).to(k_abs.dtype)
+    return _KDAScan.apply(k_abs, k_end, q_abs, q_c, k_til_c, None, beta, v, Tm, eg_last)
 
 
-if __name__ == "__main__":  # kernel vs PyTorch loop, fwd and bwd, at both trained head_dims
-    torch.manual_seed(0)
-    for D in (2, 3):
-        B, H, N, C = 2, 5, 2, 64
-        mk = lambda *s: torch.randn(*s, device="cuda", dtype=torch.float32, requires_grad=True)
-        args = [mk(B, H, N, C, D) for _ in range(5)] + [
-            mk(B, H, N, C, 1), mk(B, H, N, C, D),
-            torch.eye(C, device="cuda").expand(B, H, N, C, C).contiguous().requires_grad_(),
-            mk(B, H, N, D).sigmoid().detach().requires_grad_()]
-        clone = [a.detach().clone().requires_grad_() for a in args]
-        o1 = _KDAScan.apply(*args); o1.sum().backward()
-        o2 = _scan_torch(*clone); o2.sum().backward()
-        rel = lambda a, b: float((a - b).abs().max() / b.abs().max().clamp_min(1e-30))
-        errs = [rel(o1, o2)] + [rel(a.grad, c.grad) for a, c in zip(args, clone)]
-        assert max(errs) < 1e-5, (D, errs)  # two fp32 orderings of one recurrence, not bitwise
-        print(f"D={D} ok: max relative fwd/bwd error {max(errs):.2e}")
+def kda_scan_given_a(k_abs, k_end, q_abs, A, beta, v, Tm, eg_last):
+    """Chunk scan with the intra-chunk matrix A (B,H,N,C,C) given by the caller."""
+    if not _use_kernel(k_abs):
+        return _scan_torch(k_abs, k_end, q_abs, A, beta, v, Tm, eg_last).to(k_abs.dtype)
+    return _KDAScan.apply(k_abs, k_end, q_abs, None, None, A, beta, v, Tm, eg_last)

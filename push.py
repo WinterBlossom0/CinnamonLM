@@ -1,8 +1,4 @@
-"""Ship attention_comparison/ to Kaggle and launch a training kernel.
-
-Sibling of ../kg/push.py, same dataset+kernel pattern, but scoped to this
-directory only -- this project is self-contained (README.md), so it gets its
-own source dataset rather than reusing cinnamon's.
+"""Upload this directory to Kaggle as a dataset and launch a training kernel on it.
 
 TinyStories is NOT shipped as a dataset: .gitignore already pins the exact
 reproduction command (revision-pinned `load_dataset`, so a future Hub-side
@@ -10,7 +6,7 @@ update can't silently change the corpus), and the kernel just runs that
 directly -- avoids a 1.8 GB upload for something already reproducible exactly.
 
 requirements.txt is pip-installed inside the kernel (needs enable_internet
-regardless, for the Hub download above): the KDA/OSDN Triton kernels were
+regardless, for the Hub download above): the KDA, OSDN and Parallax Triton kernels were
 verified locally at torch==2.13.0, triton==3.7.1 specifically -- Kaggle's base
 image is not guaranteed to match, and a silent version drift in Triton
 semantics is exactly the kind of thing that would not show up as an error,
@@ -19,9 +15,11 @@ just a wrong number.
     python push.py src                    # upload / version the source dataset
     python push.py train kda              # launch training for one attention type
     python push.py train kda --seeds 0 1 2 --epochs 3
+    python push.py train osdn --seeds 0 --suffix=-s0   # one kernel per seed
     python push.py status <slug>
     python push.py pull <slug> <dir>
 """
+import argparse
 import json
 import os
 import shutil
@@ -32,9 +30,8 @@ USER = "electroknight"
 DATASET = f"{USER}/attn-comparison-src"
 ROOT = os.path.dirname(os.path.abspath(__file__))
 STAGE = os.path.join(ROOT, ".kaggle_stage")
-# Every top-level module, globbed rather than listed: an explicit list silently
-# drops a newly added one (muon.py was, and the kernel died on `import train`).
-SRC_FILES = ["kda", "osdn", "parallax", "tokenizer", "requirements.txt"] + \
+# Every top-level module, globbed rather than listed: an explicit list silently drops a newly added module.
+SRC_FILES = ["kda", "osdn", "parallax", "mamba3", "tokenizer", "requirements.txt"] + \
     sorted(f for f in os.listdir(ROOT)
            if f.endswith(".py") and f != os.path.basename(__file__))
 TINYSTORIES_REVISION = "f54c09fd23315a6f9c86f9dc80f725de7d8f9c64"  # pinned in .gitignore
@@ -65,7 +62,7 @@ def push_src():
         if not os.path.exists(p):
             continue
         (shutil.copytree if os.path.isdir(p) else shutil.copy)(p, os.path.join(src, f))
-    for pkg in ("kda", "osdn", "parallax"):
+    for pkg in ("kda", "osdn", "parallax", "mamba3"):
         shutil.rmtree(os.path.join(src, pkg, "__pycache__"), ignore_errors=True)
     json.dump({"title": "attn-comparison-src", "id": DATASET,
                "licenses": [{"name": "CC0-1.0"}]},
@@ -77,11 +74,8 @@ def push_src():
     else:
         print(a.dataset_create_new(src, public=False, dir_mode="zip", quiet=True))
 
-    # A kernel launched immediately after a fresh dataset_create_new can start
-    # with an empty /kaggle/input/ -- measured directly: the first KDA launch
-    # failed exactly this way, "source not found; /kaggle/input = ['/kaggle/input/']",
-    # even though dataset_status read "ready" moments later. Poll rather than
-    # trust the create call's return.
+    # A kernel launched immediately after dataset_create_new can start with an empty /kaggle/input/,
+    # so poll the dataset status rather than trust the create call's return.
     for _ in range(30):
         if _exists(a, DATASET):
             return
@@ -108,7 +102,7 @@ def push_kernel(slug, title, run_py, *, gpu=True, internet=True, extra_data=()):
         "kernel_sources": [],
     }
     if gpu:
-        # T4 only, same reason as kg/push.py: PyTorch dropped sm_60 (P100).
+        # T4: PyTorch dropped sm_60, so Kaggle's P100 cannot run the pinned torch.
         meta["machine_shape"] = "NvidiaTeslaT4"
     json.dump(meta, open(os.path.join(d, "kernel-metadata.json"), "w"), indent=1)
     r = api().kernels_push(d)
@@ -116,16 +110,9 @@ def push_kernel(slug, title, run_py, *, gpu=True, internet=True, extra_data=()):
     print(f"  https://www.kaggle.com/code/{USER}/{slug}", flush=True)
 
 
-# Locate the mounted source by a file unique to this project (train.py exists
-# in cinnamon too; kda/attention.py does not) -- train.py then runs unmodified,
-# not a second copy of the loop to keep in sync (see ../kg/gpu_train.py's own
-# note on why that already went wrong once for cinnamon).
-#
-# Always copied to a writable location, even when not a zip: train.py resolves
-# its own output paths (results/, and now tinystories/) relative to itself, and
-# /kaggle/input is read-only.  First Parallax launch failed exactly this way --
-# "OSError: [Errno 30] Read-only file system" writing tinystories/ next to a
-# train.py that was still sitting under /kaggle/input.
+# Locate the mounted source by kda/attention.py, a file unique to this project; train.py then runs unmodified.
+# The source is always copied to /kaggle/working: train.py writes results/, tinystories/ and packed_cache/
+# next to itself, and /kaggle/input is read-only.
 PRELUDE = f'''\
 import sys, os, glob, zipfile, shutil, subprocess
 for z in glob.glob("/kaggle/input/**/*.zip", recursive=True):
@@ -178,17 +165,18 @@ if __name__ == "__main__":
     if cmd == "src":
         push_src()
     elif cmd == "train":
-        attention = sys.argv[2] if len(sys.argv) > 2 else "kda"
-        rest = sys.argv[3:]
-        seeds = [int(s) for s in rest[rest.index("--seeds") + 1:]] \
-            if "--seeds" in rest else [0, 1, 2]
-        epochs = int(rest[rest.index("--epochs") + 1]) if "--epochs" in rest else 3
+        parser = argparse.ArgumentParser(prog="push.py train")
+        parser.add_argument("attention")
+        parser.add_argument("--seeds", type=int, nargs="+", default=[0, 1, 2])
+        parser.add_argument("--epochs", type=int, default=3)
+        # Kaggle stops a session at 12 h; a suffix gives each seed its own kernel when three seeds exceed that.
+        parser.add_argument("--suffix", default="")
+        args = parser.parse_args(sys.argv[2:])
         push_src()
-        run = train_run(attention, seeds, epochs)
-        # title must slugify to the same id, or Kaggle silently renames the
-        # kernel to the title's own slug instead (measured: "attn-comparison-kda"
-        # requested, "attention-comparison-kda" is what actually got created).
-        push_kernel(f"attn-comparison-{attention}", f"attn-comparison-{attention}", run)
+        run = train_run(args.attention, args.seeds, args.epochs)
+        # The title must slugify to the same id, or Kaggle silently gives the kernel the title's slug.
+        slug = f"attn-comparison-{args.attention}{args.suffix}"
+        push_kernel(slug, slug, run)
     elif cmd == "status":
         print(api().kernels_status(f"{USER}/{sys.argv[2]}"))
     elif cmd == "pull":

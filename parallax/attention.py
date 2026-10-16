@@ -1,104 +1,88 @@
-"""Parallax: full causal softmax attention plus a local-covariance
-correction (Zuo, Pai, Zeng, Dewulf, Hu, Wang, arXiv:2605.29157). Unlike
-KDA/OSDN this is O(T^2), not chunked/recurrent -- no positional carrier of
-its own, so the model adds a learned absolute position embedding for this
-arm (see model.py).
+"""Parallax attention: Zuo, Pai, Zeng, Dewulf, Hu, Wang, "Parallax: Parameterized Local Linear
+Attention", arXiv:2605.29157. The layer is Qwen3 attention (GQA, RMSNorm on q and k, RoPE) plus a
+learned probe rho_i = W_R x_i. The authors' released layer is ParallaxAttention in
+huggingface.co/YifeiZuo/Parallax-0.6B, modeling_parallax.py.
 
-o_i = o_i^SA - Sigma_KV^(i) @ rho_i, where o_i^SA is standard softmax
-attention output, rho_i = W_R x_i (a learned projection, replacing the
-original LLA paper's per-token numerical solve), and Sigma_KV^(i) is the
-attention-weighted covariance between V and K at position i:
+Per-head vectors of size d (Sec. 3.1, Sec. 4.2, Sec. 11.1, Table 5):
 
-    Sigma_KV^(i) = sum_j p_ij (v_j - v_bar_i)(k_j - k_bar_i)^T
+    q_i = RoPE_i(RMSNorm(W_Q x_i))     k_j = RoPE_j(RMSNorm(W_K x_j))     v_j = W_V x_j
+    rho_i = RoPE_i(RMSNorm(W_R x_i))
+    p_ij = softmax_{j <= i}(q_i . k_j / sqrt(d))
 
-Expanding the outer product and using v_bar_i = o_i^SA gives the streaming
-form actually used in forward() (paper eq. 14):
+RoPE has base 1e6 for q, k and rho, and rho uses the position of its own token. W_R has the head
+count and head grouping of W_Q: KV_GROUP query/probe heads share one K/V head. No projection has
+a bias.
 
-    o_i = o_i^SA * (1 + k_bar_i . rho_i) - sum_j p_ij (k_j . rho_i) v_j
+Output of head h at position i, eq. 8 (boundary amplification eta_i = 0):
 
-CRITICAL, easy to miss from the equations alone (found only by reading the
-paper's Sec. 4.3, not just its core formulas): Parallax's benefit is
-optimizer-dependent. Under Muon the paper reports consistent gains; under
-AdamW they state gains "shrink markedly or even disappear," and their
-gating ablation (Fig. 6b) shows the model learns to suppress the covariance
-correction under AdamW (gate converges to ~0.26, vs. fully open under
-Muon) -- their own spectral analysis (Table 4) shows W_R's stable rank
-collapses from 134 (Muon) to ~9 (AdamW). train.py trains this arm under Muon
-specifically (_make_optimizers), not the AdamW used for KDA/OSDN, so a weak
-result here would not be attributable to the wrong-optimizer confound the
-paper itself documents.
+    o_i = o_i^SA - Sigma_KV^(i) rho_i
+    o_i^SA = sum_j p_ij v_j        kbar_i = sum_j p_ij k_j
+    Sigma_KV^(i) = sum_j p_ij (v_j - o_i^SA)(k_j - kbar_i)^T
+
+Streaming form, eq. 14 / Algorithm 1 (Sec. 3.3). The composite score p_ij (k_j . rho_i) has no
+1/sqrt(d) scale:
+
+    o_i = o_i^SA (1 + sum_j p_ij (k_j . rho_i)) - sum_j p_ij (k_j . rho_i) v_j
+
+kernel.py computes eq. 14 in one fused pass over the keys (Algorithm 1).
+
+W_O maps the concatenated heads to d_model.
 """
 from __future__ import annotations
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+
+from .kernel import parallax_core
+
+ROPE_THETA = 1e6  # paper Sec. 11.1 and Table 5
+KV_GROUP = 2  # paper Table 5: 16 query heads share 8 KV heads
+
+
+def _rotate_half(x: torch.Tensor) -> torch.Tensor:
+    first, second = x.chunk(2, dim=-1)
+    return torch.cat((-second, first), dim=-1)
+
+
+def _apply_rope(x: torch.Tensor, cos: torch.Tensor, sin: torch.Tensor) -> torch.Tensor:
+    return (x * cos) + (_rotate_half(x) * sin)
 
 
 class Parallax(nn.Module):
     def __init__(self, d_model: int, n_heads: int, head_dim: int,
                  chunk: int = 64, eps: float = 1e-6):
         super().__init__()
-        del chunk  # accepted for interface uniformity with KDA/OSDN; O(T^2), no chunking
-        h, d = n_heads, head_dim
-        self.h, self.d, self.eps = h, d, eps
-        self.q = nn.Linear(d_model, h * d, bias=False)
-        self.k = nn.Linear(d_model, h * d, bias=False)
-        self.v = nn.Linear(d_model, h * d, bias=False)
-        self.r = nn.Linear(d_model, h * d, bias=False)
-        self.o = nn.Linear(h * d, d_model, bias=False)
-        self.qn = nn.RMSNorm(d, eps=eps)
-        self.kn = nn.RMSNorm(d, eps=eps)
-        self.rn = nn.RMSNorm(d, eps=eps)
+        del chunk  # accepted for one constructor across the arms; the scores cover the full causal context
+        if head_dim % 2 != 0:
+            raise ValueError(f"RoPE needs an even head_dim, got {head_dim}")
+        if n_heads % KV_GROUP != 0:
+            raise ValueError(f"n_heads must be a multiple of KV_GROUP={KV_GROUP}, got {n_heads}")
+        self.n_heads, self.head_dim = n_heads, head_dim
+        n_kv_heads = n_heads // KV_GROUP
+        self.q = nn.Linear(d_model, n_heads * head_dim, bias=False)
+        self.k = nn.Linear(d_model, n_kv_heads * head_dim, bias=False)
+        self.v = nn.Linear(d_model, n_kv_heads * head_dim, bias=False)
+        self.r = nn.Linear(d_model, n_heads * head_dim, bias=False)
+        self.o = nn.Linear(n_heads * head_dim, d_model, bias=False)
+        self.q_norm = nn.RMSNorm(head_dim, eps=eps)
+        self.k_norm = nn.RMSNorm(head_dim, eps=eps)
+        self.r_norm = nn.RMSNorm(head_dim, eps=eps)
+        exponents = torch.arange(0, head_dim, 2, dtype=torch.float32) / head_dim
+        self.register_buffer("inv_freq", 1.0 / (ROPE_THETA ** exponents), persistent=False)
 
-    def _project(self, x):
-        B, T, _ = x.shape
-        H, D = self.h, self.d
-        shp = lambda t: t.view(B, T, H, D).transpose(1, 2)  # (B,H,T,D)
-        q = self.qn(shp(self.q(x)))
-        k = self.kn(shp(self.k(x)))
-        v = shp(self.v(x))
-        rho = self.rn(shp(self.r(x)))
-        return q, k, v, rho
-
-    def _scores(self, q, k, T, device):
-        scale = self.d ** -0.5
-        scores = (q @ k.transpose(-1, -2)) * scale
-        mask = torch.triu(torch.ones(T, T, device=device, dtype=torch.bool), diagonal=1)
-        scores = scores.masked_fill(mask, float("-inf"))
-        return F.softmax(scores, dim=-1)
-
-    def _out(self, o, x, B, T):
-        o = o.transpose(1, 2).reshape(B, T, self.h * self.d)
-        return self.o(o.to(x.dtype))
+    def _heads(self, proj: nn.Linear, x: torch.Tensor) -> torch.Tensor:
+        batch, length, _ = x.shape
+        return proj(x).view(batch, length, -1, self.head_dim)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        B, T, _ = x.shape
-        q, k, v, rho = self._project(x)
-        p = self._scores(q, k, T, x.device)
-        o_sa = p @ v
-        k_bar = p @ k
-        s2 = (rho @ k.transpose(-1, -2)) * p
-        corr = s2 @ v
-        gate = (rho * k_bar).sum(-1, keepdim=True)
-        out = o_sa * (1.0 + gate) - corr
-        return self._out(out, x, B, T)
-
-    @torch.no_grad()
-    def reference(self, x: torch.Tensor) -> torch.Tensor:
-        """Literal covariance-matrix form (paper eq. 3/8, not the streaming
-        simplification) -- test oracle for forward()'s efficient form."""
-        B, T, _ = x.shape
-        hp = torch.promote_types(x.dtype, torch.float32)
-        q, k, v, rho = (t.to(hp) for t in self._project(x))
-        p = self._scores(q, k, T, x.device)
-
-        v_bar = p @ v
-        k_bar = p @ k
-        v_c = v.unsqueeze(-3) - v_bar.unsqueeze(-2)  # (B,H,Ti,Tj,Dv)
-        k_c = k.unsqueeze(-3) - k_bar.unsqueeze(-2)  # (B,H,Ti,Tj,Dk)
-        weighted = p.unsqueeze(-1) * v_c
-        sigma = torch.einsum("bhijv,bhijk->bhivk", weighted, k_c)
-        corr = torch.einsum("bhivk,bhik->bhiv", sigma, rho)
-        out = v_bar - corr
-        return self._out(out, x, B, T)
+        batch, length, _ = x.shape
+        positions = torch.arange(length, device=x.device, dtype=torch.float32)
+        angles = torch.outer(positions, self.inv_freq)
+        angles = torch.cat((angles, angles), dim=-1).unsqueeze(1)  # (T, 1, head_dim) against (B, T, H, head_dim)
+        cos, sin = angles.cos().to(x.dtype), angles.sin().to(x.dtype)
+        q = _apply_rope(self.q_norm(self._heads(self.q, x)), cos, sin)
+        k = _apply_rope(self.k_norm(self._heads(self.k, x)), cos, sin)
+        rho = _apply_rope(self.r_norm(self._heads(self.r, x)), cos, sin)
+        v = self._heads(self.v, x)
+        heads = parallax_core(q, k, v, rho)
+        return self.o(heads.reshape(batch, length, self.n_heads * self.head_dim))

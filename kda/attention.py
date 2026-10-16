@@ -1,229 +1,152 @@
-"""KDA - Kimi Delta Attention: gated delta rule with channelwise decay
-(Kimi Team, "Kimi Linear: An Expressive, Efficient Attention Architecture",
-arXiv:2510.26692, eq. 1).
+"""KDA: Kimi Delta Attention, the complete KDA layer of Kimi Linear (Kimi Team, arXiv:2510.26692).
 
-IMPORTANT: "Kimi Linear" the paper's actual architecture is a hybrid that
-interleaves KDA layers with full Multi-Head Latent Attention (MLA) layers at
-a 3:1 ratio -- the paper's own ablations found pure-KDA-every-layer
-"fundamentally constrained by finite-state capacity" for long-range
-retrieval, with MLA layers carrying that role. This module, and this
-project's "kda" arm, is pure KDA in every layer, no MLA -- a deliberate,
-narrower ablation (isolate the KDA layer type itself) that is NOT the paper's
-proposed architecture. Don't describe this as "Kimi Linear."
+H = n_heads, d = head_dim, d_k = d_v = d. x is the block input after the block RMSNorm: Fig. 3 puts
+the norm in the block, before the layer.
 
-Adapted from CinnamonLM's own cinnamon/kda.py (commit 3255ef8, since deleted
-from the main project when it moved to a different architecture) -- ported
-here standalone (explicit constructor args instead of a shared Config
-object) so attention_comparison/ stays self-contained. The recurrence and
-every numerical-stability bound below carry over unchanged -- they were
-debugged against real training blow-ups, not written from a paper read.
-`inv_unit_lower` is the one rewritten piece (see its docstring).
+    q, k, v = SiLU(ShortConv4(W x))                     Sec. 4; depthwise causal conv, no bias, one per projection
+    q = L2Norm(q) * d^-1/2,  k = L2Norm(k)              Sec. 4; scale from App. C Listing 1 (q = q * K**-0.5)
+    log alpha = -exp(A_log[h]) * softplus(W_up W_down x + dt_bias)    Sec. 4, rank d; f from the official code
+    beta = sigmoid(W_beta x)                            Sec. 4
+    S_t = (I - beta_t k_t k_t^T) Diag(alpha_t) S_{t-1} + beta_t k_t v_t^T,   o_t = S_t^T q_t      Eq. 1
+    y = W_o (sigmoid(W_g_up W_g_down x) * RMSNorm(o))   Eq. 10; head-wise norm, one weight [d] for all heads
 
-Simplified from the paper's q/k/v/gate pipeline at this scale (paper eq. in
-Sec. 4 "Neural Parameterization"; verified by reading the full paper, not
-just the recurrence equation):
-  - paper: q,k = L2Norm(Swish(ShortConv(Wx))); this: q = RMSNorm(Wx),
-    k = L2Norm(RMSNorm(Wx)) -- no ShortConv, no Swish on either.
-  - paper: v = Swish(ShortConv(Wx)); this: v = Wx -- no ShortConv, no Swish.
-  - paper: output gate o_t = W_o(Sigmoid(W_g-up W_g-down x) * RMSNorm(KDA_out))
-    before the final projection; this has no output gate, just
-    W_o(RMSNorm(KDA_out)).
-  - paper: gate rank = head_dim exactly (their 48B model: rank=128=head_dim);
-    this: gate_rank defaults to 16 regardless of head_dim (see __init__).
+The chunked form is Sec. 3.1, Eqs. 6-9, with chunk length C = chunk. intra_triton.py computes the
+intra-chunk matrices Aqk and Akk with the decay difference G_r - G_i inside the exp, as App. C Listing 1
+does, so every decay factor is at most 1 and no gate value needs a clamp. inv_unit_lower gives the UT
+transform (I + Diag(beta) Akk)^-1, and scan_triton.py does the sequential state update across chunks.
 
-Recurrence (row vectors, S in R^{d_k x d_v}, o_t = q_t S_t):
+The paper does not give these details. They come from the official code (fla fla/layers/kda.py and
+fla/models/kda, Moonshot modeling_kimi.py of Kimi-Linear-48B-A3B):
+- f: A_log per head, dt_bias per channel, no lower bound. fla's bounded gate (safe_gate) is an optional
+  speed path that the released model does not use.
+- Output-gate rank d (Moonshot g_a_proj). The paper says only "similar to the forget gate".
+- Init (fla _init_weights and KimiDeltaAttention.__init__): A_log = log U(1, 16); dt_bias = inverse
+  softplus of a log-uniform dt in [1e-3, 1e-1]; conv weights N(0, 0.02); norm weight 1. model.py gives
+  the Linear weights N(0, 0.02).
+- No bias tensors: Eq. 10 and Moonshot's g_b_proj have no output-gate bias (fla adds one, zero at init).
+- Output-norm eps is the constructor eps (1e-6, the fla KDAConfig default).
 
-    S_t = (I - b_t k_t^T k_t) Diag(a_t) S_{t-1} + b_t k_t^T v_t
+Differences from the paper and the official code. All come from the shared protocol of every arm:
+- KDA in every layer. The paper's model is a 3:1 hybrid of KDA and MLA layers (Sec. 4), so this arm is
+  the KDA layer type, not "Kimi Linear".
+- d_model 16 and a small head_dim (train.py HEAD_CONFIG), not d = 128.
+- Context 128: conv state and S start from zero at each 128-token packed block.
 
-i.e. the state decays channelwise, then the delta rule corrects it toward v_t.
-
-Chunked form.  Inside a chunk let g_t = cumsum(log a) and P_t = Diag(g_t)^-1 S_t.
-The gate then cancels out of the recurrence entirely:
-
-    P_t = P_{t-1} + b_t k_til_t^T (v_t - k_bar_t P_{t-1})
-
-with k_bar = k*exp(g) (the read key) and k_til = k*exp(-g) (the write key).  That
-is an ungated delta rule with asymmetric keys, which the UT transform solves for a
-whole chunk in closed form.  Cost is seq/chunk sequential steps instead of seq.
+Numerics, measured:
+- At d_model 16 with conv init N(0, 0.02), sum(k^2) at init is near the L2Norm eps 1e-6, so the keys at
+  init have a norm below 1: median 0.96, 5th percentile 0.82 in block 0 at (4, 4) on real tokens.
+- G = cumsum(log alpha) is fp32, so exp(G_r - G_i) has a rounding error of about |G| * 6e-8. After 600
+  real steps at batch 1024 the chunk log-decay span reached 2,500, and the layer matched an fp64 token
+  loop to 2.5e-5 (output) and 7.7e-5 (gradient), relative to the maximum.
 """
+from __future__ import annotations
+
 import math
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
-from .scan_triton import kda_scan
-from .gate_triton import kda_gate, _G_RANGE
-from .rmsnorm_triton import TritonRMSNorm
+from .intra_triton import kda_intra
+from .rmsnorm_triton import gated_rmsnorm
+from .scan_triton import kda_scan_given_a
 
-# Max per-chunk |gcum|.  Enforced in _project as a per-step floor _G_RANGE/chunk.
-#
-# Why a bound is needed at all: the intra-chunk term exp(g_t - g_s) is causal
-# (t>=s) with gcum monotone decreasing, so the exponent is <=0 and the value <=1.
-# But evaluated as a matmul it must split into exp(g_t)*exp(-g_s) -- a matmul
-# needs each factor to depend on one index -- and exp(-g_s) is unbounded.
-# Channelwise decay means it cannot be folded into a [C,C] mask either.
-# Midpoint centring (see forward) halves the range but only moves the cliff.
-#
-# Split-form error vs exact recurrence:  3e-7 @ |gcum| 7.6 | 1e-1 @ 9.5 | 4e-1 @ 18
-# Real run reached 23.3 by step 250.  No NaN, no loss spike -- silently wrong.
-#
-# fla-org/flash-linear-attention fla/ops/kda subtracts INSIDE the exp
-# (exp2(b_gn - b_gk)), so no bound is needed.  Implemented and measured here:
-# exact at any drift (1.5e-15 @ |gcum| 640) but needs a [C,C,D] intermediate +
-# reduce instead of a tensor-core matmul -> 2.4x time, 1.5x memory
-# (395->165 tok/s, 7.9->12.1 GB), OOM at chunk 64.  Reverted.
-#
-# Shipped: keep the split, bound gcum (fla's `safe_gate`, tightened from per-step
-# to per-chunk).  Cost: retention/token >= exp(-_G_RANGE/chunk) = 0.855 @ 64.
-# A Triton port removes the bound. Value lives in gate_triton.py (imported
-# above) since that kernel needs it too -- one definition, not two to keep in sync.
+CONV_SIZE = 4
+CONV_INIT_STD = 0.02  # fla _init_weights: nn.Conv1d weight ~ N(0, initializer_range 0.02)
+L2_EPS = 1e-6  # fla l2norm: x / sqrt(sum(x^2) + eps)
+A_INIT_RANGE = (1.0, 16.0)  # fla: A_log = log U(1, 16)
+DT_INIT_RANGE = (1e-3, 1e-1)  # fla: softplus(dt_bias) is log-uniform in this range
+DT_INIT_FLOOR = 1e-4
 
 
 def inv_unit_lower(M: torch.Tensor) -> torch.Tensor:
-    """(I + M)^-1 for strictly lower-triangular M.  unitriangular=True reads M's
-    diagonal as 1, so M goes in as-is; cuBLAS trsm does the substitution, batched
-    over (B, H, N).  Upper-triangle and diagonal gradients are discarded by
-    solve_triangular's own backward, which is what this needs (X is structurally
-    unit lower triangular, so those entries are not free).
+    """(I + M)^-1 for strictly lower-triangular M, batched over the leading dims.
 
-    Replaced a hand-blocked substitution (nested Python loops over 16x16 slices,
-    diagonal inverses by repeated squaring).  That form was BOTH slower and less
-    accurate: ~44 tiny batched matmuls plus 14 slices of a (B,H,N,64,64) tensor,
-    whose SliceBackward0 zero-filled a full-size grad per slice -- measured on the
-    real training step at 76 ms/step forward + 111 ms/step of slice-backward, and
-    at chunk 64 it drifted to 1.1e-03 relative on correlated keys (vs 4.4e-07
-    here) because repeated squaring is only conditionally stable.
+    unitriangular=True reads the diagonal as 1, and solve_triangular's backward discards the gradient
+    of the diagonal and the upper triangle, which are not free entries of a unit lower-triangular matrix.
     """
-    I = torch.eye(M.shape[-1], device=M.device, dtype=M.dtype).expand_as(M)
-    return torch.linalg.solve_triangular(M, I, upper=False, unitriangular=True)
+    eye = torch.eye(M.shape[-1], device=M.device, dtype=M.dtype).expand_as(M)
+    return torch.linalg.solve_triangular(M, eye, upper=False, unitriangular=True)
+
+
+def l2norm(x: torch.Tensor) -> torch.Tensor:
+    return x * torch.rsqrt(x.square().sum(-1, keepdim=True) + L2_EPS)
+
+
+def causal_conv_silu(conv: nn.Conv1d, x: torch.Tensor) -> torch.Tensor:
+    """x is (B,T,W); left padding with CONV_SIZE-1 zeros makes output t depend on inputs t-CONV_SIZE+1..t only."""
+    padded = F.pad(x.transpose(1, 2), (CONV_SIZE - 1, 0))
+    return F.silu(F.conv1d(padded, conv.weight, groups=conv.groups)).transpose(1, 2)
 
 
 class KDA(nn.Module):
     def __init__(self, d_model: int, n_heads: int, head_dim: int,
-                 chunk: int = 64, eps: float = 1e-6, gate_rank: int = 16):
+                 chunk: int = 64, eps: float = 1e-6):
         super().__init__()
-        h, d = n_heads, head_dim
-        self.h, self.d, self.chunk, self.eps = h, d, chunk, eps
-        self.q = nn.Linear(d_model, h * d, bias=False)
-        self.k = nn.Linear(d_model, h * d, bias=False)
-        self.v = nn.Linear(d_model, h * d, bias=False)
-        self.o = nn.Linear(h * d, d_model, bias=False)
-        # decay gate: low-rank only when gate_rank < d_model (16 < 16 does
-        # not hold at this scale's default, so this is a full-rank map here)
-        self.g_down = nn.Linear(d_model, gate_rank, bias=False)
-        self.g_up = nn.Linear(gate_rank, h * d, bias=True)
-        self.beta = nn.Linear(d_model, h, bias=True)
-        self.A_log = nn.Parameter(torch.empty(h * d))
-        # QK-RMSNorm: mandatory, these weights are reused at every step of the
-        # recurrence and that is exactly when attention logits drift upward.
-        # TritonRMSNorm (rmsnorm_triton.py) replaces nn.RMSNorm here: at
-        # head_dim=3, PyTorch's fused RMSNorm kernel over 655K independent
-        # 3-element groups was the actual measured bottleneck (57% of total
-        # time, profiling) -- verified against nn.RMSNorm, fwd and bwd, to
-        # float32 precision at every trained head_dim first.
-        self.qn = TritonRMSNorm(d, eps=eps)
-        self.kn = TritonRMSNorm(d, eps=eps)
-        self.on = TritonRMSNorm(d, eps=eps)
-        # Diagnostic; never trained or saved.  Device tensor, not float, so reading
-        # it costs no host sync.  Now a MODELLING signal, not a numerical one: the
-        # gate bound keeps the arithmetic exact, so |gcum| only reports how much
-        # state KDA drops per chunk (retention/token = exp(-gcum/chunk)).
-        self._max_gcum = torch.zeros(())
-        self.reset_gate()
+        width = n_heads * head_dim
+        self.h, self.d, self.chunk, self.eps = n_heads, head_dim, chunk, eps
+        self.q = nn.Linear(d_model, width, bias=False)
+        self.k = nn.Linear(d_model, width, bias=False)
+        self.v = nn.Linear(d_model, width, bias=False)
+        # 3-D weights, so muon.split_params sends them to AdamW.
+        self.q_conv, self.k_conv, self.v_conv = (
+            nn.Conv1d(width, width, CONV_SIZE, groups=width, bias=False) for _ in range(3))
+        self.f_down = nn.Linear(d_model, head_dim, bias=False)
+        self.f_up = nn.Linear(head_dim, width, bias=False)
+        self.A_log = nn.Parameter(torch.empty(n_heads))
+        self.dt_bias = nn.Parameter(torch.empty(width))
+        # fla kda.py marks both as exempt from weight decay; train._make_optimizers honours the flag.
+        self.A_log._no_weight_decay = True
+        self.dt_bias._no_weight_decay = True
+        self.beta = nn.Linear(d_model, n_heads, bias=False)
+        self.g_down = nn.Linear(d_model, head_dim, bias=False)
+        self.g_up = nn.Linear(head_dim, width, bias=False)
+        self.o_norm_weight = nn.Parameter(torch.empty(head_dim))
+        self.o = nn.Linear(width, d_model, bias=False)
+        self.post_init()
 
-    def reset_gate(self):
-        """log a = -exp(A_log) * softplus(g).  These inits give a ~ 0.96, so a
-        64-step chunk accumulates only ~-2.6 of log-decay, well inside _G_RANGE."""
+    def post_init(self):
         with torch.no_grad():
-            self.A_log.uniform_(math.log(1.0), math.log(16.0))
-            self.g_up.bias.fill_(-5.0)
-            self.beta.bias.fill_(0.0)
+            for conv in (self.q_conv, self.k_conv, self.v_conv):
+                conv.weight.normal_(0.0, CONV_INIT_STD)
+            self.A_log.copy_(torch.empty_like(self.A_log).uniform_(*A_INIT_RANGE).log())
+            low, high = (math.log(bound) for bound in DT_INIT_RANGE)
+            dt = (torch.rand_like(self.dt_bias) * (high - low) + low).exp().clamp(min=DT_INIT_FLOOR)
+            self.dt_bias.copy_(dt + torch.log(-torch.expm1(-dt)))
+            self.o_norm_weight.fill_(1.0)
 
     def _project(self, x):
+        """q (scaled), k, v and log alpha as (B,T,H,D); beta as (B,T,H,1)."""
         B, T, _ = x.shape
-        H, D = self.h, self.d
-        q = self.qn(self.q(x).view(B, T, H, D))
-        k = F.normalize(self.kn(self.k(x).view(B, T, H, D)), dim=-1)  # delta rule wants unit keys
-        v = self.v(x).view(B, T, H, D)
-        beta = torch.sigmoid(self.beta(x)).view(B, T, H, 1)
-        g = F.softplus(self.g_up(self.g_down(x))).view(B, T, H, D)
-        # Floor bounds the PER-CHUNK total: gcum is a sum over `chunk` steps, so a
-        # per-step clamp of _G_RANGE (the old code) was `chunk`x too loose and let
-        # a real run reach 23.3.  Cost: retention/token >= exp(-_G_RANGE/chunk)
-        # = 0.855 @ 64; still permits ~total forgetting across a chunk (4.5e-5).
-        floor = -_G_RANGE / self.chunk
-        log_a = (-self.A_log.exp().view(1, 1, H, D) * g).clamp(min=floor)
-        return q, k, v, beta, log_a
-
-    def _out(self, o, x, B, T):
-        o = self.on(o).transpose(1, 2).reshape(B, T, self.h * self.d)
-        return self.o(o.to(x.dtype))
+        heads = lambda t: t.reshape(B, T, self.h, self.d)
+        q = l2norm(heads(causal_conv_silu(self.q_conv, self.q(x)))) * self.d ** -0.5
+        k = l2norm(heads(causal_conv_silu(self.k_conv, self.k(x))))
+        v = heads(causal_conv_silu(self.v_conv, self.v(x)))
+        decay_input = heads(self.f_up(self.f_down(x)) + self.dt_bias)
+        log_alpha = -self.A_log.exp()[:, None] * F.softplus(decay_input)
+        beta = torch.sigmoid(self.beta(x)).unsqueeze(-1)
+        return q, k, v, log_alpha, beta
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         B, T, _ = x.shape
         H, D = self.h, self.d
         C = min(self.chunk, T)
-        assert C & (C - 1) == 0, f"chunk size {C} must be a power of two (tl.arange requires it)"
-        q, k, v, beta, log_a = self._project(x)
+        assert (C & (C - 1)) == 0, f"chunk size {C} must be a power of two (tl.arange requires it)"
+        q, k, v, log_alpha, beta = self._project(x)
 
+        # The padding comes after the last real token, so causality keeps every real output unchanged.
         pad = (-T) % C
         if pad:
-            q, k, v, beta, log_a = (F.pad(t, (0, 0, 0, 0, 0, pad))
-                                    for t in (q, k, v, beta, log_a))
+            q, k, v, log_alpha, beta = (F.pad(t, (0, 0, 0, 0, 0, pad)) for t in (q, k, v, log_alpha, beta))
         Tp, N = T + pad, (T + pad) // C
+        chunks = lambda t: t.transpose(1, 2).reshape(B, H, N, C, -1).float()
+        q, k, v, log_alpha, beta = (chunks(t) for t in (q, k, v, log_alpha, beta))
 
-        hp = torch.promote_types(x.dtype, torch.float32)   # chunk math never below fp32
-        shp = lambda t: t.transpose(1, 2).reshape(B, H, N, C, -1).to(hp)
-        q, k, v, beta, log_a = shp(q), shp(k), shp(v), shp(beta), shp(log_a)
+        q_abs, k_abs, k_end, eg_last, aqk, akk = kda_intra(q, k, log_alpha)
+        Tm = inv_unit_lower(beta * akk)
+        o = kda_scan_given_a(k_abs, k_end, q_abs, aqk, beta, v, Tm, eg_last)
+        o = o.reshape(B, H, Tp, D)[:, :, :T].transpose(1, 2).to(x.dtype)
 
-        # promote_types alone is insufficient: autocast re-casts every matmul back
-        # to fp16 AFTER the promotion.  Centred gate factors reach exp(+-10)=22026,
-        # their product 4.9e8 vs fp16's 65504 -> backward produced inf, GradScaler
-        # halved forever (32768->128 over 9 steps), loss frozen.  Forward stayed
-        # finite, which hid it.  Only the scan is pinned; _out stays under autocast.
-        with torch.autocast(x.device.type, enabled=False):
-            o = self._chunk_scan(q, k, v, beta, log_a, B, H, D, N, C, T, Tp)
-        return self._out(o, x, B, T)
-
-    def _chunk_scan(self, q, k, v, beta, log_a, B, H, D, N, C, T, Tp):
-
-        g_end = log_a.sum(-2, keepdim=True)              # total decay across the chunk
-        self._max_gcum = g_end.detach().abs().amax()    # see __init__
-
-        # Fused Triton kernel (gate_triton.py) for what used to be here:
-        # cumsum + exp/clamp + 6 elementwise products, ~10 separate
-        # (B,H,N,C,D) tensors in plain PyTorch -- the actual measured
-        # bottleneck (profiling), fused into one kernel launch. Verified
-        # against this exact pre-loop math, fwd and bwd (including at
-        # _project()'s real floor, the true worst case for the _G_RANGE
-        # clamp) to float32 precision at every trained head_dim.
-        k_abs, k_end, q_abs, k_bar_c, k_til_c, q_c = kda_gate(q, k, log_a)
-
-        Tm = inv_unit_lower(((beta * k_bar_c) @ k_til_c.transpose(-1, -2)).tril(-1))
-
-        # The sequential part (S_n -> S_{n+1} across chunks) as a Triton kernel
-        # with a hand-derived backward pass (scan_triton.py) -- verified fwd and
-        # bwd against the equivalent PyTorch chunk loop to float32 machine
-        # precision at every trained head_dim before being trusted here.
-        eg_last = g_end.squeeze(-2).exp()   # gcum's last entry per chunk == g_end (total decay)
-        outs = kda_scan(k_abs, k_end, q_abs, q_c, k_til_c, beta, v, Tm, eg_last)
-
-        return outs.reshape(B, H, Tp, D)[:, :, :T]
-
-    @torch.no_grad()
-    def reference(self, x: torch.Tensor) -> torch.Tensor:
-        """Naive O(T) recurrence.  Test oracle for the chunked path, nothing else."""
-        B, T, _ = x.shape
-        hp = torch.promote_types(x.dtype, torch.float32)
-        q, k, v, beta, log_a = (t.to(hp) for t in self._project(x))
-        a = log_a.exp()
-
-        S = q.new_zeros(B, self.h, self.d, self.d)
-        outs = []
-        for t in range(T):
-            S = S * a[:, t].unsqueeze(-1)
-            kt, vt, bt = k[:, t].unsqueeze(-1), v[:, t].unsqueeze(-2), beta[:, t].unsqueeze(-1)
-            S = S + bt * (kt @ (vt - kt.transpose(-1, -2) @ S))
-            outs.append((q[:, t].unsqueeze(-2) @ S).squeeze(-2))
-        return self._out(torch.stack(outs, 2), x, B, T)
+        gate = self.g_up(self.g_down(x)).reshape(B, T, H, D)
+        y = gated_rmsnorm(o, gate, self.o_norm_weight, self.eps)
+        return self.o(y.reshape(B, T, H * D))

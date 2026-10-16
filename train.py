@@ -1,19 +1,13 @@
-"""Train a linear-attention LM (KDA, OSDN, or Parallax) on TinyStories with
-gelu_new MLPs, param-matched to activation_comparison's GPT-Neo replica --
-same vocab (tokenizer/tokenizer.json, copied from there), same context
-length, same data, so the only thing actually being compared is the attention
-mechanism. Results land in results/<attention>/seed_<seed>/metrics.json,
-same schema as activation_comparison.
-
-Optimizer is AdamW for KDA/OSDN; Parallax specifically trains under Muon
-(see _make_optimizers) -- its paper reports the covariance-correction gate
-collapses under AdamW, so AdamW would not be testing the mechanism as
-proposed.
+"""Train a TinyStories LM with one attention mechanism (softmax, KDA, OSDN, Parallax or Mamba3); every
+arm has ~23,200 params and the same data, tokenizer, context length and training protocol.
+Results land in results/<attention>/seed_<seed>/metrics.json.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -22,7 +16,7 @@ from datasets import load_from_disk
 from torch.utils.data import DataLoader, Dataset
 from transformers import PreTrainedTokenizerFast, get_cosine_schedule_with_warmup
 
-from model import LM
+from model import build_model
 from muon import Muon, split_params
 
 ROOT = Path(__file__).parent
@@ -51,14 +45,17 @@ CHUNK = 64
 BATCH_SIZE = 1024
 LR = 5e-4
 WARMUP_STEPS = 500
+ADAMW_WEIGHT_DECAY = 0.01  # torch.optim.AdamW's default, used by every arm
 EPOCHS = 3
 
 # (n_heads, head_dim) per attention type, each independently searched for the
-# closest total-param match to activation_comparison's ~23200.
+# closest total-param match to the softmax arm's 23,200.
 HEAD_CONFIG = {
-    "kda": (5, 3),        # 23168 params (still closest under gelu_new, re-verified)
-    "osdn": (11, 2),      # 23252 params -- no gate/decay params, needs more heads*dim than kda
-    "parallax": (1, 13),  # 23212 params -- extra W_R + position embedding leave little head budget
+    "softmax": (4, 4),    # 23200 params -- GPT-Neo with TinyStories-1M's head_dim 4
+    "kda": (4, 4),        # 23088 params
+    "osdn": (4, 5),       # 23204 params
+    "parallax": (2, 12),  # 23136 params
+    "mamba3": (4, 3),     # 23152 params
 }
 
 
@@ -99,25 +96,20 @@ def _pack(split_rows, tokenizer: PreTrainedTokenizerFast, cache_path: Path) -> t
     return ids
 
 
-def _make_optimizers(attention, model, total_steps):
-    """Parallax specifically needs Muon: its paper reports the covariance-
-    correction gate collapses under AdamW (W_R stable rank 134 -> ~9), so
-    training it under AdamW is not a fair test of the mechanism (see
-    parallax/attention.py). KDA/OSDN have no such documented dependency and
-    stay on plain AdamW, unchanged.
+def _make_optimizers(model, total_steps):
+    """Muon (2-D matmul weights) + AdamW (everything else) for every arm.
 
     Two separate optimizer instances (not param groups on one), since Muon and
     AdamW are different classes -- each needs its own scheduler, both stepped
     together every batch.
     """
-    if attention != "parallax":
-        opt = torch.optim.AdamW(model.parameters(), lr=LR)
-        sched = get_cosine_schedule_with_warmup(opt, WARMUP_STEPS, total_steps)
-        return [opt], [sched]
-
     muon_params, adamw_params = split_params(model)
     muon_opt = Muon(muon_params, lr=0.02)          # Muon's own reference default; untuned here
-    adamw_opt = torch.optim.AdamW(adamw_params, lr=LR)
+    # A layer's official code marks some parameters (e.g. decay rates) with _no_weight_decay; honour it.
+    no_decay = [p for p in adamw_params if getattr(p, "_no_weight_decay", False)]
+    decay = [p for p in adamw_params if not getattr(p, "_no_weight_decay", False)]
+    adamw_opt = torch.optim.AdamW([{"params": decay}, {"params": no_decay, "weight_decay": 0.0}],
+                                  lr=LR, weight_decay=ADAMW_WEIGHT_DECAY)
     opts = [muon_opt, adamw_opt]
     scheds = [get_cosine_schedule_with_warmup(o, WARMUP_STEPS, total_steps) for o in opts]
     return opts, scheds
@@ -127,8 +119,8 @@ def run_seed(attention: str, seed: int, epochs: int, device: torch.device, vocab
             train_ids: torch.Tensor, eval_ids: torch.Tensor, out_dir: Path) -> dict:
     torch.manual_seed(seed)
     n_heads, head_dim = HEAD_CONFIG[attention]
-    model = LM(attention, vocab_size, D_MODEL, D_FF, NUM_LAYERS, n_heads, head_dim,
-              chunk=CHUNK, context_length=CONTEXT_LENGTH).to(device)
+    model = build_model(attention, vocab_size, D_MODEL, D_FF, NUM_LAYERS, n_heads, head_dim,
+                        chunk=CHUNK, context_length=CONTEXT_LENGTH).to(device)
     n_params = sum(p.numel() for p in model.parameters())
 
     train_ds, eval_ds = PackedBlocks(train_ids), PackedBlocks(eval_ids)
@@ -136,7 +128,7 @@ def run_seed(attention: str, seed: int, epochs: int, device: torch.device, vocab
     eval_loader = DataLoader(eval_ds, batch_size=BATCH_SIZE, shuffle=False)
 
     total_steps = len(train_loader) * epochs
-    optimizers, schedulers = _make_optimizers(attention, model, total_steps)
+    optimizers, schedulers = _make_optimizers(model, total_steps)
 
     def run_eval() -> float:
         # token-weighted mean, not mean-of-batch-means: the last eval batch
@@ -192,8 +184,6 @@ def main():
     parser.add_argument("--epochs", type=int, default=EPOCHS)
     parser.add_argument("--device", default="cuda")
     args = parser.parse_args()
-    device = torch.device(args.device)
-    apply_vram_cap(device)
 
     tokenizer = load_tokenizer()
     ds = load_from_disk(str(DATA_DIR))
@@ -204,6 +194,24 @@ def main():
     eval_ids = _pack(ds["validation"], tokenizer, cache_dir / "validation.pt")
     print(f"train tokens: {train_ids.shape[0]:,}  eval tokens: {eval_ids.shape[0]:,}", flush=True)
 
+    gpus = torch.cuda.device_count() if args.device == "cuda" else 1
+    if gpus > 1 and len(args.seeds) > 1:
+        # Seeds are independent runs, so one process per GPU (Kaggle's 2x T4) changes only the wall time.
+        del train_ids, eval_ids
+        groups = [args.seeds[i::gpus] for i in range(min(gpus, len(args.seeds)))]
+        procs = [subprocess.Popen([sys.executable, __file__, "--attention", args.attention, "--epochs", str(args.epochs),
+                                   "--device", f"cuda:{index}", "--seeds", *map(str, seeds)])
+                 for index, seeds in enumerate(groups)]
+        exit_codes = [proc.wait() for proc in procs]
+        if any(code != 0 for code in exit_codes):
+            raise RuntimeError(f"seed processes exited with {exit_codes}")
+        return
+
+    device = torch.device(args.device)
+    if device.type == "cuda" and device.index is not None:
+        # Triton launches on the current device, so a process given cuda:1 must make it current.
+        torch.cuda.set_device(device)
+    apply_vram_cap(device)
     for seed in args.seeds:
         out_dir = RESULTS_DIR / args.attention / f"seed_{seed}"
         print(f"=== attention={args.attention} seed={seed} ===", flush=True)

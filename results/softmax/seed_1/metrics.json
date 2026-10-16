@@ -1,0 +1,21 @@
+{
+  "attention": "softmax",
+  "seed": 1,
+  "n_params": 23200,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 3.123677686532658
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 3.064613814102588
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 3.0491682430455445
+    }
+  ],
+  "final_eval_loss": 3.0491682430455445,
+  "wall_time_s": 3528.634169101715
+}

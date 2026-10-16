@@ -1,21 +1,21 @@
 {
   "attention": "osdn",
   "seed": 2,
-  "n_params": 23268,
+  "n_params": 23204,
   "history": [
     {
       "epoch": 1,
-      "eval_loss": 3.2530369125306606
+      "eval_loss": 2.8317861132799407
     },
     {
       "epoch": 2,
-      "eval_loss": 3.1031040251255035
+      "eval_loss": 2.7124866717711984
     },
     {
       "epoch": 3,
-      "eval_loss": 3.07915897667408
+      "eval_loss": 2.6903661771321117
     }
   ],
-  "final_eval_loss": 3.07915897667408,
-  "wall_time_s": 3797.660059452057
+  "final_eval_loss": 2.6903661771321117,
+  "wall_time_s": 6670.741548299789
 }

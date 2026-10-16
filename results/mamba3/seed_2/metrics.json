@@ -1,0 +1,21 @@
+{
+  "attention": "mamba3",
+  "seed": 2,
+  "n_params": 23152,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 2.724453364945873
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 2.6292591143398902
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 2.6085964763896103
+    }
+  ],
+  "final_eval_loss": 2.6085964763896103,
+  "wall_time_s": 4990.304961681366
+}
