@@ -1,0 +1,23 @@
+{
+  "arm": "recursive_x2",
+  "seed": 0,
+  "n_params": 23200,
+  "unique_layers": 4,
+  "effective_depth": 6,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 3.0092722794651747
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 2.9685742998808684
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 2.9461870091760116
+    }
+  ],
+  "final_eval_loss": 2.9461870091760116,
+  "wall_time_s": 1499.5503475666046
+}

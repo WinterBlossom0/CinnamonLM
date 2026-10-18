@@ -1,0 +1,14 @@
+# Packed TinyStories tokens, made by prepare_data.py (train.pt is 3.3 GB); no trailing slash, so a symlink matches too.
+/packed_cache
+
+# Smoke runs of train.py (--max-steps-per-epoch).
+/results_smoke/
+
+# Upload folders made by push.py build.
+/kaggle_build/
+
+# Kaggle kernel outputs that push.py pull and KAGGLE.md step 5 download.
+/kaggle_output/
+
+__pycache__/
+*.py[cod]

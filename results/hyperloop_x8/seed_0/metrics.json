@@ -1,0 +1,23 @@
+{
+  "arm": "hyperloop_x8",
+  "seed": 0,
+  "n_params": 30104,
+  "unique_layers": 4,
+  "effective_depth": 18,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 2.975433879850231
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 2.931088761248421
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 2.9040208415687316
+    }
+  ],
+  "final_eval_loss": 2.9040208415687316,
+  "wall_time_s": 4074.6107470989227
+}

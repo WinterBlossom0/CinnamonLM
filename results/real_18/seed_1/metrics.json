@@ -1,0 +1,23 @@
+{
+  "arm": "real_18",
+  "seed": 1,
+  "n_params": 68448,
+  "unique_layers": 18,
+  "effective_depth": 18,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 2.5280532996130054
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 2.3989296537736298
+    },
+    {
+      "epoch": 3,
+      "eval_loss": 2.3335982650486167
+    }
+  ],
+  "final_eval_loss": 2.3335982650486167,
+  "wall_time_s": 3899.0254023075104
+}
